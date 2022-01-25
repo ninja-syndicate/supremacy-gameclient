@@ -38,3 +38,13 @@ void UBPFL_Helpers::ConvertBytesToString(const TArray<uint8> Bytes, FString& Str
 		String.AppendChar(c);
 	}
 }
+
+FColor UBPFL_Helpers::HexToColor(const FString HexString)
+{
+    return FColor::FromHex(HexString);
+}
+
+FString UBPFL_Helpers::ColorToHex(const FColor Color)
+{
+    return Color.ToHex();
+}
