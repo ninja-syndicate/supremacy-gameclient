@@ -17,6 +17,28 @@ void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FStr
 	}
 }
 
+TArray<uint8> ConvertFloatToBytes(const float Input)
+{
+	constexpr int32 BufferSize = sizeof Input;
+	uint8* Buffer = new uint8[BufferSize];
+	memcpy(&Buffer[0], &Input, BufferSize);
+	TArray<uint8> Bytes = TArray<uint8>();
+	for (int i = 0; i < BufferSize; i++)
+	{
+		Bytes.Add(Buffer[i]);
+	}
+	return Bytes;
+}
+void UBPFL_Helpers::PackWarMachineMoveUpdate(const uint8 Number, const FVector Location, const float Yaw,
+	TArray<uint8>& Bytes)
+{
+	Bytes = TArray<uint8>();
+	Bytes.Add(Number);
+	Bytes.Append(ConvertFloatToBytes(Location.X));
+	Bytes.Append(ConvertFloatToBytes(Location.Y));
+	Bytes.Append(ConvertFloatToBytes(Yaw));
+}
+
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
 {
 	const int32 BufferSize = String.Len();

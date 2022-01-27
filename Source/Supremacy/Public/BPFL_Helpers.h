@@ -19,6 +19,10 @@ public:
 	/** Parses  */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Parse Net Message", meta=(Keywords = "Parse Net Message Bytes Byte Array"))
 	static void ParseNetMessage(const TArray<uint8> Bytes, uint8 &Type, FString &Message);
+
+	/** Pack WarMachine Move Update  */
+	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Move Update", meta=(Keywords = "Net Message Bytes Byte Array Binary"))
+	static void PackWarMachineMoveUpdate(const uint8 Number, const FVector Location, const float Yaw, TArray<uint8> &Bytes);
 	
 	/** Converts a String to an Array of bytes */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert String To Bytes")
