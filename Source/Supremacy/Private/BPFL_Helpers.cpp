@@ -29,13 +29,25 @@ TArray<uint8> ConvertFloatToBytes(const float Input)
 	}
 	return Bytes;
 }
-void UBPFL_Helpers::PackWarMachineMoveUpdate(const uint8 Number, const FVector Location, const float Yaw,
+TArray<uint8> ConvertIntToBytes(const int Input)
+{
+	constexpr int32 BufferSize = sizeof Input;
+	uint8* Buffer = new uint8[BufferSize];
+	memcpy(&Buffer[0], &Input, BufferSize);
+	TArray<uint8> Bytes = TArray<uint8>();
+	for (int i = 0; i < BufferSize; i++)
+	{
+		Bytes.Add(Buffer[i]);
+	}
+	return Bytes;
+}
+void UBPFL_Helpers::PackWarMachineMoveUpdate(const uint8 Number, const int X, const int Y, const float Yaw,
 	TArray<uint8>& Bytes)
 {
 	Bytes = TArray<uint8>();
 	Bytes.Add(Number);
-	Bytes.Append(ConvertFloatToBytes(Location.X));
-	Bytes.Append(ConvertFloatToBytes(Location.Y));
+	Bytes.Append(ConvertIntToBytes(X));
+	Bytes.Append(ConvertIntToBytes(Y));
 	Bytes.Append(ConvertFloatToBytes(Yaw));
 }
 
