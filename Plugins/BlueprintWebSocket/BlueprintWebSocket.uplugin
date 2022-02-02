@@ -10,7 +10,7 @@
 	"DocsURL": "https://github.com/Pandoa/BlueprintWebSocket/blob/master/README.md",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/8d3214f45fc74fe48374e8310926dfd4",
 	"SupportURL": "mailto:pandores.marketplace@gmail.com",
-	"EngineVersion": "5.0",
+	"EngineVersion": "5.0.0",
 	"CanContainContent": false,
 	"Installed": true,
 	"Modules": [
