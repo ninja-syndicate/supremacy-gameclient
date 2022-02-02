@@ -26,14 +26,26 @@ TArray<uint8> ConvertIntToBytes(const int Input)
 	Bytes.Emplace((Input >> 0) & 0xFF);
 	return Bytes;
 }
-void UBPFL_Helpers::PackWarMachineMoveUpdate(const uint8 Number, const int X, const int Y, const int Yaw,
+void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const uint8 SyncByte, 
 	TArray<uint8>& Bytes)
 {
 	Bytes = TArray<uint8>();
 	Bytes.Emplace(Number);
-	Bytes.Append(ConvertIntToBytes(X));
-	Bytes.Append(ConvertIntToBytes(Y));
-	Bytes.Append(ConvertIntToBytes(Yaw));
+	Bytes.Emplace(SyncByte);
+	if (SyncByte >= 100)
+	{
+		Bytes.Append(ConvertIntToBytes(X));
+		Bytes.Append(ConvertIntToBytes(Y));
+		Bytes.Append(ConvertIntToBytes(Yaw));
+	}
+	if (SyncByte == 1 || SyncByte == 11 || SyncByte == 101 || SyncByte == 111)
+	{
+		Bytes.Append(ConvertIntToBytes(Health));
+	}
+	if (SyncByte == 10 || SyncByte == 11 || SyncByte == 110 || SyncByte == 111)
+	{
+		Bytes.Append(ConvertIntToBytes(Shield));
+	}
 }
 
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)

@@ -20,9 +20,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Parse Net Message", meta=(Keywords = "Parse Net Message Bytes Byte Array"))
 	static void ParseNetMessage(const TArray<uint8> Bytes, uint8 &Type, FString &Message);
 
-	/** Pack WarMachine Move Update  */
-	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Move Update", meta=(Keywords = "Net Message Bytes Byte Array Binary"))
-	static void PackWarMachineMoveUpdate(const uint8 Number, const int X, const int Y, const int Yaw, TArray<uint8> &Bytes);
+	/** Pack WarMachine Update  */
+	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Update", meta=(Keywords = "Net Message Bytes Byte Array Binary"))
+	static void PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const uint8 SyncByte, TArray<uint8> &Bytes);
 	
 	/** Converts a String to an Array of bytes */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert String To Bytes")
