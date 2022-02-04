@@ -2,7 +2,7 @@
 set project=%~dp0Supremacy.uproject
 set build_dir=%~dp0Build
 
-if exist %RunUAT% (
+if exist "%RunUAT%" (
      git pull | find /i "Already up to date."
      echo.
      if not errorlevel 1 (
@@ -10,7 +10,7 @@ if exist %RunUAT% (
           pause >nul
      )
 
-     %RunUAT% BuildCookRun -project=%project% -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory=%build_dir%
+     "%RunUAT%" BuildCookRun -project=%project% -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory=%build_dir%
 pause
 
 ) else (
