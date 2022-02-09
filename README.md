@@ -7,11 +7,11 @@ To get started, you will need to meet the prerequisites first:
 ### Prerequisites
 + [Git](https://git-scm.com/download) or [GitHub Desktop](https://desktop.github.com/)
 + [Unreal Engine 5](https://www.unrealengine.com/en-US/unreal-engine-5)
-+ [Visual Studio 2019/2022](https://visualstudio.microsoft.com/downloads/)
++ [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 
 > **_NOTE:_**  It is recommended that you have at least 100GiB of free space to install Unreal Engine 5 and clone the repository.
 
-While you are installing VS2019/2022 or you have already met all those prerequisites, in the Visual Studio Installer that comes along with VS2019/2022, modify the installation to check the following:
+While you are installing VS2019 or you have already met all those prerequisites, in the Visual Studio Installer that comes along with VS2019, modify the installation to check the following:
 
 - ASP.NET and web development ✅
   - .NET Core 3.1 Runtime (LTS) ✅
