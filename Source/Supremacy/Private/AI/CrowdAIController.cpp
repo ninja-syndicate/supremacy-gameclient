@@ -14,12 +14,12 @@ void ACrowdAIController::BeginPlay()
 	Super::BeginPlay();
 
 	CrowdFollowingComponent = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent());
-	if (CrowdFollowingComponent) {
-		// Note that the collision query range is set pretty high despite the agent radius being a lot smaller
-		// (around 550), but the agents won't really avoid others unless set excessively.
+	if (CrowdFollowingComponent)
+	{
+		CrowdFollowingComponent->SetCrowdCollisionQueryRange(CollisionQueryRange);
 		CrowdFollowingComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Type::High);
-		CrowdFollowingComponent->SetCrowdCollisionQueryRange(5000);
-		CrowdFollowingComponent->SetCrowdSeparationWeight(2000);
+		CrowdFollowingComponent->SetCrowdSeparation(bEnableSeparation);
+		CrowdFollowingComponent->SetCrowdSeparationWeight(SeparationWeight);
 	}
 }
 
