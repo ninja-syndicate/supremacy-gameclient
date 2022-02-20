@@ -21,6 +21,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
 protected:
+	/** Whether to enable crowd separation or not. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	bool bEnableSeparation;
+
+	/** The weight applied to the separation of the agents. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	float SeparationWeight;
+
+	/** The range to check for the collision. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	float CollisionQueryRange;
+
 	/** Reference to the current crowd following component. */
 	class UCrowdFollowingComponent* CrowdFollowingComponent;
 };
