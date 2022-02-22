@@ -20,6 +20,7 @@ void ACrowdAIController::BeginPlay()
 		CrowdFollowingComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Type::High);
 		CrowdFollowingComponent->SetCrowdSeparation(bEnableSeparation);
 		CrowdFollowingComponent->SetCrowdSeparationWeight(SeparationWeight);
+		CrowdFollowingComponent->SetCrowdSlowdownAtGoal(bEnableSlowdownAtGoal);
 	}
 }
 

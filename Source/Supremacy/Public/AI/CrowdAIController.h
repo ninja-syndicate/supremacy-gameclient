@@ -33,6 +33,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
 	float CollisionQueryRange;
 
+	/** Slowdown the agent when it reaches close to the goal. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	bool bEnableSlowdownAtGoal;
+
 	/** Reference to the current crowd following component. */
 	class UCrowdFollowingComponent* CrowdFollowingComponent;
 };
