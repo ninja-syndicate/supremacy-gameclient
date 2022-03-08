@@ -49,6 +49,10 @@
 			"Name": "ObjectPool",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/e3c6aea892b748eb9e2241b9c4b74d36"
+		},
+		{
+			"Name": "MovieRenderPipeline",
+			"Enabled": true
 		}
 	]
 }
