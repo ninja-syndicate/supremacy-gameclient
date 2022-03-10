@@ -40,6 +40,23 @@ git config user.email "Your Email Address"
 
 Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
 
+## Troubleshooting
+**Missing C++ files after pulling, warnings/errors or certain things don't work**
+
+Unreal sometimes fail to recognise new C++ files if you open up the project after pulling. It sometimes works and sometimes doesn't. So if there were changes to C++ files, often you will have to rebuild the project.
+
+> **_NOTE:_**  Rebuilding the project can take quite some time and storage space, so it is recommended that you have sufficient disk space for it.
+
+If the problem persists even after rebuilding the project, it could be the case that existing auto-generated folders are causing conflicts. So, close Unreal and try deleting automatically generated folders in the project. These are:
+
+- Binaries
+- DerivedDataCache
+- Intermediate
+- Saved
+- Script
+
+And then open up the project again. This will cause those folders to be re-generated.
+
 ## Coding Standard
 + [Coding Standard By Unreal](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/CodingStandard/)
 + [Recommended Asset Naming Convention](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/AssetNaming/)
