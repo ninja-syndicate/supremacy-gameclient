@@ -12,7 +12,7 @@ if exist "%RunUAT%" (
           pause >nul
      )
 
-     "%RunUAT%" BuildCookRun -project=%project% -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory=%build_dir%
+     "%RunUAT%" BuildCookRun -project="%project%" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory="%build_dir%"
 
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildNo=%Version%
      echo BuildNo %Version%
