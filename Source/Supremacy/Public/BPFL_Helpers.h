@@ -39,32 +39,4 @@ public:
 	/** Converts color to hex string */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
 	static FString ColorToHex(const FColor Color);
-
-	/**
-	 * Get a nearest empty location around the origin.
-	 *
-	 * @param WorldContextObject World context which is automatically binded if called from blueprint.
-	 * @param Origin The starting location to search for the nearest empty location.
-	 * @param ForwardAxis The forward direction.
-	 * @param UpAxis The up direction.
-	 * @param DesiredRadius The minimum desired radius of empty location. Usually, this is actor radius.
-	 * @param MaxDistance The maximum distance to consider to search for the empty location.
-	 * @param bCheckGround If true, the empty location will be on ground. Otherwise, it may be mid-air.
-	 * @param OutLocation The nearest empty location around the origin.
-	 *	
-	 * @return Returns true when such an empty location is found and false otherwise.
-	 *
-	 * @note This function can be pretty expensive. So, don't call it every frame.
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Helpers", meta = (WorldContext = "WorldContextObject"))
-	static bool GetNearestEmptyLocation(
-		const UObject* WorldContextObject, 
-		FVector Origin, 
-		FVector ForwardAxis, 
-		FVector UpAxis, 
-		float DesiredRadius, 
-		float MaxDistance,
-		TArray<AActor*> ActorsToIgnore,
-		FVector& OutLocation,
-		bool bCheckGround = true);
 };
