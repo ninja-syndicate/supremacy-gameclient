@@ -72,10 +72,10 @@ void UBPFL_Helpers::ConvertBytesToString(const TArray<uint8> Bytes, FString& Str
 
 FColor UBPFL_Helpers::HexToColor(const FString HexString)
 {
-    return FColor::FromHex(HexString);
+	return FColor::FromHex(HexString);
 }
 
 FString UBPFL_Helpers::ColorToHex(const FColor Color)
 {
-    return Color.ToHex();
+	return Color.ToHex();
 }

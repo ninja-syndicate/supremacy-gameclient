@@ -33,10 +33,10 @@ public:
 	static void ConvertBytesToString(const TArray<uint8> Bytes, FString &String);
 	
 	/** Converts hex string to color. Supports formats RGB, RRGGBB, RRGGBBAA, RGB, #RRGGBB, #RRGGBBAA */
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
-    static FColor HexToColor(const FString HexString);
-    
-    /** Converts color to hex string */
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
-    static FString ColorToHex(const FColor Color);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
+	static FColor HexToColor(const FString HexString);
+	
+	/** Converts color to hex string */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
+	static FString ColorToHex(const FColor Color);
 };
