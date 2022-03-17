@@ -4,19 +4,27 @@
 #include "SpawnSystem/SpawnSubsystem.h"
 
 #include "Landscape.h"
-#include "NavModifierVolume.h"
 #include "NavigationSystem.h"
+#include "NavModifierVolume.h"
+
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 #include "DrawDebugHelpers.h"
 
+USpawnSubsystem::USpawnSubsystem()
+{
+	DefaultNumDirections = 8;
+	DefaultCollisionRadius = 600;
+	DefaultSearchRadius = 100000;
+}
+
 void USpawnSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	// Bind the Setup method to the World BeginPlay event.
+	// Bind the Setup method to the World BeginPlay event so that it gets called on BeginPlay.
 	GetWorld()->OnWorldBeginPlay.AddUObject(this, &USpawnSubsystem::Setup);
 }
 
@@ -32,11 +40,11 @@ void USpawnSubsystem::Setup()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALandscape::StaticClass(), Landscapes);
 	if (Landscapes.IsEmpty())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SpawnSubsystem: No landscape found in the current map. Some things related to spawning may fail..."));
+		UE_LOG(LogTemp, Warning, TEXT("SpawnSubsystem: No landscapes found in the current map. Some functionalities may fail."));
 	}
 	else
 	{
-		// For now, get only the first landscape as there is only one in every map.
+		// For now, only get the first landscape as there is only one in every map.
 		Landscape = Landscapes[0];
 		if (Landscapes.Num() > 1) 
 		{
@@ -48,33 +56,43 @@ void USpawnSubsystem::Setup()
 	NavSys = UNavigationSystemV1::GetCurrent(GetWorld());
 	if (!NavSys)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SpawnSubsystem: No navigation mesh volume is found. Some things related to nav mesh may fail..."));
+		UE_LOG(LogTemp, Warning, TEXT("SpawnSubsystem: No navigation system is found. Some functionalities may fail."));
 	}
 
-	// Get all the nav modifiers to ignore.
+	// Get all the nav modifier volumes in the map. These will be ignored when testing collision.
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ANavModifierVolume::StaticClass(), NavModifiers);
 }
 
 bool USpawnSubsystem::GetNearestEmptyLocation(
 	FVector Origin,
-	float DesiredRadius,
-	float MaxDistance,
+	float CollisionRadius,
+	float SearchRadius,
 	TArray<AActor*> ActorsToIgnore,
 	FVector& OutLocation,
-	bool bCheckGround,
-	bool bNavigableArea)
+	bool bGround,
+	bool bNavigable)
 {
-	if (bNavigableArea && !NavSys)
+	if (CollisionRadius <= 0)
+	{
+		CollisionRadius = DefaultCollisionRadius;
+	}
+	if (SearchRadius <= 0)
+	{
+		SearchRadius = DefaultSearchRadius;
+	}
+	if (bNavigable && !NavSys)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SpawnSubsystem: GetNearestEmptyLocation() failed as no nav mesh volume is found."));
 		OutLocation = FVector::ZeroVector;
 		return false;
 	}
-	// TODO: support multiple if required
+	// TODO: support multiple landscapes if required
 	if (Landscape)
 	{
 		ActorsToIgnore.Add(Landscape);
 	}
+	// TODO: Allow option to decide whether to ignore nav modifiers or not.
+	// For now, just ignore them.
 	for (AActor* NavModifier : NavModifiers)
 	{
 		ActorsToIgnore.Add(NavModifier);
@@ -85,22 +103,21 @@ bool USpawnSubsystem::GetNearestEmptyLocation(
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeQueries;
 	ObjectTypeQueries.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	ObjectTypeQueries.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
-	// ObjectTypeQueries.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
+	//ObjectTypeQueries.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
 
-	// Try the origin point first.
-	FVector EmptyLocation;
-	bool IsEmpty = GetEmptyLocation(Origin, bCheckGround, bNavigableArea, DesiredRadius, MaxDistance, ObjectTypeQueries, ActorsToIgnore, EmptyLocation);
-	if (IsEmpty)
+	// Test the origin point first for collision.
+	bool IsSuccess;
+	FVector NearestLocation;
+	IsSuccess = TestLocation(Origin, bGround, bNavigable, CollisionRadius, SearchRadius, ObjectTypeQueries, ActorsToIgnore, NearestLocation);
+	if (IsSuccess)
 	{
-		// Adjust Z height a bit to avoid falling through the floor.
-		EmptyLocation.Z += 1000.f;
-		OutLocation = EmptyLocation;
+		OutLocation = NearestLocation;
 		return true;
 	}
 
-	// Otherwise, try different directions of increasing distance from the origin.
-	const int NumDirections = 8;
-	for (float CurrentTestDistance = 500; CurrentTestDistance <= MaxDistance; CurrentTestDistance += 1000)
+	// Otherwise, test different directions of increasing distance from the origin.
+	const int NumDirections = DefaultNumDirections;
+	for (float CurrentTestDistance = 500; CurrentTestDistance <= SearchRadius; CurrentTestDistance += 1000)
 	{
 		for (int i = 0; i < NumDirections; ++i)
 		{
@@ -108,13 +125,10 @@ bool USpawnSubsystem::GetNearestEmptyLocation(
 			const FVector CurrentDirection = FVector::ForwardVector.RotateAngleAxis(CurrentAngle, FVector::UpVector);
 			const FVector NewCandidateLocation = Origin + CurrentDirection * CurrentTestDistance;
 
-			FVector NewEmptyLocation;
-			bool IsNewCandidateEmpty = GetEmptyLocation(NewCandidateLocation, bCheckGround, bNavigableArea, DesiredRadius, MaxDistance, ObjectTypeQueries, ActorsToIgnore, NewEmptyLocation);
-			if (IsNewCandidateEmpty)
+			IsSuccess = TestLocation(NewCandidateLocation, bGround, bNavigable, CollisionRadius, SearchRadius, ObjectTypeQueries, ActorsToIgnore, NearestLocation);
+			if (IsSuccess)
 			{
-				// Adjust Z height a bit to avoid falling through the floor.
-				NewEmptyLocation.Z += 1000.f;
-				OutLocation = NewEmptyLocation;
+				OutLocation = NearestLocation;
 				return true;
 			}
 		}
@@ -142,13 +156,17 @@ bool USpawnSubsystem::GetGroundLocation(FVector Origin, FVector& OutLocation)
 	return true;
 }
 
-bool USpawnSubsystem::GetEmptyLocation(FVector Location, bool CheckGround, bool NavigableArea,
+bool USpawnSubsystem::TestLocation(
+	FVector Location, 
+	bool CheckGround, 
+	bool NavigableArea,
 	float DesiredRadius,
 	float MaxDistance,
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeQueries,
 	TArray<AActor*> ActorsToIgnore,
-	FVector& OutLocation)
+	FVector& OutNearestLocation)
 {
+	// TODO: refactor this function a bit
 	FVector CandidateLocation = Location;
 	FVector DebugLocation = FVector(Location.X, Location.Y, Location.Z + 100000);
 	if (CheckGround)
@@ -175,7 +193,7 @@ bool USpawnSubsystem::GetEmptyLocation(FVector Location, bool CheckGround, bool 
 		IsNavLocation = NavSys->ProjectPointToNavigation(CandidateLocation, NavLoc, QueryingExtent);
 		if (!IsNavLocation)
 		{
-			// Might not use random point in navigable radius if reachability is required.
+			// TODO: Might not use random point in navigable radius if reachability is required.
 			FNavLocation NearestNavLocation;
 			HasNearestPoint = NavSys->GetRandomPointInNavigableRadius(CandidateLocation, 1000, NearestNavLocation);
 			if (!HasNearestPoint)
@@ -197,8 +215,8 @@ bool USpawnSubsystem::GetEmptyLocation(FVector Location, bool CheckGround, bool 
 	if (NavigableArea && !IsNavLocation && !HasNearestPoint)
 		return false;
 
-	// HACK: adjust candidate location a bit
-	CandidateLocation.Z += 600;
+	// HACK: adjust candidate Z location a bit to avoid colliding with static meshes on the floor
+	CandidateLocation.Z += 1000;
 	TArray<AActor*> OverlappingActors;
 	bool IsOverlapping = UKismetSystemLibrary::SphereOverlapActors(GetWorld(), CandidateLocation, DesiredRadius, ObjectTypeQueries, nullptr, ActorsToIgnore, OverlappingActors);
 	if (IsOverlapping)
@@ -234,6 +252,6 @@ bool USpawnSubsystem::GetEmptyLocation(FVector Location, bool CheckGround, bool 
 	{
 		DrawDebugLine(GetWorld(), DebugLocation, CandidateLocation, FColor(0, 255, 0), true, -1, 0, 50);
 	}
-	OutLocation = CandidateLocation;
+	OutNearestLocation = CandidateLocation;
 	return true;
 }
