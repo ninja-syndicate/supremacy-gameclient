@@ -137,7 +137,7 @@ bool USpawnSubsystem::GetNearestEmptyLocation(
 	return false;
 }
 
-bool USpawnSubsystem::GetGroundLocation(FVector Origin, FVector& OutLocation)
+bool USpawnSubsystem::GetGroundLocation(FVector Origin, float Radius, FVector& OutLocation)
 {
 	FHitResult HitResult;
 	FVector OriginHigh = Origin + FVector::UpVector * 1000000.f;
@@ -145,14 +145,24 @@ bool USpawnSubsystem::GetGroundLocation(FVector Origin, FVector& OutLocation)
 
 	ECollisionChannel LevelChannel = ECC_GameTraceChannel4;
 
+	const bool UseSphereTrace = Radius > 0;
+
 	// TODO: Make a function that can be used to get the landscape ground level.
-	bool IsHit = GetWorld()->LineTraceSingleByChannel(HitResult, OriginHigh, OriginLow, LevelChannel);
+	bool IsHit;
+	if (!UseSphereTrace)
+	{
+		IsHit = GetWorld()->LineTraceSingleByChannel(HitResult, OriginHigh, OriginLow, LevelChannel);
+	}
+	else
+	{
+		IsHit = GetWorld()->SweepSingleByChannel(HitResult, OriginHigh, OriginLow, FQuat::Identity, LevelChannel, FCollisionShape::MakeSphere(Radius));
+	}
 	if (!IsHit)
 	{
 		OutLocation = FVector::ZeroVector;
 		return false;
 	}
-	OutLocation = HitResult.Location;
+	OutLocation = UseSphereTrace ? HitResult.ImpactPoint : HitResult.Location;
 	return true;
 }
 
@@ -172,7 +182,7 @@ bool USpawnSubsystem::TestLocation(
 	if (CheckGround)
 	{
 		FVector GroundLocation;
-		bool IsSuccess = GetGroundLocation(CandidateLocation, GroundLocation);
+		bool IsSuccess = GetGroundLocation(CandidateLocation, 0, GroundLocation);
 		if (!IsSuccess)
 		{
 			if (bEnableDebug)
