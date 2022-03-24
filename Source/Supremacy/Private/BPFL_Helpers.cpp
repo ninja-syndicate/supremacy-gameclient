@@ -79,3 +79,12 @@ FString UBPFL_Helpers::ColorToHex(const FColor Color)
 {
 	return Color.ToHex();
 }
+
+ECollisionResponse UBPFL_Helpers::GetComponentsCollisionResponseToChannel(AActor* Actor, ECollisionChannel Channel)
+{
+	// Return ignore response if the actor is not valid.
+	if (!IsValid(Actor))
+		return ECollisionResponse::ECR_Ignore;
+
+	return Actor->GetComponentsCollisionResponseToChannel(Channel);
+}
