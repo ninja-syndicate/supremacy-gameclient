@@ -20,6 +20,9 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
+	UFUNCTION(BlueprintCallable, Category = "Spawn Subsystem")
+	bool GetGroundLocation(FVector Origin, float Radius, FVector& OutLocation);
+
 	/**
 	 * Finds a nearest empty location around the specified origin.
 	 *
@@ -58,8 +61,6 @@ private:
 		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeQueries,
 		TArray<AActor*> ActorsToIgnore,
 		FVector& OutNearestLocation);
-
-	bool GetGroundLocation(FVector Origin, FVector& OutLocation);
 
 	/** Debug flag used for visualisation. */
 	UPROPERTY(EditAnywhere, Category = "Spawn Subsystem", meta = (AllowPrivateAccess = "true"))

@@ -39,4 +39,8 @@ public:
 	/** Converts color to hex string */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
 	static FString ColorToHex(const FColor Color);
+
+	/** Blueprint does not have GetComponentsCollisionResponseToChannel on Actor yet. So expose that for now. */
+	UFUNCTION(BLueprintCallable, Category = "Helpers")
+	static ECollisionResponse GetComponentsCollisionResponseToChannel(AActor* Actor, ECollisionChannel Channel);
 };
