@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MapDetails.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "BPFL_Helpers.generated.h"
 
@@ -43,4 +44,13 @@ public:
 	/** Blueprint does not have GetComponentsCollisionResponseToChannel on Actor yet. So expose that for now. */
 	UFUNCTION(BLueprintCallable, Category = "Helpers")
 	static ECollisionResponse GetComponentsCollisionResponseToChannel(AActor* Actor, ECollisionChannel Channel);
+
+	/** Returns a map's details */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
+	static FMapDetails GetSupremacyMapDetails(const FString MapName, bool &IsValid)
+	{
+		if (!SupremacyMapDetails.Contains(MapName)) return {};
+		IsValid = true;
+		return *SupremacyMapDetails.Find(MapName);
+	}
 };
