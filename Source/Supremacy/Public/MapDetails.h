@@ -56,7 +56,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "UrbanBuildings",
     {
       "UrbanBuildings",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/urban_city.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/UrbanBuildings.jpg",
       2250, 2250,
       45, 45,
       -76000, -118000,
@@ -67,7 +67,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "NeoTokyo",
     {
       "NeoTokyo",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/neo_tokyo.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/NeoTokyo.jpg",
       1700, 1700,
       34, 34,
       -33550, -34450,
