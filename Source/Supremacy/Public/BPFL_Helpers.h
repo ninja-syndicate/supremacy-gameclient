@@ -53,4 +53,7 @@ public:
 		IsValid = true;
 		return *SupremacyMapDetails.Find(MapName);
 	}
+	
+	UFUNCTION(BlueprintCallable, Category = "Helpers")
+    static FString CopyMapDetailsToClipboard(const FMapDetails MapDetails);
 };
