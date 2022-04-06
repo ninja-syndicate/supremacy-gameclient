@@ -3,6 +3,8 @@
 
 #include "BPFL_Helpers.h"
 
+#include <string>
+
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
 	Type = Bytes[0];
@@ -88,3 +90,39 @@ ECollisionResponse UBPFL_Helpers::GetComponentsCollisionResponseToChannel(AActor
 
 	return Actor->GetComponentsCollisionResponseToChannel(Channel);
 }
+
+FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
+{
+	FString Text =R""""(  {
+    "Name",
+    {
+      "Name",
+      "ImageURL",
+      Width, Height,
+      CellsX, CellsY,
+      PixelLeft, PixelTop,
+      {DisabledCells}
+    },
+  },)"""";
+	Text = Text.Replace(TEXT("Name"), ToCStr(MapDetails.Name));
+	Text = Text.Replace(TEXT("ImageURL"), ToCStr(MapDetails.ImageURL));
+	Text = Text.Replace(TEXT("Width"), ToCStr(FString::FromInt(MapDetails.Width)));
+	Text = Text.Replace(TEXT("Height"), ToCStr(FString::FromInt(MapDetails.Height)));
+	Text = Text.Replace(TEXT("CellsX"), ToCStr(FString::FromInt(MapDetails.CellsX)));
+	Text = Text.Replace(TEXT("CellsY"), ToCStr(FString::FromInt(MapDetails.CellsY)));
+	Text = Text.Replace(TEXT("PixelLeft"), ToCStr(FString::FromInt(MapDetails.PixelLeft)));
+	Text = Text.Replace(TEXT("PixelTop"), ToCStr(FString::FromInt(MapDetails.PixelTop)));
+
+	FString DisabledCells = "";
+	for (const int DisabledCell : MapDetails.DisabledCells)
+	{
+		if (!DisabledCells.IsEmpty()) DisabledCells += ",";
+		DisabledCells += FString::FromInt(DisabledCell);
+	}
+	
+	Text = Text.Replace(TEXT("DisabledCells"), ToCStr(DisabledCells));
+	
+	FPlatformMisc::ClipboardCopy(*Text);
+	return Text;
+}
+
