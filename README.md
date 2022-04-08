@@ -40,6 +40,29 @@ git config user.email "Your Email Address"
 
 Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
 
+## Keybinds
+
+- **SHIFT+ENTER :** Start test match *(for testing without a server)*
+- **CTRL+SHIFT+ENTER :** Start test match and skip the intro animations
+- **ENTER :** Toggle free camera
+- **SHIFT+K :** Kill random mech
+- **DELETE :** Force restart
+- **X :** Toggle cursor / mouse capture
+- **T :** Set random time of day
+- **-/+ :** Decrease/Increase global time dialation
+
+### Abilities (Numbers or Numpad)
+- **1 :** Airstrike *(on random mech)*
+- **2 :** Nuke *(on random mech)*
+- **3 :** Heal *(on random mech)*
+- **4 :** Robot Dogs
+- **5 :** Red Mountain Reinforcements
+- **6 :** Satellite Overload *(on random mech)*
+- **7 :** Lower Tile *(on random mech, NOTE: The Hive map only)*
+- **8 :** Fireworks *(on random mech)*
+- **9 :** Move Command *(on random mech, to random map spawn point)*
+- **0 :** Cancel Move Command *(on random mech)*
+
 ## Troubleshooting
 **Missing C++ files after pulling, warnings/errors or certain things don't work**
 
@@ -60,3 +83,54 @@ And then open up the project again. This will cause those folders to be re-gener
 ## Coding Standard
 + [Coding Standard By Unreal](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/CodingStandard/)
 + [Recommended Asset Naming Convention](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/AssetNaming/)
+
+## Configs
+If you'd like to run the built game-client for development purposes, you can edit `GameUserSettings.ini` file (found in `Supremacy/Saved/Config/Windows/GameUserSettings.ini`) to reduce CPU and GPU usage:
+
+<details>
+  <summary>Recommended settings for <code>GameUserSettings.ini</code> <strong>(Click to expand)</strong></summary>
+  
+```ini
+[ScalabilityGroups]
+sg.ResolutionQuality=10
+sg.ViewDistanceQuality=3
+sg.AntiAliasingQuality=0
+sg.ShadowQuality=0
+sg.PostProcessQuality=0
+sg.TextureQuality=0
+sg.EffectsQuality=0
+sg.FoliageQuality=0
+sg.ShadingQuality=0
+sg.GlobalIlluminationQuality=0
+sg.ReflectionQuality=0
+
+[/Script/Engine.GameUserSettings]
+bUseVSync=False
+bUseDynamicResolution=False
+ResolutionSizeX=640
+ResolutionSizeY=480
+LastUserConfirmedResolutionSizeX=640
+LastUserConfirmedResolutionSizeY=480
+WindowPosX=-1
+WindowPosY=-1
+FullscreenMode=2
+LastConfirmedFullscreenMode=2
+PreferredFullscreenMode=1
+Version=5
+AudioQualityLevel=0
+LastConfirmedAudioQualityLevel=0
+FrameRateLimit=30.000000
+DesiredScreenWidth=1280
+bUseDesiredScreenHeight=False
+DesiredScreenHeight=720
+LastUserConfirmedDesiredScreenWidth=1280
+LastUserConfirmedDesiredScreenHeight=720
+LastRecommendedScreenWidth=-1.000000
+LastRecommendedScreenHeight=-1.000000
+LastCPUBenchmarkResult=-1.000000
+LastGPUBenchmarkResult=-1.000000
+LastGPUBenchmarkMultiplier=1.000000
+bUseHDRDisplayOutput=False
+HDRDisplayOutputNits=1000
+```
+</details>
