@@ -40,6 +40,29 @@ git config user.email "Your Email Address"
 
 Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
 
+## Keybinds
+
+- **SHIFT+ENTER :** Start test match *(for testing without a server)*
+- **CTRL+SHIFT+ENTER :** Start test match and skip the intro animations
+- **ENTER :** Toggle free camera
+- **SHIFT+K :** Kill random mech
+- **DELETE :** Force restart
+- **X :** Toggle cursor / mouse capture
+- **T :** Set random time of day
+- **-/+ :** Decrease/Increase global time dialation
+
+### Abilities (Numbers or Numpad)
+- **1 :** Airstrike *(on random mech)*
+- **2 :** Nuke *(on random mech)*
+- **3 :** Heal *(on random mech)*
+- **4 :** Robot Dogs
+- **5 :** Red Mountain Reinforcements
+- **6 :** Satellite Overload *(on random mech)*
+- **7 :** Lower Tile *(on random mech, NOTE: The Hive map only)*
+- **8 :** Fireworks *(on random mech)*
+- **9 :** Move Command *(on random mech, to random map spawn point)*
+- **0 :** Cancel Move Command *(on random mech)*
+
 ## Troubleshooting
 **Missing C++ files after pulling, warnings/errors or certain things don't work**
 
