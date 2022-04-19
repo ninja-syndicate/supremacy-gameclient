@@ -1590,7 +1590,7 @@ FDonNavigationVoxel* ADonNavigationManager::GetClosestNavigableVolume(FVector Lo
 	// never find the "closest navigable neighbor" and your pathfinding request will simply fail.
 	//
 
-	UE_LOG(DoNNavigationLog, Warning, TEXT("Did it get to here?"));
+	// UE_LOG(DoNNavigationLog, Warning, TEXT("Did it get to here?"));
 	TArray<FOverlapResult> outOverlaps;	
 	if (bShouldSweep)
 	{
@@ -1600,11 +1600,13 @@ FDonNavigationVoxel* ADonNavigationManager::GetClosestNavigableVolume(FVector Lo
 		queryParams.AddIgnoredComponent(CollisionComponent);
 		bInitialPositionCollides = GetWorld()->OverlapMultiByObjectType(outOverlaps, Location, FQuat::Identity, objectParams, CollisionComponent->GetCollisionShape(1.f), queryParams);
 
+		/*
 		UE_LOG(DoNNavigationLog, Warning, TEXT("Test Message"));
 		for (FOverlapResult overlapResult : outOverlaps)
 		{
 			UE_LOG(DoNNavigationLog, Warning, TEXT("Pawn's initial position is overlapping with %s:"), *overlapResult.GetComponent()->GetName());
 		}
+		*/
 
 		if (bInitialPositionCollides)
 			return NULL;
@@ -1672,7 +1674,7 @@ FDonNavigationVoxel* ADonNavigationManager::ResolveVolume(FVector &DesiredLocati
 
 	if (bFlexibleOriginGoal) // we could filter this adaptation to only consider bInitialPositionCollides scenarios, but there are some edge cases which aren't covered with that approach
 	{
-		UE_LOG(DoNNavigationLog, Warning, TEXT("does it even work...?"));
+		// UE_LOG(DoNNavigationLog, Warning, TEXT("does it even work...?"));
 		UE_LOG(DoNNavigationLog, Warning, TEXT("Pawn's initial/final position overlaps an obstacle. Attempting to find substitute vector (a nearby free spot) for pathfinding..."));
 
 		static const int32 numTweaks = 6;
