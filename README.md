@@ -62,10 +62,16 @@ Now, simply open up Supremacy.uproject in the repository, and you are ready for 
 - **4 :** Robot Dogs
 - **5 :** Red Mountain Reinforcements
 - **6 :** Satellite Overload *(on random mech)*
-- **7 :** Lower Tile *(on random mech, NOTE: The Hive map only)*
-- **8 :** Fireworks *(on random mech)*
-- **0 :** Move Command *(on random mech, to random map spawn point)*
-- **SHIFT+0 :** Cancel Move Command *(on random mech)*
+- **7 :** Landmines *(on random mech)*
+- **8 :** EMP *(on random mech)*
+- **9 :** Hacker Drone *(on random mech)*
+- **SHIFT+9 :** Camera Drone *(on random mech)*
+- **0 :** Incognito *(on random mech)*
+- **SHIFT+0 :** Blackout *(on random mech)*
+- **F :** Fireworks *(on random mech)*
+- **G :** Move Command *(on random mech, to random map spawn point)*
+- **SHIFT+G :** Cancel Move Command *(on random mech)*
+- **H :** Lower Tile *(on random mech, NOTE: The Hive map only)*
 
 ## Troubleshooting
 **Missing C++ files after pulling, warnings/errors or certain things don't work**
