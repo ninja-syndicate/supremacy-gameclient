@@ -22,7 +22,7 @@ if exist "%RunUAT%" (
      Config\inifile %ConfigFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
 
      Config\inifile %DefaultEngineFile% [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=
-     Config\inifile %DefaultEngineFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=
+     Config\inifile %DefaultEngineFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX12
 
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildNo=%Version%
      echo BuildNo %Version%
