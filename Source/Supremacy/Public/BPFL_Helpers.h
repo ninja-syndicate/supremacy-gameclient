@@ -23,7 +23,7 @@ public:
 
 	/** Pack WarMachine Update  */
 	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Update", meta=(Keywords = "Net Message Bytes Byte Array Binary"))
-	static void PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const uint8 SyncByte, TArray<uint8> &Bytes);
+	static void PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, const TArray<bool> DiffArray, TArray<uint8> &Bytes);
 	
 	/** Converts a String to an Array of bytes */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert String To Bytes")

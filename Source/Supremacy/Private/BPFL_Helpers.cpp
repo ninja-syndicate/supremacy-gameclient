@@ -28,26 +28,33 @@ TArray<uint8> ConvertIntToBytes(const int Input)
 	Bytes.Emplace((Input >> 0) & 0xFF);
 	return Bytes;
 }
-void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const uint8 SyncByte, 
-	TArray<uint8>& Bytes)
+
+void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, 
+	const TArray<bool> DiffArray, TArray<uint8>& Bytes)
 {
 	Bytes = TArray<uint8>();
 	Bytes.Emplace(Number);
+
+	uint8 SyncByte = 0;
+	for (int i = 0; i < DiffArray.Num(); ++i)
+	{
+		if (DiffArray[i])
+			SyncByte |= 1 << i;
+	}
 	Bytes.Emplace(SyncByte);
-	if (SyncByte >= 100)
+
+	if (DiffArray[0])
 	{
 		Bytes.Append(ConvertIntToBytes(X));
 		Bytes.Append(ConvertIntToBytes(Y));
 		Bytes.Append(ConvertIntToBytes(Yaw));
 	}
-	if (SyncByte == 1 || SyncByte == 11 || SyncByte == 101 || SyncByte == 111)
-	{
+	if (DiffArray[1])
 		Bytes.Append(ConvertIntToBytes(Health));
-	}
-	if (SyncByte == 10 || SyncByte == 11 || SyncByte == 110 || SyncByte == 111)
-	{
+	if (DiffArray[2])
 		Bytes.Append(ConvertIntToBytes(Shield));
-	}
+	if (DiffArray[3])
+		Bytes.Append(ConvertIntToBytes(Energy));
 }
 
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
