@@ -32,6 +32,14 @@ public:
 	/** Converts an Array of bytes to a String */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert Bytes To String")
 	static void ConvertBytesToString(const TArray<uint8> Bytes, FString &String);
+
+	/** Packs an array of booleans into a single byte */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static uint8 PackBooleansIntoByte(const TArray<bool> Booleans);
+
+	/** Unpacks an array of booleans from a single byte */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static TArray<bool> UnpackBooleansFromByte(const uint8 Byte);
 	
 	/** Converts hex string to color. Supports formats RGB, RRGGBB, RRGGBBAA, RGB, #RRGGBB, #RRGGBBAA */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")

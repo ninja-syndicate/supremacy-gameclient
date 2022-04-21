@@ -34,14 +34,7 @@ void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const 
 {
 	Bytes = TArray<uint8>();
 	Bytes.Emplace(Number);
-
-	uint8 SyncByte = 0;
-	for (int i = 0; i < DiffArray.Num(); ++i)
-	{
-		if (DiffArray[i])
-			SyncByte |= 1 << i;
-	}
-	Bytes.Emplace(SyncByte);
+	Bytes.Emplace(PackBooleansIntoByte(DiffArray));
 
 	if (DiffArray[0])
 	{
@@ -77,6 +70,26 @@ void UBPFL_Helpers::ConvertBytesToString(const TArray<uint8> Bytes, FString& Str
 		const TCHAR c = Broken[i] - 1;
 		String.AppendChar(c);
 	}
+}
+
+uint8 UBPFL_Helpers::PackBooleansIntoByte(const TArray<bool> Booleans)
+{
+	uint8 Byte = 0;
+	for (int i = 0; i < Booleans.Num(); ++i)
+	{
+		if (Booleans[i])
+			Byte |= 1 << i;
+	}
+	return Byte;
+}
+
+TArray<bool> UBPFL_Helpers::UnpackBooleansFromByte(const uint8 Byte)
+{
+	TArray<bool> booleans = TArray<bool>();
+	booleans.Init(false, 8);
+	for (int i = 0; i < 8; ++i)
+		booleans[i] = (Byte & (1 << i)) != 0;
+	return booleans;
 }
 
 FColor UBPFL_Helpers::HexToColor(const FString HexString)
