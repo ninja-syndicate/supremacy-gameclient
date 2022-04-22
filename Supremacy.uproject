@@ -57,6 +57,11 @@
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f1ba87b348774d338e75d25ddbc46b98"
 		},
 		{
+			"Name": "DonAINavigation",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/81b4bd085c8c41508edfeb160b6ddf62"
+		},
+		{
 			"Name": "Bridge",
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
