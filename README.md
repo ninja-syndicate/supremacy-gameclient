@@ -19,7 +19,11 @@ While you are installing VS2019 or you have already met all those prerequisites,
 - Game Development with C++ ✅
   - Unreal Engine Installer (even if you have UE5 installed) ✅
 
-And then, click install. Note that if you are using Git on Cmd or Bash, you will also need to download [Git LFS](https://git-lfs.github.com/). Install it and execute the following command on Git Cmd/Bash:
+And then, click install.
+
+### Git
+
+Note that if you are using Git on Cmd or Bash, you will also need to download [Git LFS](https://git-lfs.github.com/). Install it and execute the following command on Git Cmd/Bash:
 
 ```
 git lfs install
@@ -38,7 +42,51 @@ git config user.name "Your Full Name"
 git config user.email "Your Email Address"
 ```
 
+### Plugins
+
+The following Unreal Engine Plugins need to be installed. Find them in the Library tab of the Epic Launcher, under Vault.
+
+*( Note: You'll need to be signed in with the company's Epic Account to have access to paid assets/plugins. )*
+
+- Quixel Bridge
+- [BlueprintWebSocket](https://www.unrealengine.com/marketplace/en-US/product/blueprintwebsocket)
+- [JSONParser](https://www.unrealengine.com/marketplace/en-US/product/jsonparser)
+- [Object Pool Plugin](https://www.unrealengine.com/marketplace/en-US/product/object-pool-plugin)
+
 Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
+
+## Keybinds
+
+- **SHIFT+ENTER :** Start test match *(for testing without a server)*
+- **CTRL+SHIFT+ENTER :** Start test match and skip the intro animations
+- **ENTER :** Toggle free camera
+- **SHIFT+K :** Kill random mech
+- **DELETE :** Force restart
+- **X :** Toggle cursor / mouse capture
+- **T :** Set random time of day
+- **-/+ :** Decrease/Increase global time dialation
+- **SHIFT+Q:** Possess Red Mountain Mech
+- **SHIFT+W:** Possess Boston Mech
+- **SHIFT+E:** Possess Zaibatsu Mech
+
+### Abilities (Numbers or Numpad)
+- **1 :** Airstrike *(on random mech)*
+- **2 :** Nuke *(on random mech)*
+- **3 :** Heal *(on random mech)*
+- **SHIFT+3 :** Shield Buff *(on random mech)*
+- **4 :** Robot Dogs
+- **5 :** Red Mountain Reinforcements
+- **6 :** Satellite Overload *(on random mech)*
+- **7 :** Landmines *(on random mech)*
+- **8 :** EMP *(on random mech)*
+- **9 :** Hacker Drone *(on random mech)*
+- **SHIFT+9 :** Camera Drone *(on random mech)*
+- **0 :** Incognito *(on random mech)*
+- **SHIFT+0 :** Blackout *(on random mech)*
+- **F :** Fireworks *(on random mech)*
+- **G :** Move Command *(on random mech, to random map spawn point)*
+- **SHIFT+G :** Cancel Move Command *(on random mech)*
+- **H :** Lower Tile *(on random mech, NOTE: The Hive map only)*
 
 ## Troubleshooting
 **Missing C++ files after pulling, warnings/errors or certain things don't work**

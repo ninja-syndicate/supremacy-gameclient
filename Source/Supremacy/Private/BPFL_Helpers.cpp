@@ -2,6 +2,7 @@
 
 
 #include "BPFL_Helpers.h"
+#include "Components/ActorComponent.h"
 
 #include <string>
 
@@ -28,26 +29,26 @@ TArray<uint8> ConvertIntToBytes(const int Input)
 	Bytes.Emplace((Input >> 0) & 0xFF);
 	return Bytes;
 }
-void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const uint8 SyncByte, 
-	TArray<uint8>& Bytes)
+
+void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, 
+	const TArray<bool> DiffArray, TArray<uint8>& Bytes)
 {
 	Bytes = TArray<uint8>();
 	Bytes.Emplace(Number);
-	Bytes.Emplace(SyncByte);
-	if (SyncByte >= 100)
+	Bytes.Emplace(PackBooleansIntoByte(DiffArray));
+
+	if (DiffArray[0])
 	{
 		Bytes.Append(ConvertIntToBytes(X));
 		Bytes.Append(ConvertIntToBytes(Y));
 		Bytes.Append(ConvertIntToBytes(Yaw));
 	}
-	if (SyncByte == 1 || SyncByte == 11 || SyncByte == 101 || SyncByte == 111)
-	{
+	if (DiffArray[1])
 		Bytes.Append(ConvertIntToBytes(Health));
-	}
-	if (SyncByte == 10 || SyncByte == 11 || SyncByte == 110 || SyncByte == 111)
-	{
+	if (DiffArray[2])
 		Bytes.Append(ConvertIntToBytes(Shield));
-	}
+	if (DiffArray[3])
+		Bytes.Append(ConvertIntToBytes(Energy));
 }
 
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
@@ -70,6 +71,26 @@ void UBPFL_Helpers::ConvertBytesToString(const TArray<uint8> Bytes, FString& Str
 		const TCHAR c = Broken[i] - 1;
 		String.AppendChar(c);
 	}
+}
+
+uint8 UBPFL_Helpers::PackBooleansIntoByte(const TArray<bool> Booleans)
+{
+	uint8 Byte = 0;
+	for (int i = 0; i < Booleans.Num(); ++i)
+	{
+		if (Booleans[i])
+			Byte |= 1 << i;
+	}
+	return Byte;
+}
+
+TArray<bool> UBPFL_Helpers::UnpackBooleansFromByte(const uint8 Byte)
+{
+	TArray<bool> booleans = TArray<bool>();
+	booleans.Init(false, 8);
+	for (int i = 0; i < 8; ++i)
+		booleans[i] = (Byte & (1 << i)) != 0;
+	return booleans;
 }
 
 FColor UBPFL_Helpers::HexToColor(const FString HexString)
@@ -126,3 +147,14 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	return Text;
 }
 
+void UBPFL_Helpers::ForceDestroyComponent(UActorComponent* ActorComponent)
+{
+    if (IsValid(ActorComponent))
+    {
+		ActorComponent->DestroyComponent();
+    }
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BPFL_Helpers: Failed to force destroy the actor component!"));
+	}
+}
