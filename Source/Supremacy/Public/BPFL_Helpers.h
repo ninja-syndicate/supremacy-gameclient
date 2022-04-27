@@ -64,4 +64,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
     static FString CopyMapDetailsToClipboard(const FMapDetails MapDetails);
+
+	/**
+	 * Unreal does not expose bAllowAnyoneDestroyMe boolean variable to blueprints yet to allow
+	 * actor component to be destroyed by non-owning actor. This function can be used to destroy
+	 * actor component without being owning actor.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Helpers")
+    static void ForceDestroyComponent(UActorComponent* ActorComponent);
 };
