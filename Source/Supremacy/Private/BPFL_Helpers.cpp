@@ -2,6 +2,7 @@
 
 
 #include "BPFL_Helpers.h"
+#include "Components/ActorComponent.h"
 
 #include <string>
 
@@ -146,3 +147,14 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	return Text;
 }
 
+void UBPFL_Helpers::ForceDestroyComponent(UActorComponent* ActorComponent)
+{
+    if (IsValid(ActorComponent))
+    {
+		ActorComponent->DestroyComponent();
+    }
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BPFL_Helpers: Failed to force destroy the actor component!"));
+	}
+}
