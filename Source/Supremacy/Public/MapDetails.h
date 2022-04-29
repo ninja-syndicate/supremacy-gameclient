@@ -27,6 +27,21 @@ public:
   int PixelTop;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   TArray<int> DisabledCells;
+
+  FMapDetails()
+  {
+      Width = 0;
+      Height = 0;
+      CellsX = 0;
+      CellsY = 0;
+      PixelLeft = 0;
+      PixelTop = 0;
+      DisabledCells = TArray<int>();
+  }
+
+  FMapDetails(FString Name, FString ImageURL, int Width, int Height, int CellsX, int CellsY, int PixelLeft, int PixelTop, TArray<int> DisabledCells)
+      : Name(Name), ImageURL(ImageURL), Width(Width), Height(Height), CellsX(CellsX), CellsY(CellsY), PixelLeft(PixelLeft), PixelTop(PixelTop), DisabledCells(DisabledCells)
+  {}
 };
 
 static const TMap<FString, FMapDetails> SupremacyMapDetails = {

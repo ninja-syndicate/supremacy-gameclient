@@ -23,7 +23,7 @@ public:
 
 	/** Pack WarMachine Update  */
 	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Update", meta=(Keywords = "Net Message Bytes Byte Array Binary"))
-	static void PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const uint8 SyncByte, TArray<uint8> &Bytes);
+	static void PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, const TArray<bool> DiffArray, TArray<uint8> &Bytes);
 	
 	/** Converts a String to an Array of bytes */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert String To Bytes")
@@ -32,6 +32,14 @@ public:
 	/** Converts an Array of bytes to a String */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert Bytes To String")
 	static void ConvertBytesToString(const TArray<uint8> Bytes, FString &String);
+
+	/** Packs an array of booleans into a single byte */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static uint8 PackBooleansIntoByte(const TArray<bool> Booleans);
+
+	/** Unpacks an array of booleans from a single byte */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static TArray<bool> UnpackBooleansFromByte(const uint8 Byte);
 	
 	/** Converts hex string to color. Supports formats RGB, RRGGBB, RRGGBBAA, RGB, #RRGGBB, #RRGGBBAA */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
@@ -56,4 +64,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
     static FString CopyMapDetailsToClipboard(const FMapDetails MapDetails);
+
+	/**
+	 * Unreal does not expose bAllowAnyoneDestroyMe boolean variable to blueprints yet to allow
+	 * actor component to be destroyed by non-owning actor. This function can be used to destroy
+	 * actor component without being owning actor.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Helpers")
+    static void ForceDestroyComponent(UActorComponent* ActorComponent);
 };
