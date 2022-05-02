@@ -6,6 +6,8 @@
 
 #include <string>
 
+#include "Windows/WindowsPlatformApplicationMisc.h"
+
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
 	Type = Bytes[0];
@@ -143,7 +145,7 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	
 	Text = Text.Replace(TEXT("DisabledCells"), ToCStr(DisabledCells));
 	
-	FPlatformMisc::ClipboardCopy(*Text);
+	FWindowsPlatformApplicationMisc::ClipboardCopy(*Text);
 	return Text;
 }
 
