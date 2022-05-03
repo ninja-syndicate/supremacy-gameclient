@@ -55,6 +55,13 @@ The following Unreal Engine Plugins need to be installed. Find them in the Libra
 
 Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
 
+### Recommended Workflow
+#### Turn-off Editor Auto Save Option
+Since Unreal's blueprints are binary, it is recommended to turn off auto-save option in the Editor Preferences setting. Sometimes, when this auto-save option is enabled, Unreal will save blueprints that are open even if there are no changes. This can make it hard to track which files have actually changed and more time-consuming to resolve merge conflicts.
+
+#### Make a GitHub Issue and Assign Yourself
+Before making changes to the existing files or work on a new feature, make a GitHub issue if it doesn't already exist and assign yourself. This will help others know which conflicts are expected. 
+
 ## Keybinds
 
 - **SHIFT+ENTER :** Start test match *(for testing without a server)*
