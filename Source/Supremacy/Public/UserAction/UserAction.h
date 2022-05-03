@@ -33,4 +33,14 @@ public:
 	/** War machine hash. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString WarMachineHash;
+
+	FUserAction()
+	{
+		AbilityId = 0;
+		Location = FVector2D();
+	}
+
+	FUserAction(int AbilityId, FVector2D Location)
+		: AbilityId(AbilityId), Location(Location)
+	{}
 };
