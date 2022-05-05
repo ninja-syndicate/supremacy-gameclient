@@ -149,6 +149,24 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	return Text;
 }
 
+FString UBPFL_Helpers::ReadTextFile(const FString FilePath)
+{
+	FString FileData = "";
+	if (IPlatformFile& FileManager = FPlatformFileManager::Get().GetPlatformFile(); FileManager.FileExists(*FilePath))
+	{
+		if (!FFileHelper::LoadFileToString(FileData,*FilePath,FFileHelper::EHashOptions::None))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ReadTextFile: Did not load text from file"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ReadTextFile: ERROR: Can not read the file because it was not found."));
+		UE_LOG(LogTemp, Warning, TEXT("ReadTextFile: Expected file location: %s"),*FilePath);
+	}
+	return FileData;
+}
+
 void UBPFL_Helpers::ForceDestroyComponent(UActorComponent* ActorComponent)
 {
     if (IsValid(ActorComponent))
