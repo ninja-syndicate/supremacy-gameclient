@@ -160,3 +160,14 @@ void UBPFL_Helpers::ForceDestroyComponent(UActorComponent* ActorComponent)
 		UE_LOG(LogTemp, Warning, TEXT("BPFL_Helpers: Failed to force destroy the actor component!"));
 	}
 }
+
+void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, bool LockTranslationX, bool LockTranslationY, bool LockTranslationZ, bool LockRotationX, bool LockRotationY, bool LockRotationZ)
+{
+	Mesh->BodyInstance.bLockXTranslation = LockTranslationX;
+	Mesh->BodyInstance.bLockYTranslation = LockTranslationY;
+	Mesh->BodyInstance.bLockZTranslation = LockTranslationZ;
+	Mesh->BodyInstance.bLockXRotation = LockRotationX;
+	Mesh->BodyInstance.bLockYRotation = LockRotationY;
+	Mesh->BodyInstance.bLockZRotation = LockRotationZ;
+	Mesh->BodyInstance.CreateDOFLock();
+}
