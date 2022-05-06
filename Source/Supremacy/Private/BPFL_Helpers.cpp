@@ -149,6 +149,13 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	return Text;
 }
 
+FString UBPFL_Helpers::GetTextFromClipboard()
+{
+	FString Text = "";
+	FWindowsPlatformApplicationMisc::ClipboardPaste(Text);
+	return Text;
+}
+
 FString UBPFL_Helpers::ReadTextFile(const FString FilePath)
 {
 	FString FileData = "";

@@ -66,6 +66,9 @@ public:
     static FString CopyMapDetailsToClipboard(const FMapDetails MapDetails);
 
 	UFUNCTION(BlueprintCallable, Category = "Text")
+	static FString GetTextFromClipboard();
+	
+	UFUNCTION(BlueprintCallable, Category = "Text")
 	static FString ReadTextFile(const FString FilePath);
 	
 	/**
