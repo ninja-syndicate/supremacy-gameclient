@@ -65,6 +65,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
     static FString CopyMapDetailsToClipboard(const FMapDetails MapDetails);
 
+	UFUNCTION(BlueprintCallable, Category = "Text")
+	static FString GetTextFromClipboard();
+	
+	UFUNCTION(BlueprintCallable, Category = "Text")
+	static FString ReadTextFile(const FString FilePath);
+	
 	/**
 	 * Unreal does not expose bAllowAnyoneDestroyMe boolean variable to blueprints yet to allow
 	 * actor component to be destroyed by non-owning actor. This function can be used to destroy
