@@ -25,14 +25,13 @@ void ACrowdAIController::BeginPlay()
 	}
 	else
 	{
-		CrowdFollowingComponent->SetCrowdCollisionQueryRange(CollisionQueryRange);
 		CrowdFollowingComponent->SetCrowdAvoidanceQuality(static_cast<ECrowdAvoidanceQuality::Type>(AvoidanceType.GetValue()));
+		CrowdFollowingComponent->SetCrowdCollisionQueryRange(CollisionQueryRange);
+		CrowdFollowingComponent->SetCrowdPathOptimizationRange(PathOptimizationRange);
 		// CrowdFollowingComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Type::High);
 		CrowdFollowingComponent->SetCrowdSeparation(bEnableSeparation);
 		CrowdFollowingComponent->SetCrowdSeparationWeight(SeparationWeight);
 		CrowdFollowingComponent->SetCrowdSlowdownAtGoal(bEnableSlowdownAtGoal);
-		CrowdFollowingComponent->SetCrowdPathOptimizationRange(PathOptimizationRange);
-		UE_LOG(LogTemp, Warning, TEXT("path optimization range: %f"), CrowdFollowingComponent->GetCrowdPathOptimizationRange());
 	}
 }
 
