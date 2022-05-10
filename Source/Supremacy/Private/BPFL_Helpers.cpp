@@ -196,3 +196,8 @@ void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, bool LockTransla
 	Mesh->BodyInstance.bLockZRotation = LockRotationZ;
 	Mesh->BodyInstance.CreateDOFLock();
 }
+
+void UBPFL_Helpers::Crash()
+{
+	FDebug::AssertFailed("This crash was caused by UBPFL_Helpers::Crash() and was meant to happen.", __FILE__, __LINE__);
+}

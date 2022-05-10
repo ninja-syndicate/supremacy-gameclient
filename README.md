@@ -76,6 +76,7 @@ Before making changes to the existing files or work on a new feature, make a Git
 - **SHIFT+Q:** Possess Red Mountain Mech
 - **SHIFT+W:** Possess Boston Mech
 - **SHIFT+E:** Possess Zaibatsu Mech
+- **CTRL+ALT+SHIFT+BACKSPACE:** Force Crash
 
 ### Abilities (Numbers or Numpad)
 - **1 :** Airstrike *(on random mech)*
