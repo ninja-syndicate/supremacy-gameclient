@@ -186,7 +186,7 @@ void UBPFL_Helpers::ForceDestroyComponent(UActorComponent* ActorComponent)
 	}
 }
 
-void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, bool LockTranslationX, bool LockTranslationY, bool LockTranslationZ, bool LockRotationX, bool LockRotationY, bool LockRotationZ)
+void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, const bool LockTranslationX, const bool LockTranslationY, const bool LockTranslationZ, const bool LockRotationX, const bool LockRotationY, const bool LockRotationZ)
 {
 	Mesh->BodyInstance.bLockXTranslation = LockTranslationX;
 	Mesh->BodyInstance.bLockYTranslation = LockTranslationY;
@@ -200,4 +200,11 @@ void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, bool LockTransla
 void UBPFL_Helpers::Crash()
 {
 	FDebug::AssertFailed("This crash was caused by UBPFL_Helpers::Crash() and was meant to happen.", __FILE__, __LINE__);
+}
+
+void UBPFL_Helpers::StopResponding()
+{
+	bool B = false;
+	while(true)
+		B = !B;
 }
