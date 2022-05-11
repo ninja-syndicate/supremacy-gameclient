@@ -72,16 +72,19 @@ Before making changes to the existing files or work on a new feature, make a Git
 - **DELETE :** Force restart
 - **X :** Toggle cursor / mouse capture
 - **T :** Set random time of day
-- **-/+ :** Decrease/Increase global time dialation
+- **-/+ :** Decrease/Increase global time dilation
 - **SHIFT+Q:** Possess Red Mountain Mech
 - **SHIFT+W:** Possess Boston Mech
 - **SHIFT+E:** Possess Zaibatsu Mech
+- **CTRL+ALT+SHIFT+BACKSPACE:** Force Crash
+- **CTRL+ALT+SHIFT+\\:** Force Not Responding
 
 ### Abilities (Numbers or Numpad)
 - **1 :** Airstrike *(on random mech)*
 - **2 :** Nuke *(on random mech)*
 - **3 :** Heal *(on random mech)*
 - **SHIFT+3 :** Shield Buff *(on random mech)*
+- **ALT+3 :** Ammo *(on random mech)*
 - **4 :** Robot Dogs
 - **5 :** Red Mountain Reinforcements
 - **6 :** Satellite Overload *(on random mech)*

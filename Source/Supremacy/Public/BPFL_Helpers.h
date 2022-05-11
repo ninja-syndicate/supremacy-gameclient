@@ -80,5 +80,18 @@ public:
     static void ForceDestroyComponent(UActorComponent* ActorComponent);
     
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
-    static void SetLockPhysiscs(UStaticMeshComponent* Mesh, bool LockTranslationX, bool LockTranslationY, bool LockTranslationZ, bool LockRotationX, bool LockRotationY, bool LockRotationZ);
+    static void SetLockPhysiscs(UStaticMeshComponent* Mesh, const bool LockTranslationX, const bool LockTranslationY, const bool LockTranslationZ, const bool LockRotationX, const bool LockRotationY, const bool LockRotationZ);
+
+	/**
+	* Causes a crash.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-CRASH-", DisplayName = "Crash"))
+	static void Crash();
+
+	/**
+	* Causes the game to no respond (hang).
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-STOP RESPONDING-", DisplayName = "Stop Responding"))
+	static void StopResponding();
+
 };
