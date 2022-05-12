@@ -6,6 +6,15 @@
 #include "AIController.h"
 #include "CrowdAIController.generated.h"
 
+UENUM(BlueprintType)
+enum EAvoidanceType
+{
+	Unused1		UMETA(DisplayName = "Unused1"),
+	Unused2		UMETA(DisplayName = "Unused2"),
+	Mech		UMETA(DisplayName = "Mech"),
+	Dog			UMETA(DisplayName = "Dog")
+};
+
 /**
  * 
  */
@@ -33,9 +42,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
 	float CollisionQueryRange;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	float PathOptimizationRange;
+
 	/** Slowdown the agent when it reaches close to the goal. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
 	bool bEnableSlowdownAtGoal;
+
+	/** For setting the avoidance type. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	TEnumAsByte<EAvoidanceType> AvoidanceType;
 
 	/** Reference to the current crowd following component. */
 	class UCrowdFollowingComponent* CrowdFollowingComponent;

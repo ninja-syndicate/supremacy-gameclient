@@ -149,6 +149,31 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	return Text;
 }
 
+FString UBPFL_Helpers::GetTextFromClipboard()
+{
+	FString Text = "";
+	FWindowsPlatformApplicationMisc::ClipboardPaste(Text);
+	return Text;
+}
+
+FString UBPFL_Helpers::ReadTextFile(const FString FilePath)
+{
+	FString FileData = "";
+	if (IPlatformFile& FileManager = FPlatformFileManager::Get().GetPlatformFile(); FileManager.FileExists(*FilePath))
+	{
+		if (!FFileHelper::LoadFileToString(FileData,*FilePath,FFileHelper::EHashOptions::None))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ReadTextFile: Did not load text from file"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ReadTextFile: ERROR: Can not read the file because it was not found."));
+		UE_LOG(LogTemp, Warning, TEXT("ReadTextFile: Expected file location: %s"),*FilePath);
+	}
+	return FileData;
+}
+
 void UBPFL_Helpers::ForceDestroyComponent(UActorComponent* ActorComponent)
 {
     if (IsValid(ActorComponent))
@@ -161,7 +186,7 @@ void UBPFL_Helpers::ForceDestroyComponent(UActorComponent* ActorComponent)
 	}
 }
 
-void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, bool LockTranslationX, bool LockTranslationY, bool LockTranslationZ, bool LockRotationX, bool LockRotationY, bool LockRotationZ)
+void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, const bool LockTranslationX, const bool LockTranslationY, const bool LockTranslationZ, const bool LockRotationX, const bool LockRotationY, const bool LockRotationZ)
 {
 	Mesh->BodyInstance.bLockXTranslation = LockTranslationX;
 	Mesh->BodyInstance.bLockYTranslation = LockTranslationY;
@@ -170,4 +195,16 @@ void UBPFL_Helpers::SetLockPhysiscs(UStaticMeshComponent* Mesh, bool LockTransla
 	Mesh->BodyInstance.bLockYRotation = LockRotationY;
 	Mesh->BodyInstance.bLockZRotation = LockRotationZ;
 	Mesh->BodyInstance.CreateDOFLock();
+}
+
+void UBPFL_Helpers::Crash()
+{
+	FDebug::AssertFailed("This crash was caused by UBPFL_Helpers::Crash() and was meant to happen.", __FILE__, __LINE__);
+}
+
+void UBPFL_Helpers::StopResponding()
+{
+	bool B = false;
+	while(true)
+		B = !B;
 }
