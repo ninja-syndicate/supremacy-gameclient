@@ -13,11 +13,22 @@ void ACrowdAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CrowdFollowingComponent = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent());
-	if (CrowdFollowingComponent)
+	if (AvoidanceType == EAvoidanceType::Unused1 || AvoidanceType == EAvoidanceType::Unused2)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: Unused avoidance type is being used."));
+	}
+
+	CrowdFollowingComponent = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent());
+	if (!CrowdFollowingComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: CrowdFollowingComponent is invalid. AI will not work properly..."));
+	}
+	else
+	{
+		CrowdFollowingComponent->SetCrowdAvoidanceQuality(static_cast<ECrowdAvoidanceQuality::Type>(AvoidanceType.GetValue()));
 		CrowdFollowingComponent->SetCrowdCollisionQueryRange(CollisionQueryRange);
-		CrowdFollowingComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Type::High);
+		CrowdFollowingComponent->SetCrowdPathOptimizationRange(PathOptimizationRange);
+		// CrowdFollowingComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Type::High);
 		CrowdFollowingComponent->SetCrowdSeparation(bEnableSeparation);
 		CrowdFollowingComponent->SetCrowdSeparationWeight(SeparationWeight);
 		CrowdFollowingComponent->SetCrowdSlowdownAtGoal(bEnableSlowdownAtGoal);
@@ -27,13 +38,9 @@ void ACrowdAIController::BeginPlay()
 void ACrowdAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
-	if (!CrowdFollowingComponent) return;
 }
 
 void ACrowdAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (!CrowdFollowingComponent) return;
 }
