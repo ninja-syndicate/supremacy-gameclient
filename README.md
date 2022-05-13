@@ -52,6 +52,7 @@ The following Unreal Engine Plugins need to be installed. Find them in the Libra
 - [BlueprintWebSocket](https://www.unrealengine.com/marketplace/en-US/product/blueprintwebsocket)
 - [JSONParser](https://www.unrealengine.com/marketplace/en-US/product/jsonparser)
 - [Object Pool Plugin](https://www.unrealengine.com/marketplace/en-US/product/object-pool-plugin)
+- [Flying Navigation System](https://www.unrealengine.com/marketplace/en-US/product/flying-navigation-system)
 
 Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
 
