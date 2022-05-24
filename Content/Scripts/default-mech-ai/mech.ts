@@ -1,11 +1,23 @@
 /// <reference path="../typings/types.d.ts" />
 
-const Owner = Context.GetOwner();
-console.log(Owner); // returns [object BP_MechController_C]
+const AI: Mech = Context.GetOwner();
 
 Context.OnMessage = (name, message) => {
-     const input = JSON.parse(message);
+     switch (name) {
+          case "onTick":
+               onTick(JSON.parse(message));
+               break;
+     }
+}
 
-     Owner.MoveTo(input["location"]["X"] + Math.floor(Math.random() * 5000), input["location"]["Y"] + Math.floor(Math.random() * 5000));
-     console.log(`${input["location"]["X"]} ${input["location"]["Y"]}`)
+const onTick = (input: BrainInput) => {
+     AI.MoveTo(input.self.location.X + Math.floor(Math.random() * 5000), input.self.location.Y + Math.floor(Math.random() * 5000));
+
+
+     if (input.perception.sight.length > 0) {
+          const target = input.perception.sight[0].target!;
+          console.log(`${target.location.X} ${target.location.Y}`);
+     }
+
+     //console.log(`${input.self.hash}: ${input.self.location.X} ${input.self.location.Y}`)
 }

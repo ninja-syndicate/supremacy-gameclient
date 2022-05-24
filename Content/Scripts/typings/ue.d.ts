@@ -3,14 +3,6 @@
 /// <reference path="_part_2_ue.d.ts">/>
 /// <reference path="_part_3_ue.d.ts">/>
 /// <reference path="_part_4_ue.d.ts">/>
-declare class JavascriptNodeCreator { 
-	UNode: JavascriptGraphEdNode;
-	clone() : JavascriptNodeCreator;
-	static C(Other: UObject | any): JavascriptNodeCreator;
-	Finalize(): {Creator: JavascriptNodeCreator};
-	static Finalize(Creator?: JavascriptNodeCreator): {Creator: JavascriptNodeCreator};
-}
-
 declare class JavascriptGraphEdGraph extends EdGraph { 
 	CustomNodes: JavascriptGraphEdNode[];
 	static Load(ResourceName: string): JavascriptGraphEdGraph;

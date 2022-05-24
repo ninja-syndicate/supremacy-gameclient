@@ -15327,24 +15327,6 @@ declare class WorldPSCPool {
 	static C(Other: UObject | any): WorldPSCPool;
 }
 
-declare class AudioInputDeviceInfo { 
-	DeviceName: string;
-	DeviceID: string;
-	InputChannels: number;
-	PreferredSampleRate: number;
-	bSupportsHardwareAEC: boolean;
-	clone() : AudioInputDeviceInfo;
-	static C(Other: UObject | any): AudioInputDeviceInfo;
-	Conv_AudioInputDeviceInfoToString(): string;
-	static Conv_AudioInputDeviceInfoToString(Info: AudioInputDeviceInfo): string;
-}
-
-declare class ActorLayer { 
-	Name: string;
-	clone() : ActorLayer;
-	static C(Other: UObject | any): ActorLayer;
-}
-
 declare class LevelSequenceObjectReferenceMap { 
 	clone() : LevelSequenceObjectReferenceMap;
 	static C(Other: UObject | any): LevelSequenceObjectReferenceMap;
@@ -16311,6 +16293,24 @@ declare class MovieSceneUserImportFBXSettings extends UObject {
 	static GetDefaultObject(): MovieSceneUserImportFBXSettings;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MovieSceneUserImportFBXSettings;
 	static C(Other: UObject | any): MovieSceneUserImportFBXSettings;
+}
+
+declare class AudioInputDeviceInfo { 
+	DeviceName: string;
+	DeviceID: string;
+	InputChannels: number;
+	PreferredSampleRate: number;
+	bSupportsHardwareAEC: boolean;
+	clone() : AudioInputDeviceInfo;
+	static C(Other: UObject | any): AudioInputDeviceInfo;
+	Conv_AudioInputDeviceInfoToString(): string;
+	static Conv_AudioInputDeviceInfoToString(Info: AudioInputDeviceInfo): string;
+}
+
+declare class ActorLayer { 
+	Name: string;
+	clone() : ActorLayer;
+	static C(Other: UObject | any): ActorLayer;
 }
 
 declare class MovieSceneChannel { 
@@ -18668,24 +18668,24 @@ declare class World extends UObject {
 	ExportNavigation(Path: string): string;
 	InvalidateModelGeometry(InLevel: Level): void;
 	RemoveLevelInstance(): void;
-	GetAvailableAudioInputDevices(OnObtainDevicesEvent: UnrealEngineDelegate<(AvailableDevices: AudioInputDeviceInfo[]) => void>): void;
-	GetActors(ActorLayer: ActorLayer): Actor[];
 	ExportAnimSequence(Sequence: LevelSequence,AnimSequence: AnimSequence,ExportOption: AnimSeqExportOption,Binding: SequencerBindingProxy): boolean;
 	ExportLevelSequenceFBX(InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InMasterTracks: MovieSceneTrack[],OverrideOptions: FbxExportOption,InFBXFileName: string): boolean;
 	GetBoundObjects(InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	GetObjectBindings(InSequence: LevelSequence,InObject: UObject[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	ImportFBXToControlRig(InSequence: LevelSequence,ActorWithControlRigTrack: string,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	ImportLevelSequenceFBX(InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InImportFBXSettings: MovieSceneUserImportFBXSettings,InImportFilename: string): boolean;
+	GetAvailableAudioInputDevices(OnObtainDevicesEvent: UnrealEngineDelegate<(AvailableDevices: AudioInputDeviceInfo[]) => void>): void;
+	GetActors(ActorLayer: ActorLayer): Actor[];
+	BakeToControlRig(LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,ExportOptions: AnimSeqExportOption,bReduceKeys: boolean,Tolerance: number,Binding: SequencerBindingProxy): boolean;
+	FindOrCreateControlRigComponentTrack(LevelSequence: LevelSequence,InBinding: SequencerBindingProxy): MovieSceneTrack[];
+	FindOrCreateControlRigTrack(LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,InBinding: SequencerBindingProxy): MovieSceneTrack;
+	ImportFBXToControlRigTrack(InSequence: LevelSequence,InTrack: MovieSceneControlRigParameterTrack,InSection: MovieSceneControlRigParameterSection,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	DrawNavPath(NavPath: NavigationPath,PathColor: LinearColor,PathOffset: Vector,bPersistent: boolean): void;
 	FindPathToActorAsynchronously(LatentInfo: LatentActionInfo,PathStart: Vector,GoalActor: Actor,TetherDistance: number,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
 	FindPathToLocationAsynchronously(LatentInfo: LatentActionInfo,PathStart: Vector,PathEnd: Vector,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
 	RebuildAllFlyingNavigation(): void;
 	SetNavigationPathPoints(NavPath: NavigationPath,PathPoints: Vector[]): NavigationPath;
 	SmoothPath(Path: NavigationPath,SampleLength: number): NavigationPath;
-	BakeToControlRig(LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,ExportOptions: AnimSeqExportOption,bReduceKeys: boolean,Tolerance: number,Binding: SequencerBindingProxy): boolean;
-	FindOrCreateControlRigComponentTrack(LevelSequence: LevelSequence,InBinding: SequencerBindingProxy): MovieSceneTrack[];
-	FindOrCreateControlRigTrack(LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,InBinding: SequencerBindingProxy): MovieSceneTrack;
-	ImportFBXToControlRigTrack(InSequence: LevelSequence,InTrack: MovieSceneControlRigParameterTrack,InSection: MovieSceneControlRigParameterSection,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	ReportTouchEvent(TouchReceiver: Actor,OtherActor: Actor,Location: Vector): void;
 	BeginPlay(): void;
 	DestroyWorld(): void;
@@ -18976,24 +18976,24 @@ declare class World extends UObject {
 	static ExportNavigation(InWorld: World,Path: string): string;
 	static InvalidateModelGeometry(World: World,InLevel: Level): void;
 	static RemoveLevelInstance(World: World): void;
-	static GetAvailableAudioInputDevices(WorldContextObject: UObject,OnObtainDevicesEvent: UnrealEngineDelegate<(AvailableDevices: AudioInputDeviceInfo[]) => void>): void;
-	static GetActors(WorldContextObject: UObject,ActorLayer: ActorLayer): Actor[];
 	static ExportAnimSequence(World: World,Sequence: LevelSequence,AnimSequence: AnimSequence,ExportOption: AnimSeqExportOption,Binding: SequencerBindingProxy): boolean;
 	static ExportLevelSequenceFBX(InWorld: World,InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InMasterTracks: MovieSceneTrack[],OverrideOptions: FbxExportOption,InFBXFileName: string): boolean;
 	static GetBoundObjects(InWorld: World,InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	static GetObjectBindings(InWorld: World,InSequence: LevelSequence,InObject: UObject[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	static ImportFBXToControlRig(World: World,InSequence: LevelSequence,ActorWithControlRigTrack: string,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	static ImportLevelSequenceFBX(InWorld: World,InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InImportFBXSettings: MovieSceneUserImportFBXSettings,InImportFilename: string): boolean;
+	static GetAvailableAudioInputDevices(WorldContextObject: UObject,OnObtainDevicesEvent: UnrealEngineDelegate<(AvailableDevices: AudioInputDeviceInfo[]) => void>): void;
+	static GetActors(WorldContextObject: UObject,ActorLayer: ActorLayer): Actor[];
+	static BakeToControlRig(World: World,LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,ExportOptions: AnimSeqExportOption,bReduceKeys: boolean,Tolerance: number,Binding: SequencerBindingProxy): boolean;
+	static FindOrCreateControlRigComponentTrack(World: World,LevelSequence: LevelSequence,InBinding: SequencerBindingProxy): MovieSceneTrack[];
+	static FindOrCreateControlRigTrack(World: World,LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,InBinding: SequencerBindingProxy): MovieSceneTrack;
+	static ImportFBXToControlRigTrack(World: World,InSequence: LevelSequence,InTrack: MovieSceneControlRigParameterTrack,InSection: MovieSceneControlRigParameterSection,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	static DrawNavPath(WorldContextObject: UObject,NavPath: NavigationPath,PathColor: LinearColor,PathOffset: Vector,bPersistent: boolean): void;
 	static FindPathToActorAsynchronously(WorldContextObject: UObject,LatentInfo: LatentActionInfo,PathStart: Vector,GoalActor: Actor,TetherDistance: number,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
 	static FindPathToLocationAsynchronously(WorldContextObject: UObject,LatentInfo: LatentActionInfo,PathStart: Vector,PathEnd: Vector,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
 	static RebuildAllFlyingNavigation(WorldContextObject: UObject): void;
 	static SetNavigationPathPoints(WorldContextObject: UObject,NavPath: NavigationPath,PathPoints: Vector[]): NavigationPath;
 	static SmoothPath(WorldContextObject: UObject,Path: NavigationPath,SampleLength: number): NavigationPath;
-	static BakeToControlRig(World: World,LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,ExportOptions: AnimSeqExportOption,bReduceKeys: boolean,Tolerance: number,Binding: SequencerBindingProxy): boolean;
-	static FindOrCreateControlRigComponentTrack(World: World,LevelSequence: LevelSequence,InBinding: SequencerBindingProxy): MovieSceneTrack[];
-	static FindOrCreateControlRigTrack(World: World,LevelSequence: LevelSequence,ControlRigClass: UnrealEngineClass,InBinding: SequencerBindingProxy): MovieSceneTrack;
-	static ImportFBXToControlRigTrack(World: World,InSequence: LevelSequence,InTrack: MovieSceneControlRigParameterTrack,InSection: MovieSceneControlRigParameterSection,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	static ReportTouchEvent(WorldContextObject: UObject,TouchReceiver: Actor,OtherActor: Actor,Location: Vector): void;
 	static BeginPlay(World: World): void;
 	static DestroyWorld(World: World): void;
