@@ -1,5 +1,7 @@
-/// <reference path="../typings/types.d.ts" />
+import {WeaponTag} from "enums";
+import {WarMachine, BrainInput, AIController, JavascriptContext} from "types";
 
+declare var Context : JavascriptContext;
 const AI: AIController = Context.GetOwner();
 
 Context.OnMessage = (name, message) => {
@@ -28,7 +30,7 @@ const onTick = (input: BrainInput) => {
      // TODO: Weapon LOS check
      if (Target !== null) {
           AI.FocusHash(Target.hash);
-          AI.WeaponTrigger()
+          AI.WeaponTrigger(WeaponTag.Primary)
      } else {
           AI.ClearFocus();
           AI.WeaponRelease();

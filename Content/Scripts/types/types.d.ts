@@ -1,3 +1,5 @@
+import {WeaponTag} from "./enums";
+
 // The AI Controller, containing all the available commands a Mech can be given
 declare class AIController {
      // Move to the following location. Will automatically path find.
@@ -5,7 +7,7 @@ declare class AIController {
 
      /**
       * Aim at a target. The mech will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}
-      * @param hash The hash of the target (Mech or damageable AI like as Robot Dogs). Get hashes and other details from {@link BrainInput.perception}
+      * @param hash The hash of the target (Mech or damageable AI like Robot Dogs). Get hashes and other details from {@link BrainInput.perception}
       */
      FocusHash(hash: string): void;
      // Stop aiming at the current target.
@@ -17,57 +19,25 @@ declare class AIController {
      WeaponRelease(tag?: WeaponTag): void;
 }
 
-declare class Context {
-     static GetOwner(): AIController;
-     static OnMessage(name: string, message: string);
+declare class JavascriptContext {
+     GetOwner(): AIController;
+     OnMessage(name: string, message: string);
 }
 
-interface IntVector {
+export interface IntVector {
      X: number;
      Y: number;
      Z: number;
 }
 
-interface ScriptError {
+export interface ScriptError {
      // Which function from {@link AIController} the error/warning is from
      command: string;
      severity: "error" | "warning";
      message: string;
 }
 
-declare enum AbilityID {
-     Airstrike,
-     Nuke,
-     Heal,
-     RobotDogs,
-     RedMountainReinforcement,
-     SatelliteOverload,
-     LowerTile,
-     Fireworks,
-     MoveCommand,
-     CancelMoveCommand,
-     ShieldBuff,
-     Landmines,
-     EMP,
-     HackerDrone,
-     CameraDrone,
-     Incognito,
-     Blackout,
-     Ammo,
-}
-
-declare enum WeaponTag {
-     All,
-     Primary,
-     PrimaryLeftArm,
-     PrimaryRightArm,
-     Secondary,
-     Melee,
-     Flamethrower,
-     Arced,
-}
-
-interface WarMachine {
+export interface WarMachine {
      // Unique hash of the mech
      hash: string;
      // Last known location of the mech
@@ -90,19 +60,14 @@ interface WarMachine {
      shieldMax: number;
 }
 
-interface AbilityInfo {
-     type: AbilityID;
-     location: IntVector;
-}
-
 // Everything the mech can currently perceive
-interface Perception {
+export interface Perception {
      // Everything the mech can currently see
      sight: WarMachine[];
 }
 
 // The input provided to {@link onTick}
-interface BrainInput {
+export interface BrainInput {
      self: WarMachine;
      perception: Perception;
      errors: ScriptError[];
