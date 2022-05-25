@@ -9,32 +9,41 @@ Context.OnMessage = (name, message) => {
           case "onTick":
                onTick(JSON.parse(message));
                break;
+          case "onBegin":
+               onBegin(JSON.parse(message));
+               break;
      }
 }
 
 let Target: WarMachine | null = null;
+let TargetVisible = false;
+
+const onBegin = (input: BrainInput) => {
+     console.log(`${input.self.name} AI Started`);
+}
 
 const onTick = (input: BrainInput) => {
      if (input.errors.length !== 0) {
           input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`));
      }
 
-     if (input.perception.sight.length > 0) {
-          if (Target === null) {
+     TargetVisible = Target !== null && input.perception.sight.findIndex(m => m.hash == Target.hash) !== -1;
+     if (!TargetVisible) {
+          // Find Target
+          if (input.perception.sight.length > 0) {
                Target = input.perception.sight[0];
+               TargetVisible = true;
           }
      }
 
      //AI.MoveTo(input.self.location.X + Math.floor(Math.random() * 5000), input.self.location.Y + Math.floor(Math.random() * 5000));
 
      // TODO: Weapon LOS check
-     if (Target !== null) {
+     if (TargetVisible) {
           AI.FocusHash(Target.hash);
           AI.WeaponTrigger(WeaponTag.Primary)
      } else {
           AI.ClearFocus();
           AI.WeaponRelease();
      }
-
-     //console.log(`${input.self.hash}: ${input.self.location.X} ${input.self.location.Y}`)
 }

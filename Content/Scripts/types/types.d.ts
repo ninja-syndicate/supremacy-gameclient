@@ -58,6 +58,10 @@ export interface WarMachine {
      shield: number;
      // Max amount of shield health of the mech
      shieldMax: number;
+     // Rate at which the shield is recharged when out of combat (health per second)
+     shieldRechargeRate: number;
+     // Movement speed (cm/s)
+     speed: number;
 }
 
 // Everything the mech can currently perceive
