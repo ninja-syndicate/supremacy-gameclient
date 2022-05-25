@@ -4,9 +4,7 @@
 #include "BPFL_Helpers.h"
 #include "Components/ActorComponent.h"
 
-#include <string>
-
-#include "Windows/WindowsPlatformApplicationMisc.h"
+#include "GenericPlatform/GenericPlatformApplicationMisc.h"
 
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
@@ -145,14 +143,14 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	
 	Text = Text.Replace(TEXT("DisabledCells"), ToCStr(DisabledCells));
 	
-	FWindowsPlatformApplicationMisc::ClipboardCopy(*Text);
+	FGenericPlatformApplicationMisc::ClipboardCopy(*Text);
 	return Text;
 }
 
 FString UBPFL_Helpers::GetTextFromClipboard()
 {
 	FString Text = "";
-	FWindowsPlatformApplicationMisc::ClipboardPaste(Text);
+	FGenericPlatformApplicationMisc::ClipboardPaste(Text);
 	return Text;
 }
 
