@@ -7,7 +7,7 @@ declare class AIController {
 
     /**
      * Aim at a target. The mech will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}
-     * @param hash The hash of the target (Mech or damageable AI like Robot Dogs). Get hashes and other details from {@link BrainInput.perception}
+     * @param hash The hash of the target (Mech or damageable AI like Robot Dogs). Get hashes and other details from perception in {@link BrainInput}.
      */
     FocusHash(hash: string): void;
 
@@ -20,9 +20,17 @@ declare class AIController {
     // Stops firing all weapons that match the supplied tag, defaults to All Weapons
     WeaponRelease(tag?: WeaponTag): void;
 
+    /**
+     * Run an Environment Query System query to get the optimal position to move the mech to
+     * Get results from eqs in {@link BrainInput}.
+     */
     EQS_Query(query: EQSQueryType): void;
+    // Sets EQS query status back to Ready, essentially marking it as complete so you know you can run it again
+    EQS_Complete(query: EQSQueryType): void;
 
+    /** Set string argument for an EQS query, generally a {@link WarMachine} hash. Call before {@link EQS_Query} */
     EQS_SetArgumentString(argument: EQSArgument, value: string): void;
+    /** Set vector argument for an EQS query. Call before {@link EQS_Query} */
     EQS_SetArgumentVector(argument: EQSArgument, value: IntVector): void;
 }
 
@@ -45,6 +53,13 @@ export interface ScriptError {
     message: string;
 }
 
+/**
+ * War Machine details.
+ * -----
+ * A War Machine may be a Mech or pure AI controlled machine (eg: Robot Dog).
+ *
+ * *Note: If war machine is not currently visible; not all details will be up to date.*
+ */
 export interface WarMachine {
     // Unique hash of the mech
     hash: string;
@@ -86,7 +101,11 @@ export interface EnvironmentQuery {
 }
 
 export interface EQSResults {
+    away: EnvironmentQuery;
+    cover: EnvironmentQuery;
+    hidden: EnvironmentQuery;
     patrol: EnvironmentQuery;
+    strafe: EnvironmentQuery;
 }
 
 // The input provided to {@link onTick}
