@@ -5,17 +5,17 @@ declare var Context: JavascriptContext;
 const AI: AIController = Context.GetOwner();
 
 Context.OnMessage = (name, message) => {
-    switch (name) {
-        case "onTick":
-            try {
+    try {
+        switch (name) {
+            case "onTick":
                 onTick(JSON.parse(message));
-            } catch (e) {
-                console.log(e);
-            }
-            break;
-        case "onBegin":
-            onBegin(JSON.parse(message));
-            break;
+                break;
+            case "onBegin":
+                onBegin(JSON.parse(message));
+                break;
+        }
+    } catch (e) {
+        console.log(e);
     }
 }
 
@@ -28,27 +28,12 @@ const eqsCallbacks: {
 
 const onBegin = (input: BrainInput) => {
     console.log(`${input.self.name} AI Started`);
-
-    eqsCallbacks.patrol = (query: EnvironmentQuery) => AI.MoveTo(query.location.X, query.location.Y);
-    AI.EQS_Query(EQSQueryType.Patrol);
-    // if (Target !== null) {
-    //     AI.EQS_SetArgumentString(EQSArgument.TargetHash, Target.hash);
-    //     AI.EQS_SetArgumentVector(EQSArgument.TargetLastKnownLocation, Target.location);
-    // }
 }
 
 const onTick = (input: BrainInput) => {
+    // Check errors
     if (input.errors.length !== 0) {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`));
-    }
-
-    TargetVisible = Target !== null && input.perception.sight.findIndex(m => m.hash == Target.hash) !== -1;
-    if (!TargetVisible) {
-        // Find Target
-        if (input.perception.sight.length > 0) {
-            Target = input.perception.sight[0];
-            TargetVisible = true;
-        }
     }
 
     // EQS - Run callbacks when they succeed
@@ -58,6 +43,27 @@ const onTick = (input: BrainInput) => {
             input.eqs[key].status = EnvironmentQueryStatus.Ready;
         }
     }
+
+    TargetVisible = Target !== null && input.perception.sight.findIndex(m => m.hash == Target.hash) !== -1;
+    if (!TargetVisible) {
+        // Find Target
+        if (input.perception.sight.length > 0) {
+            Target = input.perception.sight[0];
+            TargetVisible = true;
+        } else {
+            // Patrol
+            if (input.eqs.patrol.status === EnvironmentQueryStatus.Ready && input.self.velocity.X === 0 && input.self.velocity.Y === 0) {
+                eqsCallbacks.patrol = (query: EnvironmentQuery) => AI.MoveTo(query.location.X, query.location.Y);
+                AI.EQS_Query(EQSQueryType.Patrol);
+                console.log("Moving to new patrol point");
+            }
+        }
+    }
+
+    // if (Target !== null) {
+    //     AI.EQS_SetArgumentString(EQSArgument.TargetHash, Target.hash);
+    //     AI.EQS_SetArgumentVector(EQSArgument.TargetLastKnownLocation, Target.location);
+    // }
 
     // TODO: Weapon LOS check
     if (TargetVisible) {

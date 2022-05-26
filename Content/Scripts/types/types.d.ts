@@ -52,6 +52,8 @@ export interface WarMachine {
     location: IntVector;
     // Last known yaw of the mech (direction the mech is facing)
     rotation: number;
+    // Last known velocity of the mech
+    velocity: IntVector;
     // The ID of faction the mech belongs to
     factionID: string;
     // Mech's name
