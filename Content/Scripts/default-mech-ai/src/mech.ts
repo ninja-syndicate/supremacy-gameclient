@@ -20,8 +20,8 @@ Context.OnMessage = (name, message) => {
     }
 }
 
-let Target: WarMachine | null = null;
-let TargetVisible = false;
+let target: WarMachine | null = null;
+let targetVisible = false;
 
 const eqsCallbacks: {
     patrol?: (query: EnvironmentQuery) => void
@@ -37,12 +37,12 @@ const onTick = (input: BrainInput) => {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`));
     }
 
-    TargetVisible = Target !== null && input.perception.sight.findIndex(m => m.hash == Target.hash) !== -1;
-    if (!TargetVisible) {
+    targetVisible = target !== null && input.perception.sight.findIndex(m => m.hash == target.hash) !== -1;
+    if (!targetVisible) {
         // Find Target
         if (input.perception.sight.length > 0) {
-            Target = input.perception.sight[0];
-            TargetVisible = true;
+            target = input.perception.sight[0];
+            targetVisible = true;
         } else {
             // Patrol
             if (input.eqs.patrol.status === EnvironmentQueryStatus.Ready && input.self.velocity.X === 0 && input.self.velocity.Y === 0) {
@@ -66,8 +66,8 @@ const onTick = (input: BrainInput) => {
     // }
 
     // TODO: Weapon LOS check
-    if (TargetVisible) {
-        AI.FocusHash(Target.hash);
+    if (targetVisible) {
+        AI.FocusHash(target.hash);
         AI.WeaponTrigger(WeaponTag.Primary)
     } else {
         AI.ClearFocus();

@@ -89,10 +89,30 @@ export interface WarMachine {
     speed: number;
 }
 
+/**
+ * Details of a detected sound.
+ *
+ * Could be a taunt, gunshot, sword swing, explosion, footstep or even an ability drop
+ */
+export interface SoundDetails {
+    // The location of the sound
+    location: IntVector;
+    /**
+     * Tag describing the sound
+     *
+     * Examples: *Weapon, Taunt, Nuke, Pickup.Heal, Pickup.ShieldBuff, Pickup.Ammo*
+     */
+    tag: string;
+    // The sound came from a friendly source (ally), check this if you want to ignore friendly gunshots
+    friendly: boolean;
+}
+
 // Everything the mech can currently perceive
 export interface Perception {
     // Everything the mech can currently see
     sight: WarMachine[];
+    // Everything the mech heard since the last tick
+    sound: SoundDetails[];
 }
 
 export interface EnvironmentQuery {
