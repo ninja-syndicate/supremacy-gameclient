@@ -20,11 +20,21 @@ declare class AIController {
     // Stop aiming at the current target.
     ClearFocus(): void;
 
-    // Starts firing all weapons that match the supplied tag, defaults to All Weapons
+    /**
+     * Starts firing all weapons that match the supplied tag, defaults to All Weapons
+     *
+     * *Will not trigger weapons that are currently out of ammo*
+     */
     WeaponTrigger(tag?: WeaponTag): void;
 
     // Stops firing all weapons that match the supplied tag, defaults to All Weapons
     WeaponRelease(tag?: WeaponTag): void;
+
+    /**
+     * Shoot up a flare and trigger a loud horn, attracting enemies towards you.
+     * Useful if the AI is having trouble finding any enemies to fight.
+     */
+    Taunt(): void;
 
     /**
      * Run an Environment Query System query to get the optimal position to move the mech to

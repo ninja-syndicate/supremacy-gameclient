@@ -29,6 +29,7 @@ export const onTick = (input: BrainInput) => {
         } else {
             // Patrol
             if (input.eqs.patrol.status === EnvironmentQueryStatus.Ready && input.self.velocity.X === 0 && input.self.velocity.Y === 0) {
+                AI.Taunt();
                 eqsCallbacks.patrol = (query: EnvironmentQuery) => AI.MoveToVector(query.location);
                 AI.EQS_Query(EQSQueryType.Patrol);
             }
