@@ -1,24 +1,7 @@
 import {EnvironmentQueryStatus, EQSQueryType, WeaponTag} from "enums";
-import {WarMachine, BrainInput, AIController, JavascriptContext, EnvironmentQuery} from "types";
+import {WarMachine, BrainInput, EnvironmentQuery} from "types";
 import {StringToEQSQueryType} from "./utils";
-
-declare var Context: JavascriptContext;
-const AI: AIController = Context.GetOwner();
-
-Context.OnMessage = (name, message) => {
-    try {
-        switch (name) {
-            case "onTick":
-                onTick(JSON.parse(message));
-                break;
-            case "onBegin":
-                onBegin(JSON.parse(message));
-                break;
-        }
-    } catch (e) {
-        console.log(e);
-    }
-}
+import {AI} from "./index";
 
 let target: WarMachine | null = null;
 let targetVisible = false;
@@ -27,11 +10,11 @@ const eqsCallbacks: {
     patrol?: (query: EnvironmentQuery) => void
 } = {}
 
-const onBegin = (input: BrainInput) => {
+export const onBegin = (input: BrainInput) => {
     console.log(`${input.self.name} AI Started`);
 }
 
-const onTick = (input: BrainInput) => {
+export const onTick = (input: BrainInput) => {
     // Check errors
     if (input.errors.length !== 0) {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`));
@@ -46,7 +29,7 @@ const onTick = (input: BrainInput) => {
         } else {
             // Patrol
             if (input.eqs.patrol.status === EnvironmentQueryStatus.Ready && input.self.velocity.X === 0 && input.self.velocity.Y === 0) {
-                eqsCallbacks.patrol = (query: EnvironmentQuery) => AI.MoveTo(query.location.X, query.location.Y);
+                eqsCallbacks.patrol = (query: EnvironmentQuery) => AI.MoveToVector(query.location);
                 AI.EQS_Query(EQSQueryType.Patrol);
             }
         }

@@ -6,6 +6,12 @@ declare class AIController {
     MoveTo(x: number, y: number): void;
 
     /**
+     * Move to the following location. Will automatically path find.
+     * *For cases when you know the z axis (ie: from an EQS result)*
+     */
+    MoveToVector(location: IntVector): void;
+
+    /**
      * Aim at a target. The mech will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}
      * @param hash The hash of the target (Mech or damageable AI like Robot Dogs). Get hashes and other details from perception in {@link BrainInput}.
      */

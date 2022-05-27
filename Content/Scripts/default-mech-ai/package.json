@@ -2,7 +2,7 @@
   "name": "default-mech-ai",
   "version": "1.0.0",
   "description": "",
-  "main": "mech.ts",
+  "main": "index.ts",
   "scripts": {
     "build": "webpack",
     "watch": "webpack -w"
