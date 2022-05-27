@@ -8,7 +8,7 @@ Version=$Major.$Minor.$Build
 Tag=V8-$Version
 ZipFile=v8-$Version-libs.zip
 
-if [ -d "ThirdParty/v8/lib" ]; then
+if [ -d "ThirdParty/v8/lib/Win64/Release/v8_init.lib" ]; then
     echo "Unreal.js is ready to build"
 else
     if [ -f "ThirdParty/v8/$ZipFile" ]; then

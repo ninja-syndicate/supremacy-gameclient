@@ -2589,7 +2589,7 @@ inline void FJavascriptContextImplementation::AddReferencedObjects(UObject * InT
 	for (auto It = MemoryToObjectMap.CreateIterator(); It; ++It)
 	{
 		TSharedPtr<FStructMemoryInstance> StructScript = It.Value().Instance;
-		if (!StructScript.IsValid() || StructScript->Struct->IsPendingKill())
+		if (!StructScript.IsValid() || !IsValidChecked(StructScript->Struct))
 		{
 			It.RemoveCurrent();
 		}

@@ -285,14 +285,14 @@ void UJavascriptIntSpinBox::HandleOnEndSliderMovement(int32 InValue)
 	if (!IsDesignTime())
 	{
 		OnEndSliderMovement.Broadcast(InValue);
-	}
+	}/
 }
 
 void UJavascriptIntSpinBox::PostLoad()
 {
 	Super::PostLoad();
 
-	if (GetLinkerUE4Version() < VER_UE4_DEPRECATE_UMG_STYLE_ASSETS)
+	if (GetLinkerUEVersion().FileVersionUE4 < VER_UE4_DEPRECATE_UMG_STYLE_ASSETS)
 	{
 		if (Style_DEPRECATED != nullptr)
 		{
