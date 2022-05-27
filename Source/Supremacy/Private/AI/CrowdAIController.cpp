@@ -2,10 +2,12 @@
 
 
 #include "AI/CrowdAIController.h"
+
+#include "AI/WarMachineFollowingComponent.h"
 #include "Navigation/CrowdFollowingComponent.h"
 
 ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCrowdFollowingComponent>(TEXT("PathFollowingComponent")))
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UWarMachineFollowingComponent>(TEXT("PathFollowingComponent")))
 {
 }
 
@@ -32,6 +34,9 @@ void ACrowdAIController::BeginPlay()
 		CrowdFollowingComponent->SetCrowdSeparation(bEnableSeparation);
 		CrowdFollowingComponent->SetCrowdSeparationWeight(SeparationWeight);
 		CrowdFollowingComponent->SetCrowdSlowdownAtGoal(bEnableSlowdownAtGoal);
+		CrowdFollowingComponent->SetCrowdOptimizeVisibility(bEnableOptimizeVisibility);
+		CrowdFollowingComponent->SetCrowdOptimizeTopology(bEnableOptimizeTopology);
+		CrowdFollowingComponent->SetCrowdPathOffset(bEnablePathOffset);
 	}
 }
 
