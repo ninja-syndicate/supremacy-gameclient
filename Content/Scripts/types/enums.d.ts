@@ -1,12 +1,12 @@
 export const enum WeaponTag {
-    All,
-    Primary,
-    PrimaryLeftArm,
-    PrimaryRightArm,
-    Secondary,
-    Melee,
-    Flamethrower,
-    Arced,
+    All = "Weapon",
+    Primary = "Weapon.Primary",
+    PrimaryLeftArm = "Weapon.Primary.LeftArm",
+    PrimaryRightArm = "Weapon.Primary.RightWeapon",
+    Secondary = "Weapon.Secondary",
+    Melee = "Weapon.Melee",
+    Flamethrower = "Weapon.Flamethrower",
+    Arced = "Weapon.Arced",
 }
 
 export const enum EQSQueryType {
@@ -28,4 +28,10 @@ export const enum EnvironmentQueryStatus {
     Processing,
     Success,
     Failed,
+}
+
+export const enum DamageType {
+    Default,
+    Energy,
+    Explosive,
 }

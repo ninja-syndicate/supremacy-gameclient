@@ -1,4 +1,4 @@
-import {EnvironmentQueryStatus, EQSArgument, EQSQueryType, WeaponTag} from "./enums";
+import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, WeaponTag} from "./enums";
 
 // The AI Controller, containing all the available commands a Mech can be given
 declare class AIController {
@@ -41,7 +41,7 @@ declare class AIController {
      * Get results from eqs in {@link BrainInput}.
      */
     EQS_Query(query: EQSQueryType): void;
-    // Sets EQS query status back to Ready, essentially marking it as complete so you know you can run it again
+    /** Removes EQS query status from {@link BrainInput.eqs}, essentially marking it as complete so you know you can run it again */
     EQS_Complete(query: EQSQueryType): void;
 
     /** Set string argument for an EQS query, generally a {@link WarMachine} hash. Call before {@link EQS_Query} */
@@ -69,6 +69,41 @@ export interface ScriptError {
     message: string;
 }
 
+export interface Weapon {
+    // Unique hash of the weapon
+    hash: string;
+    // The weapon model
+    model: string;
+    // The weapon skin
+    skin: string;
+    // The weapon name
+    name: string;
+    // The amount of damage the weapon deals per shot/projectile
+    damage: number;
+    // Distance at which damage starts decreasing
+    damageFalloff: number;
+    // How much the damage decreases by per km
+    damageFalloffRate: number;
+    // Enemies within this radius when the projectile hits something is damaged
+    damageRadius: number;
+    // Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect)
+    damageRadiusFalloff: number;
+    // The damage type of the weapon
+    damageType: DamageType;
+    //  Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees.
+    spread: number;
+    //  Rounds per minute
+    rateOfFire: number;
+    // Speed of the weapon's projectiles in cm/s
+    projectileSpeed: number;
+    // The max amount of ammo this weapon can hold
+    maxAmmo: number;
+    // The current amount count *(Note: will be 0 if unknown)*
+    currentAmmo: number;
+    /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
+    tags: WeaponTag[];
+}
+
 /**
  * War Machine details.
  * -----
@@ -77,32 +112,34 @@ export interface ScriptError {
  * *Note: If war machine is not currently visible; not all details will be up to date.*
  */
 export interface WarMachine {
-    // Unique hash of the mech
+    // Unique hash of the war machine
     hash: string;
-    // Last known location of the mech
+    // Last known location of the war machine
     location: IntVector;
-    // Last known yaw of the mech (direction the mech is facing)
+    // Last known yaw of the war machine (direction the war machine is facing)
     rotation: number;
-    // Last known velocity of the mech
+    // Last known velocity of the war machine
     velocity: IntVector;
     // The ID of faction the mech belongs to
     factionID: string;
-    // Mech's name
+    // The name of the war machine
     name: string;
-    // Mech's model name
+    // The model name of the war machine
     model: string;
-    // Last known health of the mech
+    // Last known health of the war machine
     health: number;
-    // Max amount of health of the mech
+    // Max amount of health of the war machine
     healthMax: number;
-    // Last known shield health of the mech
+    // Last known shield health of the war machine
     shield: number;
-    // Max amount of shield health of the mech
+    // Max amount of shield health of the war machine
     shieldMax: number;
     // Rate at which the shield is recharged when out of combat (health per second)
     shieldRechargeRate: number;
     // Movement speed (cm/s)
     speed: number;
+    // All the weapons this war machine has
+    weapons: Weapon[];
 }
 
 /**
@@ -137,11 +174,11 @@ export interface EnvironmentQuery {
 }
 
 export interface EQSResults {
-    away: EnvironmentQuery;
-    cover: EnvironmentQuery;
-    hidden: EnvironmentQuery;
-    patrol: EnvironmentQuery;
-    strafe: EnvironmentQuery;
+    away?: EnvironmentQuery;
+    cover?: EnvironmentQuery;
+    hidden?: EnvironmentQuery;
+    patrol?: EnvironmentQuery;
+    strafe?: EnvironmentQuery;
 }
 
 // The input provided to {@link onTick}
