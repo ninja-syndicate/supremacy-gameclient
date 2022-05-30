@@ -24,11 +24,24 @@ declare class AIController {
      * Starts firing all weapons that match the supplied tag, defaults to All Weapons
      *
      * *Will not trigger weapons that are currently out of ammo*
+     * @param tag
+     * @param location If set, will not trigger limited-range weapons if location is not within the weapon's range (eg: melee weapons and flamethrowers)
+     * @constructor
      */
-    WeaponTrigger(tag?: WeaponTag): void;
+    WeaponTrigger(tag?: WeaponTag, location?: IntVector): void;
 
     // Stops firing all weapons that match the supplied tag, defaults to All Weapons
     WeaponRelease(tag?: WeaponTag): void;
+
+    /**
+     * Get the current ammo count of a weapon.
+     * Always returns 1 if weapon has infinite ammo.
+     * *Note: Can only get the ammo count of your own weapons*
+     */
+    WeaponGetAmmo(hash: string): number;
+
+    /** Returns true if location is within {@link range} of the war machine */
+    InRange(location: IntVector, range: number): boolean;
 
     /**
      * Shoot up a flare and trigger a loud horn, attracting enemies towards you.
@@ -98,8 +111,6 @@ export interface Weapon {
     projectileSpeed: number;
     // The max amount of ammo this weapon can hold
     maxAmmo: number;
-    // The current amount count *(Note: will be 0 if unknown)*
-    currentAmmo: number;
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
     tags: WeaponTag[];
 }

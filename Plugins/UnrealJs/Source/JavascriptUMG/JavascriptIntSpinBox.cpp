@@ -285,7 +285,7 @@ void UJavascriptIntSpinBox::HandleOnEndSliderMovement(int32 InValue)
 	if (!IsDesignTime())
 	{
 		OnEndSliderMovement.Broadcast(InValue);
-	}/
+	}
 }
 
 void UJavascriptIntSpinBox::PostLoad()

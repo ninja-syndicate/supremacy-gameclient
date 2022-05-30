@@ -1,5 +1,5 @@
 import {EnvironmentQueryStatus, EQSQueryType, WeaponTag} from "enums";
-import {WarMachine, BrainInput, EnvironmentQuery} from "types";
+import {WarMachine, Weapon, BrainInput, EnvironmentQuery} from "types";
 import {StringToEQSQueryType} from "./utils";
 import {AI} from "./index";
 
@@ -20,7 +20,8 @@ export const onTick = (input: BrainInput) => {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`));
     }
 
-    targetVisible = target !== null && input.perception.sight.findIndex(m => m.hash == target.hash) !== -1;
+    const targetVisIndex = target === null ? -1 : input.perception.sight.findIndex(m => m.hash == target.hash);
+    targetVisible = target !== null && targetVisIndex !== -1;
     if (!targetVisible) {
         // Find Target
         if (input.perception.sight.length > 0) {
@@ -29,11 +30,14 @@ export const onTick = (input: BrainInput) => {
         } else {
             // Patrol
             if (!input.eqs.patrol && input.self.velocity.X === 0 && input.self.velocity.Y === 0) {
-                AI.Taunt();
                 eqsCallbacks.patrol = (query: EnvironmentQuery) => AI.MoveToVector(query.location);
                 AI.EQS_Query(EQSQueryType.Patrol);
             }
         }
+    } else {
+        // Update Target
+        if (targetVisIndex !== -1)
+            target = input.perception.sight[targetVisIndex];
     }
 
     // EQS - Run callbacks when they succeed
@@ -52,7 +56,7 @@ export const onTick = (input: BrainInput) => {
     // TODO: Weapon LOS check
     if (targetVisible) {
         AI.FocusHash(target.hash);
-        AI.WeaponTrigger(WeaponTag.Primary)
+        AI.WeaponTrigger(WeaponTag.Primary, target.location)
     } else {
         AI.ClearFocus();
         AI.WeaponRelease();
