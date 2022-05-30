@@ -20,6 +20,10 @@ export const onTick = (input: BrainInput) => {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`));
     }
 
+    if (input.perception.damage.length > 0) {
+        console.log(JSON.stringify(input.perception.damage));
+    }
+
     const targetVisIndex = target === null ? -1 : input.perception.sight.findIndex(m => m.hash == target.hash);
     targetVisible = target !== null && targetVisIndex !== -1;
     if (!targetVisible) {

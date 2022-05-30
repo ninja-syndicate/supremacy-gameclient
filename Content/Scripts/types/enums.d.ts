@@ -32,6 +32,7 @@ export const enum EnvironmentQueryStatus {
 
 export const enum DamageType {
     Default,
+    /** Does extra damage to shields */
     Energy,
     Explosive,
 }

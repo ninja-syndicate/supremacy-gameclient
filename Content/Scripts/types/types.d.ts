@@ -171,12 +171,31 @@ export interface SoundDetails {
     friendly: boolean;
 }
 
+export interface DamageDetails {
+    // The amount of damage
+    amount: number;
+    // Whether the damage was down to your shield
+    shieldDamage: boolean;
+    // Whether the damage was friendly fire (caused by an ally)
+    friendly?: boolean;
+    // The type of damage
+    damageType: DamageType;
+    // The unique hash of the war machine that caused the damage
+    instigatorHash: string;
+    // The unique hash of the weapon that caused the damage
+    sourceHash: string;
+    /** The name of what caused the damage (for damage with no {@link sourceHash} such as abilities) */
+    sourceName: string;
+}
+
 // Everything the mech can currently perceive
 export interface Perception {
-    // Everything the mech can currently see
+    // Everything the war machine can currently see
     sight: WarMachine[];
-    // Everything the mech heard since the last tick
+    // Everything the war machine heard since the last tick
     sound: SoundDetails[];
+    // Details on damage the war machine has taken since the last tick
+    damage: DamageDetails[];
 }
 
 export interface EnvironmentQuery {
