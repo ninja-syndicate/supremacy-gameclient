@@ -59,7 +59,7 @@ export const onTick = (input: BrainInput) => {
         AI.WeaponTrigger(WeaponTag.Primary, target.location)
     } else {
         AI.ClearFocus();
-        AI.WeaponRelease();
+        AI.WeaponRelease(WeaponTag.Primary);
     }
 }
 
