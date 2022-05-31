@@ -206,3 +206,26 @@ void UBPFL_Helpers::StopResponding()
 	while(true)
 		B = !B;
 }
+
+FQuat UBPFL_Helpers::GetLookAtQuat(FVector CurrentVector, FVector TargetVector, float ClampAngleInDegrees)
+{
+	// Assumes CurrentVector and TargetVectors are already normalised.
+	if (ClampAngleInDegrees > 0.0f)
+	{
+		float ClampAngleInRadians = FMath::DegreesToRadians(FMath::Min(ClampAngleInDegrees, 180.f));
+		float DiffAngle = FMath::Acos(FVector::DotProduct(CurrentVector, TargetVector));
+
+		if (DiffAngle > ClampAngleInRadians)
+		{
+			FVector DeltaTarget = TargetVector - CurrentVector;
+
+			// Clamp delta target to within the ratio
+			DeltaTarget *= (ClampAngleInRadians / DiffAngle);
+
+			// Set new target
+			TargetVector = CurrentVector + DeltaTarget;
+			TargetVector.Normalize();
+		}
+	}
+	return FQuat::FindBetweenNormals(CurrentVector, TargetVector);
+}
