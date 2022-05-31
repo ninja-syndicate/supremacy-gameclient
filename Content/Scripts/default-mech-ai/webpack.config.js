@@ -11,7 +11,7 @@ module.exports = {
         filename: "mech.js" // <--- Will be compiled to this single file
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js"],
+        extensions: [".ts", ".js"],
     },
     module: {
         rules: [

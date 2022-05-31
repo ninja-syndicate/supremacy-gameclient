@@ -10,11 +10,11 @@ export const enum WeaponTag {
 }
 
 export const enum EQSQueryType {
-    Away,
-    Cover,
-    Hidden,
-    Patrol,
-    Strafe,
+    Away= "away",
+    Cover = "cover",
+    Hidden = "hidden",
+    Patrol = "patrol",
+    Strafe = "strafe",
 }
 
 export const enum EQSArgument {

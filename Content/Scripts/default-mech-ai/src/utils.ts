@@ -1,4 +1,5 @@
 import {EQSQueryType} from "enums";
+import {IntVector} from "types";
 
 export const StringToEQSQueryType = (key: string) => {
     switch (key) {
@@ -13,4 +14,8 @@ export const StringToEQSQueryType = (key: string) => {
         case "strafe":
             return EQSQueryType.Strafe;
     }
+}
+
+export const IsIntVector = (object: any): object is IntVector => {
+    return 'X' in object && 'Y' in object;
 }
