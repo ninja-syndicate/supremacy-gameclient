@@ -61,7 +61,13 @@ void USpawnSystem::OccupyLocation(const FVector& Location, float Radius)
 		return;
 	}
 	// Use the spawn test actor blueprint if set, otherwise use the C++ actor.
-	UClass* SpawnTestActorClass = SpawnTestActorBlueprint ? SpawnTestActorBlueprint : ASpawnTestActor::StaticClass();
+	UClass* SpawnTestActorClass;
+	if (SpawnTestActorBlueprint)
+	{
+		SpawnTestActorClass = SpawnTestActorBlueprint;
+	} else {
+		SpawnTestActorClass = ASpawnTestActor::StaticClass();
+	}
 
     const FTransform SpawnTransform{Location};
     ASpawnTestActor* SpawnTestActor = GetWorld()->SpawnActorDeferred<ASpawnTestActor>(

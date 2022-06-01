@@ -4,9 +4,7 @@
 #include "BPFL_Helpers.h"
 #include "Components/ActorComponent.h"
 
-#include <string>
-
-#include "Windows/WindowsPlatformApplicationMisc.h"
+#include "GenericPlatform/GenericPlatformApplicationMisc.h"
 
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
@@ -145,14 +143,14 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
 	
 	Text = Text.Replace(TEXT("DisabledCells"), ToCStr(DisabledCells));
 	
-	FWindowsPlatformApplicationMisc::ClipboardCopy(*Text);
+	FGenericPlatformApplicationMisc::ClipboardCopy(*Text);
 	return Text;
 }
 
 FString UBPFL_Helpers::GetTextFromClipboard()
 {
 	FString Text = "";
-	FWindowsPlatformApplicationMisc::ClipboardPaste(Text);
+	FGenericPlatformApplicationMisc::ClipboardPaste(Text);
 	return Text;
 }
 
@@ -207,4 +205,27 @@ void UBPFL_Helpers::StopResponding()
 	bool B = false;
 	while(true)
 		B = !B;
+}
+
+FQuat UBPFL_Helpers::GetLookAtQuat(FVector CurrentVector, FVector TargetVector, float ClampAngleInDegrees)
+{
+	// Assumes CurrentVector and TargetVectors are already normalised.
+	if (ClampAngleInDegrees > 0.0f)
+	{
+		float ClampAngleInRadians = FMath::DegreesToRadians(FMath::Min(ClampAngleInDegrees, 180.f));
+		float DiffAngle = FMath::Acos(FVector::DotProduct(CurrentVector, TargetVector));
+
+		if (DiffAngle > ClampAngleInRadians)
+		{
+			FVector DeltaTarget = TargetVector - CurrentVector;
+
+			// Clamp delta target to within the ratio
+			DeltaTarget *= (ClampAngleInRadians / DiffAngle);
+
+			// Set new target
+			TargetVector = CurrentVector + DeltaTarget;
+			TargetVector.Normalize();
+		}
+	}
+	return FQuat::FindBetweenNormals(CurrentVector, TargetVector);
 }

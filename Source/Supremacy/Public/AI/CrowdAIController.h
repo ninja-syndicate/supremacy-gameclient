@@ -49,6 +49,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
 	bool bEnableSlowdownAtGoal;
 
+	/** Whether to optimise visibility. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	bool bEnableOptimizeVisibility;
+
+	/** Whether to optimise topology. Recommended to be turned-off as it is buggy. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	bool bEnableOptimizeTopology;
+
+	/** Whether to enable path offset. topology. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
+	bool bEnablePathOffset;
+
 	/** For setting the avoidance type. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
 	TEnumAsByte<EAvoidanceType> AvoidanceType;
