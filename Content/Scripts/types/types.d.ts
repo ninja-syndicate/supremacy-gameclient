@@ -12,10 +12,13 @@ declare class AIController {
     MoveToVector(location: IntVector): void;
 
     /**
-     * Aim at a target. The mech will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}
+     * Aim at a target. The war machine will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}.
      * @param hash The hash of the target (Mech or damageable AI like Robot Dogs). Get hashes and other details from perception in {@link BrainInput}.
      */
     FocusHash(hash: string): void;
+
+    /** Aim at location.  The war machine will continously aim towards this location until focus is cleared with {@link ClearFocus}. */
+    FocusLocation(location: IntVector): void;
 
     // Stop aiming at the current target.
     ClearFocus(): void;
@@ -50,7 +53,7 @@ declare class AIController {
     Taunt(): void;
 
     /**
-     * Run an Environment Query System query to get the optimal position to move the mech to
+     * Run an Environment Query System query to get the optimal position to move the war machine to
      * Get results from eqs in {@link BrainInput}.
      */
     EQS_Query(query: EQSQueryType): void;

@@ -5,11 +5,17 @@ interface IsSetProps {
     blackboardKey: keyof AIBlackboard
 }
 
-export default class IsSet extends Decorator {
-    constructor({config = {} as IsSetProps, ...props}) {
+export class IsSet extends Decorator {
+    constructor(props) {
         super(props);
-        this.nodeType = "IsSetDecorator";
-        this.setConfig(config);
+        this.nodeType = "IsSetDecorator ";
+        this.setConfig(props);
+    }
+
+    setConfig({blackboardKey}: IsSetProps) {
+        this.config = {
+            blackboardKey
+        }
     }
 
     decorate(run: RunCallback, blackboard: AIBlackboard, config: IsSetProps) {

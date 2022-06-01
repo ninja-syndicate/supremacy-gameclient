@@ -1,6 +1,6 @@
 import {FAILURE, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
-import {BTT_Focus, BTT_StopFocus} from "../tasks/BTT_Focus";
-import {AIBlackboard} from "../blackboard";
+import {BTT_Focus, BTT_StopFocus} from "../tasks/BTT_Focus"
+import {AIBlackboard} from "../blackboard"
 
 export const BT_Combat = new Selector({
     nodes: [
@@ -9,6 +9,7 @@ export const BT_Combat = new Selector({
                 new Task({
                     run: (blackboard: AIBlackboard) => {
                         console.log(`canSeeTarget ${blackboard.canSeeTarget}`)
+                        console.log(blackboard.target)
                         return SUCCESS
                     }
                 }),
@@ -22,7 +23,7 @@ export const BT_Combat = new Selector({
                         return SUCCESS
                     }
                 }),
-                BTT_Focus("targetHash"),
+                BTT_Focus("target"),
             ]
         }),
     ],

@@ -1,7 +1,7 @@
 import {FAILURE, Selector, SUCCESS, Task} from 'behaviortree'
-import {BT_Combat} from "./BT_Combat";
-import {BT_Patrol} from "./BT_Patrol";
-import {AIBlackboard} from "../blackboard";
+import {BT_Combat} from "./BT_Combat"
+import {BT_Patrol} from "./BT_Patrol"
+import {AIBlackboard} from "../blackboard"
 
 export const BT_Root = new Selector({
     nodes: [
@@ -9,7 +9,7 @@ export const BT_Root = new Selector({
             nodes: [
                 // Has Target
                 new Task({
-                    run: (blackboard: AIBlackboard) => !!blackboard.targetHash ? SUCCESS : FAILURE
+                    run: (blackboard: AIBlackboard) => !!blackboard.target ? SUCCESS : FAILURE
                 }),
                 BT_Combat,
             ]

@@ -1,12 +1,10 @@
-import {EnvironmentQuery} from "types";
-import {EQSQueryType} from "enums";
-import {IntVector} from "types"
+import {EnvironmentQuery, WarMachine, IntVector} from "types"
+import {EQSQueryType} from "enums"
 
 export interface AIBlackboard {
-    eqsResults: Map<EQSQueryType, EnvironmentQuery>;
+    eqsResults: Map<EQSQueryType, EnvironmentQuery>
 
-    targetHash?: string;
-    targetLastKnownLocation?: IntVector;
-    canSeeTarget: boolean;
-    patrolLocation?: IntVector;
+    target: WarMachine | null
+    canSeeTarget: boolean
+    patrolLocation?: IntVector
 }
