@@ -1,15 +1,20 @@
-import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, WeaponTag} from "./enums";
+import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, WeaponTag} from "./enums"
 
 // The AI Controller, containing all the available commands a Mech can be given
 declare class AIController {
-    // Move to the following location. Will automatically path find.
-    MoveTo(x: number, y: number): void;
+    /**
+     * Move to the following location. Will automatically path find.
+     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
+     */
+    MoveTo(x: number, y: number, acceptanceRadius?: number): void;
 
     /**
      * Move to the following location. Will automatically path find.
      * *For cases when you know the z axis (ie: from an EQS result)*
+     * @param location The location to move to.
+     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
      */
-    MoveToVector(location: IntVector): void;
+    MoveToVector(location: IntVector, acceptanceRadius?: number): MovementResult;
 
     /**
      * Aim at a target. The war machine will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}.

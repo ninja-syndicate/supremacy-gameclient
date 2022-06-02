@@ -36,3 +36,12 @@ export const enum DamageType {
     Energy,
     Explosive,
 }
+
+export const enum MovementResult {
+    Moving,
+    Success,
+    Blocked,
+    OffPath,
+    Aborted,
+    Invalid,
+}
