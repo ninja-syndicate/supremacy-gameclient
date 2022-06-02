@@ -54,6 +54,8 @@ The following Unreal Engine Plugins need to be installed. Find them in the Libra
 - [Object Pool Plugin](https://www.unrealengine.com/marketplace/en-US/product/object-pool-plugin)
 - [Flying Navigation System](https://www.unrealengine.com/marketplace/en-US/product/flying-navigation-system)
 
+[UnrealJS](https://github.com/getnamo/UnrealJs) is also used but is included in the repo. It does however require the V8 library to be installed which can be done via `setup.bat`.
+
 Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
 
 ### Recommended Workflow
