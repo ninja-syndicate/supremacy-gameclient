@@ -1,0 +1,53 @@
+[
+     {
+          "ID": "26f37473-ccd6-47d0-993e-2b82d725617d",
+          "Name": "Plasma Rifle",
+          "Damage": 20,
+          "DamageFalloff": 20000,
+          "DamageRadiusFalloff": 20,
+          "DamageRadius": 100,
+          "DamageType": 1,
+          "Spread": 3,
+          "ProjectileSpeed": 48000,
+          "RateOfFire": 250
+     },
+     {
+          "ID": "02c27475-c0ea-4825-8739-9a0b2cdc4201",
+          "Name": "Sword",
+          "Damage": 80
+     },
+     {
+          "ID": "a009fbf9-4fe3-48b0-8f34-e207c2b355dc",
+          "Name": "Dual Cannons",
+          "Damage": 12,
+          "DamageFalloff": 20000,
+          "DamageFalloffRate": 12,
+          "DamageRadius": 100,
+          "Spread": 4,
+          "ProjectileSpeed": 36000,
+          "RateOfFire": 270
+     },
+     {
+          "ID": "7c082a33-ff87-454f-bf8c-925945dd0ff4",
+          "Name": "Rocket Pods",
+          "Damage": 70,
+          "DamageRadius": 850,
+          "DamageType": 2
+     },
+     {
+          "ID": "a155bef8-f0e1-4d11-8a23-a93b0bb74d10",
+          "Name": "Sniper Rifle",
+          "Damage": 130,
+          "DamageFalloff": 40000,
+          "DamageFalloffRate": 50,
+          "Spread": 3,
+          "ProjectileSpeed": 80000,
+          "RateOfFire": 48
+     },
+     {
+          "ID": "6109e547-5a48-4a76-a3f2-e73ef41505b3",
+          "Name": "Plasma Sword",
+          "Damage": 120,
+          "DamageType": 1
+     }
+]

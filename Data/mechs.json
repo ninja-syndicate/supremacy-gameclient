@@ -1,0 +1,23 @@
+[
+     {
+          "model": "Mech_BostonCybernetics",
+          "maxHealth": 1000,
+          "maxShield:": 1000,
+          "shieldRechargeRate": 80,
+          "speed": 2750
+     },
+     {
+          "model": "Mech_RedMountain",
+          "maxHealth": 1500,
+          "maxShield:": 1000,
+          "shieldRechargeRate": 80,
+          "speed": 1750
+     },
+     {
+          "model": "Mech_Zaibastsu",
+          "maxHealth": 1000,
+          "maxShield:": 1000,
+          "shieldRechargeRate": 100,
+          "speed": 2500
+     }
+]
