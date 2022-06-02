@@ -33,8 +33,13 @@ export const onTick = (input: BrainInput) => {
         if (input.perception.sight.length > 0) {
             bb.target = input.perception.sight[0]
             bb.canSeeTarget = true
+            bb.targetLastKnownLocation = bb.target.location;
         }
     }
+
+    console.log(bb.canSeeTarget);
+    const {X, Y, Z} = bb.targetLastKnownLocation;
+    console.log(X, Y, Z);
 
     // Update Target
     if (targetVisIndex !== -1) {

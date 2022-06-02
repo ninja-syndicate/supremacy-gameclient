@@ -24,7 +24,7 @@ export const BTT_Focus = (blackboardKey: keyof AIBlackboard) => new Task({
         }
         return FAILURE
     }
-})
+});
 
 /** Stop looking at WarMachine/IntVector from {@link BTT_Focus}. */
 export const BTT_StopFocus = new Task({
@@ -32,4 +32,4 @@ export const BTT_StopFocus = new Task({
         AI.ClearFocus()
         return SUCCESS
     }
-})
+});

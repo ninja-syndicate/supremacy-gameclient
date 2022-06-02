@@ -7,4 +7,5 @@ export interface AIBlackboard {
     target: WarMachine | null
     canSeeTarget: boolean
     patrolLocation?: IntVector
+    targetLastKnownLocation?: IntVector
 }
