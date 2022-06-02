@@ -57,6 +57,17 @@ struct FPerformActionContext
 
 	UPROPERTY()
 	bool bSelectNewNode;
+
+	FPerformActionContext()
+	{
+		ParentGraph = nullptr;
+		FromPins = TArray<FJavascriptEdGraphPin>();
+		Location = FVector2D();
+		bSelectNewNode = false;
+	}
+	
+	FPerformActionContext(class UEdGraph* ParentGraph, const TArray<FJavascriptEdGraphPin> FromPins, const FVector2D Location, const bool SelectNewNode)
+	: ParentGraph(ParentGraph), FromPins(FromPins),Location(Location), bSelectNewNode(SelectNewNode) {}
 };
 
 UCLASS(MinimalAPI)
