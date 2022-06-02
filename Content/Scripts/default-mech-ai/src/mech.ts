@@ -9,6 +9,7 @@ import {AIBlackboard} from "./blackboard"
 export let tree = new BehaviorTree({
     tree: BT_Root,
     blackboard: {
+        target: null,
         eqsResults: {},
     } as AIBlackboard,
 })
@@ -25,7 +26,7 @@ export const onTick = (input: BrainInput) => {
     }
 
     // Perception
-    const targetVisIndex = bb.target === null ? -1 : input.perception.sight.findIndex(m => m.hash == bb.target.hash)
+    const targetVisIndex = !bb.target ? -1 : input.perception.sight.findIndex(m => m.hash === bb.target.hash)
     bb.canSeeTarget = bb.target !== null && targetVisIndex !== -1
     if (!bb.canSeeTarget) {
         // Find Target

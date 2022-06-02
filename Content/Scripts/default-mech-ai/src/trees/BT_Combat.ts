@@ -6,22 +6,9 @@ export const BT_Combat = new Selector({
     nodes: [
         new Sequence({
             nodes: [
-                new Task({
-                    run: (blackboard: AIBlackboard) => {
-                        console.log(`canSeeTarget ${blackboard.canSeeTarget}`)
-                        console.log(blackboard.target)
-                        return SUCCESS
-                    }
-                }),
                 // Can See Target
                 new Task({
                     run: (blackboard: AIBlackboard) => blackboard.canSeeTarget ? SUCCESS : FAILURE
-                }),
-                new Task({
-                    run: (blackboard: AIBlackboard) => {
-                        console.log("In Main Combat")
-                        return SUCCESS
-                    }
                 }),
                 BTT_Focus("target"),
             ]

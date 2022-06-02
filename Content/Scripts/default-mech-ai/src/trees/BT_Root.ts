@@ -1,19 +1,11 @@
-import {FAILURE, Selector, SUCCESS, Task} from 'behaviortree'
+import {Selector} from 'behaviortree'
 import {BT_Combat} from "./BT_Combat"
 import {BT_Patrol} from "./BT_Patrol"
-import {AIBlackboard} from "../blackboard"
+import {IsSet,} from "../decorators/IsSet"
 
 export const BT_Root = new Selector({
     nodes: [
-        new Selector({
-            nodes: [
-                // Has Target
-                new Task({
-                    run: (blackboard: AIBlackboard) => !!blackboard.target ? SUCCESS : FAILURE
-                }),
-                BT_Combat,
-            ]
-        }),
+        IsSet(BT_Combat, "target"),
         BT_Patrol,
     ]
 })
