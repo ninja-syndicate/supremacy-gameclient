@@ -1,0 +1,7 @@
+Binaries
+Intermediate
+ThirdParty/**/lib/*
+ThirdParty/v8/*libs.zip
+.DS_Store
+
+ThirdParty/v8/Readme.txt
