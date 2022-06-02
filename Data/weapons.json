@@ -32,7 +32,8 @@
           "Name": "Rocket Pods",
           "Damage": 70,
           "DamageRadius": 850,
-          "DamageType": 2
+          "DamageType": 2,
+          "RateOfFire": 3
      },
      {
           "ID": "a155bef8-f0e1-4d11-8a23-a93b0bb74d10",

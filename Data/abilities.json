@@ -1,112 +1,120 @@
 {
      "AIRSTRIKE": {
-          "damage": 700,
-          "damageRadius": 2000,
-          "damageRadiusFalloff": 600,
-          "count": 12,
-          "spread": 3000,
-          "delayMin": 0.03,
-          "delayMax": 0.15
+          "Damage": 700,
+          "DamageRadius": 2000,
+          "DamageRadiusFalloff": 600,
+          "Count": 12,
+          "Spread": 3000,
+          "DelayMin": 0.03,
+          "DelayMax": 0.15
      },
      "NUKE": {
-          "damage": 1200,
-          "damageRadius": 5200,
-          "damageRadiusFalloff": 0,
-          "damageOverTime": [
+          "Damage": 1200,
+          "DamageRadius": 5200,
+          "DamageRadiusFalloff": 0,
+          "DamageOverTime": [
                {
-                    "damage": 120,
-                    "seconds": 3
+                    "Damage": 120,
+                    "Seconds": 3
                },
                {
-                    "damage": 40,
-                    "seconds": 8
+                    "Damage": 40,
+                    "Seconds": 8
                }
           ]
      },
      "HEAL": {
-          "healAmmount": 2000,
-          "triggerRadius": 3000
+          "HealAmmount": 2000,
+          "TriggerRadius": 3000
      },
      "ROBOT_DOGS": {
-          "amount": 5,
-          "spawnLeader": true,
-          "stats": {
-               "maxHealth": 800,
-               "maxShield": 0,
-               "shieldRechargeRate": 0,
-               "speed": 3000,
-               "scale": 1
+          "Amount": 5,
+          "SpawnLeader": true,
+          "Stats": {
+               "MaxHealth": 800,
+               "MaxShield": 0,
+               "ShieldRechargeRate": 0,
+               "Speed": 3000,
+               "Scale": 1,
+               "Weapon": {
+                    "Damage": 20,
+                    "DamageRadius": 100,
+                    "DamageType": 1,
+                    "Spread": 2,
+                    "RateOfFire": 140,
+                    "ProjectileSpeed": 48000
+               }
           },
-          "leaderStats": {
-               "maxHealth": 1300,
-               "maxShield": 0,
-               "shieldRechargeRate": 0,
-               "speed": 3000,
-               "scale": 1.25
+          "LeaderStats": {
+               "MaxHealth": 1300,
+               "MaxShield": 0,
+               "ShieldRechargeRate": 0,
+               "Speed": 3000,
+               "Scale": 1.25
           }
      },
      "REINFORCEMENTS": {
-          "maxHealth": 800,
-          "maxShield": 0,
-          "shieldRechargeRate": 0,
-          "speed": 1750,
-          "scale": 0.75,
-          "weapons": [
+          "MaxHealth": 1400,
+          "MaxShield": 0,
+          "ShieldRechargeRate": 0,
+          "Speed": 1750,
+          "Scale": 0.75,
+          "Weapons": [
                {
-                    "name": "Dual Cannons",
-                    "damage": 12,
-                    "damageFalloff": 0,
-                    "damageFalloffRate": 0,
-                    "damageRadius": 100,
-                    "damageRadiusFalloff": 0,
-                    "spread": 0,
-                    "rateOfFire": 270,
-                    "projectileSpeed": 36000
+                    "Name": "Dual Cannons",
+                    "Damage": 9,
+                    "DamageFalloff": 0,
+                    "DamageFalloffRate": 0,
+                    "DamageRadius": 100,
+                    "DamageRadiusFalloff": 0,
+                    "Spread": 0,
+                    "RateOfFire": 270,
+                    "ProjectileSpeed": 36000
                },
                {
-                    "name": "Rocket Pods",
-                    "damage": 70,
-                    "damageFalloff": 0,
-                    "damageFalloffRate": 0,
-                    "damageRadius": 850,
-                    "damageRadiusFalloff": 250,
-                    "spread": 0,
-                    "rateOfFire": 3,
-                    "projectileSpeed": 36000
+                    "Name": "Rocket Pods",
+                    "Damage": 70,
+                    "DamageFalloff": 0,
+                    "DamageFalloffRate": 0,
+                    "DamageRadius": 850,
+                    "DamageRadiusFalloff": 250,
+                    "Spread": 0,
+                    "RateOfFire": 1,
+                    "ProjectileSpeed": 36000
                }
           ]
      },
      "OVERCHARGE": {
-          "radialDamagePercentageOfShield": 3,
-          "radialDamageMin": 300,
-          "radialDamageMax": 2000,
-          "radialDamageFriendlyFire": false,
-          "selfShieldDamagePercentage": 0.5
+          "RadialDamagePercentageOfShield": 3,
+          "RadialDamageMin": 300,
+          "RadialDamageMax": 2000,
+          "RadialDamageFriendlyFire": false,
+          "SelfShieldDamagePercentage": 0.5
      },
      "SHIELD_BUFF": {
-          "instantShieldHealPercentage": 0.5,
-          "shieldRechargeMultiplier": 4,
-          "shieldRechargeDelayMultiplier": 0.5,
-          "buffTime": 15,
-          "triggerRadius": 3000
+          "InstantShieldHealPercentage": 0.5,
+          "ShieldRechargeMultiplier": 4,
+          "ShieldRechargeDelayMultiplier": 0.5,
+          "BuffTime": 15,
+          "TriggerRadius": 3000
      },
      "EMP": {
-          "duration": 5,
-          "radius": 10000
+          "Duration": 5,
+          "Radius": 10000
      },
      "HACKER_DRONE": {
-          "duration": 18
+          "Duration": 18
      },
      "CAMERA_DRONE": {
-          "duration": 20
+          "Duration": 20
      },
      "INCOGNITO": {
-          "duration": 15
+          "Duration": 15
      },
      "BLACKOUT": {
-          "duration": 15
+          "Duration": 15
      },
      "AMMO": {
-          "triggerRadius": 3000
+          "TriggerRadius": 3000
      }
 }

@@ -1,23 +1,23 @@
 [
      {
-          "model": "Mech_BostonCybernetics",
-          "maxHealth": 1000,
-          "maxShield:": 1000,
-          "shieldRechargeRate": 80,
-          "speed": 2750
+          "Model": "Mech_BostonCybernetics",
+          "MaxHealth": 1000,
+          "MaxShield:": 1000,
+          "ShieldRechargeRate": 80,
+          "Speed": 2750
      },
      {
-          "model": "Mech_RedMountain",
-          "maxHealth": 1500,
-          "maxShield:": 1000,
-          "shieldRechargeRate": 80,
-          "speed": 1750
+          "Model": "Mech_RedMountain",
+          "MaxHealth": 1500,
+          "MaxShield:": 1000,
+          "ShieldRechargeRate": 80,
+          "Speed": 1750
      },
      {
-          "model": "Mech_Zaibastsu",
-          "maxHealth": 1000,
-          "maxShield:": 1000,
-          "shieldRechargeRate": 100,
-          "speed": 2500
+          "Model": "Mech_Zaibastsu",
+          "MaxHealth": 1000,
+          "MaxShield:": 1000,
+          "ShieldRechargeRate": 100,
+          "Speed": 2500
      }
 ]
