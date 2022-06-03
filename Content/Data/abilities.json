@@ -22,5 +22,19 @@
                     "Seconds": 5
                }
           ]
+     },
+     "Heal": {
+          "HealAmmount": 2000,
+          "TriggerRadius": 3000
+     },
+     "ShieldBuff": {
+          "InstantShieldHealPercentage": 0.5,
+          "ShieldRechargeMultiplier": 4,
+          "ShieldRechargeDelayMultiplier": 0.5,
+          "BuffTime": 15,
+          "TriggerRadius": 3000
+     },
+     "Ammo": {
+          "TriggerRadius": 3000
      }
 }

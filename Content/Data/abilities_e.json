@@ -1,33 +1,5 @@
 {
-     "AIRSTRIKE": {
-          "Damage": 700,
-          "DamageRadius": 2000,
-          "DamageRadiusFalloff": 600,
-          "Count": 12,
-          "Spread": 3000,
-          "DelayMin": 0.03,
-          "DelayMax": 0.15
-     },
-     "NUKE": {
-          "Damage": 1200,
-          "DamageRadius": 5200,
-          "DamageRadiusFalloff": 0,
-          "DamageOverTime": [
-               {
-                    "Damage": 120,
-                    "Seconds": 3
-               },
-               {
-                    "Damage": 40,
-                    "Seconds": 8
-               }
-          ]
-     },
-     "HEAL": {
-          "HealAmmount": 2000,
-          "TriggerRadius": 3000
-     },
-     "ROBOT_DOGS": {
+     "RobotDogs": {
           "Amount": 5,
           "SpawnLeader": true,
           "Stats": {
@@ -53,7 +25,7 @@
                "Scale": 1.25
           }
      },
-     "REINFORCEMENTS": {
+     "Reinforcements": {
           "MaxHealth": 1400,
           "MaxShield": 0,
           "ShieldRechargeRate": 0,
@@ -84,37 +56,11 @@
                }
           ]
      },
-     "OVERCHARGE": {
+     "Overcharge": {
           "RadialDamagePercentageOfShield": 3,
           "RadialDamageMin": 300,
           "RadialDamageMax": 2000,
           "RadialDamageFriendlyFire": false,
           "SelfShieldDamagePercentage": 0.5
-     },
-     "SHIELD_BUFF": {
-          "InstantShieldHealPercentage": 0.5,
-          "ShieldRechargeMultiplier": 4,
-          "ShieldRechargeDelayMultiplier": 0.5,
-          "BuffTime": 15,
-          "TriggerRadius": 3000
-     },
-     "EMP": {
-          "Duration": 5,
-          "Radius": 10000
-     },
-     "HACKER_DRONE": {
-          "Duration": 18
-     },
-     "CAMERA_DRONE": {
-          "Duration": 20
-     },
-     "INCOGNITO": {
-          "Duration": 15
-     },
-     "BLACKOUT": {
-          "Duration": 15
-     },
-     "AMMO": {
-          "TriggerRadius": 3000
      }
 }
