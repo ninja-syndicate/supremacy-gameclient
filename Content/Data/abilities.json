@@ -1,29 +1,26 @@
-[
-     {
-          "Name": "Default",
-          "Airstrike": {
-               "Damage": 700,
-               "DamageRadius": 2000,
-               "DamageRadiusFalloff": 600,
-               "Count": 12,
-               "Spread": 3000,
-               "DelayMin": 0.03,
-               "DelayMax": 0.15
-          },
-          "Nuke": {
-               "Damage": 1200,
-               "DamageRadius": 5200,
-               "DamageRadiusFalloff": 0,
-               "DamageOverTime": [
-                    {
-                         "Damage": 120,
-                         "Seconds": 3
-                    },
-                    {
-                         "Damage": 40,
-                         "Seconds": 5
-                    }
-               ]
-          }
+{
+     "Airstrike": {
+          "Damage": 700,
+          "DamageRadius": 2000,
+          "DamageRadiusFalloff": 600,
+          "Count": 12,
+          "Spread": 3000,
+          "DelayMin": 0.03,
+          "DelayMax": 0.15
+     },
+     "Nuke": {
+          "Damage": 1200,
+          "DamageRadius": 5200,
+          "DamageRadiusFalloff": 0,
+          "DamageOverTime": [
+               {
+                    "Damage": 120,
+                    "Seconds": 3
+               },
+               {
+                    "Damage": 40,
+                    "Seconds": 5
+               }
+          ]
      }
-]
+}
