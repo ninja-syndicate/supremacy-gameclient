@@ -91,6 +91,15 @@ struct FJavascriptColumn
 
 	UPROPERTY(Transient)
 	UWidget* Widget;
+
+	FJavascriptColumn()
+	{
+		Width = 0;
+		Widget = nullptr;
+	}
+
+	FJavascriptColumn(const FString Id, const float Width, UWidget* Widget)
+		: Id(Id), Width(Width), Widget(Widget) {}
 };
 
 /**

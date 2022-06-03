@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:95e7bdb1c5548fc3ccbe296625d291f697dba2535c957f77ac569013e3d1c031
-size 243
+Supremacy Mech AI
+------------------
+
+### Setup
+
+- `npm install`
+- `npm run-script build` (or `npm run-script watch` if you want to build after each change)
+- Set the AI to use the compiled script file: `default-mech-ai/build/mech.js`
