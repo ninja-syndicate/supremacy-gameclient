@@ -1,0 +1,23 @@
+[
+     {
+          "Name": "Mech_BostonCybernetics",
+          "HealthMax": 1000,
+          "ShieldMax": 1000,
+          "ShieldRechargeRate": 80,
+          "Speed": 2750
+     },
+     {
+          "Name": "Mech_RedMountain",
+          "HealthMax": 1500,
+          "ShieldMax": 1000,
+          "ShieldRechargeRate": 80,
+          "Speed": 1750
+     },
+     {
+          "Name": "Mech_Zaibastsu",
+          "HealthMax": 1000,
+          "ShieldMax": 1000,
+          "ShieldRechargeRate": 100,
+          "Speed": 2500
+     }
+]
