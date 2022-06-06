@@ -1,17 +1,24 @@
-import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
 import {AI} from "../index"
+
+import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
 import {AbilityStatus} from "enums"
 import {IsIntVector} from "../utils"
 import {AIBlackboard} from "../blackboard"
 
 /**
- * Performs a special attack. 
- * 
- * @param blackboardKey IntVector
+ * Performs a melee attack in the direction AI is facing. 
  */
-export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task({
+export const BTT_MeleeAttack = () => new Task({
+    run: () => {
+        const status = AI.QueryAbilityStatus(Ability.MeleeAttack);
+        if (status != AbilityStatus.Ready)
+            return FAILURE;
+
+        return SUCCESS;
+    }
+
+    /*
     run: (blackboard: AIBlackboard) => {
-        const location = blackboard[blackboardKey];
         if (!location || !IsIntVector(location))
             return FAILURE;
         
@@ -25,4 +32,5 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task
                 return SUCCESS;
         };
     },
+    */
 });

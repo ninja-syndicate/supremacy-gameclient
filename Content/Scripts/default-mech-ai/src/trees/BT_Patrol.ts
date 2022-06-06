@@ -5,7 +5,23 @@ import {EQSQueryType} from "enums"
 import {BTT_MoveTo} from "../tasks/BTT_MoveTo"
 import {IsSet} from "../decorators/IsSet"
 import {AIBlackboard} from "../blackboard"
+/*
+export const BT_Patrol = new Sequence({
+    nodes: [
+        BTT_Focus("targetLastKnownLocation"),
+        BTT_MoveTo("targetLastKnownLocation")
+    ]
+})
+*/
+export const BT_Patrol = new Sequence({
+    nodes: [
+        BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),
+        BTT_Focus("patrolLocation"),
+        BTT_MoveTo("patrolLocation")
+    ]
+});
 
+/*
 export const BT_Patrol = new Sequence({
     nodes: [
         BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),
@@ -19,4 +35,6 @@ export const BT_Patrol = new Sequence({
             ]
         }), "targetLastKnownLocation", true)
     ]
-})
+});
+
+*/

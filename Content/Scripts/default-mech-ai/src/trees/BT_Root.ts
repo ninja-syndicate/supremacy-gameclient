@@ -5,7 +5,8 @@ import {IsSet,} from "../decorators/IsSet"
 
 export const BT_Root = new Selector({
     nodes: [
-        IsSet(BT_Combat, "target"),
-        BT_Patrol,
+        BT_Combat,
+        // IsSet(BT_Combat, "target", true),
+        // BT_Patrol,
     ]
 })

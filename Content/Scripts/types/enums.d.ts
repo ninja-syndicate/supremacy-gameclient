@@ -45,3 +45,10 @@ export const enum MovementResult {
     Aborted,
     Invalid,
 }
+
+export const enum AbilityStatus {
+    Ready,
+    Running,
+    Success,
+    Failed
+}

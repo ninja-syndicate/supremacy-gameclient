@@ -1,4 +1,4 @@
-import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, WeaponTag} from "./enums"
+import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, AbilityStatus, WeaponTag} from "./enums"
 
 // The AI Controller, containing all the available commands a Mech can be given
 declare class AIController {
@@ -43,10 +43,20 @@ declare class AIController {
 
     /**
      * Get the current ammo count of a weapon.
+     * 
      * Always returns 1 if weapon has infinite ammo.
      * *Note: Can only get the ammo count of your own weapons*
      */
     WeaponGetAmmo(hash: string): number;
+
+    /**
+     * Get the current ammo count of a weapon by tag. Note that if the AI has
+     * more than one weapon of the specified tag, the sum of ammos for all
+     * those weapons will be returned. 
+     * 
+     * @param tag 
+     */
+    WeaponGetAmmoByTag(tag: WeaponTag): number;
 
     /** Returns true if location is within {@link range} of the war machine */
     InRange(location: IntVector, range: number): boolean;
@@ -56,6 +66,22 @@ declare class AIController {
      * Useful if the AI is having trouble finding any enemies to fight.
      */
     Taunt(): void;
+
+    /**
+     * Performs a special attack.
+     * 
+     * The AI will rotate to face the specified location and launch missiles
+     * from the rocket pod towards the specified location. Note that this will
+     * modify the current focal point to face in the specified location.
+     */
+    SpecialAttack(location: IntVector): AbilityStatus;
+
+    /**
+     * Queries status for the given ability.
+     * 
+     * @param ability 
+     */
+    QueryAbilityStatus(ability: Ability): AbilityStatus;
 
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to
