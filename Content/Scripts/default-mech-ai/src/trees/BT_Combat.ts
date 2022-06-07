@@ -10,8 +10,8 @@ import {CanActivateAbility} from "../decorators/CanActivateAbility";
 import { AI } from '..';
 import {BTT_MoveTo} from "../tasks/BTT_MoveTo";
 import {BTT_MeleeAttack} from "../tasks/BTT_MeleeAttack";
-import {BTT_WeaponRelease} from "../tasks/BTT_WeaponRelease";
-import { BTT_WeaponTrigger } from '../tasks/BTT_WeaponTrigger';
+import {BTT_WeaponRelease} from "../tasks/BTT_ReleaseWeapon";
+import { BTT_WeaponTrigger } from '../tasks/BTT_TriggerWeapon';
 
 export const BT_MeleeCombat = new Parallel({
     nodes: [
