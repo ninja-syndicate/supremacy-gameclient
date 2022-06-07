@@ -139,9 +139,121 @@
           },
           "Weapon_AM_Shotgun": {
                "Name": "Archon Militech Shotgun",
-               "Damage": 10,
+               "Damage": 6,
                "Spread": 8,
+               "RateOfFire": 100,
+               "Amount": 12
+          },
+          "Weapon_Pyro_Cannon": {
+               "Name": "Pyro Cannon",
+               "Damage": 140,
+               "DamageRadius": 500,
+               "DamageType": 2,
+               "RateOfFire": 160
+          },
+          "Weapon_Pyro_FlameThrower": {
+               "Name": "Pyro Flamethrower",
+               "Damage": 4,
+               "Spread": 5,
+               "RateOfFire": 600
+          },
+          "Weapon_Pyro_GrenadeLauncher": {
+               "Damage": 200,
+               "RateOfFire": 60
+          },
+          "Weapon_Pyro_LaserBeam": {
+               "Name": "Pyro Laser Beam",
+               "Damage": 5,
+               "RateOfFire": 600
+          },
+          "Weapon_Pyro_LightningGun": {
+               "Name": "Pyro Lightning Gun",
+               "Damage": 5,
+               "RateOfFire": 600
+          },
+          "Weapon_Pyro_MachineGun": {
+               "Name": "Pyro Machine Gun",
+               "Damage": 9,
+               "Spread": 3,
+               "RateOfFire": 750
+          },
+          "Weapon_Pyro_Minigun": {
+               "Name": "Pyro Minigun",
+               "Damage": 6,
+               "Spread": 5,
+               "RateOfFire": 6000
+          },
+          "Weapon_Pyro_PlasmaGun": {
+               "Name": "Pyro Plasma Gun",
+               "Damage": 20,
+               "Spread": 3,
                "RateOfFire": 100
+          },
+          "Weapon_Pyro_RocketLauncher": {
+               "Name": "Pyro Rocket Launcher",
+               "Damage": 100,
+               "DamageRadius": 300,
+               "Spread": 1,
+               "RateOfFire": 60
+          },
+          "Weapon_Pyro_Shotgun": {
+               "Name": "Pyro Shotgun",
+               "Damage": 8,
+               "Spread": 8,
+               "RateOfFire": 80,
+               "Amount": 12
+          },
+          "Weapon_Warsui_Cannon": {
+               "Name": "Warsui Cannon",
+               "Damage": 140,
+               "DamageRadius": 500,
+               "DamageType": 2,
+               "RateOfFire": 160
+          },
+          "Weapon_Warsui_Flakgun": {
+               "Name": "Warsui Flakgun",
+               "Damage": 5,
+               "Spread": 8,
+               "RateOfFire": 100,
+               "Amount": 20
+          },
+          "Weapon_Warsui_LaserBeam": {
+               "Name": "Warsui Laser Beam",
+               "Damage": 5,
+               "RateOfFire": 600
+          },
+          "Weapon_Warsui_LightningGun": {
+               "Name": "Warsui Lightning Gun",
+               "Damage": 5,
+               "RateOfFire": 600
+          },
+          "Weapon_Warsui_MachineGun": {
+               "Name": "Warsui Machinegun",
+               "Damage": 9,
+               "Spread": 3,
+               "RateOfFire": 750
+          },
+          "Weapon_Warsui_MissileLauncher": {
+               "Name": "Warsui Missile Launcher",
+               "Damage": 100,
+               "DamageRadius": 300,
+               "Spread": 1,
+               "RateOfFire": 100
+          },
+          "Weapon_Warsui_PlasmaGun": {
+               "Name": "Warsui Plasma Gun",
+               "Damage": 20,
+               "Spread": 3,
+               "RateOfFire": 100
+          },
+          "Weapon_Warsui_RailGun": {
+               "Name": "Warsui Railgun",
+               "Damage": 180,
+               "DamageFalloff": 40000,
+               "DamageFalloffRate": 50,
+               "Spread": 1,
+               "ProjectileSpeed": 120000,
+               "RateOfFire": 60
           }
      }
 }
