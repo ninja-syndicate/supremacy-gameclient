@@ -2,7 +2,7 @@ export const enum WeaponTag {
     All = "Weapon",
     Primary = "Weapon.Primary",
     PrimaryLeftArm = "Weapon.Primary.LeftArm",
-    PrimaryRightArm = "Weapon.Primary.RightWeapon",
+    PrimaryRightArm = "Weapon.Primary.RightArm",
     Secondary = "Weapon.Secondary",
     Melee = "Weapon.Melee",
     Flamethrower = "Weapon.Flamethrower",
@@ -46,9 +46,14 @@ export const enum MovementResult {
     Invalid,
 }
 
+export const enum Ability {
+    MeleeAttack = "Ability.MeleeAttack",
+    SpecialAttack = "Ability.SpecialAttack"
+}
+
 export const enum AbilityStatus {
     Ready,
     Running,
-    Success,
+    Finished,
     Failed
 }

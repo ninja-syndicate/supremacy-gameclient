@@ -1,6 +1,6 @@
 import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
 import {AI} from "../index"
-import {AbilityStatus} from "enums"
+import {Ability, AbilityStatus} from "enums";
 import {IsIntVector} from "../utils"
 import {AIBlackboard} from "../blackboard"
 
@@ -15,14 +15,15 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task
         if (!location || !IsIntVector(location))
             return FAILURE;
         
-        const result = AI.SpecialAttack(location);
-        switch (result) {
+        AI.TrySpecialAttack(location);
+        const status = AI.QueryAbilityStatus(Ability.SpecialAttack);
+        switch (status) {
             case AbilityStatus.Running:
                 return RUNNING;
             case AbilityStatus.Failed:
                 return FAILURE;
-            case AbilityStatus.Success:
+            case AbilityStatus.Finished:
                 return SUCCESS;
-        };
-    },
+        }
+    }
 });

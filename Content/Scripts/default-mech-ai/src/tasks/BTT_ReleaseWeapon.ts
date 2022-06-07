@@ -1,19 +1,17 @@
 import {AI} from "../index"
 
 import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
+import {Ability, AbilityStatus} from "enums"
+import {IsIntVector} from "../utils"
 import {AIBlackboard} from "../blackboard"
 import {WeaponTag} from "enums"
 
 /**
- * Shoots the specified weapon.
+ * Releases the triggered weapon by tag.
  */
- export const BTT_MeleeAttack = (tag: WeaponTag) => new Task({
+export const BTT_ReleaseWeapon = (tag: WeaponTag) => new Task({
     run: () => {
-        AI.WeaponTrigger(tag);
-        return RUNNING;
-    },
-    
-    end: () => {
         AI.WeaponRelease(tag);
+        return SUCCESS;
     }
 });

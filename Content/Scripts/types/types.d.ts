@@ -1,4 +1,5 @@
-import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, AbilityStatus, WeaponTag} from "./enums"
+import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, WeaponTag} from "./enums";
+import {Ability, AbilityStatus} from "./enums";
 
 // The AI Controller, containing all the available commands a Mech can be given
 declare class AIController {
@@ -67,14 +68,10 @@ declare class AIController {
      */
     Taunt(): void;
 
-    /**
-     * Performs a special attack.
-     * 
-     * The AI will rotate to face the specified location and launch missiles
-     * from the rocket pod towards the specified location. Note that this will
-     * modify the current focal point to face in the specified location.
-     */
-    SpecialAttack(location: IntVector): AbilityStatus;
+    TryMeleeAttack(): boolean;
+    TrySpecialAttack(location: IntVector): boolean;
+    
+    CanActivateAbility(ability: Ability): boolean;
 
     /**
      * Queries status for the given ability.
@@ -82,6 +79,8 @@ declare class AIController {
      * @param ability 
      */
     QueryAbilityStatus(ability: Ability): AbilityStatus;
+
+
 
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to

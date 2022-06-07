@@ -1,5 +1,5 @@
 import {EnvironmentQueryStatus, WeaponTag} from "enums"
-import {BrainInput} from "types"
+import {BrainInput, IntVector} from "types"
 import {StringToEQSQueryType} from "./utils"
 import {AI} from "./index"
 import {BT_Root} from "./trees/BT_Root"
@@ -7,7 +7,7 @@ import {BehaviorTree} from "behaviortree"
 import {AIBlackboard} from "./blackboard"
 import {MovementResult} from "enums";
 import {Task, SUCCESS, FAILURE, RUNNING} from 'behaviortree';
-import {Perception} from "types"
+import {Perception} from "types";
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -21,6 +21,7 @@ export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
 
     // Store hash for the weapons to blackboard for easy access.
+    /*
     for (let weapon of input.self.weapons) {
         const leftIndex: number = weapon.tags.findIndex(tag => tag === WeaponTag.PrimaryLeftArm);
         const rightIndex: number = weapon.tags.findIndex(tag => tag === WeaponTag.PrimaryRightArm);
@@ -32,6 +33,7 @@ export const onBegin = (input: BrainInput) => {
             blackboard.rightArmWeapon = input.self.weapons[rightIndex];
         }
     }
+    */
     console.log(`${input.self.name} AI Started`);
 }
 
@@ -48,6 +50,9 @@ export const onTick = (input: BrainInput) => {
     // Perception
     const targetVisIndex = !blackboard.target ? -1 : input.perception.sight.findIndex(m => m.hash === blackboard.target.hash)
     blackboard.canSeeTarget = blackboard.target !== null && targetVisIndex !== -1
+    if (blackboard.canSeeTarget) {
+        blackboard.targetLastKnownLocation = blackboard.target.location;
+    }
     if (!blackboard.canSeeTarget) {
         // Find Target
         if (input.perception.sight.length > 0) {

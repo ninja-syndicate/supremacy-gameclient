@@ -9,7 +9,7 @@ export const BT_MeleeCombat = new Parallel({
     nodes: [
         new Selector({
             nodes: [
-                IsSet(BTT_Shoot, "enemyInWeaponLOS", true)
+                //IsSet(BTT_Shoot, "enemyInWeaponLOS", true)
             ]
         }),
         new Sequence({

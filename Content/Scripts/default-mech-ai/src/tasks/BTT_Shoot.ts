@@ -8,20 +8,13 @@ import {AbilityStatus, WeaponTag} from "enums";
  */
 export const BTT_Shoot = (tag: WeaponTag) => new Task({
     run: (blackboard: AIBlackboard) => {
-        const weaponLeftArmAmmo: number = AI.WeaponGetAmmo(blackboard.leftArmWeapon.hash);
-        const weaponRightArmAmmo: number = AI.WeaponGetAmmo(blackboard.rightArmWeapon.hash);
+        const hasAmmo = AI.WeaponGetAmmoByTag(tag) > 0;
 
-
-        switch (status) {
-            case AbilityStatus.Ready:
-                AI.WeaponTrigger(WeaponTag.Melee);
-                return RUNNING;
-            case AbilityStatus.Running:
-                return RUNNING;
-            case AbilityStatus.Success:
-                return SUCCESS;
-            default:
-                return FAILURE;
-        };
+        if (hasAmmo) {
+            AI.WeaponTrigger(tag);
+        } else {
+            AI.WeaponRelease(tag);
+        }
+        return hasAmmo ? RUNNING : FAILURE;
     }
 });

@@ -15,14 +15,15 @@ class IsSetDecorator extends Decorator {
     }
 
     decorate(run: RunCallback, blackboard: AIBlackboard, config: IsSetProps) {
-        if (!!blackboard[config.blackboardKey] !== config.isSet)
-            return FAILURE
-        return run()
+        if (!!blackboard[config.blackboardKey] !== config.isSet) {
+            return FAILURE;
+        }
+        return run();
     }
 }
 
 export const IsSet = (node: NodeOrRegistration, blackboardKey: keyof AIBlackboard, isSet: boolean = true): Node => new IsSetDecorator({
-    node: BT_Combat, config: {
+    node: node, config: {
         blackboardKey,
         isSet,
     }
