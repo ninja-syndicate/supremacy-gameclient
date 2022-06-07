@@ -36,5 +36,74 @@
      },
      "Ammo": {
           "TriggerRadius": 3000
+     },
+     "RobotDogs": {
+          "Amount": 5,
+          "SpawnLeader": true,
+          "Stats": {
+               "HealthMax": 800,
+               "Speed": 3000,
+               "Weapon": {
+                    "Name": "Robot Dog Laser",
+                    "Damage": 20,
+                    "DamageRadius": 100,
+                    "DamageType": 1,
+                    "Spread": 2,
+                    "RateOfFire": 140,
+                    "ProjectileSpeed": 48000
+               }
+          },
+          "LeaderStats": {
+               "HealthMax": 1300,
+               "Speed": 3000,
+               "Weapon": {
+                    "Name": "Robot Dog Laser",
+                    "Damage": 20,
+                    "DamageRadius": 100,
+                    "DamageType": 1,
+                    "Spread": 2,
+                    "RateOfFire": 140,
+                    "ProjectileSpeed": 48000
+               }
+          }
+     },
+     "Reinforcements": {
+          "HealthMax": 1400,
+          "ShieldMax": 0,
+          "ShieldRechargeRate": 0,
+          "Speed": 1750,
+          "Weapons": [
+               {
+                    "ID": "a009fbf9-4fe3-48b0-8f34-e207c2b355dc",
+                    "Name": "Dual Cannons",
+                    "Damage": 9,
+                    "DamageFalloff": 0,
+                    "DamageFalloffRate": 0,
+                    "DamageRadius": 100,
+                    "DamageRadiusFalloff": 0,
+                    "Spread": 0,
+                    "RateOfFire": 270,
+                    "ProjectileSpeed": 36000
+               },
+               {
+                    "ID": "7c082a33-ff87-454f-bf8c-925945dd0ff4",
+                    "Name": "Rocket Pods",
+                    "Damage": 70,
+                    "DamageFalloff": 0,
+                    "DamageFalloffRate": 0,
+                    "DamageRadius": 850,
+                    "DamageRadiusFalloff": 250,
+                    "Spread": 0,
+                    "RateOfFire": 1,
+                    "ProjectileSpeed": 36000
+               }
+          ]
+     },
+     "Overcharge": {
+          "RadialDamagePercentageOfShield": 3,
+          "RadialDamageMin": 300,
+          "RadialDamageMax": 2000,
+          "RadialDamageFriendlyFire": false,
+          "SelfShieldDamagePercentage": 0.5
      }
 }
