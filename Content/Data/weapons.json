@@ -56,7 +56,7 @@
                "DamageRadius": 850,
                "DamageType": 2,
                "ProjectileSpeed": 50000,
-               "RateOfFire": 3
+               "RateOfFire": 2
           },
           "SniperRifle": {
                "Name": "Sniper Rifle",
