@@ -49,8 +49,8 @@
                     "DamageRadius": 100,
                     "DamageType": 1,
                     "Spread": 2,
-                    "RateOfFire": 140,
-                    "ProjectileSpeed": 48000
+                    "ProjectileSpeed": 48000,
+                    "RateOfFire": 140
                }
           },
           "LeaderStats": {
@@ -62,8 +62,8 @@
                     "DamageRadius": 100,
                     "DamageType": 1,
                     "Spread": 2,
-                    "RateOfFire": 140,
-                    "ProjectileSpeed": 48000
+                    "ProjectileSpeed": 48000,
+                    "RateOfFire": 140
                }
           }
      },
@@ -74,28 +74,25 @@
           "Speed": 1750,
           "Weapons": [
                {
-                    "ID": "a009fbf9-4fe3-48b0-8f34-e207c2b355dc",
+                    "ID": "RedMountainCannon",
                     "Name": "Dual Cannons",
                     "Damage": 9,
-                    "DamageFalloff": 0,
-                    "DamageFalloffRate": 0,
+                    "DamageFalloff": 20000,
+                    "DamageFalloffRate": 12,
                     "DamageRadius": 100,
                     "DamageRadiusFalloff": 0,
-                    "Spread": 0,
-                    "RateOfFire": 270,
-                    "ProjectileSpeed": 36000
+                    "Spread": 4,
+                    "ProjectileSpeed": 36000,
+                    "RateOfFire": 270
                },
                {
-                    "ID": "7c082a33-ff87-454f-bf8c-925945dd0ff4",
+                    "ID": "RocketPods",
                     "Name": "Rocket Pods",
                     "Damage": 70,
-                    "DamageFalloff": 0,
-                    "DamageFalloffRate": 0,
                     "DamageRadius": 850,
-                    "DamageRadiusFalloff": 250,
-                    "Spread": 0,
-                    "RateOfFire": 1,
-                    "ProjectileSpeed": 36000
+                    "DamageType": 2,
+                    "ProjectileSpeed": 100000,
+                    "RateOfFire": 1
                }
           ]
      },
