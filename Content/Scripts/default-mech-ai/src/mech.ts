@@ -8,6 +8,7 @@ import {AIBlackboard} from "./blackboard"
 import {MovementResult} from "enums";
 import {Task, SUCCESS, FAILURE, RUNNING} from 'behaviortree';
 import {Perception} from "types";
+import {isDead} from "./helper";
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -15,7 +16,7 @@ export let tree = new BehaviorTree({
         target: null,
         eqsResults: {},
     } as AIBlackboard,
-})
+});
 
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
@@ -48,19 +49,19 @@ export const onTick = (input: BrainInput) => {
     }
 
     // Perception
-    const targetVisIndex = !blackboard.target ? -1 : input.perception.sight.findIndex(m => m.hash === blackboard.target.hash)
-    blackboard.canSeeTarget = blackboard.target !== null && targetVisIndex !== -1
-    if (blackboard.canSeeTarget) {
-        blackboard.targetLastKnownLocation = blackboard.target.location;
+    handleSightPerception(input.perception);
+
+    if (input.perception.damage.length != 0) {
+        const lastIndex: number = input.perception.damage.length - 1;
+
+        // Use the last damage stimulus direction.
+        blackboard.damageStimulusRotator = input.perception.damage[lastIndex].damageRotator;
+        console.log(blackboard.damageStimulusRotator.Roll, blackboard.damageStimulusRotator.Pitch,blackboard.damageStimulusRotator.Yaw);
     }
-    if (!blackboard.canSeeTarget) {
-        // Find Target
-        if (input.perception.sight.length > 0) {
-            blackboard.target = input.perception.sight[0]
-            blackboard.canSeeTarget = true
-            blackboard.targetLastKnownLocation = blackboard.target.location;
-        }
-    }
+
+
+
+
 
     /*
     if (bb.canSeeTarget || !bb.canSeeTarget) {
@@ -93,9 +94,6 @@ export const onTick = (input: BrainInput) => {
     */
 
     // Update Target
-    if (targetVisIndex !== -1) {
-        blackboard.target = input.perception.sight[targetVisIndex]
-    }
 
     // if (input.perception.damage.length > 0) {
     //     console.log(JSON.stringify(input.perception.damage[0]));
@@ -122,13 +120,55 @@ export const onTick = (input: BrainInput) => {
     // }
 }
 
+function handleSightPerception(perception: Perception): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    
+    // If the mech has no target, update the target to best target given by .
+    if (blackboard.target === null) {
+
+    }
+    const targetVisIndex = !blackboard.target ? -1 : perception.sight.findIndex(m => m.hash === blackboard.target.hash);
+    blackboard.canSeeTarget = blackboard.target !== null && targetVisIndex !== -1;
+
+
+    if (blackboard.target !== null && isDead(blackboard.target)) {
+
+    }
+
+    if (blackboard.canSeeTarget) {
+        blackboard.targetLastKnownLocation = blackboard.target.location;
+    }
+
+    if (!blackboard.canSeeTarget) {
+        // Find Target
+        if (input.perception.sight.length > 0) {
+            blackboard.target = input.perception.sight[0]
+            blackboard.canSeeTarget = true
+            blackboard.targetLastKnownLocation = blackboard.target.location;
+        }
+    }
+
+    if (targetVisIndex !== -1) {
+        blackboard.target = perception.sight[targetVisIndex];
+    }
+}
+
 // TODO: damage perception
-function handleDamagePerception(preception: Perception) {
+/*
+function handleDamagePerception(preception: Perception): void {
     preception.damage;
 }
+*/
 
-// Find the best target.
-function evaluate(perception: Perception) {
+// function 
 
+/*
+// Score the best target.
+function score(mech: WarMachine): number {
+    const MaxDistanceToConsider: number = 50000;
+
+    const byHealth = (m) => 1 - (m.health / m.healthMax);
+    const byDistance = (m) => m.location;
 
 }
+*/

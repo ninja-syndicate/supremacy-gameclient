@@ -108,6 +108,12 @@ export interface IntVector {
     Z: number;
 }
 
+export interface Rotator {
+    Roll: number;
+    Pitch: number;
+    Yaw: number;
+}
+
 export interface ScriptError {
     // Which function from {@link AIController} the error/warning is from
     command: string;
@@ -213,6 +219,8 @@ export interface DamageDetails {
     friendly?: boolean;
     // The type of damage
     damageType: DamageType;
+    // The direction of the damage relative to the war machine that received the damage
+    damageRotator: Rotator;
     // The unique hash of the war machine that caused the damage
     instigatorHash: string;
     // The unique hash of the weapon that caused the damage

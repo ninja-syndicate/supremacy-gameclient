@@ -1,5 +1,6 @@
 
-import {FAILURE, Parallel, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
+import {FAILURE, Parallel, ParallelComplete, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
+import {ParallelImmediate} from "../branches/ParallelImmediate";
 import {BTT_Focus, BTT_StopFocus} from "../tasks/BTT_Focus"
 import {IsSet} from "../decorators/IsSet"
 import {AIBlackboard} from "../blackboard"
@@ -12,27 +13,19 @@ import {BTT_MoveTo} from "../tasks/BTT_MoveTo";
 import {BTT_MeleeAttack} from "../tasks/BTT_MeleeAttack";
 import {BTT_ReleaseWeapon} from "../tasks/BTT_ReleaseWeapon";
 import {BTT_TriggerWeapon} from '../tasks/BTT_TriggerWeapon';
+import { ParallelBackground } from '../branches/ParallelBackground';
 
-export const BT_MeleeCombat = new Selector({
+export const BT_MeleeCombat = new Parallel({
     nodes: [
-        new Parallel({
+        new Sequence({
             nodes: [
-                new Sequence({
-                    nodes: [
-                        BTT_TriggerWeapon(WeaponTag.Melee)
-                    ]
-                }),
-                new Sequence({
-                    nodes: [
-                        BTT_Focus("target"),
-                        BTT_MoveTo("targetLastKnownLocation")
-                    ]
-                })
+                BTT_Focus("target"),
+                BTT_MoveTo("targetLastKnownLocation")
             ]
         }),
-        BTT_ReleaseWeapon(WeaponTag.Melee)
-    ]}
-);
+        BTT_TriggerWeapon(WeaponTag.Melee)
+    ]
+});
 
 export const BT_Shoot = new Sequence({
     nodes: [
@@ -54,9 +47,14 @@ export const BT_Shoot = new Sequence({
 
 const BT_CanSeeTarget = new Selector({
     nodes: [
-        new Selector({ nodes: [CanActivateAbility(BT_MeleeCombat, Ability.MeleeAttack), BTT_ReleaseWeapon(WeaponTag.Melee) ] })
-        //CanActivateAbility(BTT_SpecialAttack("targetLastKnownLocation"), Ability.SpecialAttack),
-        //BT_Shoot
+        BTT_SpecialAttack("targetLastKnownLocation"),
+        new Selector({ 
+            nodes: [
+                CanActivateAbility(BT_MeleeCombat, Ability.MeleeAttack), 
+                BTT_ReleaseWeapon(WeaponTag.Melee) 
+            ]
+        }),
+        IsSet(BT_Shoot, "canSeeTarget")
     ]
 });
 
@@ -64,10 +62,12 @@ export const BT_Combat = new Selector({
     nodes: [
         new Sequence({
             nodes: [
+                /*
                 // Can See Target
                 new Task({
                     run: (blackboard: AIBlackboard) => blackboard.canSeeTarget ? SUCCESS : FAILURE
                 }),
+                */
                 BT_CanSeeTarget
             ]
         }),

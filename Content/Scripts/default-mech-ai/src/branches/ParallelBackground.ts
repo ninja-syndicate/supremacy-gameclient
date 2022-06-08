@@ -3,14 +3,13 @@ import BranchNode from 'behaviortree';
 import Node from 'behaviortree/src/Node';
 import { ParallelRunConfig, RunResult, StatusWithState, Blackboard, MinimalBlueprint, NodeOrRegistration } from 'behaviortree';
 
-
 /**
  * The Parallel Immediate branch node is a variant of Parallel node that fails
  * immediately if the one of its task fails instead of failing after running
  * all of its tasks.
  */
-export class ParallelImmediate extends Parallel {
-	nodeType = 'ParallelImmediate';
+export class ParallelBackground extends Parallel {
+	nodeType = 'ParallelBackground';
 
 	run(blackboard: Blackboard = {}, { lastRun, introspector, rerun, registryLookUp = (x) => x as Node }: ParallelRunConfig = {}) {
 		if (!rerun) 
@@ -19,21 +18,19 @@ export class ParallelImmediate extends Parallel {
 		const results: Array<RunResult> = [];
 		for (let currentIndex = 0; currentIndex < this.numNodes; ++currentIndex) {
 			const lastRunForIndex = lastRun && (lastRun as StatusWithState).state[currentIndex];
-			if (lastRunForIndex && isFailure(lastRunForIndex)) {
-				results[currentIndex] = lastRunForIndex;
-				break;
-			}
-			if (lastRunForIndex && !isRunning(lastRunForIndex)) {
-				results[currentIndex] = lastRunForIndex;
-				continue;
-			}
+            /*
+            if (lastRunForIndex && !isRunning(lastRunForIndex)) {
+                results[currentIndex] = lastRunForIndex;
+                continue;
+            }
+            */
 			const node = registryLookUp(this.nodes[currentIndex]);
 			const result = node.run(blackboard, { lastRun: lastRunForIndex, introspector, rerun, registryLookUp });
 			results[currentIndex] = result;
-			console.log((typeof result === 'object' && result.total === FAILURE));
-			if (result == FAILURE) {
-				break;
-			}
+
+            if (currentIndex == 0 && result == SUCCESS) {
+                break;
+            }
 		}
 		const endResult = this.calcResult(results);
 		if (!isRunning(endResult)) {
@@ -51,9 +48,6 @@ export class ParallelImmediate extends Parallel {
 		if (results.includes(FAILURE)) {
 		  return FAILURE;
 		}
-		if (results.includes(SUCCESS)) {
-		  return SUCCESS;
-		}
 		return { total: RUNNING, state: results };
 	  }
 }
@@ -64,4 +58,8 @@ function isRunning(result: RunResult | undefined): boolean {
 
 function isFailure(result: RunResult | undefined): boolean {
 	return result === FAILURE || (typeof result === 'object' && result.total === FAILURE);
+}
+
+function isSuccess(result: RunResult | undefined): boolean {
+	return result === SUCCESS || (typeof result === 'object' && result.total === SUCCESS);
 }

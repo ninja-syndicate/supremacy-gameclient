@@ -16,16 +16,17 @@ export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, acceptanceRadius: 
         const value = blackboard[blackboardKey]
         if (!value || !IsIntVector(value))
             return FAILURE
-        const result = AI.MoveToVector(value, acceptanceRadius)
+
+        const result = AI.MoveToVector(value, acceptanceRadius);
         switch (result) {
             case MovementResult.Moving:
                 return RUNNING
             case MovementResult.Success:
                 return SUCCESS
             case MovementResult.Aborted:
-                return SUCCESS
+                return FAILURE;
             default:
-                return FAILURE
+                return FAILURE;
         }
     }
 })

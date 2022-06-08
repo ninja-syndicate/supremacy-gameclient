@@ -52,7 +52,6 @@ export const enum Ability {
 }
 
 export const enum AbilityStatus {
-    Ready,
     Running,
     Finished,
     Failed

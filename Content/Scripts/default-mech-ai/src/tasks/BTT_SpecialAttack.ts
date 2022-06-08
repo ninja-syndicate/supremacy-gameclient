@@ -24,6 +24,8 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task
                 return FAILURE;
             case AbilityStatus.Finished:
                 return SUCCESS;
+            default:
+                return FAILURE;
         }
     }
 });
