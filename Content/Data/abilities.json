@@ -1,0 +1,114 @@
+{
+     "Airstrike": {
+          "Damage": 700,
+          "DamageRadius": 2000,
+          "DamageRadiusFalloff": 600,
+          "Count": 12,
+          "Spread": 3000,
+          "DelayMin": 0.03,
+          "DelayMax": 0.15
+     },
+     "Nuke": {
+          "Damage": 1200,
+          "DamageRadius": 5200,
+          "DamageRadiusFalloff": 0,
+          "DamageOverTime": [
+               {
+                    "Damage": 120,
+                    "Seconds": 3
+               },
+               {
+                    "Damage": 40,
+                    "Seconds": 5
+               }
+          ]
+     },
+     "Heal": {
+          "HealAmmount": 2000,
+          "TriggerRadius": 3000
+     },
+     "ShieldBuff": {
+          "InstantShieldHealPercentage": 0.5,
+          "ShieldRechargeMultiplier": 4,
+          "ShieldRechargeDelayMultiplier": 0.5,
+          "BuffTime": 15,
+          "TriggerRadius": 3000
+     },
+     "Ammo": {
+          "TriggerRadius": 3000
+     },
+     "RobotDogs": {
+          "Amount": 5,
+          "SpawnLeader": true,
+          "Stats": {
+               "HealthMax": 800,
+               "Speed": 3000,
+               "Weapon": {
+                    "Name": "Robot Dog Laser",
+                    "Damage": 20,
+                    "DamageRadius": 100,
+                    "DamageType": 1,
+                    "Spread": 2,
+                    "ProjectileSpeed": 48000,
+                    "RateOfFire": 140
+               }
+          },
+          "LeaderStats": {
+               "HealthMax": 1300,
+               "Speed": 3000,
+               "Weapon": {
+                    "Name": "Robot Dog Laser",
+                    "Damage": 20,
+                    "DamageRadius": 100,
+                    "DamageType": 1,
+                    "Spread": 2,
+                    "ProjectileSpeed": 48000,
+                    "RateOfFire": 140
+               }
+          }
+     },
+     "Reinforcements": {
+          "HealthMax": 1400,
+          "ShieldMax": 0,
+          "ShieldRechargeRate": 0,
+          "Speed": 1750,
+          "Weapons": [
+               {
+                    "ID": "RedMountainCannon",
+                    "Name": "Dual Cannons",
+                    "Damage": 9,
+                    "DamageFalloff": 20000,
+                    "DamageFalloffRate": 12,
+                    "DamageRadius": 100,
+                    "DamageRadiusFalloff": 0,
+                    "Spread": 4,
+                    "ProjectileSpeed": 36000,
+                    "RateOfFire": 270
+               },
+               {
+                    "ID": "RocketPods",
+                    "Name": "Rocket Pods",
+                    "Damage": 70,
+                    "DamageRadius": 850,
+                    "DamageType": 2,
+                    "ProjectileSpeed": 100000,
+                    "RateOfFire": 1
+               }
+          ]
+     },
+     "Overcharge": {
+          "RadialDamagePercentageOfShield": 3,
+          "RadialDamageMin": 300,
+          "RadialDamageMax": 2000,
+          "RadialDamageFriendlyFire": false,
+          "SelfShieldDamagePercentage": 0.5
+     },
+     "Landmines": {
+          "Amount": 20,
+          "HealthMax": 1000,
+          "Damage": 325,
+          "DamageRadius": 1000,
+          "DamageRadiusFalloff": 10,
+          "FriendlyFire": false
+     }
+}
