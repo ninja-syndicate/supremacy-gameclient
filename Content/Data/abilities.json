@@ -102,5 +102,13 @@
           "RadialDamageMax": 2000,
           "RadialDamageFriendlyFire": false,
           "SelfShieldDamagePercentage": 0.5
+     },
+     "Landmines": {
+          "Amount": 20,
+          "HealthMax": 1000,
+          "Damage": 325,
+          "DamageRadius": 1000,
+          "DamageRadiusFalloff": 10,
+          "FriendlyFire": false
      }
 }
