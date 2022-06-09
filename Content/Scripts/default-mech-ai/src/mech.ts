@@ -170,8 +170,6 @@ function score(mech: WarMachine): number {
     const MaxDistanceToConsider: number = 50000;
 
     // Normalized score functions.
-    console.log("m health" + mech.health);
-    console.log("m health max" + mech.healthMax);
     const scoreByHealth = (m) => 1 - (m.health / m.healthMax);
     const scoreByDistance = (m) => Math.min(1, distanceTo(blackboard.self, m) / MaxDistanceToConsider);
     const scoreFuncs = [scoreByHealth, scoreByDistance];
