@@ -1,7 +1,7 @@
 import {Task, SUCCESS, FAILURE, RUNNING} from 'behaviortree'
 import {AI} from "../index"
 import {AIBlackboard} from "../blackboard"
-import {IsIntVector} from "../utils"
+import {IsVector} from "../utils"
 import {MovementResult} from "enums"
 
 /**
@@ -14,7 +14,7 @@ import {MovementResult} from "enums"
 export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, acceptanceRadius: number = 800) => new Task({
     run: (blackboard: AIBlackboard) => {
         const value = blackboard[blackboardKey]
-        if (!value || !IsIntVector(value))
+        if (!value || !IsVector(value))
             return FAILURE
 
         const result = AI.MoveToVector(value, acceptanceRadius);

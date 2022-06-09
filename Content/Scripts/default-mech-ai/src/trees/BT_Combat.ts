@@ -14,6 +14,7 @@ import {BTT_MeleeAttack} from "../tasks/BTT_MeleeAttack";
 import {BTT_ReleaseWeapon} from "../tasks/BTT_ReleaseWeapon";
 import {BTT_TriggerWeapon} from '../tasks/BTT_TriggerWeapon';
 import { ParallelBackground } from '../branches/ParallelBackground';
+import { BTT_FocusDirection } from '../tasks/BTT_FocusDirection';
 
 export const BT_MeleeCombat = new Parallel({
     nodes: [
@@ -62,16 +63,19 @@ const BT_CanSeeTarget = new Selector({
 
 export const BT_Combat = new Selector({
     nodes: [
+        // IsSet(BT_CanSeeTarget, "canSeeTarget"),
+        new Sequence({nodes: [BTT_FocusDirection("damageStimulusDirection")]})
+        
+
+        /*
         new Sequence({
             nodes: [
-                /*
                 // Can See Target
                 new Task({
                     run: (blackboard: AIBlackboard) => blackboard.canSeeTarget ? SUCCESS : FAILURE
                 }),
-                */
-                BT_CanSeeTarget
             ]
         }),
+        */
     ],
 });

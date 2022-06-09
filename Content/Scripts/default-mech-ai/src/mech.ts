@@ -1,5 +1,5 @@
 import {EnvironmentQueryStatus, WeaponTag} from "enums"
-import {BrainInput, DamageDetails, IntVector, WarMachine} from "types"
+import {BrainInput, DamageDetails, Vector, WarMachine} from "types"
 import {StringToEQSQueryType} from "./utils"
 import {AI} from "./index"
 import {BT_Root} from "./trees/BT_Root"
@@ -29,6 +29,7 @@ export const onTick = (input: BrainInput) => {
     if (input.errors.length !== 0) {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`))
     }
+
 
     updateBlackboard(input);
 
@@ -125,8 +126,8 @@ function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
     const lastIndex: number = damageDetails.length - 1;
 
     // Use the last damage stimulus direction.
-    blackboard.damageStimulusRotator = damageDetails[lastIndex].damageRotator;
-    console.log(blackboard.damageStimulusRotator.Roll, blackboard.damageStimulusRotator.Pitch,blackboard.damageStimulusRotator.Yaw);
+    blackboard.damageStimulusDirection = damageDetails[lastIndex].damageDirection;
+    console.log(JSON.stringify(blackboard.damageStimulusDirection));
 }
 
 /**

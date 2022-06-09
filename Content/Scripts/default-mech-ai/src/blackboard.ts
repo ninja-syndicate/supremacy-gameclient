@@ -1,6 +1,5 @@
-import {EnvironmentQuery, WarMachine, IntVector, Weapon, Perception} from "types";
+import {EnvironmentQuery, WarMachine, Vector, Weapon, Perception} from "types";
 import {EQSQueryType} from "enums";
-import {Rotator} from "types";
 
 /**
  * 
@@ -9,12 +8,13 @@ import {Rotator} from "types";
 export interface AIBlackboard {
     self: WarMachine;
     eqsResults: Map<EQSQueryType, EnvironmentQuery>;
+    weapons: Weapon[];
     perception: Perception;
     target: WarMachine | null;
     canSeeTarget: boolean;
-    patrolLocation?: IntVector;
-    targetLastKnownLocation?: IntVector;
-    damageStimulusRotator?: Rotator;
+    patrolLocation?: Vector;
+    targetLastKnownLocation?: Vector;
+    damageStimulusDirection?: Vector;
     leftArmWeapon: Weapon;
     rightArmWeapon: Weapon;
 }

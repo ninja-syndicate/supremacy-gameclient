@@ -15,7 +15,7 @@ declare class AIController {
      * @param location The location to move to.
      * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
      */
-    MoveToVector(location: IntVector, acceptanceRadius?: number): MovementResult;
+    MoveToVector(location: Vector, acceptanceRadius?: number): MovementResult;
 
     /**
      * Aim at a target. The war machine will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}.
@@ -24,7 +24,7 @@ declare class AIController {
     FocusHash(hash: string): void;
 
     /** Aim at location.  The war machine will continously aim towards this location until focus is cleared with {@link ClearFocus}. */
-    FocusLocation(location: IntVector): void;
+    FocusLocation(location: Vector): void;
 
     // Stop aiming at the current target.
     ClearFocus(): void;
@@ -37,7 +37,7 @@ declare class AIController {
      * @param location If set, will not trigger limited-range weapons if location is not within the weapon's range (eg: melee weapons and flamethrowers)
      * @constructor
      */
-    WeaponTrigger(tag?: WeaponTag, location?: IntVector): void;
+    WeaponTrigger(tag?: WeaponTag, location?: Vector): void;
 
     // Stops firing all weapons that match the supplied tag, defaults to All Weapons
     WeaponRelease(tag?: WeaponTag): void;
@@ -60,7 +60,7 @@ declare class AIController {
     WeaponGetAmmoByTag(tag: WeaponTag): number;
 
     /** Returns true if location is within {@link range} of the war machine */
-    InRange(location: IntVector, range: number): boolean;
+    InRange(location: Vector, range: number): boolean;
 
     /**
      * Shoot up a flare and trigger a loud horn, attracting enemies towards you.
@@ -69,7 +69,7 @@ declare class AIController {
     Taunt(): void;
 
     TryMeleeAttack(): boolean;
-    TrySpecialAttack(location: IntVector): boolean;
+    TrySpecialAttack(location: Vector): boolean;
     
     CanActivateAbility(ability: Ability): boolean;
 
@@ -93,7 +93,7 @@ declare class AIController {
     /** Set string argument for an EQS query, generally a {@link WarMachine} hash. Call before {@link EQS_Query} */
     EQS_SetArgumentString(argument: EQSArgument, value: string): void;
     /** Set vector argument for an EQS query. Call before {@link EQS_Query} */
-    EQS_SetArgumentVector(argument: EQSArgument, value: IntVector): void;
+    EQS_SetArgumentVector(argument: EQSArgument, value: Vector): void;
 }
 
 declare class JavascriptContext {
@@ -102,16 +102,10 @@ declare class JavascriptContext {
     OnMessage(name: string, message: string);
 }
 
-export interface IntVector {
+export interface Vector {
     X: number;
     Y: number;
     Z: number;
-}
-
-export interface Rotator {
-    Roll: number;
-    Pitch: number;
-    Yaw: number;
 }
 
 export interface ScriptError {
@@ -165,11 +159,11 @@ export interface WarMachine {
     // Unique hash of the war machine
     hash: string;
     // Last known location of the war machine
-    location: IntVector;
+    location: Vector;
     // Last known yaw of the war machine (direction the war machine is facing)
     rotation: number;
     // Last known velocity of the war machine
-    velocity: IntVector;
+    velocity: Vector;
     // The ID of faction the mech belongs to
     factionID: string;
     // The name of the war machine
@@ -199,7 +193,7 @@ export interface WarMachine {
  */
 export interface SoundDetails {
     // The location of the sound
-    location: IntVector;
+    location: Vector;
     /**
      * Tag describing the sound
      *
@@ -220,7 +214,7 @@ export interface DamageDetails {
     // The type of damage
     damageType: DamageType;
     // The direction of the damage relative to the war machine that received the damage
-    damageRotator: Rotator;
+    damageDirection: Vector;
     // The unique hash of the war machine that caused the damage
     instigatorHash: string;
     // The unique hash of the weapon that caused the damage
@@ -241,7 +235,7 @@ export interface Perception {
 
 export interface EnvironmentQuery {
     status: EnvironmentQueryStatus;
-    location: IntVector;
+    location: Vector;
 }
 
 export interface EQSResults {

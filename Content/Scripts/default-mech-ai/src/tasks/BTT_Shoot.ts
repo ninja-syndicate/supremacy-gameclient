@@ -7,7 +7,12 @@ import {AbilityStatus, WeaponTag} from "enums";
  * Shoots the specified weapon.
  */
 export const BTT_Shoot = (tag: WeaponTag) => new Task({
-    run: () => {
+    run: (blackboard: AIBlackboard) => {
+        const idx: number = blackboard.self.weapons.findIndex(w => w.tags.findIndex(t => t === tag));
+        if (idx === -1)
+            return FAILURE;
+
+        // TODO: Remove this and maintain ammo from blackboard.
         const hasAmmo = AI.WeaponGetAmmoByTag(tag) > 0;
 
         if (hasAmmo) {

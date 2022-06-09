@@ -1,7 +1,7 @@
 import {Task, SUCCESS, FAILURE} from 'behaviortree'
 import {AI} from "../index"
 import {AIBlackboard} from "../blackboard"
-import {IsIntVector, IsWarMachine} from "../utils"
+import {IsVector, IsWarMachine} from "../utils"
 
 /**
  * Makes the AI look at a War Machine or location.
@@ -18,7 +18,7 @@ export const BTT_Focus = (blackboardKey: keyof AIBlackboard) => new Task({
         if (IsWarMachine(value)) {
             AI.FocusHash(value.hash)
             return SUCCESS
-        } else if (IsIntVector(value)) {
+        } else if (IsVector(value)) {
             AI.FocusLocation(value)
             return SUCCESS
         }
