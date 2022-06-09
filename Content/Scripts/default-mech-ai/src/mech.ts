@@ -1,5 +1,5 @@
 import {EnvironmentQueryStatus, WeaponTag} from "enums"
-import {BrainInput, IntVector} from "types"
+import {BrainInput, IntVector, WarMachine} from "types"
 import {StringToEQSQueryType} from "./utils"
 import {AI} from "./index"
 import {BT_Root} from "./trees/BT_Root"
@@ -8,7 +8,7 @@ import {AIBlackboard} from "./blackboard"
 import {MovementResult} from "enums";
 import {Task, SUCCESS, FAILURE, RUNNING} from 'behaviortree';
 import {Perception} from "types";
-import {isDead} from "./helper";
+import {distanceTo, isDead} from "./helper";
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -141,8 +141,8 @@ function handleSightPerception(perception: Perception): void {
 
     if (!blackboard.canSeeTarget) {
         // Find Target
-        if (input.perception.sight.length > 0) {
-            blackboard.target = input.perception.sight[0]
+        if (perception.sight.length > 0) {
+            blackboard.target = perception.sight[0]
             blackboard.canSeeTarget = true
             blackboard.targetLastKnownLocation = blackboard.target.location;
         }
@@ -150,7 +150,9 @@ function handleSightPerception(perception: Perception): void {
 
     if (targetVisIndex !== -1) {
         blackboard.target = perception.sight[targetVisIndex];
+        score(blackboard.target);
     }
+
 }
 
 // TODO: damage perception
@@ -162,13 +164,21 @@ function handleDamagePerception(preception: Perception): void {
 
 // function 
 
-/*
 // Score the best target.
 function score(mech: WarMachine): number {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
     const MaxDistanceToConsider: number = 50000;
 
-    const byHealth = (m) => 1 - (m.health / m.healthMax);
-    const byDistance = (m) => m.location;
+    // Normalized score functions.
+    console.log("m health" + mech.health);
+    console.log("m health max" + mech.healthMax);
+    const scoreByHealth = (m) => 1 - (m.health / m.healthMax);
+    const scoreByDistance = (m) => Math.min(1, distanceTo(blackboard.self, m) / MaxDistanceToConsider);
+    const scoreFuncs = [scoreByHealth, scoreByDistance];
 
+    console.log("health score" + scoreByHealth(mech));
+    console.log("ditsance score" + scoreByDistance(mech));
+    const finalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b);
+    console.log(finalScore);
+    return finalScore;
 }
-*/
