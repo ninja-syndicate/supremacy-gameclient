@@ -1,7 +1,7 @@
 
 import {FAILURE, Parallel, ParallelComplete, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
 import {ParallelImmediate} from "../branches/ParallelImmediate";
-import {BTT_Focus, BTT_StopFocus} from "../tasks/BTT_Focus"
+import {BTT_SetFocalPoint, BTT_StopFocus} from "../tasks/BTT_SetFocalPoint"
 import {IsSet} from "../decorators/IsSet"
 import {AIBlackboard} from "../blackboard"
 import {Ability, WeaponTag} from "../../../types/enums";
@@ -20,7 +20,7 @@ export const BT_MeleeCombat = new Parallel({
     nodes: [
         new Sequence({
             nodes: [
-                BTT_Focus("target"),
+                BTT_SetFocalPoint("target"),
                 BTT_MoveTo("targetLastKnownLocation")
             ]
         }),
@@ -30,7 +30,7 @@ export const BT_MeleeCombat = new Parallel({
 
 export const BT_Shoot = new Sequence({
     nodes: [
-        BTT_Focus("target"),
+        BTT_SetFocalPoint("target"),
         new Parallel({
             nodes: [
                 new Selector({ nodes: [

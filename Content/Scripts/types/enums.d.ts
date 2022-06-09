@@ -46,12 +46,17 @@ export const enum MovementResult {
     Invalid,
 }
 
-export const enum Ability {
-    MeleeAttack = "Ability.MeleeAttack",
-    SpecialAttack = "Ability.SpecialAttack"
+export const enum Action {
+    LookAt = "Action.LookAt"
 }
 
-export const enum AbilityStatus {
+export const enum Ability {
+    Taunt = "Ability.Taunt",
+    MeleeAttack = "Ability.MeleeAttack",
+    SpecialAttack = "Ability.SpecialAttack",
+}
+
+export const enum Status {
     Running,
     Finished,
     Failed

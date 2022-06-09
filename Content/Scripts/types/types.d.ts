@@ -1,5 +1,5 @@
-import {DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, WeaponTag} from "./enums";
-import {Ability, AbilityStatus} from "./enums";
+import {Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, WeaponTag} from "./enums";
+import {Ability, Status} from "./enums";
 
 // The AI Controller, containing all the available commands a Mech can be given
 declare class AIController {
@@ -16,6 +16,9 @@ declare class AIController {
      * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
      */
     MoveToVector(location: Vector, acceptanceRadius?: number): MovementResult;
+
+    LookAt(location: Vector): void;
+    
 
     /**
      * Aim at a target. The war machine will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}.
@@ -78,7 +81,7 @@ declare class AIController {
      * 
      * @param ability 
      */
-    QueryAbilityStatus(ability: Ability): AbilityStatus;
+    QueryStatus(ability: Action | Ability): Status;
 
 
 
@@ -249,6 +252,7 @@ export interface EQSResults {
 // The input provided to {@link onTick}
 export interface BrainInput {
     self: WarMachine;
+    deltaTime: number;
     perception: Perception;
     errors: ScriptError[];
     eqs: EQSResults;

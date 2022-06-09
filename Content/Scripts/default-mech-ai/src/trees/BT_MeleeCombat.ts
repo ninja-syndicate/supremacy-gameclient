@@ -1,5 +1,5 @@
 import {FAILURE, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
-import {BTT_Focus, BTT_StopFocus} from "../tasks/BTT_Focus"
+import {BTT_SetFocalPoint, BTT_StopFocus} from "../tasks/BTT_SetFocalPoint"
 import {IsSet} from "../decorators/IsSet"
 import {AIBlackboard} from "../blackboard"
 import { BTT_SpecialAttack } from '../tasks/BTT_SpecialAttack';
@@ -19,7 +19,7 @@ export const BT_MeleeCombat = new Parallel({
                 new Task({
                     run: (blackboard: AIBlackboard) => blackboard.canSeeTarget ? SUCCESS : FAILURE
                 }),
-                BTT_Focus("target"),
+                BTT_SetFocalPoint("target"),
                 BTT_SpecialAttack("targetLastKnownLocation"),
             ]
         }),

@@ -8,7 +8,7 @@ import {AIBlackboard} from "./blackboard"
 import {MovementResult} from "enums";
 import {Task, SUCCESS, FAILURE, RUNNING} from 'behaviortree';
 import {Perception} from "types";
-import {distanceTo, isDead} from "./helper";
+import {distanceTo, isDead, add, multiply} from "./helper";
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -29,7 +29,6 @@ export const onTick = (input: BrainInput) => {
     if (input.errors.length !== 0) {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`))
     }
-
 
     updateBlackboard(input);
 
@@ -57,36 +56,24 @@ export const onTick = (input: BrainInput) => {
 function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
 
-    blackboard.self = input.self;
-    blackboard.perception = input.perception;
-
-    updateBlackboardSight(input.perception.sight);
-    updateBlackboardDamage(input.perception.damage);
-
+    blackboard.input = input;
+    
     const bestTarget: WarMachine = findBestTarget(blackboard);
     if (bestTarget === null) {
         clearBlackboardTarget();
     } else {
-        updateBlackboardTarget(bestTarget);
+        blackboard.target = bestTarget;
     }
+    updateBlackboardSight(input.perception.sight);
+    updateBlackboardDamage(input.perception.damage);
 }
 
-function clearBlackboardTarget() {
+function clearBlackboardTarget(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
 
     blackboard.target = null;
     blackboard.canSeeTarget = false;
-    blackboard.targetLastKnownLocation = null;
-}
-
-function updateBlackboardTarget(mech: WarMachine): void {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-
-    blackboard.target = mech;
-    blackboard.canSeeTarget = blackboard.perception.sight.findIndex(m => m.hash === mech.hash) !== -1;
-    if (blackboard.canSeeTarget) {
-        blackboard.targetLastKnownLocation = mech.location;
-    }
+    delete blackboard.targetLastKnownLocation;
 }
 
 /**
@@ -108,6 +95,9 @@ function updateBlackboardSight(sight: WarMachine[]): void {
         if (blackboard.canSeeTarget) {
             blackboard.targetLastKnownLocation = blackboard.target.location;
         }
+        if (blackboard.targetLastKnownLocation !== undefined) {
+            blackboard.targetPredictedLocation = multiply(blackboard.targetLastKnownLocation, blackboard.input.deltaTime + 1);
+        }
     }
 }
 
@@ -121,21 +111,20 @@ function updateBlackboardSight(sight: WarMachine[]): void {
 function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
     if (damageDetails.length === 0)
         return;
-        
+    
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
     const lastIndex: number = damageDetails.length - 1;
 
-    // Use the last damage stimulus direction.
     blackboard.damageStimulusDirection = damageDetails[lastIndex].damageDirection;
-    console.log(JSON.stringify(blackboard.damageStimulusDirection));
+    blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000));
 }
 
 /**
  * 
  */
 function findBestTarget(blackboard: AIBlackboard): WarMachine {
-    const mechsBySight: WarMachine[] = blackboard.perception.sight;
-    const damageDetails: DamageDetails[] = blackboard.perception.damage;
+    const mechsBySight: WarMachine[] = blackboard.input.perception.sight;
+    const damageDetails: DamageDetails[] = blackboard.input.perception.damage;
 
     // For now, only consider mechs by sight.
     // TODO: Maintain list of mechs in memory and 
@@ -165,7 +154,7 @@ function filter(mech: WarMachine): boolean {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
     const MaxDistanceToConsider: number = 50000;
 
-    const filterByDistance = () => distanceTo(blackboard.self, mech) <= MaxDistanceToConsider;
+    const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= MaxDistanceToConsider;
     const filterFuncs = [filterByDistance];
 
     return filterFuncs.map((func) => func()).reduce((a, b) => a && b);
@@ -199,7 +188,7 @@ function score(mech: WarMachine): number {
 
     // Normalized score functions.
     const scoreByHealth = (m: WarMachine) => 1 - ((m.health + m.shield) / (m.healthMax + m.shieldMax));
-    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.self, m) / MaxDistanceToConsider);
+    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider);
     const scoreFuncs = [scoreByHealth, scoreByDistance];
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b);

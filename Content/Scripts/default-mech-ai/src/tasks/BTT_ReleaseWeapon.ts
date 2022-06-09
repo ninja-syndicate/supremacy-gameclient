@@ -1,7 +1,7 @@
 import {AI} from "../index"
 
 import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
-import {Ability, AbilityStatus} from "enums"
+import {Ability, Status} from "enums"
 import {IsVector} from "../utils"
 import {AIBlackboard} from "../blackboard"
 import {WeaponTag} from "enums"

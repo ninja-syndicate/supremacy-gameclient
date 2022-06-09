@@ -1,21 +1,23 @@
-import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
+import {Task, RUNNING, SUCCESS, FAILURE} from 'behaviortree'
 import {AI} from "../index"
-import {Ability, Status} from "enums";
-import {IsVector} from "../utils"
 import {AIBlackboard} from "../blackboard"
+import {IsVector, IsWarMachine} from "../utils"
+import { Ability, Status } from 'enums';
 
 /**
- * Performs a special attack. 
- * 
- * @param blackboardKey IntVector
+ * Makes the AI look at a War Machine or location.
+ *
+ * Call {@link BTT_StopFocus} to stop looking at anything
+ * @param blackboardKey WarMachine or IntVector
+ * @constructor
  */
-export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task({
+export const BTT_LookAt = (blackboardKey: keyof AIBlackboard) => new Task({
     run: (blackboard: AIBlackboard) => {
         const location = blackboard[blackboardKey];
         if (!location || !IsVector(location))
             return FAILURE;
         
-        AI.TrySpecialAttack(location);
+        AI.LookAt(location);
         const status = AI.QueryStatus(Ability.SpecialAttack);
         switch (status) {
             case Status.Running:

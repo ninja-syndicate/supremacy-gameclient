@@ -10,7 +10,7 @@ import {IsVector, IsWarMachine} from "../utils"
  * @param blackboardKey WarMachine or IntVector
  * @constructor
  */
-export const BTT_Focus = (blackboardKey: keyof AIBlackboard) => new Task({
+export const BTT_SetFocalPoint = (blackboardKey: keyof AIBlackboard) => new Task({
     run: (blackboard: AIBlackboard) => {
         const value = blackboard[blackboardKey]
         if (!value)
@@ -26,7 +26,7 @@ export const BTT_Focus = (blackboardKey: keyof AIBlackboard) => new Task({
     }
 });
 
-/** Stop looking at WarMachine/IntVector from {@link BTT_Focus}. */
+/** Stop looking at WarMachine/IntVector from {@link BTT_SetFocalPoint}. */
 export const BTT_StopFocus = new Task({
     run: () => {
         AI.ClearFocus()

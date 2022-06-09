@@ -1,4 +1,4 @@
-import {EnvironmentQuery, WarMachine, Vector, Weapon, Perception} from "types";
+import {EnvironmentQuery, WarMachine, Vector, Weapon, Perception, BrainInput} from "types";
 import {EQSQueryType} from "enums";
 
 /**
@@ -6,15 +6,21 @@ import {EQSQueryType} from "enums";
  * 
  */
 export interface AIBlackboard {
-    self: WarMachine;
+    input: BrainInput;
+    
     eqsResults: Map<EQSQueryType, EnvironmentQuery>;
     weapons: Weapon[];
-    perception: Perception;
+    patrolLocation?: Vector;
+
     target: WarMachine | null;
     canSeeTarget: boolean;
-    patrolLocation?: Vector;
     targetLastKnownLocation?: Vector;
+    targetPredictedLocation?: Vector;
+
     damageStimulusDirection?: Vector;
+    damageStimulusFocalPoint?: Vector;
+    damageStimulusEstimateLocation?: Vector;
+
     leftArmWeapon: Weapon;
     rightArmWeapon: Weapon;
 }
