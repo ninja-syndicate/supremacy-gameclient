@@ -1,5 +1,5 @@
 import {EnvironmentQueryStatus, WeaponTag} from "enums"
-import {BrainInput, IntVector, WarMachine} from "types"
+import {BrainInput, DamageDetails, IntVector, WarMachine} from "types"
 import {StringToEQSQueryType} from "./utils"
 import {AI} from "./index"
 import {BT_Root} from "./trees/BT_Root"
@@ -19,85 +19,18 @@ export let tree = new BehaviorTree({
 });
 
 export const onBegin = (input: BrainInput) => {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-
-    // Store hash for the weapons to blackboard for easy access.
-    /*
-    for (let weapon of input.self.weapons) {
-        const leftIndex: number = weapon.tags.findIndex(tag => tag === WeaponTag.PrimaryLeftArm);
-        const rightIndex: number = weapon.tags.findIndex(tag => tag === WeaponTag.PrimaryRightArm);
-
-        if (leftIndex !== -1) {
-            blackboard.leftArmWeapon = input.self.weapons[leftIndex];
-        }
-        if (rightIndex !== -1) {
-            blackboard.rightArmWeapon = input.self.weapons[rightIndex];
-        }
-    }
-    */
     console.log(`${input.self.name} AI Started`);
 }
 
 export const onTick = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
 
-    blackboard.self = input.self;
-
     // Check errors
     if (input.errors.length !== 0) {
         input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`))
     }
 
-    // Perception
-    handleSightPerception(input.perception);
-
-    if (input.perception.damage.length != 0) {
-        const lastIndex: number = input.perception.damage.length - 1;
-
-        // Use the last damage stimulus direction.
-        blackboard.damageStimulusRotator = input.perception.damage[lastIndex].damageRotator;
-        console.log(blackboard.damageStimulusRotator.Roll, blackboard.damageStimulusRotator.Pitch,blackboard.damageStimulusRotator.Yaw);
-    }
-
-
-
-
-
-    /*
-    if (bb.canSeeTarget || !bb.canSeeTarget) {
-        bb.targetLastKnownLocation = bb.target.location;
-    }
-    */
-        /*
-        if (movementResult == MovementResult.Success) {
-            const result = AI.MoveToVector(bb.targetLastKnownLocation);
-            movementResult = result;
-            
-            switch (result) {
-                case MovementResult.Moving:
-                    return RUNNING
-                case MovementResult.Success:
-                    return SUCCESS
-                case MovementResult.Aborted:
-                    return SUCCESS
-                default:
-                    return FAILURE
-            }
-        }
-        */
-    //}
-
-    /*
-    console.log(bb.canSeeTarget);
-    const {X, Y, Z} = bb.targetLastKnownLocation;
-    console.log(X, Y, Z);
-    */
-
-    // Update Target
-
-    // if (input.perception.damage.length > 0) {
-    //     console.log(JSON.stringify(input.perception.damage[0]));
-    // }
+    updateBlackboard(input);
 
     // Run Behaviour Tree
     tree.step()
@@ -120,63 +53,104 @@ export const onTick = (input: BrainInput) => {
     // }
 }
 
-function handleSightPerception(perception: Perception): void {
+function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-    
-    // If the mech has no target, update the target to best target given by .
-    if (blackboard.target === null) {
 
+    blackboard.self = input.self;
+    blackboard.perception = input.perception;
+
+    updateBlackboardSight(input.perception.sight);
+    updateBlackboardDamage(input.perception.damage);
+
+    const bestTarget: WarMachine = findBestTarget(blackboard);
+    if (bestTarget === null) {
+        clearBlackboardTarget();
+    } else {
+        updateBlackboardTarget(bestTarget);
     }
-    const targetVisIndex = !blackboard.target ? -1 : perception.sight.findIndex(m => m.hash === blackboard.target.hash);
-    blackboard.canSeeTarget = blackboard.target !== null && targetVisIndex !== -1;
+}
 
+function clearBlackboardTarget() {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
 
-    if (blackboard.target !== null && isDead(blackboard.target)) {
+    blackboard.target = null;
+    blackboard.canSeeTarget = false;
+    blackboard.targetLastKnownLocation = null;
+}
 
-    }
+function updateBlackboardTarget(mech: WarMachine): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
 
+    blackboard.target = mech;
+    blackboard.canSeeTarget = blackboard.perception.sight.findIndex(m => m.hash === mech.hash) !== -1;
     if (blackboard.canSeeTarget) {
-        blackboard.targetLastKnownLocation = blackboard.target.location;
+        blackboard.targetLastKnownLocation = mech.location;
     }
+}
 
-    if (!blackboard.canSeeTarget) {
-        // Find Target
-        if (perception.sight.length > 0) {
-            blackboard.target = perception.sight[0]
-            blackboard.canSeeTarget = true
+/**
+ * Only update the sight info.
+ * 
+ * @param perception 
+ */
+function updateBlackboardSight(sight: WarMachine[]): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    if (!blackboard.target)
+        return;
+
+    if (sight.length === 0) {
+        blackboard.canSeeTarget = false;
+    } else {
+        const targetVisIndex: number = sight.findIndex(m => m.hash === blackboard.target.hash);
+
+        blackboard.canSeeTarget = targetVisIndex !== -1;
+        if (blackboard.canSeeTarget) {
             blackboard.targetLastKnownLocation = blackboard.target.location;
         }
     }
-
-    if (targetVisIndex !== -1) {
-        blackboard.target = perception.sight[targetVisIndex];
-        score(blackboard.target);
-    }
-
 }
 
-// TODO: damage perception
-/*
-function handleDamagePerception(preception: Perception): void {
-    preception.damage;
+/**
+ * Only update the damage info.
+ * 
+ * @param perception 
+ * 
+ * @returns 
+ */
+function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
+    if (damageDetails.length === 0)
+        return;
+        
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    const lastIndex: number = damageDetails.length - 1;
+
+    // Use the last damage stimulus direction.
+    blackboard.damageStimulusRotator = damageDetails[lastIndex].damageRotator;
+    console.log(blackboard.damageStimulusRotator.Roll, blackboard.damageStimulusRotator.Pitch,blackboard.damageStimulusRotator.Yaw);
 }
-*/
 
 /**
  * 
  */
-function findBestTarget(mechs: WarMachine[]): WarMachine {
-    if (mechs.length === 0)
+function findBestTarget(blackboard: AIBlackboard): WarMachine {
+    const mechsBySight: WarMachine[] = blackboard.perception.sight;
+    const damageDetails: DamageDetails[] = blackboard.perception.damage;
+
+    // For now, only consider mechs by sight.
+    // TODO: Maintain list of mechs in memory and 
+    // use damage details to figure out which mech it is associated with.
+    if (mechsBySight.length === 0)
         return null;
     
-    
+    // TODO: apply filter function
+
     // Get the index of the first target with largest score.
-    const scores: number[] = mechs.map(score);
+    const scores: number[] = mechsBySight.map(score);
     const idx: number = scores.indexOf(Math.max(...scores));
     if (idx === -1)
         return null;
     
-    return mechs[idx];
+    return mechsBySight[idx];
 }
 
 /**
@@ -195,6 +169,21 @@ function filter(mech: WarMachine): boolean {
 
     return filterFuncs.map((func) => func()).reduce((a, b) => a && b);
 }
+
+function scoreBySight(mechs: WarMachine[]): number[] {
+    return mechs.map(score);
+}
+
+/*
+// TODO
+function scoreByDamage(damageDetails: DamageDetails[]): number[] {
+
+}
+
+function scoreByD(mech: WarMachine): number {
+
+}
+*/
 
 /**
  * 

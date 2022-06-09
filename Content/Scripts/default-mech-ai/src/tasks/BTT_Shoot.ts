@@ -7,7 +7,7 @@ import {AbilityStatus, WeaponTag} from "enums";
  * Shoots the specified weapon.
  */
 export const BTT_Shoot = (tag: WeaponTag) => new Task({
-    run: (blackboard: AIBlackboard) => {
+    run: () => {
         const hasAmmo = AI.WeaponGetAmmoByTag(tag) > 0;
 
         if (hasAmmo) {

@@ -48,12 +48,14 @@ export const BT_Shoot = new Sequence({
 const BT_CanSeeTarget = new Selector({
     nodes: [
         BTT_SpecialAttack("targetLastKnownLocation"),
+        /*
         new Selector({ 
             nodes: [
                 CanActivateAbility(BT_MeleeCombat, Ability.MeleeAttack), 
                 BTT_ReleaseWeapon(WeaponTag.Melee) 
             ]
         }),
+        */
         IsSet(BT_Shoot, "canSeeTarget")
     ]
 });
