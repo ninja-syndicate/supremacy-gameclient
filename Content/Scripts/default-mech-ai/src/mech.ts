@@ -162,9 +162,13 @@ function handleDamagePerception(preception: Perception): void {
 }
 */
 
+/**
+ * 
+ */
 function findBestTarget(mechs: WarMachine[]): WarMachine {
     if (mechs.length === 0)
         return null;
+    
     
     // Get the index of the first target with largest score.
     const scores: number[] = mechs.map(score);
@@ -175,19 +179,41 @@ function findBestTarget(mechs: WarMachine[]): WarMachine {
     return mechs[idx];
 }
 
-// Score the best target.
+/**
+ * 
+ * 
+ * @param mech 
+ * 
+ * @returns 
+ */
+function filter(mech: WarMachine): boolean {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    const MaxDistanceToConsider: number = 50000;
+
+    const filterByDistance = () => distanceTo(blackboard.self, mech) <= MaxDistanceToConsider;
+    const filterFuncs = [filterByDistance];
+
+    return filterFuncs.map((func) => func()).reduce((a, b) => a && b);
+}
+
+/**
+ * 
+ * 
+ * @param mech 
+ * 
+ * @returns 
+ */
 function score(mech: WarMachine): number {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
     const MaxDistanceToConsider: number = 50000;
 
     // Normalized score functions.
-    const scoreByHealth = (m) => 1 - (m.health / m.healthMax);
-    const scoreByDistance = (m) => 1 - Math.min(1, distanceTo(blackboard.self, m) / MaxDistanceToConsider);
+    const scoreByHealth = (m: WarMachine) => 1 - ((m.health + m.shield) / (m.healthMax + m.shieldMax));
+    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.self, m) / MaxDistanceToConsider);
     const scoreFuncs = [scoreByHealth, scoreByDistance];
 
-    console.log("health score" + scoreByHealth(mech));
-    console.log("ditsance score" + scoreByDistance(mech));
-    const finalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b);
-    console.log(finalScore);
-    return finalScore;
+    const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b);
+
+    // Normalize total score.
+    return totalScore / scoreFuncs.length;
 }
