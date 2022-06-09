@@ -162,7 +162,18 @@ function handleDamagePerception(preception: Perception): void {
 }
 */
 
-// function 
+function findBestTarget(mechs: WarMachine[]): WarMachine {
+    if (mechs.length === 0)
+        return null;
+    
+    // Get the index of the first target with largest score.
+    const scores: number[] = mechs.map(score);
+    const idx: number = scores.indexOf(Math.max(...scores));
+    if (idx === -1)
+        return null;
+    
+    return mechs[idx];
+}
 
 // Score the best target.
 function score(mech: WarMachine): number {
@@ -171,7 +182,7 @@ function score(mech: WarMachine): number {
 
     // Normalized score functions.
     const scoreByHealth = (m) => 1 - (m.health / m.healthMax);
-    const scoreByDistance = (m) => Math.min(1, distanceTo(blackboard.self, m) / MaxDistanceToConsider);
+    const scoreByDistance = (m) => 1 - Math.min(1, distanceTo(blackboard.self, m) / MaxDistanceToConsider);
     const scoreFuncs = [scoreByHealth, scoreByDistance];
 
     console.log("health score" + scoreByHealth(mech));
