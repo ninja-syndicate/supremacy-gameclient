@@ -43,7 +43,7 @@ export const enum MovementResult {
     Blocked,
     OffPath,
     Aborted,
-    Invalid,
+    Invalid
 }
 
 export const enum Action {

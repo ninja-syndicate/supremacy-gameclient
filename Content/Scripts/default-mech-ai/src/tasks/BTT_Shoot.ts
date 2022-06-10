@@ -16,7 +16,7 @@ export const BTT_Shoot = (tag: WeaponTag) => new Task({
         const hasAmmo = AI.WeaponGetAmmoByTag(tag) > 0;
 
         if (hasAmmo) {
-            AI.WeaponTrigger(tag);
+            AI.WeaponTrigger(tag, blackboard.targetLastKnownLocation);
         } else {
             AI.WeaponRelease(tag);
         }

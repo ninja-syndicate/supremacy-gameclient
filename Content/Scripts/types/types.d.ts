@@ -17,8 +17,18 @@ declare class AIController {
      */
     MoveToVector(location: Vector, acceptanceRadius?: number): MovementResult;
 
-    LookAt(location: Vector): void;
-    
+    /**
+     * 
+     */
+    StopMoveTo(): void;
+
+    /**
+     * Note that this will change the current focal point.
+     * 
+     * @param location 
+     * 
+     */
+    LookAt(location: Vector): boolean;
 
     /**
      * Aim at a target. The war machine will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}.

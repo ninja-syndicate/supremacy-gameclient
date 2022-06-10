@@ -42,15 +42,6 @@ export const onTick = (input: BrainInput) => {
             AI.EQS_Complete(StringToEQSQueryType(key))
         }
     }
-
-    // TODO: Weapon LOS check
-    // if (targetVisible) {
-    //     AI.FocusHash(target.hash);
-    //     AI.WeaponTrigger(WeaponTag.Primary, target.location)
-    // } else {
-    //     AI.ClearFocus();
-    //     AI.WeaponRelease(WeaponTag.Primary);
-    // }
 }
 
 function updateBlackboard(input: BrainInput): void {
@@ -59,6 +50,7 @@ function updateBlackboard(input: BrainInput): void {
     blackboard.input = input;
     
     const bestTarget: WarMachine = findBestTarget(blackboard);
+    // console.log(JSON.stringify(bestTarget));
     if (bestTarget === null) {
         clearBlackboardTarget();
     } else {
@@ -73,7 +65,9 @@ function clearBlackboardTarget(): void {
 
     blackboard.target = null;
     blackboard.canSeeTarget = false;
-    delete blackboard.targetLastKnownLocation;
+    if (blackboard.targetLastKnownLocation !== undefined) {
+        delete blackboard.targetLastKnownLocation;
+    }
 }
 
 /**
@@ -94,10 +88,15 @@ function updateBlackboardSight(sight: WarMachine[]): void {
         blackboard.canSeeTarget = targetVisIndex !== -1;
         if (blackboard.canSeeTarget) {
             blackboard.targetLastKnownLocation = blackboard.target.location;
+            blackboard.targetPredictedLocation = blackboard.target.location;
+            blackboard.targetLastKnownVelocity = blackboard.target.velocity;
         }
-        if (blackboard.targetLastKnownLocation !== undefined) {
-            blackboard.targetPredictedLocation = multiply(blackboard.targetLastKnownLocation, blackboard.input.deltaTime + 1);
-        }
+    }
+    if (blackboard.targetLastKnownLocation !== undefined) {
+        // TODO: Project to navigation and clear if not valid.
+        // Also expose a new EQS to allow searching for target in the direction.
+        blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, 
+                                                 multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime));
     }
 }
 
@@ -129,8 +128,10 @@ function findBestTarget(blackboard: AIBlackboard): WarMachine {
     // For now, only consider mechs by sight.
     // TODO: Maintain list of mechs in memory and 
     // use damage details to figure out which mech it is associated with.
-    if (mechsBySight.length === 0)
-        return null;
+    if (mechsBySight.length === 0) {
+        // maybe return null after some time if lost.
+        return blackboard.target;
+    }
     
     // TODO: apply filter function
 

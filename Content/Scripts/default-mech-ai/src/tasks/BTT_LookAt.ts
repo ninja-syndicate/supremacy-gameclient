@@ -2,7 +2,7 @@ import {Task, RUNNING, SUCCESS, FAILURE} from 'behaviortree'
 import {AI} from "../index"
 import {AIBlackboard} from "../blackboard"
 import {IsVector, IsWarMachine} from "../utils"
-import { Ability, Status } from 'enums';
+import { Ability, Action, Status } from 'enums';
 
 /**
  * Makes the AI look at a War Machine or location.
@@ -12,13 +12,19 @@ import { Ability, Status } from 'enums';
  * @constructor
  */
 export const BTT_LookAt = (blackboardKey: keyof AIBlackboard) => new Task({
+    start: (blackboard: AIBlackboard) => {
+        const location = blackboard[blackboardKey];
+        if (!location || !IsVector(location))
+            return;
+
+        AI.LookAt(location);
+    },
     run: (blackboard: AIBlackboard) => {
         const location = blackboard[blackboardKey];
         if (!location || !IsVector(location))
             return FAILURE;
         
-        AI.LookAt(location);
-        const status = AI.QueryStatus(Ability.SpecialAttack);
+        const status = AI.QueryStatus(Action.LookAt);
         switch (status) {
             case Status.Running:
                 return RUNNING;

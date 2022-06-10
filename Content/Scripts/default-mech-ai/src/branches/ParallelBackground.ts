@@ -4,9 +4,9 @@ import Node from 'behaviortree/src/Node';
 import { ParallelRunConfig, RunResult, StatusWithState, Blackboard, MinimalBlueprint, NodeOrRegistration } from 'behaviortree';
 
 /**
- * The Parallel Immediate branch node is a variant of Parallel node that fails
- * immediately if the one of its task fails instead of failing after running
- * all of its tasks.
+ * The parallel background branch node is a variant of parallel node that keeps
+ * running the background task repeatedly after it completes. But finishes when
+ * the main task succeeds.
  */
 export class ParallelBackground extends Parallel {
 	nodeType = 'ParallelBackground';
@@ -18,22 +18,22 @@ export class ParallelBackground extends Parallel {
 		const results: Array<RunResult> = [];
 		for (let currentIndex = 0; currentIndex < this.numNodes; ++currentIndex) {
 			const lastRunForIndex = lastRun && (lastRun as StatusWithState).state[currentIndex];
-            /*
             if (lastRunForIndex && !isRunning(lastRunForIndex)) {
                 results[currentIndex] = lastRunForIndex;
-                continue;
+				if (currentIndex === 0)
+					break;
+				if (isFailure(lastRunForIndex))
+					break;
             }
-            */
 			const node = registryLookUp(this.nodes[currentIndex]);
 			const result = node.run(blackboard, { lastRun: lastRunForIndex, introspector, rerun, registryLookUp });
 			results[currentIndex] = result;
 
-            if (currentIndex == 0 && result == SUCCESS) {
-                break;
-            }
+			if (currentIndex === 0 && isFailure(result))
+				break;
 		}
 		const endResult = this.calcResult(results);
-		if (!isRunning(endResult)) {
+		if (isFailure(endResult) || isSuccess(results[0])) {
 			this.blueprint.end(blackboard);
 		}
 		if (introspector) {

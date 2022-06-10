@@ -12,9 +12,10 @@ import {IsVector, IsWarMachine} from "../utils"
  */
 export const BTT_SetFocalPoint = (blackboardKey: keyof AIBlackboard) => new Task({
     run: (blackboard: AIBlackboard) => {
-        const value = blackboard[blackboardKey]
+        const value = blackboard[blackboardKey];
         if (!value)
-            return FAILURE
+            return FAILURE;
+
         if (IsWarMachine(value)) {
             AI.FocusHash(value.hash)
             return SUCCESS

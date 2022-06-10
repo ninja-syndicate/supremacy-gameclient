@@ -25,6 +25,8 @@ export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, acceptanceRadius: 
                 return SUCCESS
             case MovementResult.Aborted:
                 return FAILURE;
+            case MovementResult.Invalid:
+                return FAILURE;
             default:
                 return FAILURE;
         }

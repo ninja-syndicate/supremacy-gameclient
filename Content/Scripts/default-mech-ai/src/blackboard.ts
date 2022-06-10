@@ -14,7 +14,11 @@ export interface AIBlackboard {
 
     target: WarMachine | null;
     canSeeTarget: boolean;
+
+    strafeLocation?: Vector;
+
     targetLastKnownLocation?: Vector;
+    targetLastKnownVelocity?: Vector;
     targetPredictedLocation?: Vector;
 
     damageStimulusDirection?: Vector;

@@ -5,12 +5,15 @@ import {EQSQueryType} from "enums"
 import {BTT_MoveTo} from "../tasks/BTT_MoveTo"
 import {IsSet} from "../decorators/IsSet"
 import { BTT_ClearValue } from '../tasks/BTT_ClearValue'
+import { BTT_LookAt } from '../tasks/BTT_LookAt'
+import { BTT_StopMoveTo } from '../tasks/BTT_StopMoveTo'
 
 export const BT_Patrol = new Selector({
     nodes: [
         IsSet(new Sequence({
             nodes: [
-                BTT_SetFocalPoint("damageStimulusFocalPoint"),
+                BTT_StopMoveTo(),
+                BTT_LookAt("damageStimulusFocalPoint"),
                 // TODO: Investigate in the direction of damage stimulus.
                 BTT_ClearValue("damageStimulusFocalPoint")
             ]

@@ -1,10 +1,10 @@
 
-import {FAILURE, Parallel, ParallelComplete, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
+import {FAILURE, Parallel, ParallelComplete, ParallelSelector, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
 import {ParallelImmediate} from "../branches/ParallelImmediate";
 import {BTT_SetFocalPoint, BTT_StopFocus} from "../tasks/BTT_SetFocalPoint"
 import {IsSet} from "../decorators/IsSet"
 import {AIBlackboard} from "../blackboard"
-import {Ability, WeaponTag} from "../../../types/enums";
+import {Ability, EQSQueryType, WeaponTag} from "../../../types/enums";
 import {BTT_SpecialAttack} from '../tasks/BTT_SpecialAttack';
 import {BTT_Shoot} from "../tasks/BTT_Shoot";
 import {CanActivateAbility} from "../decorators/CanActivateAbility";
@@ -15,6 +15,8 @@ import {BTT_ReleaseWeapon} from "../tasks/BTT_ReleaseWeapon";
 import {BTT_TriggerWeapon} from '../tasks/BTT_TriggerWeapon';
 import { ParallelBackground } from '../branches/ParallelBackground';
 import { BTT_FocusDirection } from '../tasks/BTT_FocusDirection';
+import { BTT_RunEQSQuery } from '../tasks/BTT_RunEQSQuery';
+import { AlwaysFail } from "../decorators/AlwaysFailDecorator";
 
 export const BT_MeleeCombat = new Parallel({
     nodes: [
@@ -28,27 +30,43 @@ export const BT_MeleeCombat = new Parallel({
     ]
 });
 
-export const BT_Shoot = new Sequence({
+export const BT_RangeCombat = new Sequence({
     nodes: [
         BTT_SetFocalPoint("target"),
-        new Parallel({
+        new ParallelBackground({
             nodes: [
-                new Selector({ nodes: [
-                    IsSet(BTT_Shoot(WeaponTag.PrimaryLeftArm), "canSeeTarget"),
-                    BTT_ReleaseWeapon(WeaponTag.PrimaryLeftArm)
-                ]}),
-                new Selector({ nodes: [
-                    IsSet(BTT_Shoot(WeaponTag.PrimaryRightArm), "canSeeTarget"), 
-                    BTT_ReleaseWeapon(WeaponTag.PrimaryRightArm)
-                ]})
+                new Selector({
+                    nodes: [
+                        IsSet(new ParallelSelector({
+                            nodes: [
+                                BTT_Shoot(WeaponTag.PrimaryLeftArm),
+                                BTT_Shoot(WeaponTag.PrimaryRightArm) 
+                            ]
+                        }), "canSeeTarget"),
+                        AlwaysFail(new Sequence({nodes: [BTT_ReleaseWeapon(WeaponTag.PrimaryLeftArm), BTT_ReleaseWeapon(WeaponTag.PrimaryRightArm)] }))
+                    ]
+                }),
+                new Sequence({
+                    nodes: [
+                        BTT_RunEQSQuery(EQSQueryType.Strafe, "strafeLocation"),
+                        BTT_MoveTo("strafeLocation")
+                    ]
+                })
             ]
         })
     ]
 });
 
+const BT_SearchPredictedLocation = new ParallelBackground({
+    nodes: [
+        BTT_MoveTo("targetPredictedLocation"),
+        BTT_SetFocalPoint("targetPredictedLocation")
+    ]
+});
+
 const BT_CanSeeTarget = new Selector({
     nodes: [
-        BTT_SpecialAttack("targetLastKnownLocation"),
+        // BTT_SpecialAttack("targetLastKnownLocation"),
         /*
         new Selector({ 
             nodes: [
@@ -57,15 +75,15 @@ const BT_CanSeeTarget = new Selector({
             ]
         }),
         */
-        IsSet(BT_Shoot, "canSeeTarget")
+        BT_RangeCombat
     ]
 });
 
 export const BT_Combat = new Selector({
     nodes: [
-        // IsSet(BT_CanSeeTarget, "canSeeTarget"),
-        new Sequence({nodes: [BTT_FocusDirection("damageStimulusDirection")]})
-        
+        // BT_SearchPredictedLocation,
+        IsSet(BT_CanSeeTarget, "canSeeTarget"),
+        IsSet(BT_SearchPredictedLocation, "canSeeTarget", false)
 
         /*
         new Sequence({
