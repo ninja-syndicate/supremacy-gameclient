@@ -93,8 +93,6 @@ declare class AIController {
      */
     QueryStatus(ability: Action | Ability): Status;
 
-
-
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to
      * Get results from eqs in {@link BrainInput}.
@@ -104,9 +102,9 @@ declare class AIController {
     EQS_Complete(query: EQSQueryType): void;
 
     /** Set string argument for an EQS query, generally a {@link WarMachine} hash. Call before {@link EQS_Query} */
-    EQS_SetArgumentString(argument: EQSArgument, value: string): void;
+    EQS_SetArgumentString(query: EQSQueryType, argument: EQSArgument, value: string): void;
     /** Set vector argument for an EQS query. Call before {@link EQS_Query} */
-    EQS_SetArgumentVector(argument: EQSArgument, value: Vector): void;
+    EQS_SetArgumentVector(query: EQSQueryType, argument: EQSArgument, value: Vector): void;
 }
 
 declare class JavascriptContext {

@@ -18,9 +18,9 @@ export const enum EQSQueryType {
 }
 
 export const enum EQSArgument {
-    TargetHash,
-    TargetLastKnownLocation,
-    LastHitLocation
+    TargetHash = "TargetHash",
+    TargetLastKnownLocation = "TargetLastKnownLocation",
+    LastHitLocation = "LastHitLocation"
 }
 
 export const enum EnvironmentQueryStatus {

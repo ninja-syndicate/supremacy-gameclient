@@ -21,5 +21,9 @@ export const BTT_Shoot = (tag: WeaponTag) => new Task({
             AI.WeaponRelease(tag);
         }
         return hasAmmo ? RUNNING : FAILURE;
+    },
+
+    end: () => {
+        AI.WeaponRelease(tag);
     }
 });

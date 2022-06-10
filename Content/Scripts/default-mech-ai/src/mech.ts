@@ -1,4 +1,4 @@
-import {EnvironmentQueryStatus, WeaponTag} from "enums"
+import {EnvironmentQueryStatus, EQSQueryType, WeaponTag} from "enums"
 import {BrainInput, DamageDetails, Vector, WarMachine} from "types"
 import {StringToEQSQueryType} from "./utils"
 import {AI} from "./index"
@@ -17,6 +17,8 @@ export let tree = new BehaviorTree({
         eqsResults: {},
     } as AIBlackboard,
 });
+
+export let blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
 
 export const onBegin = (input: BrainInput) => {
     console.log(`${input.self.name} AI Started`);
@@ -51,6 +53,7 @@ function updateBlackboard(input: BrainInput): void {
     
     const bestTarget: WarMachine = findBestTarget(blackboard);
     // console.log(JSON.stringify(bestTarget));
+    // console.log(blackboard.canSeeTarget);
     if (bestTarget === null) {
         clearBlackboardTarget();
     } else {
@@ -151,14 +154,15 @@ function findBestTarget(blackboard: AIBlackboard): WarMachine {
  * 
  * @returns 
  */
-function filter(mech: WarMachine): boolean {
+// TODO: do inverse
+function filter(mech: WarMachine, inverse: boolean = false): boolean {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
     const MaxDistanceToConsider: number = 50000;
 
     const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= MaxDistanceToConsider;
     const filterFuncs = [filterByDistance];
 
-    return filterFuncs.map((func) => func()).reduce((a, b) => a && b);
+    return filterFuncs.map(func => func()).reduce((a, b) => (a && b));
 }
 
 function scoreBySight(mechs: WarMachine[]): number[] {
