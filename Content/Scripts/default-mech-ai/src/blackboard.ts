@@ -15,6 +15,9 @@ export interface AIBlackboard {
     target: WarMachine | null;
     canSeeTarget: boolean;
 
+    heardNoise: boolean;
+    noiseLocation?: Vector;
+
     strafeLocation?: Vector;
     hiddenLocation?: Vector;
 
@@ -32,5 +35,3 @@ export interface AIBlackboard {
 
     canUseSpecialAttack: boolean;
 }
-
-export type BlackboardKey = keyof AIBlackboard | keyof WarMachine;

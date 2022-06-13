@@ -19,6 +19,9 @@ import { BTT_RunEQSQuery } from '../tasks/BTT_RunEQSQuery';
 import { AlwaysFail } from "../decorators/AlwaysFailDecorator";
 import { BTT_EQSSetArgumentString, BTT_EQSSetArgumentVector } from '../tasks/BTT_EQSSetArgument';
 import { BTT_SetValue } from '../tasks/BTT_SetValue';
+import { CooldownDecorator } from '../decorators/CooldownDecorator';
+import { BT_ReceivedDamage } from './BT_ReceivedDamage';
+import { InRange } from '../decorators/InRange';
 
 export const BT_MeleeCombat = new Parallel({
     nodes: [
@@ -84,7 +87,8 @@ const BT_SearchTarget = new Sequence({
 
 const BT_CanSeeTarget = new Selector({
     nodes: [
-        BTT_SpecialAttack("targetLastKnownLocation"),
+        CanActivateAbility(BTT_SpecialAttack("targetLastKnownLocation"), Ability.SpecialAttack, true, ObserverAborts.LowerPriority),\
+        InRange(BT_MeleeCombat, "targetLastKnownLocation", 2500, ObserverAborts.Both),
         /*
         new Selector({ 
             nodes: [
@@ -99,7 +103,8 @@ const BT_CanSeeTarget = new Selector({
 
 export const BT_Combat = new Selector({
     nodes: [
-        IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Self),
+        IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
+        IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.Both),
         IsSet(BT_SearchTarget, "canSeeTarget", false, ObserverAborts.Self)
 
         /*

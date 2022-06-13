@@ -1,5 +1,5 @@
 import {EnvironmentQueryStatus, EQSQueryType, WeaponTag} from "enums"
-import {BrainInput, DamageDetails, Vector, WarMachine} from "types"
+import {BrainInput, DamageDetails, SoundDetails, Vector, WarMachine} from "types"
 import {StringToEQSQueryType} from "./utils"
 import {AI} from "./index"
 import {BT_Root} from "./trees/BT_Root"
@@ -68,8 +68,9 @@ function updateBlackboard(input: BrainInput): void {
     }
     updateBlackboardSight(input.perception.sight);
     updateBlackboardDamage(input.perception.damage);
+    updateBlackboardSound(input.perception.sound);
 
-    /// console.log(JSON.stringify(blackboard.targetLastKnownLocation));
+    console.log(JSON.stringify(blackboard.targetLastKnownLocation));
 }
 
 function clearBlackboardTarget(): void {
@@ -128,6 +129,21 @@ function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
 
     blackboard.damageStimulusDirection = damageDetails[lastIndex].damageDirection;
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000));
+}
+
+function updateBlackboardSound(soundDetails: SoundDetails[]): void {
+    if (soundDetails.length === 0)
+        return;
+
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    const lastIdx: number = soundDetails.length - 1;
+
+    // For now, always overwrite the last noise location.
+    // It's probably better to have a score function to evaluate the score of new noise location.
+    if (soundDetails[lastIdx].tag === "Taunt") {
+        blackboard.heardNoise = true;
+        blackboard.noiseLocation = soundDetails[lastIdx].location;
+    }
 }
 
 /**

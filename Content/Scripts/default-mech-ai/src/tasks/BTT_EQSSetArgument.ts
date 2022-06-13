@@ -1,6 +1,6 @@
 import {Task, SUCCESS, FAILURE} from 'behaviortree'
 import {AI} from "../index"
-import {AIBlackboard, BlackboardKey} from "../blackboard"
+import {AIBlackboard} from "../blackboard"
 import {IsVector, IsWarMachine} from "../utils"
 import {add, multiply} from "../helper"
 import { EQSArgument, EQSQueryType } from 'enums'

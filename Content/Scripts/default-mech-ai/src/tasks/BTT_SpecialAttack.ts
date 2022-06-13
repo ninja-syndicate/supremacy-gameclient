@@ -10,9 +10,6 @@ import {AIBlackboard} from "../blackboard"
  * @param blackboardKey IntVector
  */
 export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task({
-    start: (blackboard: AIBlackboard) => {
-    },
-
     run: (blackboard: AIBlackboard) => {
         const location = blackboard[blackboardKey];
         if (!location || !IsVector(location))
@@ -22,17 +19,10 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task
         if (!hasSecondaryWeapon)
             return FAILURE;
 
-        if (!blackboard.canUseSpecialAttack)
-            return FAILURE;
-
         const success: boolean = AI.TrySpecialAttack(location);
-        if (success) {
-            blackboard.canUseSpecialAttack = false;
-            console.log("special attack location" + JSON.stringify(location));
-        }
-
         const status = AI.QueryStatus(Ability.SpecialAttack);
 
+        console.log(status)
         // TODO: clean up
         switch (status) {
             case Status.Running:
@@ -40,11 +30,6 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) => new Task
             case Status.Failed:
                 return FAILURE;
             case Status.Finished:
-                /*
-                setTimeout(() => {
-                    blackboard.canUseSpecialAttack = true;
-                }, (60 / blackboard.secondaryWeapon.rateOfFire) * 1000);
-                */
                 return SUCCESS;
             default:
                 return FAILURE;
