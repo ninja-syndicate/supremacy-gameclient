@@ -1,5 +1,5 @@
 
-import {FAILURE, Parallel, ParallelComplete, ParallelSelector, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
+import {FAILURE, ObserverAborts, Parallel, ParallelComplete, ParallelSelector, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
 import {ParallelImmediate} from "../branches/ParallelImmediate";
 import {BTT_SetFocalPoint, BTT_StopFocus} from "../tasks/BTT_SetFocalPoint"
 import {IsSet} from "../decorators/IsSet"
@@ -18,7 +18,6 @@ import { BTT_FocusDirection } from '../tasks/BTT_FocusDirection';
 import { BTT_RunEQSQuery } from '../tasks/BTT_RunEQSQuery';
 import { AlwaysFail } from "../decorators/AlwaysFailDecorator";
 import { BTT_EQSSetArgumentString, BTT_EQSSetArgumentVector } from '../tasks/BTT_EQSSetArgument';
-import { blackboard } from "../mech";
 import { BTT_SetValue } from '../tasks/BTT_SetValue';
 
 export const BT_MeleeCombat = new Parallel({
@@ -43,8 +42,8 @@ export const BT_RangeCombat = new Sequence({
                 // TODO: should be parallel selector, but can't use it right now...
                 new Parallel({
                     nodes: [
-                        new Selector({nodes: [IsSet(BTT_Shoot(WeaponTag.PrimaryLeftArm), "canSeeTarget"), BTT_ReleaseWeapon(WeaponTag.PrimaryLeftArm)] }),
-                        new Selector({nodes: [IsSet(BTT_Shoot(WeaponTag.PrimaryRightArm), "canSeeTarget"), BTT_ReleaseWeapon(WeaponTag.PrimaryRightArm)] })
+                        BTT_Shoot(WeaponTag.PrimaryLeftArm),
+                        BTT_Shoot(WeaponTag.PrimaryRightArm)
                     ]
                 }),
                 new Sequence({
@@ -85,7 +84,7 @@ const BT_SearchTarget = new Sequence({
 
 const BT_CanSeeTarget = new Selector({
     nodes: [
-        // BTT_SpecialAttack("targetLastKnownLocation"),
+        BTT_SpecialAttack("targetLastKnownLocation"),
         /*
         new Selector({ 
             nodes: [
@@ -100,8 +99,8 @@ const BT_CanSeeTarget = new Selector({
 
 export const BT_Combat = new Selector({
     nodes: [
-        IsSet(BT_CanSeeTarget, "canSeeTarget"),
-        IsSet(BT_SearchTarget, "canSeeTarget", false)
+        IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Self),
+        IsSet(BT_SearchTarget, "canSeeTarget", false, ObserverAborts.Self)
 
         /*
         new Sequence({

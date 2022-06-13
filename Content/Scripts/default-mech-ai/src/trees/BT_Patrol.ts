@@ -1,4 +1,4 @@
-import {FAILURE, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
+import {FAILURE, ObserverAborts, Selector, Sequence, SUCCESS, Task} from 'behaviortree'
 import {BTT_SetFocalPoint, BTT_StopFocus} from "../tasks/BTT_SetFocalPoint"
 import {BTT_RunEQSQuery} from "../tasks/BTT_RunEQSQuery"
 import {EQSQueryType} from "enums"
@@ -18,7 +18,7 @@ export const BT_Patrol = new Selector({
                 // TODO: Investigate in the direction of damage stimulus.
                 BTT_ClearValue((blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint = undefined)
             ]
-        }), "damageStimulusFocalPoint"),
+        }), "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
         IsSet(new Sequence({
             nodes: [
                 BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),

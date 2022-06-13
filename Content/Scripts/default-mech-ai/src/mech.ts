@@ -18,9 +18,16 @@ export let tree = new BehaviorTree({
     } as AIBlackboard,
 });
 
-export let blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-
 export const onBegin = (input: BrainInput) => {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    
+    for (let weapon of input.self.weapons) {
+        if (weapon.tags.find(t => t === WeaponTag.Secondary) !== undefined) {
+            blackboard.secondaryWeapon = weapon;
+            blackboard.canUseSpecialAttack = true;
+            break;
+        }
+    }
     console.log(`${input.self.name} AI Started`);
 }
 
@@ -61,6 +68,8 @@ function updateBlackboard(input: BrainInput): void {
     }
     updateBlackboardSight(input.perception.sight);
     updateBlackboardDamage(input.perception.damage);
+
+    /// console.log(JSON.stringify(blackboard.targetLastKnownLocation));
 }
 
 function clearBlackboardTarget(): void {

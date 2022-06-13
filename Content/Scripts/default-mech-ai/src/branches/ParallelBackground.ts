@@ -36,6 +36,7 @@ export class ParallelBackground extends Parallel {
 		if (isFailure(endResult) || isSuccess(results[0])) {
 			this.blueprint.end(blackboard);
 		}
+		// TODO: instropector result might need to change...
 		if (introspector) {
 			const running = !!results.find((x) => isRunning(x));
 			const debugResult = running ? RUNNING : (endResult as boolean);

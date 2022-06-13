@@ -28,6 +28,9 @@ export interface AIBlackboard {
 
     leftArmWeapon: Weapon;
     rightArmWeapon: Weapon;
+    secondaryWeapon?: Weapon;
+
+    canUseSpecialAttack: boolean;
 }
 
 export type BlackboardKey = keyof AIBlackboard | keyof WarMachine;
