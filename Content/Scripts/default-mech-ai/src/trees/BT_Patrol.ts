@@ -7,6 +7,7 @@ import {IsSet} from "../decorators/IsSet"
 import { BTT_ClearValue } from '../tasks/BTT_ClearValue'
 import { BTT_LookAt } from '../tasks/BTT_LookAt'
 import { BTT_StopMoveTo } from '../tasks/BTT_StopMoveTo'
+import { AIBlackboard } from '../blackboard'
 
 export const BT_Patrol = new Selector({
     nodes: [
@@ -15,7 +16,7 @@ export const BT_Patrol = new Selector({
                 BTT_StopMoveTo(),
                 BTT_LookAt("damageStimulusFocalPoint"),
                 // TODO: Investigate in the direction of damage stimulus.
-                BTT_ClearValue("damageStimulusFocalPoint")
+                BTT_ClearValue((blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint = undefined)
             ]
         }), "damageStimulusFocalPoint"),
         IsSet(new Sequence({

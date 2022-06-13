@@ -17,8 +17,9 @@ import { ParallelBackground } from '../branches/ParallelBackground';
 import { BTT_FocusDirection } from '../tasks/BTT_FocusDirection';
 import { BTT_RunEQSQuery } from '../tasks/BTT_RunEQSQuery';
 import { AlwaysFail } from "../decorators/AlwaysFailDecorator";
-import { BTT_EQSSetArgumentString } from '../tasks/BTT_EQSSetArgument';
+import { BTT_EQSSetArgumentString, BTT_EQSSetArgumentVector } from '../tasks/BTT_EQSSetArgument';
 import { blackboard } from "../mech";
+import { BTT_SetValue } from '../tasks/BTT_SetValue';
 
 export const BT_MeleeCombat = new Parallel({
     nodes: [
@@ -35,7 +36,7 @@ export const BT_MeleeCombat = new Parallel({
 export const BT_RangeCombat = new Sequence({
     nodes: [
         // BTT_Shoot(WeaponTag.PrimaryLeftArm)
-        /*
+        
         BTT_SetFocalPoint("target"),
         new ParallelBackground({
             nodes: [
@@ -45,24 +46,40 @@ export const BT_RangeCombat = new Sequence({
                         new Selector({nodes: [IsSet(BTT_Shoot(WeaponTag.PrimaryLeftArm), "canSeeTarget"), BTT_ReleaseWeapon(WeaponTag.PrimaryLeftArm)] }),
                         new Selector({nodes: [IsSet(BTT_Shoot(WeaponTag.PrimaryRightArm), "canSeeTarget"), BTT_ReleaseWeapon(WeaponTag.PrimaryRightArm)] })
                     ]
+                }),
+                new Sequence({
+                    nodes: [
+                        BTT_EQSSetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
+                        BTT_RunEQSQuery(EQSQueryType.Strafe, "strafeLocation"),
+                        BTT_MoveTo("strafeLocation")
+                    ]
                 })
-            ]
-        })
-        */
-        new Sequence({
-            nodes: [
-                BTT_EQSSetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, blackboard.target.hash),
-                BTT_RunEQSQuery(EQSQueryType.Strafe, "strafeLocation"),
-                BTT_MoveTo("strafeLocation")
             ]
         })
     ]
 });
 
-const BT_SearchPredictedLocation = new ParallelBackground({
+const BT_SearchTarget = new Sequence({
     nodes: [
-        BTT_MoveTo("targetPredictedLocation"),
-        BTT_SetFocalPoint("targetPredictedLocation")
+        new ParallelBackground({
+            nodes: [
+                new Sequence({
+                    nodes: [
+                        BTT_MoveTo("targetLastKnownLocation")
+                    ]
+                }),
+                BTT_SetFocalPoint("targetPredictedLocation")
+            ]
+        }),
+        new Sequence({
+            nodes: [
+                BTT_EQSSetArgumentVector(EQSQueryType.Hidden, EQSArgument.TargetPredictedLocation, (blackboard: AIBlackboard) => blackboard.targetPredictedLocation),
+                BTT_RunEQSQuery(EQSQueryType.Hidden, "hiddenLocation"),
+                BTT_SetFocalPoint("hiddenLocation"),
+                BTT_MoveTo("hiddenLocation")
+            ]
+        }),
+        BTT_SetValue((blackboard: AIBlackboard) => blackboard.target = null)
     ]
 });
 
@@ -83,9 +100,8 @@ const BT_CanSeeTarget = new Selector({
 
 export const BT_Combat = new Selector({
     nodes: [
-        // BT_SearchPredictedLocation,
         IsSet(BT_CanSeeTarget, "canSeeTarget"),
-        // IsSet(BT_SearchPredictedLocation, "canSeeTarget", false)
+        IsSet(BT_SearchTarget, "canSeeTarget", false)
 
         /*
         new Sequence({

@@ -20,6 +20,7 @@ export const enum EQSQueryType {
 export const enum EQSArgument {
     TargetHash = "TargetHash",
     TargetLastKnownLocation = "TargetLastKnownLocation",
+    TargetPredictedLocation = "TargetPredictedLocation",
     LastHitLocation = "LastHitLocation"
 }
 

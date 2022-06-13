@@ -11,11 +11,13 @@ import {AIBlackboard} from "../blackboard"
  */
 export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlackboard) => new Task({
     start: (blackboard: AIBlackboard) => {
-        blackboard.eqsResults[query] = {status: EnvironmentQueryStatus.Processing}
+        blackboard.eqsResults[query] = {status: EnvironmentQueryStatus.Processing};
         AI.EQS_Query(query)
     },
+
     run: (blackboard: AIBlackboard) => {
-        const result: EnvironmentQuery = blackboard.eqsResults[query]
+        const result: EnvironmentQuery = blackboard.eqsResults[query];
+
         if (!result)
             return FAILURE
         switch (result.status) {

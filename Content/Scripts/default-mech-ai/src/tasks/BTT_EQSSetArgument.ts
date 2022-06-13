@@ -1,6 +1,6 @@
 import {Task, SUCCESS, FAILURE} from 'behaviortree'
 import {AI} from "../index"
-import {AIBlackboard} from "../blackboard"
+import {AIBlackboard, BlackboardKey} from "../blackboard"
 import {IsVector, IsWarMachine} from "../utils"
 import {add, multiply} from "../helper"
 import { EQSArgument, EQSQueryType } from 'enums'
@@ -13,8 +13,10 @@ import { Vector } from 'types'
  * @param blackboardKey WarMachine or IntVector
  * @constructor
  */
-export const BTT_EQSSetArgumentString = (queryType: EQSQueryType, key: EQSArgument, value: string) => new Task({
-    run: () => {
+export const BTT_EQSSetArgumentString = (queryType: EQSQueryType, key: EQSArgument, func: (blackboard: AIBlackboard) => string) => new Task({
+    run: (blackboard: AIBlackboard) => {
+        const value: string = func(blackboard);
+
         AI.EQS_SetArgumentString(queryType, key, value);
         return SUCCESS;
     }
@@ -27,8 +29,10 @@ export const BTT_EQSSetArgumentString = (queryType: EQSQueryType, key: EQSArgume
  * @param blackboardKey WarMachine or IntVector
  * @constructor
  */
- export const BTT_EQSSetArgumentVector = (queryType: EQSQueryType, key: EQSArgument, value: Vector) => new Task({
-    run: () => {
+ export const BTT_EQSSetArgumentVector = (queryType: EQSQueryType, key: EQSArgument, func: (blackboard: AIBlackboard) => Vector) => new Task({
+    run: (blackboard: AIBlackboard) => {
+        const value = func(blackboard);
+
         AI.EQS_SetArgumentVector(queryType, key, value);
         return SUCCESS;
     }

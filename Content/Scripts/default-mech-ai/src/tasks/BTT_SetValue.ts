@@ -10,9 +10,9 @@ import {IsVector, IsWarMachine} from "../utils"
  * @param blackboardKey WarMachine or IntVector
  * @constructor
  */
-export const BTT_ClearValue = (clearFunc: (blackboard: AIBlackboard) => void) => new Task({
+export const BTT_SetValue = (func: (blackboard: AIBlackboard) => void) => new Task({
     run: (blackboard: AIBlackboard) => {
-        clearFunc(blackboard);
+        func(blackboard);
         return SUCCESS;
     }
 });

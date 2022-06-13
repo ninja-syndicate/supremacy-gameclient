@@ -41,7 +41,7 @@ export class ParallelBackground extends Parallel {
 			const debugResult = running ? RUNNING : (endResult as boolean);
 			introspector.wrapLast(this.numNodes, this, debugResult, blackboard);
 		}
-		return endResult;
+		return isSuccess(results[0]) ? SUCCESS : endResult;
 	}
 
 	protected calcResult(results: Array<RunResult>): RunResult {
@@ -49,7 +49,7 @@ export class ParallelBackground extends Parallel {
 		  return FAILURE;
 		}
 		return { total: RUNNING, state: results };
-	  }
+	}
 }
 
 function isRunning(result: RunResult | undefined): boolean {

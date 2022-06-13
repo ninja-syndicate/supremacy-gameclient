@@ -16,6 +16,7 @@ export interface AIBlackboard {
     canSeeTarget: boolean;
 
     strafeLocation?: Vector;
+    hiddenLocation?: Vector;
 
     targetLastKnownLocation?: Vector;
     targetLastKnownVelocity?: Vector;
@@ -28,3 +29,5 @@ export interface AIBlackboard {
     leftArmWeapon: Weapon;
     rightArmWeapon: Weapon;
 }
+
+export type BlackboardKey = keyof AIBlackboard | keyof WarMachine;
