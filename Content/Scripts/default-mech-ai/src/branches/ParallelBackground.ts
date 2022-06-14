@@ -45,19 +45,6 @@ export class ParallelBackground extends Parallel {
 		return isSuccess(results[0]) ? SUCCESS : endResult;
 	}
 
-	abort(blackboard: Blackboard = {}, { lastRun, registryLookUp = (x) => x as Node }: RunConfig = {}) {
-		super.abort(blackboard, { registryLookUp, lastRun });
-	
-		// Call abort() on currently active node
-		const lastRunStates: Array<RunResult> = (typeof lastRun === 'object' && lastRun.state) || [];
-		const startingIndex = Math.max(
-		  lastRunStates.findIndex((x) => isRunning(x)),
-		  0
-		);
-		const node = registryLookUp(this.nodes[startingIndex]);
-		node.abort(blackboard, { registryLookUp, lastRun: lastRunStates[startingIndex] });
-	}
-
 	protected calcResult(results: Array<RunResult>): RunResult {
 		if (results.includes(FAILURE)) {
 		  return FAILURE;

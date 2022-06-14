@@ -5,6 +5,9 @@ import { BT_InvestigateNoise } from "./BT_InvestigateNoise"
 import { IsSet } from "../decorators/IsSet"
 import { BT_ReceivedDamage } from "./BT_ReceivedDamage"
 
+/**
+ * 
+ */
 export const BT_Root = new Selector({
     nodes: [
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),

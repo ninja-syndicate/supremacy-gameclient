@@ -1,36 +1,33 @@
 import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
 import { AIBlackboard } from "../blackboard"
 
-interface IsSetProps {
-    blackboardKey: keyof AIBlackboard
-    isSet: boolean
+interface PredicateProps {
+    predicate: (blackboard: AIBlackboard) => boolean
     observerAborts: ObserverAborts
 }
 
-class IsSetDecorator extends Decorator {
-    nodeType = "IsSetDecorator"
+class PredicateDecorator extends Decorator {
+    nodeType = "PredicateDecorator"
 
-    setConfig(config: IsSetProps) {
+    setConfig(config: PredicateProps) {
         this.config = config
         this.observerAborts = config.observerAborts
     }
 
     condition(blackboard: AIBlackboard) {
-        return !!blackboard[this.config.blackboardKey] === this.config.isSet
+        return this.config.predicate(blackboard)
     }
 }
 
-export const IsSet = (
+export const Predicate = (
     node: NodeOrRegistration,
-    blackboardKey: keyof AIBlackboard,
-    isSet: boolean = true,
+    predicate: (blackboard: AIBlackboard) => boolean,
     observerAborts: ObserverAborts = ObserverAborts.None,
 ): Node =>
-    new IsSetDecorator({
+    new PredicateDecorator({
         node: node,
         config: {
-            blackboardKey,
-            isSet,
+            predicate,
             observerAborts,
         },
     })

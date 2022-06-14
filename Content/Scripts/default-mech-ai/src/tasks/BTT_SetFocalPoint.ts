@@ -1,36 +1,26 @@
-import {Task, SUCCESS, FAILURE} from 'behaviortree'
-import {AI} from "../index"
-import {AIBlackboard} from "../blackboard"
-import {IsVector, IsWarMachine} from "../utils"
+import { Task, SUCCESS, FAILURE } from "behaviortree"
+import { AI } from "../index"
+import { AIBlackboard } from "../blackboard"
+import { IsVector, IsWarMachine } from "../utils"
 
 /**
- * Makes the AI look at a War Machine or location.
+ * Sets the focal point of AI.
  *
- * Call {@link BTT_StopFocus} to stop looking at anything
- * @param blackboardKey WarMachine or IntVector
- * @constructor
+ * @param blackboardKey WarMachine or Vector
  */
-export const BTT_SetFocalPoint = (blackboardKey: keyof AIBlackboard) => new Task({
-    run: (blackboard: AIBlackboard) => {
-        const value = blackboard[blackboardKey];
-        if (!value)
-            return FAILURE;
+export const BTT_SetFocalPoint = (blackboardKey: keyof AIBlackboard) =>
+    new Task({
+        run: (blackboard: AIBlackboard) => {
+            const value = blackboard[blackboardKey]
+            if (!value) return FAILURE
 
-        if (IsWarMachine(value)) {
-            AI.FocusHash(value.hash)
-            return SUCCESS
-        } else if (IsVector(value)) {
-            AI.FocusLocation(value)
-            return SUCCESS
-        }
-        return FAILURE
-    }
-});
-
-/** Stop looking at WarMachine/IntVector from {@link BTT_SetFocalPoint}. */
-export const BTT_StopFocus = new Task({
-    run: () => {
-        AI.ClearFocus()
-        return SUCCESS
-    }
-});
+            if (IsWarMachine(value)) {
+                AI.FocusHash(value.hash)
+                return SUCCESS
+            } else if (IsVector(value)) {
+                AI.FocusLocation(value)
+                return SUCCESS
+            }
+            return FAILURE
+        },
+    })

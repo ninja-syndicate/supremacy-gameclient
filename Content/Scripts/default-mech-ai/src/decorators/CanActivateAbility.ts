@@ -1,12 +1,11 @@
-import {Decorator, FAILURE, Node, NodeOrRegistration, ObserverAborts, RunCallback} from "behaviortree"
-import {AIBlackboard} from "../blackboard"
-import {Ability} from "../../../types/enums";
-import { AI } from "..";
-import { BT_Combat } from "../trees/BT_Combat";
+import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
+import { AIBlackboard } from "../blackboard"
+import { Ability } from "../../../types/enums"
+import { AI } from ".."
 
 interface CanActivateAbilityProps {
-    ability: Ability,
-    isSet: boolean,
+    ability: Ability
+    isSet: boolean
     observerAborts: ObserverAborts
 }
 
@@ -14,7 +13,7 @@ class CanActivateAbilityDecorator extends Decorator {
     nodeType = "CanActivateAbilityDecorator"
 
     setConfig(config: CanActivateAbilityProps) {
-        this.config = config;
+        this.config = config
         this.observerAborts = config.observerAborts
     }
 
@@ -35,5 +34,5 @@ export const CanActivateAbility = (
             ability,
             isSet,
             observerAborts,
-    },
-})
+        },
+    })

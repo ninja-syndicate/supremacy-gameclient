@@ -1,0 +1,12 @@
+import { Task, SUCCESS, FAILURE } from "behaviortree"
+import { AI } from "../index"
+
+/**
+ * Clears the focal point set by {@link BTT_SetFocalPoint}.
+ */
+export const BTT_StopFocus = new Task({
+    run: () => {
+        AI.ClearFocus()
+        return SUCCESS
+    },
+})

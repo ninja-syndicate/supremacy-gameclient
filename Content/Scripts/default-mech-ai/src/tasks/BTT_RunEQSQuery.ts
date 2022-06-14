@@ -13,6 +13,7 @@ export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlac
     start: (blackboard: AIBlackboard) => {
         blackboard.eqsResults[query] = {status: EnvironmentQueryStatus.Processing};
         AI.EQS_Query(query)
+        return SUCCESS;
     },
 
     run: (blackboard: AIBlackboard) => {

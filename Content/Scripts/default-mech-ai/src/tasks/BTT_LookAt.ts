@@ -18,12 +18,9 @@ export const BTT_LookAt = (blackboardKey: keyof AIBlackboard) => new Task({
             return;
 
         AI.LookAt(location);
+        return SUCCESS;
     },
     run: (blackboard: AIBlackboard) => {
-        const location = blackboard[blackboardKey];
-        if (!location || !IsVector(location))
-            return FAILURE;
-        
         const status = AI.QueryStatus(Action.LookAt);
         switch (status) {
             case Status.Running:

@@ -5,9 +5,6 @@ import {AI} from "./index"
 import {BT_Root} from "./trees/BT_Root"
 import {BehaviorTree} from "behaviortree"
 import {AIBlackboard} from "./blackboard"
-import {MovementResult} from "enums";
-import {Task, SUCCESS, FAILURE, RUNNING} from 'behaviortree';
-import {Perception} from "types";
 import {distanceTo, isDead, add, multiply} from "./helper";
 
 export let tree = new BehaviorTree({
@@ -41,6 +38,8 @@ export const onTick = (input: BrainInput) => {
 
     updateBlackboard(input);
 
+    console.log(JSON.stringify(blackboard.targetLastKnownLocation))
+
     // Run Behaviour Tree
     tree.step()
 
@@ -70,7 +69,7 @@ function updateBlackboard(input: BrainInput): void {
     updateBlackboardDamage(input.perception.damage);
     updateBlackboardSound(input.perception.sound);
 
-    console.log(JSON.stringify(blackboard.targetLastKnownLocation));
+    // console.log(JSON.stringify(blackboard.targetLastKnownLocation));
 }
 
 function clearBlackboardTarget(): void {
