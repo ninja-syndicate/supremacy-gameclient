@@ -15,8 +15,8 @@ export const BT_CanSeeTarget = new Selector({
         ),
         Predicate(
             BT_CloseCombat,
-            (blackboard: AIBlackboard) => blackboard.canMelee && distanceToVec(blackboard.input.self.location, blackboard.targetLastKnownLocation) <= 5000,
-            ObserverAborts.LowerPriority,
+            (blackboard: AIBlackboard) => blackboard.canMelee && distanceToVec(blackboard.input.self.location, blackboard.targetLastKnownLocation) <= 4000,
+            ObserverAborts.Both,
         ),
         BT_RangeCombat,
     ],

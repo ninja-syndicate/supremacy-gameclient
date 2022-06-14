@@ -1,19 +1,21 @@
-import {AI} from "../index"
+import { AI } from "../index"
 
-import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
-import {AIBlackboard} from "../blackboard"
-import {WeaponTag} from "enums"
+import { RUNNING, Task } from "behaviortree"
+import { WeaponTag } from "enums"
 
 /**
- * Shoots the specified weapon.
+ * Performs a melee attack using the specified melee weapon.
  */
- export const BTT_MeleeAttack = (tag: WeaponTag) => new Task({
-    run: () => {
-        AI.WeaponTrigger(tag);
-        return RUNNING;
-    },
-    
-    end: () => {
-        AI.WeaponRelease(tag);
-    }
-});
+export const BTT_MeleeAttack = (tag: WeaponTag) =>
+    new Task({
+        run: () => {
+            AI.WeaponTrigger(tag)
+            return RUNNING
+        },
+        end: () => {
+            AI.WeaponRelease(tag)
+        },
+        abort: () => {
+            AI.WeaponRelease(tag)
+        },
+    })

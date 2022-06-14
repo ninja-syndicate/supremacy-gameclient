@@ -38,6 +38,12 @@ export class ParallelBackground extends Parallel {
 		const endResult = this.calcResult(results);
 		if (isFailure(endResult) || isSuccess(results[0])) {
 			this.blueprint.end(blackboard);
+
+			/*
+			for (const n of this.nodes) {
+				(n as Node).blueprint.end(blackboard);
+			}
+			*/
 		}
 		// TODO: instropector result might need to change...
 		if (introspector) {

@@ -1,11 +1,11 @@
-import {EnvironmentQueryStatus, EQSQueryType, WeaponTag} from "enums"
-import {BrainInput, DamageDetails, SoundDetails, Vector, WarMachine} from "types"
-import {StringToEQSQueryType} from "./utils"
-import {AI} from "./index"
-import {BT_Root} from "./trees/BT_Root"
-import {BehaviorTree, Introspector} from "behaviortree"
-import {AIBlackboard} from "./blackboard"
-import {distanceTo, isDead, add, multiply} from "./helper";
+import { EnvironmentQueryStatus, EQSQueryType, WeaponTag } from "enums"
+import { BrainInput, DamageDetails, SoundDetails, Vector, WarMachine } from "types"
+import { StringToEQSQueryType } from "./utils"
+import { AI } from "./index"
+import { BT_Root } from "./trees/BT_Root"
+import { BehaviorTree, Introspector } from "behaviortree"
+import { AIBlackboard } from "./blackboard"
+import { distanceTo, isDead, add, multiply } from "./helper"
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -13,36 +13,36 @@ export let tree = new BehaviorTree({
         target: null,
         eqsResults: {},
     } as AIBlackboard,
-});
+})
 
 export const onBegin = (input: BrainInput) => {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-    
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+
     for (let weapon of input.self.weapons) {
-        if (weapon.tags.find(t => t === WeaponTag.Secondary) !== undefined) {
-            blackboard.secondaryWeapon = weapon;
-            blackboard.canUseSpecialAttack = true;
-            break;
+        if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
+            blackboard.secondaryWeapon = weapon
+            blackboard.canUseSpecialAttack = true
+            break
         }
     }
     for (let weapon of input.self.weapons) {
-        if (weapon.tags.find(t => t === WeaponTag.Melee) !== undefined) {
-            blackboard.canMelee = true;
-            break;
+        if (weapon.tags.find((t) => t === WeaponTag.Melee) !== undefined) {
+            blackboard.canMelee = true
+            break
         }
     }
-    console.log(`${input.self.name} AI Started`);
+    console.log(`${input.self.name} AI Started`)
 }
 
 export const onTick = (input: BrainInput) => {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
     // Check errors
     if (input.errors.length !== 0) {
-        input.errors.forEach(e => console.log(`${e.severity}: ${e.command}: ${e.message}`))
+        input.errors.forEach((e) => console.log(`${e.severity}: ${e.command}: ${e.message}`))
     }
 
-    updateBlackboard(input);
+    updateBlackboard(input)
 
     // Run Behaviour Tree
     tree.step()
@@ -57,155 +57,148 @@ export const onTick = (input: BrainInput) => {
 }
 
 function updateBlackboard(input: BrainInput): void {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    blackboard.input = input;
-    
-    const bestTarget: WarMachine = findBestTarget(blackboard);
-    // console.log(JSON.stringify(bestTarget));
-    // console.log(blackboard.canSeeTarget);
+    blackboard.input = input
+
+    const bestTarget: WarMachine = findBestTarget(blackboard)
     if (bestTarget === null) {
-        clearBlackboardTarget();
+        clearBlackboardTarget()
     } else {
-        blackboard.target = bestTarget;
+        blackboard.target = bestTarget
     }
-    updateBlackboardSight(input.perception.sight);
-    updateBlackboardDamage(input.perception.damage);
-    updateBlackboardSound(input.perception.sound);
+    updateBlackboardSight(input.perception.sight)
+    updateBlackboardDamage(input.perception.damage)
+    updateBlackboardSound(input.perception.sound)
 }
 
 function clearBlackboardTarget(): void {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    blackboard.target = null;
-    blackboard.canSeeTarget = false;
+    blackboard.target = null
+    blackboard.canSeeTarget = false
     if (blackboard.targetLastKnownLocation !== undefined) {
-        delete blackboard.targetLastKnownLocation;
+        delete blackboard.targetLastKnownLocation
     }
 }
 
 /**
  * Only update the sight info.
- * 
- * @param perception 
+ *
+ * @param perception
  */
 function updateBlackboardSight(sight: WarMachine[]): void {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-    if (!blackboard.target)
-        return;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    if (!blackboard.target) return
 
     if (sight.length === 0) {
-        blackboard.canSeeTarget = false;
+        blackboard.canSeeTarget = false
     } else {
-        const targetVisIndex: number = sight.findIndex(m => m.hash === blackboard.target.hash);
+        const targetVisIndex: number = sight.findIndex((m) => m.hash === blackboard.target.hash)
 
-        blackboard.canSeeTarget = targetVisIndex !== -1;
+        blackboard.canSeeTarget = targetVisIndex !== -1
         if (blackboard.canSeeTarget) {
-            blackboard.targetLastKnownLocation = blackboard.target.location;
-            blackboard.targetPredictedLocation = blackboard.target.location;
-            blackboard.targetLastKnownVelocity = blackboard.target.velocity;
+            blackboard.targetLastKnownLocation = blackboard.target.location
+            blackboard.targetPredictedLocation = blackboard.target.location
+            blackboard.targetLastKnownVelocity = blackboard.target.velocity
         }
     }
     if (blackboard.targetLastKnownLocation !== undefined) {
         // TODO: Project to navigation and clear if not valid.
         // Also expose a new EQS to allow searching for target in the direction.
-        blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, 
-                                                 multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime));
+        blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime))
     }
 }
 
 /**
  * Only update the damage info.
- * 
- * @param perception 
- * 
- * @returns 
+ *
+ * @param perception
+ *
+ * @returns
  */
 function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
-    if (damageDetails.length === 0)
-        return;
+    if (damageDetails.length === 0) return
 
-    console.log("received damage")
-    
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-    const lastIdx: number = damageDetails.length - 1;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const lastIdx: number = damageDetails.length - 1
 
-    /*
-    if (damageDetails[lastIdx].friendly)
-        return;
-    */
+    if (damageDetails[lastIdx].friendly) return
 
-    blackboard.damageStimulusDirection = damageDetails[lastIdx].damageDirection;
-    blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000));
-
-    console.log(blackboard.damageStimulusDirection)
+    blackboard.damageStimulusDirection = damageDetails[lastIdx].damageDirection
+    blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000))
 }
 
 function updateBlackboardSound(soundDetails: SoundDetails[]): void {
-    if (soundDetails.length === 0)
-        return;
+    if (soundDetails.length === 0) return
 
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-    const lastIdx: number = soundDetails.length - 1;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const lastIdx: number = soundDetails.length - 1
 
-    if (soundDetails[lastIdx].friendly)
-        return;
+    if (soundDetails[lastIdx].friendly) return
 
     // For now, always overwrite the last noise location.
     // It's probably better to have a score function to evaluate the score of new noise location.
     if (soundDetails[lastIdx].tag === "Taunt") {
-        blackboard.heardNoise = true;
-        blackboard.noiseLocation = soundDetails[lastIdx].location;
+        blackboard.heardNoise = true
+        blackboard.noiseLocation = soundDetails[lastIdx].location
     }
 }
 
 /**
- * 
+ *
  */
 function findBestTarget(blackboard: AIBlackboard): WarMachine {
-    const mechsBySight: WarMachine[] = blackboard.input.perception.sight;
-    const damageDetails: DamageDetails[] = blackboard.input.perception.damage;
+    const mechsBySight: WarMachine[] = blackboard.input.perception.sight
+    const damageDetails: DamageDetails[] = blackboard.input.perception.damage
 
     // For now, only consider mechs by sight.
-    // TODO: Maintain list of mechs in memory and 
+    // TODO: Maintain list of mechs in memory and
     // use damage details to figure out which mech it is associated with.
     if (mechsBySight.length === 0) {
         // maybe return null after some time if lost.
-        return blackboard.target;
+        return blackboard.target
     }
-    
-    const filtered = mechsBySight.filter(m => filter(m))
+
+    const filtered = mechsBySight.filter((m) => filter(m))
 
     // Get the index of the first target with largest score.
-    const scores: number[] = filtered.map(score);
-    const idx: number = scores.indexOf(Math.max(...scores));
-    if (idx === -1)
-        return blackboard.target;
-    
-    return filtered[idx];
+    const scores: number[] = filtered.map(score)
+    const idx: number = scores.indexOf(Math.max(...scores))
+    if (idx === -1) {
+        if (blackboard.target) {
+            const targetVisIndex: number = mechsBySight.findIndex((m) => m.hash === blackboard.target.hash)
+            return targetVisIndex !== -1 && mechsBySight[targetVisIndex].health <= 0 ? null : blackboard.target
+        } else {
+            return null;
+        }
+    }
+
+    return filtered[idx]
 }
 
 /**
- * 
- * 
- * @param mech 
- * 
- * @returns 
+ *
+ *
+ * @param mech
+ *
+ * @returns
  */
 // TODO: do inverse
 function filter(mech: WarMachine, inverse: boolean = false): boolean {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-    const MaxDistanceToConsider: number = 50000;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const MaxDistanceToConsider: number = 50000
 
-    const filterByFaction = () => blackboard.input.self.factionID !== mech.factionID;
-    const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= MaxDistanceToConsider;
-    const filterFuncs = [filterByFaction, filterByDistance];
+    const filterByAlive = () => mech.health > 0
+    const filterByFaction = () => blackboard.input.self.factionID !== mech.factionID
+    const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= MaxDistanceToConsider
+    const filterFuncs = [filterByAlive, filterByFaction, filterByDistance]
 
-    return filterFuncs.map(func => func()).reduce((a, b) => (a && b));
+    return filterFuncs.map((func) => func()).reduce((a, b) => a && b)
 }
 
 function scoreBySight(mechs: WarMachine[]): number[] {
-    return mechs.map(score);
+    return mechs.map(score)
 }
 
 /*
@@ -220,23 +213,23 @@ function scoreByD(mech: WarMachine): number {
 */
 
 /**
- * 
- * 
- * @param mech 
- * 
- * @returns 
+ *
+ *
+ * @param mech
+ *
+ * @returns
  */
 function score(mech: WarMachine): number {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard;
-    const MaxDistanceToConsider: number = 50000;
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const MaxDistanceToConsider: number = 50000
 
     // Normalized score functions.
-    const scoreByHealth = (m: WarMachine) => 1 - ((m.health + m.shield) / (m.healthMax + m.shieldMax));
-    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider);
-    const scoreFuncs = [scoreByHealth, scoreByDistance];
+    const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
+    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
+    const scoreFuncs = [scoreByHealth, scoreByDistance]
 
-    const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b);
+    const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
 
     // Normalize total score.
-    return totalScore / scoreFuncs.length;
+    return totalScore / scoreFuncs.length
 }

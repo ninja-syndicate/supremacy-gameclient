@@ -29,7 +29,6 @@ export const BT_SearchTarget = new Sequence({
                 BTT_SetFocalPoint("targetPredictedLocation"),
             ],
         }),
-        BTT_LogString("got to here"),
         new Sequence({
             nodes: [
                 BTT_EQSSetArgumentVector(
