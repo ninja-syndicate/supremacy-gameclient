@@ -11,7 +11,7 @@ import { BTT_EQSSetArgumentString } from "../tasks/BTT_EQSSetArgument"
 /**
  *
  */
-export const BT_RangeCombat = new Sequence({
+export const BT_GetCover = new Sequence({
     nodes: [
         BTT_SetFocalPoint("target"),
         new ParallelBackground({

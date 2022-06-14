@@ -8,6 +8,6 @@ export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
         IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.Both),
-        IsSet(BT_SearchTarget, "canSeeTarget", false, ObserverAborts.Self),
+        IsSet(BT_SearchTarget, "canSeeTarget", false),
     ],
 })

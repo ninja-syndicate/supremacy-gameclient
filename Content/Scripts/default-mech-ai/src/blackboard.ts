@@ -1,38 +1,39 @@
-import {EnvironmentQuery, WarMachine, Vector, Weapon, Perception, BrainInput} from "types";
-import {EQSQueryType} from "enums";
+import { EnvironmentQuery, WarMachine, Vector, Weapon, Perception, BrainInput } from "types"
+import { EQSQueryType } from "enums"
 
 /**
- * 
- * 
+ *
+ *
  */
 export interface AIBlackboard {
-    input: BrainInput;
-    
-    eqsResults: Map<EQSQueryType, EnvironmentQuery>;
-    weapons: Weapon[];
-    patrolLocation?: Vector;
+    input: BrainInput
 
-    target: WarMachine | null;
-    canSeeTarget: boolean;
+    eqsResults: Map<EQSQueryType, EnvironmentQuery>
+    weapons: Weapon[]
+    patrolLocation?: Vector
 
-    heardNoise: boolean;
-    noiseLocation?: Vector;
+    target: WarMachine | null
+    canSeeTarget: boolean
 
-    strafeLocation?: Vector;
-    hiddenLocation?: Vector;
+    heardNoise: boolean
+    noiseLocation?: Vector
+    lastHitLocation?: Vector
 
-    targetLastKnownLocation?: Vector;
-    targetLastKnownVelocity?: Vector;
-    targetPredictedLocation?: Vector;
+    strafeLocation?: Vector
+    hiddenLocation?: Vector
 
-    damageStimulusDirection?: Vector;
-    damageStimulusFocalPoint?: Vector;
-    damageStimulusEstimateLocation?: Vector;
+    targetLastKnownLocation?: Vector
+    targetLastKnownVelocity?: Vector
+    targetPredictedLocation?: Vector
 
-    leftArmWeapon: Weapon;
-    rightArmWeapon: Weapon;
-    secondaryWeapon?: Weapon;
+    damageStimulusDirection?: Vector
+    damageStimulusFocalPoint?: Vector
+    damageStimulusEstimateLocation?: Vector
 
-    canMelee: boolean;
-    canUseSpecialAttack: boolean;
+    leftArmWeapon: Weapon
+    rightArmWeapon: Weapon
+    secondaryWeapon?: Weapon
+
+    canMelee: boolean
+    canUseSpecialAttack: boolean
 }
