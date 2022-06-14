@@ -38,7 +38,7 @@ export const onTick = (input: BrainInput) => {
 
     updateBlackboard(input);
 
-    console.log(JSON.stringify(blackboard.targetLastKnownLocation))
+    // console.log(JSON.stringify(blackboard.targetLastKnownLocation))
 
     // Run Behaviour Tree
     tree.step()

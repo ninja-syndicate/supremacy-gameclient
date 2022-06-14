@@ -12,6 +12,8 @@ import { BTT_EQSSetArgumentString, BTT_EQSSetArgumentVector } from "../tasks/BTT
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 import { BT_ReceivedDamage } from "./BT_ReceivedDamage"
 import { BT_CanSeeTarget } from "./BT_CanSeeTarget"
+import { BT_RangeCombat } from "./BT_RangeCombat"
+import { BTT_Shoot } from "../tasks/BTT_Shoot"
 
 const BT_SearchTarget = new Sequence({
     nodes: [
@@ -41,8 +43,12 @@ const BT_SearchTarget = new Sequence({
 
 export const BT_Combat = new Selector({
     nodes: [
-        IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
-        IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.Both),
-        IsSet(BT_SearchTarget, "canSeeTarget", false, ObserverAborts.Self),
+        IsSet(new Parallel({
+            nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
+        }), "canSeeTarget", true, ObserverAborts.Self)
+        // IsSet(BT_RangeCombat, "canSeeTarget", true, ObserverAborts.Both)
+        //IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
+        //IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.Both),
+        //IsSet(BT_SearchTarget, "canSeeTarget", false, ObserverAborts.Self),
     ],
 })
