@@ -20,6 +20,8 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
             if (!hasSecondaryWeapon) return FAILURE
 
             const success: boolean = AI.TrySpecialAttack(location)
+            if (success) blackboard.canUseSpecialAttack = false
+
             return success ? SUCCESS : FAILURE
         },
 

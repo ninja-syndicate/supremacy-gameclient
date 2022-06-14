@@ -7,7 +7,7 @@ declare class AIController {
      * Move to the following location. Will automatically path find.
      * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
      */
-    MoveTo(x: number, y: number, acceptanceRadius?: number): void;
+    MoveTo(x: number, y: number, acceptanceRadius?: number): boolean;
 
     /**
      * Move to the following location. Will automatically path find.
@@ -15,7 +15,7 @@ declare class AIController {
      * @param location The location to move to.
      * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
      */
-    MoveToVector(location: Vector, acceptanceRadius?: number): MovementResult;
+    MoveToVector(location: Vector, acceptanceRadius?: number): boolean;
 
     /**
      * 
@@ -92,6 +92,8 @@ declare class AIController {
      * @param ability 
      */
     QueryStatus(ability: Action | Ability): Status;
+
+    QueryMovementResult(): MovementResult;
 
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to

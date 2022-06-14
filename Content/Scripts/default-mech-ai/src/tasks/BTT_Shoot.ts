@@ -9,7 +9,6 @@ import { Status, WeaponTag } from "enums"
 export const BTT_Shoot = (tag: WeaponTag) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
-            console.log("started" + JSON.stringify(tag))
             return SUCCESS;
         },
         run: (blackboard: AIBlackboard) => {
@@ -27,7 +26,6 @@ export const BTT_Shoot = (tag: WeaponTag) =>
         },
 
         abort: () => {
-            console.log("weapon released" + JSON.stringify(tag))
             AI.WeaponRelease(tag)
         },
     })

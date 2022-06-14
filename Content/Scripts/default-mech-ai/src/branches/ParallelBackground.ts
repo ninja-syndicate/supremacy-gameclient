@@ -12,8 +12,11 @@ export class ParallelBackground extends Parallel {
 	nodeType = 'ParallelBackground';
 
 	run(blackboard: Blackboard = {}, { lastRun, introspector, rerun, registryLookUp = (x) => x as Node }: ParallelRunConfig = {}) {
-		if (!rerun) 
-			this.blueprint.start(blackboard);
+		if (!rerun || !this.ranStart) {
+			this.ranStart = true;
+			const startResult = this.blueprint.start(blackboard);
+			if (startResult === FAILURE) return startResult;
+		}
 
 		const results: Array<RunResult> = [];
 		for (let currentIndex = 0; currentIndex < this.numNodes; ++currentIndex) {
@@ -43,6 +46,15 @@ export class ParallelBackground extends Parallel {
 			introspector.wrapLast(this.numNodes, this, debugResult, blackboard);
 		}
 		return isSuccess(results[0]) ? SUCCESS : endResult;
+	}
+
+	abort(blackboard: Blackboard, { registryLookUp = (x) => x as Node, lastRun }: ParallelRunConfig = {}) {
+		this.blueprint.abort(blackboard, { registryLookUp, lastRun });
+	
+		// call abort() on parallel nodes
+		for (const n of this.nodes) {
+		  (n as Node).abort(blackboard, { registryLookUp, lastRun });
+		}
 	}
 
 	protected calcResult(results: Array<RunResult>): RunResult {

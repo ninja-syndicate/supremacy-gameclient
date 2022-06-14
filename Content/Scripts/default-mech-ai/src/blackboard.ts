@@ -33,5 +33,6 @@ export interface AIBlackboard {
     rightArmWeapon: Weapon;
     secondaryWeapon?: Weapon;
 
+    canMelee: boolean;
     canUseSpecialAttack: boolean;
 }
