@@ -11,11 +11,16 @@ export const BT_CanSeeTarget = new Selector({
         Predicate(
             BTT_SpecialAttack("targetLastKnownLocation"),
             (blackboard: AIBlackboard) => blackboard.canUseSpecialAttack && blackboard.targetLastKnownLocation !== undefined,
+            true,
             ObserverAborts.LowerPriority,
         ),
         Predicate(
             BT_CloseCombat,
-            (blackboard: AIBlackboard) => blackboard.canMelee && distanceToVec(blackboard.input.self.location, blackboard.targetLastKnownLocation) <= 4000,
+            (blackboard: AIBlackboard) =>
+                blackboard.canMelee &&
+                blackboard.targetLastKnownLocation !== undefined &&
+                distanceToVec(blackboard.input.self.location, blackboard.targetLastKnownLocation) <= 4000,
+            true,
             ObserverAborts.Both,
         ),
         BT_RangeCombat,

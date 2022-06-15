@@ -1,7 +1,5 @@
-import { Task, SUCCESS, FAILURE } from "behaviortree"
-import { AI } from "../index"
+import { Task, SUCCESS } from "behaviortree"
 import { AIBlackboard } from "../blackboard"
-import { IsVector, IsWarMachine } from "../utils"
 
 /**
  * Makes the AI look at a War Machine or location.

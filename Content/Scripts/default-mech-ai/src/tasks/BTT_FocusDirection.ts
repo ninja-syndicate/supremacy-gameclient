@@ -19,7 +19,7 @@ export const BTT_FocusDirection = (blackboardKey: keyof AIBlackboard) => new Tas
 
         // TODO: Use vector math library.
         const focalPoint = add(blackboard.input.self.location, multiply(direction, 1000));
-        AI.FocusLocation(focalPoint);
+        AI.SetFocalPointByLocation(focalPoint);
         return SUCCESS;
     }
 });

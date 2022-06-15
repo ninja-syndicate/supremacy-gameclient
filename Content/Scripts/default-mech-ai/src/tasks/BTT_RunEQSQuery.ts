@@ -29,6 +29,9 @@ export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlac
             case EnvironmentQueryStatus.Success:
                 blackboard[blackboardKey as string] = blackboard.eqsResults[query].location
                 return SUCCESS
+            default:
+                console.log("can this case ever happen")
+                return SUCCESS
         }
     },
 })

@@ -21,6 +21,7 @@ export interface AIBlackboard {
 
     strafeLocation?: Vector
     hiddenLocation?: Vector
+    coverLocation?: Vector
 
     targetLastKnownLocation?: Vector
     targetLastKnownVelocity?: Vector

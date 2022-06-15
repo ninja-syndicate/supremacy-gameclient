@@ -1,5 +1,5 @@
 import { Task, SUCCESS, FAILURE } from "behaviortree"
-import { AI } from "../index"
+import { AI } from "../../index"
 
 /**
  * Clears the focal point set by {@link BTT_SetFocalPoint}.

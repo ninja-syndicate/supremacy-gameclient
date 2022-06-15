@@ -1,5 +1,5 @@
 import { Sequence } from "behaviortree"
-import { BTT_SetFocalPoint } from "../tasks/BTT_SetFocalPoint"
+import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 import { BTT_RunEQSQuery } from "../tasks/BTT_RunEQSQuery"
 import { EQSQueryType } from "enums"
 import { BTT_MoveTo } from "../tasks/BTT_MoveTo"

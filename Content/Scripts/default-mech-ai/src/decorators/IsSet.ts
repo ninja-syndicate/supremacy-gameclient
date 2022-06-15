@@ -28,6 +28,7 @@ export const IsSet = (
 ): Node =>
     new IsSetDecorator({
         node: node,
+        start: (node as Node).blueprint.start,
         config: {
             blackboardKey,
             isSet,

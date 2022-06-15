@@ -1,5 +1,5 @@
 import { Sequence } from "behaviortree"
-import { BTT_SetFocalPoint } from "../tasks/BTT_SetFocalPoint"
+import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
 import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
 import { AIBlackboard } from "../blackboard"

@@ -44,6 +44,10 @@ export const onTick = (input: BrainInput) => {
 
     updateBlackboard(input)
 
+    
+    // console.log(JSON.stringify(rotateZ(vec3(1, 0, 0), vec3(1, 0, 0), 90)))
+
+
     // Run Behaviour Tree
     tree.step()
 
@@ -56,6 +60,10 @@ export const onTick = (input: BrainInput) => {
     }
 }
 
+/**
+ *
+ * @param input
+ */
 function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
@@ -108,6 +116,8 @@ function updateBlackboardSight(sight: WarMachine[]): void {
         // Also expose a new EQS to allow searching for target in the direction.
         blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime))
     }
+
+    // TODO: if the target that caused damage is dead, clear the damage stimulus focal point?
 }
 
 /**
@@ -127,6 +137,7 @@ function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
 
     blackboard.damageStimulusDirection = damageDetails[lastIdx].damageDirection
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000))
+    blackboard.lastHitLocation = blackboard.input.self.location
 }
 
 function updateBlackboardSound(soundDetails: SoundDetails[]): void {
@@ -170,7 +181,7 @@ function findBestTarget(blackboard: AIBlackboard): WarMachine {
             const targetVisIndex: number = mechsBySight.findIndex((m) => m.hash === blackboard.target.hash)
             return targetVisIndex !== -1 && mechsBySight[targetVisIndex].health <= 0 ? null : blackboard.target
         } else {
-            return null;
+            return null
         }
     }
 
