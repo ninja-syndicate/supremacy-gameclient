@@ -2,6 +2,7 @@ import { FAILURE, SUCCESS, RUNNING, Parallel, RunConfig } from "behaviortree"
 import BranchNode from "behaviortree"
 import Node from "behaviortree/src/Node"
 import { ParallelRunConfig, RunResult, StatusWithState, Blackboard, MinimalBlueprint, NodeOrRegistration } from "behaviortree"
+import { IsDecorator } from "behaviortree/lib/Decorator"
 
 /**
  * The parallel background branch node is a variant of parallel node that keeps
@@ -47,7 +48,8 @@ export class ParallelBackground extends Parallel {
 					if (isFailure(lastRunForIndex)) break
 				}
 				const node = registryLookUp(this.nodes[currentIndex])
-				const result = node.run(blackboard, { lastRun: lastRunForIndex, introspector, rerun, registryLookUp })
+                const isRunningState = isSuccess(lastRunForIndex) ? false : rerun
+				const result = node.run(blackboard, { lastRun: lastRunForIndex, introspector, rerun: isRunningState, registryLookUp })
 				results[currentIndex] = result
 
 				if (currentIndex === 0 && isFailure(result)) break

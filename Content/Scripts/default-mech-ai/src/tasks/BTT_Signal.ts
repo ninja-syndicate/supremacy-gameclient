@@ -1,20 +1,20 @@
-import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
-
 import { AI } from "../index"
-import { Action, Status, WeaponTag } from "enums"
 import { AIBlackboard } from "../blackboard"
+import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
+import { Signal, Status, WeaponTag } from "enums"
 
 /**
- * Triggers the specified weapon by tag.
+ * Shoots the specified weapon.
  */
-export const BTT_Wait = (seconds: number) =>
+export const BTT_Signal = (signal: Signal) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
-            const success: boolean = AI.Wait(seconds)
-            return success ? SUCCESS : FAILURE
+            AI.SendSignal(signal)
+            return SUCCESS
         },
         run: (blackboard: AIBlackboard) => {
-            const status: Status = AI.QueryStatus(Action.Wait)
+            const status = AI.QueryStatus(signal)
+
             switch (status) {
                 case Status.Running:
                     return RUNNING

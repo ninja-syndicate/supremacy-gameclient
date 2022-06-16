@@ -10,10 +10,15 @@ import { BT_Camp } from "./BT_Camp"
 export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
-        Predicate(BT_Camp, (blackboard: AIBlackboard) => {
-            let self = blackboard.input.self
-            return self.shield / self.shieldMax <= 0.4
-        }),
+        Predicate(
+            BT_Camp,
+            (blackboard: AIBlackboard) => {
+                let self = blackboard.input.self
+                return self.shield / self.shieldMax <= 0.4
+            },
+            true,
+            ObserverAborts.LowerPriority,
+        ),
         Predicate(
             BT_ReceivedDamage,
             (blackboard: AIBlackboard) => !blackboard.canSeeTarget && blackboard.damageStimulusFocalPoint !== undefined,

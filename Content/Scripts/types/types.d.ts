@@ -1,4 +1,4 @@
-import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, WeaponTag } from "./enums"
+import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, Signal, WeaponTag } from "./enums"
 import { Ability, Status } from "./enums"
 //import { Vec3 } from "vec3"
 
@@ -35,10 +35,10 @@ declare class AIController {
      * Aim at a target. The war machine will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}.
      * @param hash The hash of the target (Mech or damageable AI like Robot Dogs). Get hashes and other details from perception in {@link BrainInput}.
      */
-    SetFocalPointByHash(hash: string): void
+    SetFocalPointByHash(hash: string): boolean
 
     /** Aim at location.  The war machine will continously aim towards this location until focus is cleared with {@link ClearFocus}. */
-    SetFocalPointByLocation(location: Vector): void
+    SetFocalPointByLocation(location: Vector): boolean
 
     IsFocalPointSet(): boolean
 
@@ -82,7 +82,7 @@ declare class AIController {
      * Shoot up a flare and trigger a loud horn, attracting enemies towards you.
      * Useful if the AI is having trouble finding any enemies to fight.
      */
-    Taunt(): void
+    Taunt(): boolean
 
     TryMeleeAttack(): boolean
     TrySpecialAttack(location: Vector): boolean
@@ -110,6 +110,10 @@ declare class AIController {
     EQS_SetArgumentString(query: EQSQueryType, argument: EQSArgument, value: string): void
     /** Set vector argument for an EQS query. Call before {@link EQS_Query} */
     EQS_SetArgumentVector(query: EQSQueryType, argument: EQSArgument, value: Vector): void
+
+    Wait(seconds: number): boolean
+
+    SendSignal(signal: Signal): boolean
 }
 
 declare class JavascriptContext {

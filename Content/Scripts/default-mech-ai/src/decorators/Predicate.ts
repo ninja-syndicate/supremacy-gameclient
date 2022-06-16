@@ -30,6 +30,7 @@ export const Predicate = (
         node: node,
         config: {
             predicate,
+            start: (node as Node).blueprint.start,
             isSet,
             observerAborts,
         },

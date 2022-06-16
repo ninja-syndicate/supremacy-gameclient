@@ -1,11 +1,11 @@
-import { EnvironmentQueryStatus, EQSQueryType, WeaponTag } from "enums"
+import { EnvironmentQueryStatus, EQSQueryType, SoundType, WeaponTag } from "enums"
 import { BrainInput, DamageDetails, SoundDetails, Vector, WarMachine } from "types"
 import { StringToEQSQueryType } from "./utils"
 import { AI } from "./index"
 import { BT_Root } from "./trees/BT_Root"
 import { BehaviorTree, Introspector } from "behaviortree"
 import { AIBlackboard } from "./blackboard"
-import { distanceTo, isDead, add, multiply } from "./helper"
+import { distanceTo, isDead, add, multiply, distanceToVec } from "./helper"
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -17,6 +17,8 @@ export let tree = new BehaviorTree({
 
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+
+    
 
     for (let weapon of input.self.weapons) {
         if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
@@ -44,17 +46,15 @@ export const onTick = (input: BrainInput) => {
 
     updateBlackboard(input)
 
-    
     // console.log(JSON.stringify(rotateZ(vec3(1, 0, 0), vec3(1, 0, 0), 90)))
-
 
     // Run Behaviour Tree
     tree.step()
 
     // EQS - Run callbacks when they succeed
     for (let [key, value] of Object.entries(input.eqs)) {
+        blackboard.eqsResults[key] = value
         if (value.status === EnvironmentQueryStatus.Success) {
-            blackboard.eqsResults[key] = value
             AI.EQS_Complete(StringToEQSQueryType(key))
         }
     }
@@ -90,6 +90,14 @@ function clearBlackboardTarget(): void {
     }
 }
 
+function clearDamageInfo(): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+
+    blackboard.damageInstigatorHash = undefined
+    blackboard.damageStimulusDirection = undefined
+    blackboard.damageStimulusFocalPoint = undefined
+}
+
 /**
  * Only update the sight info.
  *
@@ -97,6 +105,13 @@ function clearBlackboardTarget(): void {
  */
 function updateBlackboardSight(sight: WarMachine[]): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    if (blackboard.damageInstigatorHash !== undefined) {
+        const idx = sight.findIndex((m) => m.hash === blackboard.damageInstigatorHash && m.health <= 0)
+        if (idx !== -1) {
+            clearDamageInfo()
+        }
+    }
+
     if (!blackboard.target) return
 
     if (sight.length === 0) {
@@ -116,8 +131,6 @@ function updateBlackboardSight(sight: WarMachine[]): void {
         // Also expose a new EQS to allow searching for target in the direction.
         blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime))
     }
-
-    // TODO: if the target that caused damage is dead, clear the damage stimulus focal point?
 }
 
 /**
@@ -135,6 +148,7 @@ function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
 
     if (damageDetails[lastIdx].friendly) return
 
+    blackboard.damageInstigatorHash = damageDetails[lastIdx].instigatorHash
     blackboard.damageStimulusDirection = damageDetails[lastIdx].damageDirection
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000))
     blackboard.lastHitLocation = blackboard.input.self.location
@@ -150,11 +164,56 @@ function updateBlackboardSound(soundDetails: SoundDetails[]): void {
 
     // For now, always overwrite the last noise location.
     // It's probably better to have a score function to evaluate the score of new noise location.
-    if (soundDetails[lastIdx].tag === "Taunt") {
+    if (soundDetails[lastIdx].tag === SoundType.Taunt) {
         blackboard.heardNoise = true
         blackboard.noiseLocation = soundDetails[lastIdx].location
     }
+
+    // TODO: handle signal from the team.
+
+    // TODO: pickups
+    /*
+    const healCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.HealCrate)
+    const shieldCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.ShieldCrate)
+    const ammoCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.AmmoCrate)
+    if (healCrateIdx !== -1) {
+        blackboard.healCrateLocation = soundDetails[healCrateIdx].location
+    }
+    if (shieldCrateIdx !== -1) {
+        blackboard.shieldCrateLocation = soundDetails[healCrateIdx].location
+    }
+    if (ammoCrateIdx !== -1) {
+        blackboard.ammoCrateLocation = soundDetails[healCrateIdx].location
+    }
+    */
+    
+    // TODO
+    // blackboard.desiredPickUpLocation = findBestPickup(blackboard)
 }
+
+/*
+function findBestPickup(blackboard: AIBlackboard): Vector {
+    const MaxDistanceToConsider: number = 50000
+
+    const self = blackboard.input.self
+    const scoreByHealth = () => 1 - (self.health / self.healthMax)
+    const scoreByShield =  () => 1 - (self.shield / self.shieldMax)
+    const scoreByDistance = (crateLocation: Vector) => () => 1 - Math.min(1, distanceToVec(self.location, crateLocation) / MaxDistanceToConsider)
+    const scoreByAmmo = () => AI.WeaponGetAmmoByTag(WeaponTag.Primary)
+
+
+    if (blackboard.healCrateLocation !== undefined) {
+        [scoreByHealth, () => 1 - scoreByShield(), scoreByDistance(blackboard.healCrateLocation), () => 1 - scoreByAmmo])
+    }
+
+
+
+    // Normalized score functions.
+
+}   
+*/
+
+
 
 /**
  *

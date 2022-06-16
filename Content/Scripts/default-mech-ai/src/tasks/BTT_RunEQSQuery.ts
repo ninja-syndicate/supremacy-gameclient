@@ -19,8 +19,9 @@ export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlac
     run: (blackboard: AIBlackboard) => {
         const result: EnvironmentQuery = blackboard.eqsResults[query];
 
-        if (!result)
+        if (!result) {
             return FAILURE
+        }
         switch (result.status) {
             case EnvironmentQueryStatus.Processing:
                 return RUNNING
@@ -30,7 +31,6 @@ export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlac
                 blackboard[blackboardKey as string] = blackboard.eqsResults[query].location
                 return SUCCESS
             default:
-                console.log("can this case ever happen")
                 return SUCCESS
         }
     },

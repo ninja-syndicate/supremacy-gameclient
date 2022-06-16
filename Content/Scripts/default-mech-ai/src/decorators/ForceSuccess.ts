@@ -23,10 +23,11 @@ export const ForceSuccess = (node: NodeOrRegistration, observerAborts: ObserverA
     new ForceSuccessDecorator({
         node: node,
         config: {
+            start: (node as Node).blueprint.start,
             observerAborts,
         },
     })
 
 function isRunning(result: RunResult | undefined): boolean {
-    return result === RUNNING || (typeof result === 'object' && result.total === RUNNING);
+    return result === RUNNING || (typeof result === "object" && result.total === RUNNING)
 }

@@ -8,13 +8,18 @@ import { BTT_MeleeAttack } from "../tasks/BTT_MeleeAttack"
 import { AIBlackboard } from "../blackboard"
 import { BT_GetCover } from "./BT_GetCover"
 import { Predicate } from "../decorators/Predicate"
+import { ForceSuccess } from "../decorators/ForceSuccess"
 
 /**
  *
  */
 export const BT_CloseCombat = new Sequence({
     nodes: [
-        BTT_SetFocalPoint("target"),
+        ForceSuccess(
+            new Selector({
+                nodes: [BTT_SetFocalPoint("target"), BTT_SetFocalPoint("targetLastKnownLocation")],
+            }),
+        ),
         new ParallelBackground({
             nodes: [
                 BTT_MeleeAttack(WeaponTag.Melee),

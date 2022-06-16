@@ -10,8 +10,16 @@ import { BTT_EQSSetArgumentString, BTT_EQSSetArgumentVector } from "../tasks/BTT
 import { Predicate } from "../decorators/Predicate"
 import { AI } from ".."
 import { ForceSuccess } from "../decorators/ForceSuccess"
+import { BTT_SetValue } from "../tasks/BTT_SetValue"
 
-export const BT_LookAround = new Sequence({ nodes: [] })
+// TODO:
+/*
+export const BT_LookAround = new Sequence({ 
+    nodes: [
+        BTT_SetValue((blackboard: AIBlackboard) => blackboard.lookAtLocation = ),
+
+    ] })
+*/
 
 /**
  *

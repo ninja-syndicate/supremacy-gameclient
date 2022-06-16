@@ -48,7 +48,9 @@ export const enum MovementResult {
 }
 
 export const enum Action {
-    LookAt = "Action.LookAt"
+    LookAt = "Action.LookAt",
+    Wait = "Action.Wait",
+    Signal
 }
 
 export const enum Ability {
@@ -61,4 +63,18 @@ export const enum Status {
     Running,
     Finished,
     Failed
+}
+
+export const enum SoundType {
+    Weapon = "Weapon",
+    Taunt = "Taunt",
+    Nuke = "Nuke",
+    // Might just give tag Pickup and use sight to figure out the type.
+    HealCrate = "Pickup.Heal",
+    ShieldCrate = "Pickup.Shield",
+    AmmoCrate = "Pickup.Ammo"
+}
+
+export const enum Signal {
+    Help = "Signal.Help",
 }
