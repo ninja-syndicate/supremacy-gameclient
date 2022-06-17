@@ -49,8 +49,7 @@ export const enum MovementResult {
 
 export const enum Action {
     LookAt = "Action.LookAt",
-    Wait = "Action.Wait",
-    Signal
+    Wait = "Action.Wait"
 }
 
 export const enum Ability {

@@ -12,7 +12,7 @@ import { BT_GetCover } from "./BT_GetCover"
 import { ForceSuccess } from "../decorators/ForceSuccess"
 import { IsSet } from "../decorators/IsSet"
 import { BT_Strafe } from "./BT_Strafe"
-import { HasReallyLowTotalHealth } from "../predicates/Predicate_HasReallyLowTotalHealth"
+import { HasVeryLowTotalHealth } from "../predicates/Predicate_HasVeryLowTotalHealth"
 
 /**
  *
@@ -34,7 +34,7 @@ export const BT_RangeCombat = new Sequence({
                         new Selector({
                             nodes: [
                                 // Predicate(BTT_MoveTo("targetLastKnownLocation"), (blackboard: AIBlackboard) => ),
-                                Predicate(BT_GetCover, HasReallyLowTotalHealth),
+                                Predicate(BT_GetCover, HasVeryLowTotalHealth),
                                 BT_Strafe,
                             ],
                         }),

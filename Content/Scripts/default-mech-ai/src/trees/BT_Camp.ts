@@ -10,23 +10,15 @@ import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
 import { BTT_LogString } from "../tasks/BTT_LogString"
 import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 import { ForceSuccess } from "../decorators/ForceSuccess"
+import { BT_LookAround } from "./BT_LookAround"
 
 export const BT_Camp = new Sequence({
     nodes: [
-        ForceSuccess(
-            new Selector({
-                nodes: [
-                    BTT_SetFocalPoint("target"),
-                    IsSet(BTT_SetFocalPoint("targetLastKnownLocation"), "targetLastKnownLocation"),
-                    IsSet(BTT_SetFocalPoint("damageStimulusFocalPoint"), "damageStimulusFocalPoint"),
-                ],
-            }),
-        ),
         new Selector({
-            nodes: [IsSet(BT_GetCover, "coverLocation", false)],
+            nodes: [IsSet(BT_GetCover, "coverLocation", false), IsSet(BTT_MoveTo("coverLocation"), "coverLocation")],
         }),
         new Sequence({
-            nodes: [BTT_Wait(3), BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.coverLocation = undefined))],
+            nodes: [BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.coverLocation = undefined)), BT_LookAround],
         }),
     ],
 })

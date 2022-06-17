@@ -32,7 +32,7 @@ export const BT_GetCover = new Sequence({
             blackboard.lastHitLocation !== undefined ? blackboard.lastHitLocation : blackboard.input.self.location,
         ),
         BTT_RunEQSQuery(EQSQueryType.Cover, "coverLocation"),
-        ForceSuccess(Predicate(BTT_SetFocalPoint("coverLocation"), (blackboard: AIBlackboard) => !AI.IsFocalPointSet())),
+        BTT_SetFocalPoint("coverLocation"),
         BTT_MoveTo("coverLocation"),
         BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.coverLocation = undefined)),
     ],

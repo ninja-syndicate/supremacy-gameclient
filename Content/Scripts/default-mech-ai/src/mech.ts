@@ -5,7 +5,7 @@ import { AI } from "./index"
 import { BT_Root } from "./trees/BT_Root"
 import { BehaviorTree, Introspector } from "behaviortree"
 import { AIBlackboard } from "./blackboard"
-import { distanceTo, isDead, add, multiply, distanceToVec } from "./helper"
+import { distanceTo, isDead, add, multiply, distanceToVec, getForwardVector, rotateZ } from "./helper"
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -17,8 +17,6 @@ export let tree = new BehaviorTree({
 
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
-
-    
 
     for (let weapon of input.self.weapons) {
         if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
@@ -168,11 +166,8 @@ function updateBlackboardSound(soundDetails: SoundDetails[]): void {
         blackboard.heardNoise = true
         blackboard.noiseLocation = soundDetails[lastIdx].location
     }
-
     // TODO: handle signal from the team.
 
-    // TODO: pickups
-    /*
     const healCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.HealCrate)
     const shieldCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.ShieldCrate)
     const ammoCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.AmmoCrate)
@@ -180,40 +175,44 @@ function updateBlackboardSound(soundDetails: SoundDetails[]): void {
         blackboard.healCrateLocation = soundDetails[healCrateIdx].location
     }
     if (shieldCrateIdx !== -1) {
-        blackboard.shieldCrateLocation = soundDetails[healCrateIdx].location
+        blackboard.shieldCrateLocation = soundDetails[shieldCrateIdx].location
     }
     if (ammoCrateIdx !== -1) {
-        blackboard.ammoCrateLocation = soundDetails[healCrateIdx].location
+        blackboard.ammoCrateLocation = soundDetails[ammoCrateIdx].location
     }
-    */
-    
-    // TODO
-    // blackboard.desiredPickUpLocation = findBestPickup(blackboard)
+    if (healCrateIdx !== -1 || shieldCrateIdx !== -1 || ammoCrateIdx !== -1) {
+        // TODO: also store score and save in memory?
+        blackboard.desiredPickUpLocation = findBestPickup(blackboard)
+    }
 }
 
-/*
 function findBestPickup(blackboard: AIBlackboard): Vector {
     const MaxDistanceToConsider: number = 50000
 
     const self = blackboard.input.self
-    const scoreByHealth = () => 1 - (self.health / self.healthMax)
-    const scoreByShield =  () => 1 - (self.shield / self.shieldMax)
+    // const totalAmmo = self.weapons.map((w) => (w.tags.findIndex((t) => t === WeaponTag.Primary) !== -1 ? w.maxAmmo : 0)).reduce((a, b) => a + b)
+    // console.log(JSON.stringify("total ammo is") + totalAmmo)
+    const scoreByHealth = () => 1 - self.health / self.healthMax
+    const scoreByShield = () => 1 - self.shield / self.shieldMax
     const scoreByDistance = (crateLocation: Vector) => () => 1 - Math.min(1, distanceToVec(self.location, crateLocation) / MaxDistanceToConsider)
-    const scoreByAmmo = () => AI.WeaponGetAmmoByTag(WeaponTag.Primary)
+    // const scoreByAmmo = () => AI.WeaponGetAmmoByTag(WeaponTag.Primary) / totalAmmo
 
+    const healCrateFuncs = [scoreByHealth, () => scoreByShield() - 1, scoreByDistance(blackboard.healCrateLocation)]
+    const shieldCrateFuncs = [() => scoreByHealth() - 1, scoreByShield, scoreByDistance(blackboard.shieldCrateLocation)]
+    // const ammoCrateFuncs = [() => 1 - scoreByHealth(), () => 1 - scoreByShield(), scoreByDistance(blackboard.ammoCrateLocation), scoreByAmmo]
 
-    if (blackboard.healCrateLocation !== undefined) {
-        [scoreByHealth, () => 1 - scoreByShield(), scoreByDistance(blackboard.healCrateLocation), () => 1 - scoreByAmmo])
-    }
-
-
+    // TODO: add  blackboard.ammoCrateLocation
+    const locations = [blackboard.healCrateLocation, blackboard.shieldCrateLocation]
 
     // Normalized score functions.
-
-}   
-*/
-
-
+    let scores = [
+        blackboard.healCrateLocation !== undefined ? healCrateFuncs.map((func) => func()).reduce((a, b) => a + b) : -Infinity,
+        blackboard.shieldCrateLocation !== undefined ? shieldCrateFuncs.map((func) => func()).reduce((a, b) => a + b) : -Infinity,
+        // blackboard.ammoCrateLocation !== undefined ? ammoCrateFuncs.map((func) => func()).reduce((a, b) => a + b) : 0,
+    ]
+    const idx: number = scores.indexOf(Math.max(...scores))
+    return locations[idx]
+}
 
 /**
  *

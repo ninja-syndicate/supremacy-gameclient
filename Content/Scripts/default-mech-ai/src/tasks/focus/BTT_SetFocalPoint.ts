@@ -21,7 +21,7 @@ export const BTT_SetFocalPoint = (blackboardKey: keyof AIBlackboard) =>
                 const success = AI.SetFocalPointByLocation(value)
                 return success ? SUCCESS : FAILURE
             }
-            console.log("Invalid value passed.")
+            console.log("BTT_SetFocalPoint: Invalid focal point type.")
             return FAILURE
         },
 

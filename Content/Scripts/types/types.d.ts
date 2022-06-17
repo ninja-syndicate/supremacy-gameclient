@@ -94,7 +94,7 @@ declare class AIController {
      *
      * @param ability
      */
-    QueryStatus(ability: Action | Ability): Status
+    QueryStatus(ability: Action | Ability | Signal): Status
 
     QueryMovementResult(): MovementResult
 
@@ -181,7 +181,7 @@ export interface WarMachine {
     // Last known location of the war machine
     location: Vector
     // Last known yaw of the war machine (direction the war machine is facing)
-    rotation: number
+    rotation: Vector
     // Last known velocity of the war machine
     velocity: Vector
     // The ID of faction the mech belongs to
@@ -253,6 +253,7 @@ export interface Perception {
     damage: DamageDetails[]
 }
 
+
 export interface EnvironmentQuery {
     status: EnvironmentQueryStatus
     location: Vector
@@ -266,6 +267,15 @@ export interface EQSResults {
     strafe?: EnvironmentQuery
 }
 
+// TODO: consider whether it's appropraite to provide user action
+export interface UserAction {
+    sensed: boolean
+    location: Vector
+    abilityTag: string
+    instigatorHash: string
+    instigatorFactionID: string
+}
+
 // The input provided to {@link onTick}
 export interface BrainInput {
     self: WarMachine
@@ -274,3 +284,5 @@ export interface BrainInput {
     errors: ScriptError[]
     eqs: EQSResults
 }
+
+

@@ -30,3 +30,35 @@ export function multiply(v1: Vector, scalar: number): Vector {
 
     return { X: x1 * scalar, Y: y1 * scalar, Z: z1 * scalar }
 }
+
+export function rotateZ(v1: Vector, degrees: number): Vector {
+    const radians: number = degrees * (Math.PI / 180.0)
+    const { X, Y, Z } = v1
+
+    return { X: X * Math.cos(radians) - Y * Math.sin(radians), Y: X * Math.sin(radians) + Y * Math.cos(radians), Z: Z }
+}
+
+export function fmod(x: number, y: number): number {
+    const absY: number = Math.abs(y)
+
+    const div: number = x / y
+    const int: number = y * Math.trunc(div)
+    const result: number = x - int
+    return result
+}
+
+export function getForwardVector(rotation: Vector): Vector {
+    const {X: roll, Y: pitch, Z: yaw} = rotation
+    const radians = (degrees) => degrees * (Math.PI / 180.0)
+
+    // Remove winding and clamp to [-360, 360]
+    const pitchNoWinding = fmod(pitch, 360.0)
+    const yawNoWinding = fmod(yaw, 360.0)
+
+    const ps = Math.sin(radians(pitchNoWinding))
+    const pc = Math.cos(radians(pitchNoWinding))
+    const ys = Math.sin(radians(yawNoWinding))
+    const yc = Math.cos(radians(yawNoWinding))
+
+    return { X: pc * yc, Y: pc * ys, Z: ps }
+}

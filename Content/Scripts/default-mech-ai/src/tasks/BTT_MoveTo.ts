@@ -11,7 +11,7 @@ import { MovementResult } from "enums"
  * @param blackboardKey IntVector
  * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
  */
-export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, acceptanceRadius: number = 800) =>
+export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 800) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
             const value = blackboard[blackboardKey]

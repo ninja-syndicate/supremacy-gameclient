@@ -9,7 +9,6 @@ import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
 import { BTT_EQSSetArgumentVector } from "../tasks/BTT_EQSSetArgument"
 import { add, multiply } from "../helper"
-// import { Vec3 } from "vec3"
 
 /**
  * Behavior when AI receives damage.
@@ -18,12 +17,12 @@ export const BT_ReceivedDamage = new Sequence({
     nodes: [
         BTT_StopMoveTo(),
         BTT_LookAt("damageStimulusFocalPoint"),
+        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
         BTT_EQSSetArgumentVector(EQSQueryType.Hidden, EQSArgument.TargetPredictedLocation, (blackboard: AIBlackboard) =>
             add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000)),
         ),
         BTT_RunEQSQuery(EQSQueryType.Hidden, "hiddenLocation"),
         BTT_SetFocalPoint("hiddenLocation"),
         BTT_MoveTo("hiddenLocation"),
-        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
     ],
 })

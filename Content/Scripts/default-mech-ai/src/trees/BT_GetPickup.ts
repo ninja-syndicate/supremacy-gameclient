@@ -17,8 +17,5 @@ import { BTT_SetValue } from "../tasks/BTT_SetValue"
  * Picking up behavior.
  */
 export const BT_GetPickup = new Sequence({
-    nodes: [
-        ForceSuccess(Predicate(BTT_SetFocalPoint("desiredPickUpLocation"), (blackboard: AIBlackboard) => !AI.IsFocalPointSet())),
-        BTT_MoveTo("desiredPickUpLocation"),
-    ],
+    nodes: [BTT_SetFocalPoint("desiredPickUpLocation"), BTT_MoveTo("desiredPickUpLocation")],
 })
