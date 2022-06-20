@@ -76,7 +76,7 @@
                {
                     "ID": "RedMountainCannon",
                     "Name": "Dual Cannons",
-                    "Damage": 9,
+                    "Damage": 10,
                     "DamageFalloff": 20000,
                     "DamageFalloffRate": 12,
                     "DamageRadius": 100,
@@ -92,7 +92,7 @@
                     "DamageRadius": 850,
                     "DamageType": 2,
                     "ProjectileSpeed": 100000,
-                    "RateOfFire": 1
+                    "RateOfFire": 2
                }
           ]
      },

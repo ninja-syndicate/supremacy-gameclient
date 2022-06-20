@@ -4,7 +4,7 @@ set project=%~dp0Supremacy.uproject
 set build_dir=%~dp0Build
 set ConfigFile=%build_dir%\Windows\Supremacy\Saved\Config\Windows\Engine.ini
 set DefaultEngineFile=%~dp0Config\DefaultEngine.ini
-for /f %%i in ('git rev-list --count develop') do set Version=%%i
+for /f "tokens=*" %%i in ('git rev-parse HEAD') do set Version=%%i
 
 if exist "%RunUAT%" (
      git pull | find /i "Already up to date."
