@@ -1,4 +1,4 @@
-import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, MovementResult, Signal, WeaponTag } from "./enums"
+import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, MovementResult, Signal, WeaponTag } from "./enums"
 import { Ability, Status } from "./enums"
 //import { Vec3 } from "vec3"
 
@@ -251,6 +251,8 @@ export interface Perception {
     sound: SoundDetails[]
     // Details on damage the war machine has taken since the last tick
     damage: DamageDetails[]
+    // Everything the war machine can interact with
+    interactables: InteractableDetails[]
 }
 
 
@@ -267,12 +269,10 @@ export interface EQSResults {
     strafe?: EnvironmentQuery
 }
 
-// TODO: consider whether it's appropraite to provide user action
-export interface UserAction {
-    sensed: boolean
+export interface InteractableDetails {
+    tag: InteractableTag
+    eventID: string
     location: Vector
-    abilityTag: string
-    instigatorHash: string
     instigatorFactionID: string
 }
 

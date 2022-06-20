@@ -68,7 +68,12 @@ export const enum SoundType {
     Weapon = "Weapon",
     Taunt = "Taunt",
     Nuke = "Nuke",
-    // Might just give tag Pickup and use sight to figure out the type.
+    HealCrate = "Pickup.Heal",
+    ShieldCrate = "Pickup.Shield",
+    AmmoCrate = "Pickup.Ammo"
+}
+
+export const enum InteractableTag {
     HealCrate = "Pickup.Heal",
     ShieldCrate = "Pickup.Shield",
     AmmoCrate = "Pickup.Ammo"
