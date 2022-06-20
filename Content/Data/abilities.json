@@ -45,8 +45,8 @@
                "Speed": 3000,
                "Weapon": {
                     "Name": "Robot Dog Laser",
-                    "Damage": 20,
-                    "DamageRadius": 100,
+                    "Damage": 10,
+                    "DamageRadius": 40,
                     "DamageType": 1,
                     "Spread": 2,
                     "ProjectileSpeed": 48000,
@@ -54,12 +54,12 @@
                }
           },
           "LeaderStats": {
-               "HealthMax": 1300,
+               "HealthMax": 1200,
                "Speed": 3000,
                "Weapon": {
                     "Name": "Robot Dog Laser",
-                    "Damage": 20,
-                    "DamageRadius": 100,
+                    "Damage": 10,
+                    "DamageRadius": 40,
                     "DamageType": 1,
                     "Spread": 2,
                     "ProjectileSpeed": 48000,
