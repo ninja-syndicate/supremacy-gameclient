@@ -21,5 +21,6 @@ export const BT_InvestigateNoise = new Sequence({
         BTT_RunEQSQuery(EQSQueryType.Hidden, "hiddenLocation"),
         BTT_SetFocalPoint("hiddenLocation"),
         BTT_MoveTo("hiddenLocation"),
+        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.hiddenLocation = undefined)),
     ],
 })

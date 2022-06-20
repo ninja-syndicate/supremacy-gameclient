@@ -17,5 +17,9 @@ import { BTT_SetValue } from "../tasks/BTT_SetValue"
  * Picking up behavior.
  */
 export const BT_GetPickup = new Sequence({
-    nodes: [BTT_SetFocalPoint("desiredPickUpLocation"), BTT_MoveTo("desiredPickUpLocation")],
+    nodes: [
+        BTT_SetFocalPoint("desiredPickUpLocation"),
+        BTT_MoveTo("desiredPickUpLocation"),
+        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.desiredPickUpLocation = undefined)),
+    ],
 })

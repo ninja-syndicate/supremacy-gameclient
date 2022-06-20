@@ -1,11 +1,13 @@
-import { EnvironmentQueryStatus, EQSQueryType, SoundType, WeaponTag } from "enums"
-import { BrainInput, DamageDetails, SoundDetails, Vector, WarMachine } from "types"
+import { EnvironmentQueryStatus, EQSQueryType, InteractableTag, SoundType, WeaponTag } from "enums"
+import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine } from "types"
 import { StringToEQSQueryType } from "./utils"
 import { AI } from "./index"
 import { BT_Root } from "./trees/BT_Root"
 import { BehaviorTree, Introspector } from "behaviortree"
 import { AIBlackboard } from "./blackboard"
 import { distanceTo, isDead, add, multiply, distanceToVec, getForwardVector, rotateZ } from "./helper"
+import { Pickup } from "./pickup"
+import { OutnumberingEnemies } from "./predicates/Predicate_OutnumberingEnemies"
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -76,6 +78,7 @@ function updateBlackboard(input: BrainInput): void {
     updateBlackboardSight(input.perception.sight)
     updateBlackboardDamage(input.perception.damage)
     updateBlackboardSound(input.perception.sound)
+    updateBlackboardInteractable(input.perception.interactable)
 }
 
 function clearBlackboardTarget(): void {
@@ -167,51 +170,57 @@ function updateBlackboardSound(soundDetails: SoundDetails[]): void {
         blackboard.noiseLocation = soundDetails[lastIdx].location
     }
     // TODO: handle signal from the team.
+}
 
-    const healCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.HealCrate)
-    const shieldCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.ShieldCrate)
-    const ammoCrateIdx = soundDetails.findIndex((s) => s.tag === SoundType.AmmoCrate)
-    if (healCrateIdx !== -1) {
-        blackboard.healCrateLocation = soundDetails[healCrateIdx].location
-    }
-    if (shieldCrateIdx !== -1) {
-        blackboard.shieldCrateLocation = soundDetails[shieldCrateIdx].location
-    }
-    if (ammoCrateIdx !== -1) {
-        blackboard.ammoCrateLocation = soundDetails[ammoCrateIdx].location
-    }
-    if (healCrateIdx !== -1 || shieldCrateIdx !== -1 || ammoCrateIdx !== -1) {
-        // TODO: also store score and save in memory?
-        blackboard.desiredPickUpLocation = findBestPickup(blackboard)
+function updateBlackboardInteractable(interactables: InteractableDetails[]): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+
+    blackboard.interactables = interactables
+    if (blackboard.interactables.length === 0) {
+        blackboard.desiredPickUpLocation = undefined
+    } else {
+        const bestPickup = findBestPickup(blackboard)
+        if (bestPickup !== undefined) {
+            blackboard.desiredPickUpLocation = bestPickup.location
+        }
     }
 }
 
-function findBestPickup(blackboard: AIBlackboard): Vector {
+function findBestPickup(blackboard: AIBlackboard): InteractableDetails {
+    const scores = evaluateInteractable(blackboard)
+    const idx: number = scores.indexOf(Math.max(...scores))
+    return scores[idx] > 0 ? blackboard.interactables[idx] : undefined
+}
+
+function evaluateInteractable(blackboard: AIBlackboard): number[] {
     const MaxDistanceToConsider: number = 50000
 
     const self = blackboard.input.self
     // const totalAmmo = self.weapons.map((w) => (w.tags.findIndex((t) => t === WeaponTag.Primary) !== -1 ? w.maxAmmo : 0)).reduce((a, b) => a + b)
     // console.log(JSON.stringify("total ammo is") + totalAmmo)
-    const scoreByHealth = () => 1 - self.health / self.healthMax
-    const scoreByShield = () => 1 - self.shield / self.shieldMax
-    const scoreByDistance = (crateLocation: Vector) => () => 1 - Math.min(1, distanceToVec(self.location, crateLocation) / MaxDistanceToConsider)
+    const scoreByHealth = (x: InteractableDetails) => 1 - self.health / self.healthMax
+    const scoreByShield = (x: InteractableDetails) => 1 - self.shield / self.shieldMax
+    const scoreByDistance = (x: InteractableDetails) => 1 - Math.min(1, distanceToVec(self.location, x.location) / MaxDistanceToConsider)
     // const scoreByAmmo = () => AI.WeaponGetAmmoByTag(WeaponTag.Primary) / totalAmmo
 
-    const healCrateFuncs = [scoreByHealth, () => scoreByShield() - 1, scoreByDistance(blackboard.healCrateLocation)]
-    const shieldCrateFuncs = [() => scoreByHealth() - 1, scoreByShield, scoreByDistance(blackboard.shieldCrateLocation)]
     // const ammoCrateFuncs = [() => 1 - scoreByHealth(), () => 1 - scoreByShield(), scoreByDistance(blackboard.ammoCrateLocation), scoreByAmmo]
 
-    // TODO: add  blackboard.ammoCrateLocation
-    const locations = [blackboard.healCrateLocation, blackboard.shieldCrateLocation]
+    const healCrateFuncs = [scoreByHealth, (x) => scoreByShield(x) - 1, scoreByDistance]
+    const shieldCrateFuncs = [(x) => scoreByHealth(x) - 1, scoreByShield, scoreByDistance]
 
-    // Normalized score functions.
-    let scores = [
-        blackboard.healCrateLocation !== undefined ? healCrateFuncs.map((func) => func()).reduce((a, b) => a + b) : -Infinity,
-        blackboard.shieldCrateLocation !== undefined ? shieldCrateFuncs.map((func) => func()).reduce((a, b) => a + b) : -Infinity,
-        // blackboard.ammoCrateLocation !== undefined ? ammoCrateFuncs.map((func) => func()).reduce((a, b) => a + b) : 0,
-    ]
-    const idx: number = scores.indexOf(Math.max(...scores))
-    return locations[idx]
+    let scores = []
+    for (const interactable of blackboard.interactables) {
+        let score = 0
+        if (interactable.tag === InteractableTag.HealCrate) {
+            score = healCrateFuncs.map((func) => func(interactable)).reduce((a, b) => a + b)
+        } else if (interactable.tag === InteractableTag.ShieldCrate) {
+            score = shieldCrateFuncs.map((func) => func(interactable)).reduce((a, b) => a + b)
+        } else {
+            console.log("TODO for ammo crate")
+        }
+        scores.push(score)
+    }
+    return scores
 }
 
 /**

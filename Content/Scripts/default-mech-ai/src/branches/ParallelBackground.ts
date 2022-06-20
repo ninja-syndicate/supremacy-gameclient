@@ -14,23 +14,23 @@ export class ParallelBackground extends Parallel {
 
     run(blackboard: Blackboard = {}, { lastRun, introspector, rerun, registryLookUp = (x) => x as Node }: ParallelRunConfig = {}) {
         const results: Array<RunResult> = []
-		
-		let failed = false
-		if (this.ranStart) {
-			for (let currentIndex = 1; currentIndex < this.numNodes; ++currentIndex) {
-				let lastRunForIndex = lastRun && (lastRun as StatusWithState).state[currentIndex]
 
-				if (lastRunForIndex && isSuccess(lastRunForIndex)) {
-					const node = registryLookUp(this.nodes[currentIndex])
-					const startResult = node.blueprint.start(blackboard)
-					if (startResult === FAILURE) {
-						results[currentIndex] = startResult
-						failed = true
-						break
-					}
-				}
-			}
-		}
+        let failed = false
+        if (this.ranStart) {
+            for (let currentIndex = 1; currentIndex < this.numNodes; ++currentIndex) {
+                let lastRunForIndex = lastRun && (lastRun as StatusWithState).state[currentIndex]
+
+                if (lastRunForIndex && isSuccess(lastRunForIndex)) {
+                    const node = registryLookUp(this.nodes[currentIndex])
+                    const startResult = node.blueprint.start(blackboard)
+                    if (startResult === FAILURE) {
+                        results[currentIndex] = startResult
+                        failed = true
+                        break
+                    }
+                }
+            }
+        }
 
         if (!rerun || !this.ranStart) {
             this.ranStart = true
@@ -38,23 +38,24 @@ export class ParallelBackground extends Parallel {
             if (startResult === FAILURE) return startResult
         }
 
-		if (!failed) {
-			for (let currentIndex = 0; currentIndex < this.numNodes; ++currentIndex) {
-				let lastRunForIndex = lastRun && (lastRun as StatusWithState).state[currentIndex]
+        if (!failed) {
+            for (let currentIndex = 0; currentIndex < this.numNodes; ++currentIndex) {
+                let lastRunForIndex = lastRun && (lastRun as StatusWithState).state[currentIndex]
 
-				if (lastRunForIndex && !isRunning(lastRunForIndex)) {
-					results[currentIndex] = lastRunForIndex
-					if (currentIndex === 0) break
-					if (isFailure(lastRunForIndex)) break
-				}
-				const node = registryLookUp(this.nodes[currentIndex])
+                if (lastRunForIndex && !isRunning(lastRunForIndex)) {
+                    results[currentIndex] = lastRunForIndex
+                    if (currentIndex === 0) break
+                    if (isFailure(lastRunForIndex)) break
+                }
+                const node = registryLookUp(this.nodes[currentIndex])
                 const isRunningState = isSuccess(lastRunForIndex) ? false : rerun
-				const result = node.run(blackboard, { lastRun: lastRunForIndex, introspector, rerun: isRunningState, registryLookUp })
-				results[currentIndex] = result
+                const result = node.run(blackboard, { lastRun: lastRunForIndex, introspector, rerun: isRunningState, registryLookUp })
+                results[currentIndex] = result
 
-				if (currentIndex === 0 && isFailure(result)) break
-			}
-		}
+                if (currentIndex === 0 && isFailure(result)) break
+            }
+        }
+
         const endResult = this.calcResult(results)
         if (isFailure(endResult) || isSuccess(results[0])) {
             this.blueprint.end(blackboard)
@@ -71,6 +72,7 @@ export class ParallelBackground extends Parallel {
             const debugResult = running ? RUNNING : (endResult as boolean)
             introspector.wrapLast(this.numNodes, this, debugResult, blackboard)
         }
+
         return isSuccess(results[0]) ? SUCCESS : endResult
     }
 
@@ -87,6 +89,8 @@ export class ParallelBackground extends Parallel {
         if (results.includes(FAILURE)) {
             return FAILURE
         }
+        //const running = !!results.find((x) => isRunning(x));
+        //return running ? { total: RUNNING, state: results } : SUCCESS;
         return { total: RUNNING, state: results }
     }
 }

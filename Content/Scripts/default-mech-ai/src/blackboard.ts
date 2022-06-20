@@ -1,5 +1,6 @@
-import { EnvironmentQuery, WarMachine, Vector, Weapon, Perception, BrainInput } from "types"
+import { EnvironmentQuery, WarMachine, Vector, Weapon, Perception, BrainInput, InteractableDetails } from "types"
 import { EQSQueryType } from "enums"
+import { Pickup } from "./pickup"
 
 /**
  *
@@ -26,11 +27,9 @@ export interface AIBlackboard {
     hiddenLocation?: Vector
     coverLocation?: Vector
 
+    interactables: InteractableDetails[]
     desiredPickUpLocation?: Vector
-    healCrateLocation?: Vector
-    shieldCrateLocation?: Vector
-    ammoCrateLocation?: Vector
-
+    
     targetLastKnownLocation?: Vector
     targetLastKnownVelocity?: Vector
     targetPredictedLocation?: Vector

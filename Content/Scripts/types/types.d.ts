@@ -252,9 +252,8 @@ export interface Perception {
     // Details on damage the war machine has taken since the last tick
     damage: DamageDetails[]
     // Everything the war machine can interact with
-    interactables: InteractableDetails[]
+    interactable: InteractableDetails[]
 }
-
 
 export interface EnvironmentQuery {
     status: EnvironmentQueryStatus
@@ -284,5 +283,3 @@ export interface BrainInput {
     errors: ScriptError[]
     eqs: EQSResults
 }
-
-

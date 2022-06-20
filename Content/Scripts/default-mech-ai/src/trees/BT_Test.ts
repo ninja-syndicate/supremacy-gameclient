@@ -16,19 +16,35 @@ import { HasVeryLowTotalHealth } from "../predicates/Predicate_HasVeryLowTotalHe
 import { TargetHasMoreTotalHealth } from "../predicates/Predicate_TargetHasMoreTotalHealth"
 import { OutnumberingEnemies } from "../predicates/Predicate_OutnumberingEnemies"
 import { BTT_TriggerWeapon } from "../tasks/BTT_TriggerWeapon"
+import { BTT_LogString } from "../tasks/BTT_LogString"
+import { BTT_Wait } from "../tasks/BTT_Wait"
 
 /**
  *
  */
-export const BT_RangeCombat = new Sequence({
+export const BT_Test = new ParallelBackground({
     nodes: [
-        new Parallel({
-            // nodes: [BTT_TriggerWeapon(WeaponTag.PrimaryLeftArm),] //BTT_TriggerWeapon(WeaponTag.PrimaryRightArm)],
-            nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
+        new ParallelSelector({
+            // nodes: [BTT_LogString("Parallel background main - parallel 1"), BTT_LogString("Parallel background main - parallel 2")],
+            nodes: [BTT_LogString("before"), BTT_Wait(3)],
         }),
-        new ParallelBackground({
+        new Parallel({
             nodes: [
                 new Selector({
+                    nodes: [BTT_LogString("sub-parallell background main selector")],
+                }),
+                ForceSuccess(
+                    new Selector({
+                        nodes: [BTT_LogString("sub-paralell background sub"), BTT_LogString("sub-parallel background sub2")],
+                    }),
+                ),
+            ],
+        }),
+    ],
+})
+
+/*
+ew Selector({
                     nodes: [
                         // Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.Both),
                         /*
@@ -39,7 +55,6 @@ export const BT_RangeCombat = new Sequence({
                             true,
                             ObserverAborts.Both,
                         ),
-                        */
                         BT_Strafe,
                     ],
                 }),
@@ -48,7 +63,5 @@ export const BT_RangeCombat = new Sequence({
                         nodes: [BTT_SetFocalPoint("target"), BTT_SetFocalPoint("targetLastKnownLocation")],
                     }),
                 ),
-            ],
-        }),
-    ],
-})
+
+*/

@@ -7,7 +7,7 @@ import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
 import { ParallelBackground } from "../branches/ParallelBackground"
 import { BTT_RunEQSQuery } from "../tasks/BTT_RunEQSQuery"
 import { BTT_EQSSetArgumentVector } from "../tasks/BTT_EQSSetArgument"
-import { BTT_SetValue } from "../tasks/BTT_SetValue"
+import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
 
 export const BT_SearchTarget = new Sequence({
     nodes: [
@@ -19,6 +19,7 @@ export const BT_SearchTarget = new Sequence({
                     }),
                     "targetLastKnownLocation",
                 ),
+                // TODO: smooth out the predication focal point
                 IsSet(BTT_SetFocalPoint("targetPredictedLocation"), "targetPredictedLocation"),
             ],
         }),
@@ -37,6 +38,8 @@ export const BT_SearchTarget = new Sequence({
             }),
             "targetPredictedLocation",
         ),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.target = null)),
+        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.targetLastKnownLocation = undefined)),
+        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.targetPredictedLocation = undefined)),
+        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.target = null)),
     ],
 })

@@ -14,6 +14,7 @@ import { BTT_SetValue } from "../tasks/BTT_SetValue"
 import { add, getForwardVector, multiply, rotateZ } from "../helper"
 import { BTT_LookAt } from "../tasks/BTT_LookAt"
 import { BTT_Wait } from "../tasks/BTT_Wait"
+import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
 
 // TODO: use Loop decorator
 export const BT_LookAround = new Sequence({
@@ -36,6 +37,7 @@ export const BT_LookAround = new Sequence({
         ),
         BTT_LookAt("lookAtLocation"),
         BTT_Wait(1),
+        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.lookAtLocation = undefined)),
         // BTT_Wait(50),
     ],
 })
