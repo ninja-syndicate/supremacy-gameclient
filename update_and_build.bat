@@ -4,9 +4,12 @@ set project=%~dp0Supremacy.uproject
 set build_dir=%~dp0Build
 set ConfigFile=%build_dir%\Windows\Supremacy\Saved\Config\Windows\Engine.ini
 set DefaultEngineFile=%~dp0Config\DefaultEngine.ini
-for /f %%i in ('git rev-list --count develop') do set Version=%%i
+for /f %%i in ('git describe --tags') do set Version=%%i
+for /f %%i in ('git rev-parse --abbrev-ref HEAD') do set Branch=%%i
+for /f %%i in ('git rev-parse --verify HEAD') do set Hash=%%i
 
 if exist "%RunUAT%" (
+     git pull --tags
      git pull | find /i "Already up to date."
      echo.
      if not errorlevel 1 (
@@ -33,8 +36,10 @@ if exist "%RunUAT%" (
      Config\inifile %DefaultEngineFile% [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=
      Config\inifile %DefaultEngineFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX12
 
-     Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildNo=%Version%
-     echo BuildNo %Version%
+     Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Version=%Version%
+     Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildBranch=%Branch%
+	Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Hash=%Hash%
+     echo BuildNo %Version% Branch %Branch% Hash %Hash%
 pause
 
 ) else (
