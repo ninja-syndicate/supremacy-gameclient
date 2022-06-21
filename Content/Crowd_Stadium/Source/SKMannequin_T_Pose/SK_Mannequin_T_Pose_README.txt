@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8b8e05defc7adb3937427c59a4b3c594a4cd788821e5aee40d1b55f23d71bd82
-size 458
+SK_Mannequin T Pose
+
+
+This "SK_Mannequin.fbx" has a zeroed out T-Pose like the old 4.7 UE4 Template rig.
+(The new 4.8 rig by default is posed in an "A" with the arms/hands rotated on all axes)
+
+It can overwrite (be merged) into any current UE4 Project SK_Mannequin mesh to create a stock T-Pose for use in the Retargeting Manager.
+
+**Note: The hands are rotated up and forward 10 degrees to make a better Tee, their rotation values are not true zero.
