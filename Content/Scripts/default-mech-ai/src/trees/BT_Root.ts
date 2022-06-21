@@ -19,16 +19,14 @@ import { BT_Test } from "./BT_Test"
  */
 export const BT_Root = new Selector({
     nodes: [
-        BT_Test
-        // IsSet(BT_Combat, "target", true, ObserverAborts.Both),
-        // IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
-        /*
+        // BT_Test
+        IsSet(BT_Combat, "target", true, ObserverAborts.Both),
+        IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
         IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),
         BT_Patrol,
         BT_LookAround,
-        BTT_Wait(1)
-        */
+        BTT_Wait(1),
     ],
 })

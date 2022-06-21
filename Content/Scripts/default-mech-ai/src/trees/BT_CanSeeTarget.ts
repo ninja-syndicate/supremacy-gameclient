@@ -8,15 +8,12 @@ import { distanceToVec } from "../helper"
 
 export const BT_CanSeeTarget = new Selector({
     nodes: [
-        /*
         Predicate(
             BTT_SpecialAttack("targetLastKnownLocation"),
             (blackboard: AIBlackboard) => blackboard.canUseSpecialAttack && blackboard.targetLastKnownLocation !== undefined,
             true,
             ObserverAborts.LowerPriority,
         ),
-        */
-        /*
         Predicate(
             BT_CloseCombat,
             (blackboard: AIBlackboard) =>
@@ -26,7 +23,6 @@ export const BT_CanSeeTarget = new Selector({
             true,
             ObserverAborts.Both,
         ),
-        */
         BT_RangeCombat,
     ],
 })

@@ -38,6 +38,7 @@ export interface AIBlackboard {
     damageStimulusDirection?: Vector
     damageStimulusFocalPoint?: Vector
     damageStimulusEstimateLocation?: Vector
+    isLastDamageFromTarget: boolean
 
     leftArmWeapon: Weapon
     rightArmWeapon: Weapon

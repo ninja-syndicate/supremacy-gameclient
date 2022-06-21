@@ -1,4 +1,4 @@
-import { Sequence } from "behaviortree"
+import { Selector, Sequence } from "behaviortree"
 import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 import { AIBlackboard } from "../blackboard"
 import { EQSArgument, EQSQueryType } from "../../../types/enums"
@@ -10,6 +10,7 @@ import { AI } from ".."
 import { ForceSuccess } from "../decorators/ForceSuccess"
 import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
 import { BTT_LogString } from "../tasks/BTT_LogString"
+import { IsSet } from "../decorators/IsSet"
 
 /**
  * Getting a cover behavior.
@@ -32,7 +33,19 @@ export const BT_GetCover = new Sequence({
             blackboard.lastHitLocation !== undefined ? blackboard.lastHitLocation : blackboard.input.self.location,
         ),
         BTT_RunEQSQuery(EQSQueryType.Cover, "coverLocation"),
-        BTT_SetFocalPoint("coverLocation"),
+        ForceSuccess(
+            new Selector({
+                nodes: [
+                    BTT_SetFocalPoint("target"),
+                    BTT_SetFocalPoint("targetLastKnownLocation"),
+                    Predicate(
+                        BTT_SetFocalPoint("damageStimulusFocalPoint"),
+                        (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
+                    ),
+                    BTT_SetFocalPoint("coverLocation"),
+                ],
+            }),
+        ),
         BTT_MoveTo("coverLocation"),
         BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.coverLocation = undefined)),
     ],

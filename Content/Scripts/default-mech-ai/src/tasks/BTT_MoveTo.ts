@@ -11,7 +11,7 @@ import { MovementResult } from "enums"
  * @param blackboardKey IntVector
  * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
  */
-export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 800) =>
+export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 800, timeout: number = 20) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
             const value = blackboard[blackboardKey]
@@ -21,6 +21,16 @@ export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardK
             return success ? SUCCESS : FAILURE
         },
         run: (blackboard: AIBlackboard) => {
+            // TODO: testing
+            if (observeBlackboardKey) {
+                const location = blackboard[blackboardKey]
+                if (!location || !IsVector(location)) return FAILURE
+
+                const success: boolean = AI.MoveToVector(location, acceptanceRadius)
+                if (!success) return FAILURE
+            }
+            // TODO: test timeout after getting setTimeout done.
+
             const status = AI.QueryMovementResult()
             switch (status) {
                 case MovementResult.Moving:

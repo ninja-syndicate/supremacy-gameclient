@@ -7,21 +7,19 @@ import { Predicate } from "../decorators/Predicate"
 import { AIBlackboard } from "../blackboard"
 import { BT_Camp } from "./BT_Camp"
 import { HasLowShield } from "../predicates/Predicate_HasLowShield"
+import { BT_GetPickup } from "./BT_GetPickup"
 
 export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
-        // Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
-        /*
+        IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
+        Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         Predicate(
             BT_ReceivedDamage,
-            (blackboard: AIBlackboard) => !blackboard.canSeeTarget && blackboard.damageStimulusFocalPoint !== undefined,
+            (blackboard: AIBlackboard) => !blackboard.canSeeTarget && blackboard.damageStimulusFocalPoint !== undefined && !blackboard.isLastDamageFromTarget,
             true,
             ObserverAborts.LowerPriority,
         ),
         Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
-        */
-
-        // IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
     ],
 })

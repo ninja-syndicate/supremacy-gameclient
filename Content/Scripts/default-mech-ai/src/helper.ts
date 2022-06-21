@@ -39,6 +39,7 @@ export function rotateZ(v1: Vector, degrees: number): Vector {
 }
 
 export function fmod(x: number, y: number): number {
+    // for tolerance testing, probably not needed in typescript
     const absY: number = Math.abs(y)
 
     const div: number = x / y

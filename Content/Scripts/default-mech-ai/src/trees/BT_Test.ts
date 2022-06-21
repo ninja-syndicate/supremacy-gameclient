@@ -24,9 +24,9 @@ import { BTT_Wait } from "../tasks/BTT_Wait"
  */
 export const BT_Test = new ParallelBackground({
     nodes: [
-        new ParallelSelector({
+        new Parallel({
             // nodes: [BTT_LogString("Parallel background main - parallel 1"), BTT_LogString("Parallel background main - parallel 2")],
-            nodes: [BTT_LogString("before"), BTT_Wait(3)],
+            nodes: [BTT_LogString("before"), BTT_Shoot(WeaponTag.PrimaryLeftArm)],
         }),
         new Parallel({
             nodes: [

@@ -16,11 +16,12 @@ import { HasVeryLowTotalHealth } from "../predicates/Predicate_HasVeryLowTotalHe
 import { TargetHasMoreTotalHealth } from "../predicates/Predicate_TargetHasMoreTotalHealth"
 import { OutnumberingEnemies } from "../predicates/Predicate_OutnumberingEnemies"
 import { BTT_TriggerWeapon } from "../tasks/BTT_TriggerWeapon"
+import { BT_GetPickup } from "./BT_GetPickup"
 
 /**
  *
  */
-export const BT_RangeCombat = new Sequence({
+export const BT_RangeCombat = new ParallelBackground({
     nodes: [
         new Parallel({
             // nodes: [BTT_TriggerWeapon(WeaponTag.PrimaryLeftArm),] //BTT_TriggerWeapon(WeaponTag.PrimaryRightArm)],
@@ -30,8 +31,8 @@ export const BT_RangeCombat = new Sequence({
             nodes: [
                 new Selector({
                     nodes: [
-                        // Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.Both),
-                        /*
+                        IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
+                        Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.Both),
                         Predicate(
                             // TODO: This should ideally be getting closer, not directly to target.
                             BTT_MoveTo("targetLastKnownLocation"),
@@ -39,13 +40,19 @@ export const BT_RangeCombat = new Sequence({
                             true,
                             ObserverAborts.Both,
                         ),
-                        */
                         BT_Strafe,
                     ],
                 }),
                 ForceSuccess(
                     new Selector({
-                        nodes: [BTT_SetFocalPoint("target"), BTT_SetFocalPoint("targetLastKnownLocation")],
+                        nodes: [
+                            BTT_SetFocalPoint("target"),
+                            BTT_SetFocalPoint("targetLastKnownLocation"),
+                            Predicate(
+                                BTT_SetFocalPoint("damageStimulusFocalPoint"),
+                                (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
+                            ),
+                        ],
                     }),
                 ),
             ],

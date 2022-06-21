@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "behaviortree": "github:Torrunt/BehaviorTree#observer_aborts",
+    "node-polyfill-webpack-plugin": "^1.1.4",
     "vec3": "^0.1.7"
   }
 }

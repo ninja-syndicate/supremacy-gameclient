@@ -8,6 +8,8 @@ import { AIBlackboard } from "./blackboard"
 import { distanceTo, isDead, add, multiply, distanceToVec, getForwardVector, rotateZ } from "./helper"
 import { Pickup } from "./pickup"
 import { OutnumberingEnemies } from "./predicates/Predicate_OutnumberingEnemies"
+import { AIController, JavascriptContext } from "types"
+// import { setTimeout } from "timers/promises"
 
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -34,6 +36,14 @@ export const onBegin = (input: BrainInput) => {
         }
     }
     console.log(`${input.self.name} AI Started`)
+    /*
+    let kick = () => {
+        console.log("Hello timer!")
+        setTimeout(kick, 1000)
+        // NodePolyfillPlugin(kick, 1000)
+    }
+    kick()
+    */
 }
 
 export const onTick = (input: BrainInput) => {
@@ -113,7 +123,7 @@ function updateBlackboardSight(sight: WarMachine[]): void {
         }
     }
 
-    if (!blackboard.target) return
+    if (!blackboard.target) return    
 
     if (sight.length === 0) {
         blackboard.canSeeTarget = false
@@ -153,6 +163,7 @@ function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
     blackboard.damageStimulusDirection = damageDetails[lastIdx].damageDirection
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000))
     blackboard.lastHitLocation = blackboard.input.self.location
+    blackboard.isLastDamageFromTarget = blackboard.target && blackboard.target.hash === damageDetails[lastIdx].instigatorHash
 }
 
 function updateBlackboardSound(soundDetails: SoundDetails[]): void {

@@ -4,6 +4,9 @@ import {onBegin, onTick} from "./mech"
 declare var Context: JavascriptContext
 export const AI: AIController = Context.GetOwner()
 
+//Context.RunFile('polyfill/unrealengine.js')
+//Context.RunFile('polyfill/timers.js')
+
 // Listen to incoming messages from the game
 Context.OnMessage = (name, message) => {
     try {

@@ -49,7 +49,8 @@ export class ParallelBackground extends Parallel {
                 }
                 const node = registryLookUp(this.nodes[currentIndex])
                 const isRunningState = isSuccess(lastRunForIndex) ? false : rerun
-                const result = node.run(blackboard, { lastRun: lastRunForIndex, introspector, rerun: isRunningState, registryLookUp })
+                const newLastRunForIndex = isSuccess(lastRunForIndex) ? false : lastRunForIndex
+                const result = node.run(blackboard, { lastRun: newLastRunForIndex, introspector, rerun: isRunningState, registryLookUp })
                 results[currentIndex] = result
 
                 if (currentIndex === 0 && isFailure(result)) break

@@ -22,6 +22,10 @@ export const BTT_Shoot = (tag: WeaponTag) =>
             return hasAmmo ? RUNNING : FAILURE
         },
 
+        end: () => {
+            AI.WeaponRelease(tag)
+        },
+
         abort: () => {
             AI.WeaponRelease(tag)
         },

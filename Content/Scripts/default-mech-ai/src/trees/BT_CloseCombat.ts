@@ -11,6 +11,8 @@ import { Predicate } from "../decorators/Predicate"
 import { ForceSuccess } from "../decorators/ForceSuccess"
 import { HasVeryLowTotalHealth } from "../predicates/Predicate_HasVeryLowTotalHealth"
 import { TargetHasMoreTotalHealth } from "../predicates/Predicate_TargetHasMoreTotalHealth"
+import { BT_GetPickup } from "./BT_GetPickup"
+import { IsSet } from "../decorators/IsSet"
 
 /**
  *
@@ -23,6 +25,7 @@ export const BT_CloseCombat = new ParallelBackground({
                 new Selector({
                     nodes: [
                         // TODO: do observer aborts
+                        IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
                         Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.Both),
                         Predicate(BTT_MoveTo("targetLastKnownLocation"), TargetHasMoreTotalHealth, false, ObserverAborts.Self),
                         BTT_MoveTo("targetLastKnownLocation"),
@@ -32,7 +35,14 @@ export const BT_CloseCombat = new ParallelBackground({
         }),
         ForceSuccess(
             new Selector({
-                nodes: [BTT_SetFocalPoint("target"), BTT_SetFocalPoint("targetLastKnownLocation")],
+                nodes: [
+                    BTT_SetFocalPoint("target"),
+                    BTT_SetFocalPoint("targetLastKnownLocation"),
+                    Predicate(
+                        BTT_SetFocalPoint("damageStimulusFocalPoint"),
+                        (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
+                    ),
+                ],
             }),
         ),
     ],

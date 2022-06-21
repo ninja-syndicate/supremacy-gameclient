@@ -1,4 +1,4 @@
-import { Selector, Sequence } from "behaviortree"
+import { ObserverAborts, Selector, Sequence } from "behaviortree"
 import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 import { AIBlackboard } from "../blackboard"
 import { EQSArgument, EQSQueryType } from "../../../types/enums"
@@ -12,14 +12,32 @@ import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
 import { BTT_LogString } from "../tasks/BTT_LogString"
 import { IsSet } from "../decorators/IsSet"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
+import { ParallelBackground } from "../branches/ParallelBackground"
 
 /**
  * Picking up behavior.
  */
-export const BT_GetPickup = new Sequence({
+export const BT_GetPickup = new ParallelBackground({
     nodes: [
-        BTT_SetFocalPoint("desiredPickUpLocation"),
-        BTT_MoveTo("desiredPickUpLocation"),
-        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.desiredPickUpLocation = undefined)),
+        new Sequence({
+            nodes: [
+                // Force success to clear the desired pickup location if not navigable.
+                ForceSuccess(BTT_MoveTo("desiredPickUpLocation")),
+                BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.desiredPickUpLocation = undefined)),
+            ],
+        }),
+        ForceSuccess(
+            new Selector({
+                nodes: [
+                    IsSet(BTT_SetFocalPoint("target"), "canSeeTarget", true, ObserverAborts.Both),
+                    BTT_SetFocalPoint("targetLastKnownLocation"),
+                    Predicate(
+                        BTT_SetFocalPoint("damageStimulusFocalPoint"),
+                        (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
+                    ),
+                    BTT_SetFocalPoint("desiredPickUpLocation"),
+                ],
+            }),
+        ),
     ],
 })
