@@ -13,6 +13,8 @@ import { BTT_LogString } from "../tasks/BTT_LogString"
 import { IsSet } from "../decorators/IsSet"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 import { ParallelBackground } from "../branches/ParallelBackground"
+import { BT_SetFocal } from "./BT_SetFocal"
+import { BTT_Success } from "../tasks/BTT_Success"
 
 /**
  * Picking up behavior.
@@ -22,22 +24,12 @@ export const BT_GetPickup = new ParallelBackground({
         new Sequence({
             nodes: [
                 // Force success to clear the desired pickup location if not navigable.
-                ForceSuccess(BTT_MoveTo("desiredPickUpLocation")),
+                new Selector({
+                    nodes: [BTT_MoveTo("desiredPickUpLocation", true), BTT_Success],
+                }),
                 BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.desiredPickUpLocation = undefined)),
             ],
         }),
-        ForceSuccess(
-            new Selector({
-                nodes: [
-                    IsSet(BTT_SetFocalPoint("target"), "canSeeTarget", true, ObserverAborts.Both),
-                    BTT_SetFocalPoint("targetLastKnownLocation"),
-                    Predicate(
-                        BTT_SetFocalPoint("damageStimulusFocalPoint"),
-                        (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
-                    ),
-                    BTT_SetFocalPoint("desiredPickUpLocation"),
-                ],
-            }),
-        ),
+        BT_SetFocal,
     ],
 })

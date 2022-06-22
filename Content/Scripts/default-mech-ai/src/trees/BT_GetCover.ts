@@ -20,9 +20,6 @@ import { IsSet } from "../decorators/IsSet"
  * By default, it will use the target's last known location and last hit
  * location to find a suitable cover location. If any of these are undefined,
  * the current location of the AI will be used for the undefined location.
- *
- * Note that this behavior changes the current focal point unless it is already
- * set.
  */
 export const BT_GetCover = new Sequence({
     nodes: [
@@ -33,19 +30,6 @@ export const BT_GetCover = new Sequence({
             blackboard.lastHitLocation !== undefined ? blackboard.lastHitLocation : blackboard.input.self.location,
         ),
         BTT_RunEQSQuery(EQSQueryType.Cover, "coverLocation"),
-        ForceSuccess(
-            new Selector({
-                nodes: [
-                    BTT_SetFocalPoint("target"),
-                    BTT_SetFocalPoint("targetLastKnownLocation"),
-                    Predicate(
-                        BTT_SetFocalPoint("damageStimulusFocalPoint"),
-                        (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
-                    ),
-                    BTT_SetFocalPoint("coverLocation"),
-                ],
-            }),
-        ),
         BTT_MoveTo("coverLocation"),
         BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.coverLocation = undefined)),
     ],

@@ -15,6 +15,7 @@ import { add, getForwardVector, multiply, rotateZ } from "../helper"
 import { BTT_LookAt } from "../tasks/BTT_LookAt"
 import { BTT_Wait } from "../tasks/BTT_Wait"
 import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
+import { BTT_LogString } from "../tasks/BTT_LogString"
 
 // TODO: use Loop decorator
 export const BT_LookAround = new Sequence({

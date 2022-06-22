@@ -17,6 +17,9 @@ import { TargetHasMoreTotalHealth } from "../predicates/Predicate_TargetHasMoreT
 import { OutnumberingEnemies } from "../predicates/Predicate_OutnumberingEnemies"
 import { BTT_TriggerWeapon } from "../tasks/BTT_TriggerWeapon"
 import { BT_GetPickup } from "./BT_GetPickup"
+import { BT_SetFocal } from "./BT_SetFocal"
+import { BTT_Success } from "../tasks/BTT_Success"
+import { IsOutnumbered } from "../predicates/Predicate_IsOuntnumbered"
 
 /**
  *
@@ -24,37 +27,22 @@ import { BT_GetPickup } from "./BT_GetPickup"
 export const BT_RangeCombat = new ParallelBackground({
     nodes: [
         new Parallel({
-            // nodes: [BTT_TriggerWeapon(WeaponTag.PrimaryLeftArm),] //BTT_TriggerWeapon(WeaponTag.PrimaryRightArm)],
             nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
         }),
-        new ParallelBackground({
+        BT_SetFocal,
+        new Selector({
             nodes: [
-                new Selector({
-                    nodes: [
-                        IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
-                        Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.Both),
-                        Predicate(
-                            // TODO: This should ideally be getting closer, not directly to target.
-                            BTT_MoveTo("targetLastKnownLocation"),
-                            (blackboard: AIBlackboard) => !TargetHasMoreTotalHealth(blackboard) || OutnumberingEnemies(blackboard),
-                            true,
-                            ObserverAborts.Both,
-                        ),
-                        BT_Strafe,
-                    ],
-                }),
-                ForceSuccess(
-                    new Selector({
-                        nodes: [
-                            BTT_SetFocalPoint("target"),
-                            BTT_SetFocalPoint("targetLastKnownLocation"),
-                            Predicate(
-                                BTT_SetFocalPoint("damageStimulusFocalPoint"),
-                                (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
-                            ),
-                        ],
-                    }),
+                IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
+                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                Predicate(
+                    // TODO: This should ideally be getting closer, not directly to target.
+                    BTT_MoveTo("targetLastKnownLocation"),
+                    (blackboard: AIBlackboard) => (!TargetHasMoreTotalHealth(blackboard) && !IsOutnumbered(blackboard)) || OutnumberingEnemies(blackboard),
+                    true,
+                    ObserverAborts.Both,
                 ),
+                BT_Strafe,
+                BTT_Success,
             ],
         }),
     ],

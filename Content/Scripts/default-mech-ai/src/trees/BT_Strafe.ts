@@ -5,6 +5,7 @@ import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "../tasks/BTT_RunEQSQuery"
 import { BTT_EQSSetArgumentString } from "../tasks/BTT_EQSSetArgument"
 import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
+import { BTT_LogString } from "../tasks/BTT_LogString"
 
 /**
  *

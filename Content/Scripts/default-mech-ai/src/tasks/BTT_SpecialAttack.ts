@@ -1,6 +1,6 @@
 import { FAILURE, RUNNING, RunResult, SUCCESS, Task } from "behaviortree"
 import { AI } from "../index"
-import { Ability, Status } from "enums"
+import { Ability, Action, Status } from "enums"
 import { IsVector } from "../utils"
 import { AIBlackboard } from "../blackboard"
 
@@ -20,13 +20,11 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
             if (!hasSecondaryWeapon) return FAILURE
 
             const success: boolean = AI.TrySpecialAttack(location)
-            if (success) blackboard.canUseSpecialAttack = false
-
             return success ? SUCCESS : FAILURE
         },
 
         run: (blackboard: AIBlackboard) => {
-            const status = AI.QueryStatus(Ability.SpecialAttack)
+            const status = AI.QueryStatus(Action.SpecialAttack)
 
             switch (status) {
                 case Status.Running:

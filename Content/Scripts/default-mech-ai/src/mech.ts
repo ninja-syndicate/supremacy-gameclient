@@ -91,13 +91,14 @@ function updateBlackboard(input: BrainInput): void {
     updateBlackboardInteractable(input.perception.interactable)
 }
 
-function clearBlackboardTarget(): void {
+export function clearBlackboardTarget(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
     blackboard.target = null
     blackboard.canSeeTarget = false
     if (blackboard.targetLastKnownLocation !== undefined) {
         delete blackboard.targetLastKnownLocation
+        delete blackboard.targetPredictedLocation
     }
 }
 
@@ -123,7 +124,8 @@ function updateBlackboardSight(sight: WarMachine[]): void {
         }
     }
 
-    if (!blackboard.target) return    
+    // TODO: figure out why it doesn't update target sometimes...
+    if (!blackboard.target) return
 
     if (sight.length === 0) {
         blackboard.canSeeTarget = false
@@ -161,7 +163,7 @@ function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
 
     blackboard.damageInstigatorHash = damageDetails[lastIdx].instigatorHash
     blackboard.damageStimulusDirection = damageDetails[lastIdx].damageDirection
-    blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 1000))
+    blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))
     blackboard.lastHitLocation = blackboard.input.self.location
     blackboard.isLastDamageFromTarget = blackboard.target && blackboard.target.hash === damageDetails[lastIdx].instigatorHash
 }

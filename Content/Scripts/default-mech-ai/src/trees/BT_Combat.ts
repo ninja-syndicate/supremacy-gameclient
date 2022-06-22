@@ -8,18 +8,24 @@ import { AIBlackboard } from "../blackboard"
 import { BT_Camp } from "./BT_Camp"
 import { HasLowShield } from "../predicates/Predicate_HasLowShield"
 import { BT_GetPickup } from "./BT_GetPickup"
+import { BTT_Taunt } from "../tasks/BTT_Taunt"
+import { Action } from "enums"
+import { CanActivateAction } from "../decorators/CanActivateAction"
 
 export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
         IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
+        /*
         Predicate(
             BT_ReceivedDamage,
             (blackboard: AIBlackboard) => !blackboard.canSeeTarget && blackboard.damageStimulusFocalPoint !== undefined && !blackboard.isLastDamageFromTarget,
             true,
             ObserverAborts.LowerPriority,
         ),
+        */
+        // CanActivateAction(BTT_Taunt, Action.Taunt, true),
         Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
     ],
 })

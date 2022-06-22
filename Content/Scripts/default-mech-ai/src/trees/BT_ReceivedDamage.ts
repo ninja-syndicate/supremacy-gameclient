@@ -24,7 +24,6 @@ export const BT_ReceivedDamage = new Sequence({
         BTT_RunEQSQuery(EQSQueryType.Hidden, "hiddenLocation"),
         BTT_SetFocalPoint("hiddenLocation"),
         BTT_MoveTo("hiddenLocation"),
-        BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
         BTT_ClearValue((blackboard: AIBlackboard) => (blackboard.hiddenLocation = undefined)),
     ],
 })

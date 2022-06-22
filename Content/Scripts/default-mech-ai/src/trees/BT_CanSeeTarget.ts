@@ -5,15 +5,20 @@ import { BT_CloseCombat } from "./BT_CloseCombat"
 import { BT_RangeCombat } from "./BT_RangeCombat"
 import { Predicate } from "../decorators/Predicate"
 import { distanceToVec } from "../helper"
+import { CanActivateAction } from "../decorators/CanActivateAction"
+import { Action } from "enums"
 
 export const BT_CanSeeTarget = new Selector({
     nodes: [
+        CanActivateAction(BTT_SpecialAttack("targetLastKnownLocation"), Action.SpecialAttack, true, ObserverAborts.LowerPriority),
+        /*
         Predicate(
-            BTT_SpecialAttack("targetLastKnownLocation"),
+            ,
             (blackboard: AIBlackboard) => blackboard.canUseSpecialAttack && blackboard.targetLastKnownLocation !== undefined,
             true,
             ObserverAborts.LowerPriority,
         ),
+        */
         Predicate(
             BT_CloseCombat,
             (blackboard: AIBlackboard) =>

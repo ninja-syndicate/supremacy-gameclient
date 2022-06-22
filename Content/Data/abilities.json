@@ -24,7 +24,7 @@
           ]
      },
      "Heal": {
-          "HealAmmount": 2000,
+          "HealAmount": 2000,
           "TriggerRadius": 3000
      },
      "ShieldBuff": {

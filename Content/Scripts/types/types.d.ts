@@ -98,6 +98,8 @@ declare class AIController {
 
     QueryMovementResult(): MovementResult
 
+    CanActivateAction(action: Action): boolean
+
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to
      * Get results from eqs in {@link BrainInput}.

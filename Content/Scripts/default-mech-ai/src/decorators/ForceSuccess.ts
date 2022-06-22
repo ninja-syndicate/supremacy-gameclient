@@ -1,3 +1,5 @@
+// NOTE: ForceSuccess decorator is buggy. Don't use it yet.
+
 import { Decorator, Node, NodeOrRegistration, ObserverAborts, RunCallback, RUNNING, RunResult, SUCCESS } from "behaviortree"
 import { AIBlackboard } from "../blackboard"
 

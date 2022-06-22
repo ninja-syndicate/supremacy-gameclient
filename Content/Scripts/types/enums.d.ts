@@ -10,7 +10,7 @@ export const enum WeaponTag {
 }
 
 export const enum EQSQueryType {
-    Away= "away",
+    Away = "away",
     Cover = "cover",
     Hidden = "hidden",
     Patrol = "patrol",
@@ -21,7 +21,7 @@ export const enum EQSArgument {
     TargetHash = "TargetHash",
     TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
-    LastHitLocation = "LastHitLocation"
+    LastHitLocation = "LastHitLocation",
 }
 
 export const enum EnvironmentQueryStatus {
@@ -44,24 +44,26 @@ export const enum MovementResult {
     Blocked,
     OffPath,
     Aborted,
-    Invalid
+    Invalid,
 }
 
 export const enum Action {
     LookAt = "Action.LookAt",
-    Wait = "Action.Wait"
+    Wait = "Action.Wait",
+    SpecialAttack = "Action.SpecialAttack",
+    Taunt = "Action.Taunt",
 }
 
 export const enum Ability {
-    Taunt = "Ability.Taunt",
+    // Taunt = "Ability.Taunt",
     MeleeAttack = "Ability.MeleeAttack",
-    SpecialAttack = "Ability.SpecialAttack",
+    // SpecialAttack = "Ability.SpecialAttack",
 }
 
 export const enum Status {
     Running,
     Finished,
-    Failed
+    Failed,
 }
 
 export const enum SoundType {
@@ -70,13 +72,13 @@ export const enum SoundType {
     Nuke = "Nuke",
     HealCrate = "Pickup.Heal",
     ShieldCrate = "Pickup.Shield",
-    AmmoCrate = "Pickup.Ammo"
+    AmmoCrate = "Pickup.Ammo",
 }
 
 export const enum InteractableTag {
     HealCrate = "Pickup.Heal",
     ShieldCrate = "Pickup.Shield",
-    AmmoCrate = "Pickup.Ammo"
+    AmmoCrate = "Pickup.Ammo",
 }
 
 export const enum Signal {

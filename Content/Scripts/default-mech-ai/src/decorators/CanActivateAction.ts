@@ -1,37 +1,38 @@
 import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
 import { AIBlackboard } from "../blackboard"
-import { Ability } from "../../../types/enums"
+import { Ability, Action } from "../../../types/enums"
 import { AI } from ".."
 
-interface CanActivateAbilityProps {
-    ability: Ability
+interface CanActivateActionProps {
+    action: Action
     isSet: boolean
     observerAborts: ObserverAborts
 }
 
-class CanActivateAbilityDecorator extends Decorator {
-    nodeType = "CanActivateAbilityDecorator"
+class CanActivateActionDecorator extends Decorator {
+    nodeType = "CanActivateActionDecorator"
 
-    setConfig(config: CanActivateAbilityProps) {
+    setConfig(config: CanActivateActionProps) {
         this.config = config
         this.observerAborts = config.observerAborts
     }
 
     condition(blackboard: AIBlackboard) {
-        return !!AI.CanActivateAbility(this.config.ability) !== this.config.isSet
+        return !!AI.CanActivateAction(this.config.action) === this.config.isSet
     }
 }
 
-export const CanActivateAbility = (
+export const CanActivateAction = (
     node: NodeOrRegistration,
-    ability: Ability,
+    action: Action,
     isSet: boolean = true,
     observerAborts: ObserverAborts = ObserverAborts.None,
 ): Node =>
-    new CanActivateAbilityDecorator({
+    new CanActivateActionDecorator({
         node: node,
+        // start: (node as Node).blueprint.start,
         config: {
-            ability,
+            action,
             isSet,
             observerAborts,
         },

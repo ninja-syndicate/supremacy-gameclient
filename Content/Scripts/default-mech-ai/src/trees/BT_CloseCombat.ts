@@ -13,37 +13,28 @@ import { HasVeryLowTotalHealth } from "../predicates/Predicate_HasVeryLowTotalHe
 import { TargetHasMoreTotalHealth } from "../predicates/Predicate_TargetHasMoreTotalHealth"
 import { BT_GetPickup } from "./BT_GetPickup"
 import { IsSet } from "../decorators/IsSet"
+import { BT_SetFocal } from "./BT_SetFocal"
+import { BTT_Success } from "../tasks/BTT_Success"
 
 /**
  *
  */
 export const BT_CloseCombat = new ParallelBackground({
     nodes: [
-        new ParallelBackground({
+        // TODO: provide main and background properties
+        // Main task
+        BTT_MeleeAttack(WeaponTag.Melee),
+
+        // Backgorund tasks
+        BT_SetFocal,
+        new Selector({
             nodes: [
-                BTT_MeleeAttack(WeaponTag.Melee),
-                new Selector({
-                    nodes: [
-                        // TODO: do observer aborts
-                        IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
-                        Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.Both),
-                        Predicate(BTT_MoveTo("targetLastKnownLocation"), TargetHasMoreTotalHealth, false, ObserverAborts.Self),
-                        BTT_MoveTo("targetLastKnownLocation"),
-                    ],
-                }),
+                IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
+                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                // Predicate(BTT_MoveTo("targetLastKnownLocation", true), TargetHasMoreTotalHealth, false, ObserverAborts.Self),
+                BTT_MoveTo("targetLastKnownLocation", true),
+                BTT_Success,
             ],
         }),
-        ForceSuccess(
-            new Selector({
-                nodes: [
-                    BTT_SetFocalPoint("target"),
-                    BTT_SetFocalPoint("targetLastKnownLocation"),
-                    Predicate(
-                        BTT_SetFocalPoint("damageStimulusFocalPoint"),
-                        (blackboard: AIBlackboard) => blackboard.damageStimulusFocalPoint !== undefined && blackboard.isLastDamageFromTarget,
-                    ),
-                ],
-            }),
-        ),
     ],
 })
