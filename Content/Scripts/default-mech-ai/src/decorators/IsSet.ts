@@ -1,10 +1,10 @@
-import {Decorator, FAILURE, Node, NodeOrRegistration, RunCallback} from "behaviortree"
-import {AIBlackboard} from "../blackboard"
-import {BT_Combat} from "../trees/BT_Combat"
+import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
+import { AIBlackboard } from "../blackboard"
 
 interface IsSetProps {
     blackboardKey: keyof AIBlackboard
     isSet: boolean
+    observerAborts: ObserverAborts
 }
 
 class IsSetDecorator extends Decorator {
@@ -12,18 +12,26 @@ class IsSetDecorator extends Decorator {
 
     setConfig(config: IsSetProps) {
         this.config = config
+        this.observerAborts = config.observerAborts
     }
 
-    decorate(run: RunCallback, blackboard: AIBlackboard, config: IsSetProps) {
-        if (!!blackboard[config.blackboardKey] !== config.isSet)
-            return FAILURE
-        return run()
+    condition(blackboard: AIBlackboard) {
+        return !!blackboard[this.config.blackboardKey] === this.config.isSet
     }
 }
 
-export const IsSet = (node: NodeOrRegistration, blackboardKey: keyof AIBlackboard, isSet: boolean = true): Node => new IsSetDecorator({
-    node: BT_Combat, config: {
-        blackboardKey,
-        isSet,
-    }
-})
+export const IsSet = (
+    node: NodeOrRegistration,
+    blackboardKey: keyof AIBlackboard,
+    isSet: boolean = true,
+    observerAborts: ObserverAborts = ObserverAborts.None,
+): Node =>
+    new IsSetDecorator({
+        node: node,
+        start: (node as Node).blueprint.start,
+        config: {
+            blackboardKey,
+            isSet,
+            observerAborts,
+        },
+    })

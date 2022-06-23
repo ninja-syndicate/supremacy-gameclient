@@ -1,5 +1,5 @@
-import {EQSQueryType} from "enums";
-import {IntVector, WarMachine} from "types";
+import { EQSQueryType } from "enums";
+import { Vector, WarMachine } from "types";
 
 export const StringToEQSQueryType = (key: string) => {
     switch (key) {
@@ -16,7 +16,7 @@ export const StringToEQSQueryType = (key: string) => {
     }
 }
 
-export const IsIntVector = (object: any): object is IntVector => {
+export const IsVector = (object: any): object is Vector => {
     return 'X' in object && 'Y' in object;
 }
 
