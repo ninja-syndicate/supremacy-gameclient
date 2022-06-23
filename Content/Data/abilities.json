@@ -24,7 +24,7 @@
           ]
      },
      "Heal": {
-          "HealAmmount": 2000,
+          "HealAmount": 2000,
           "TriggerRadius": 3000
      },
      "ShieldBuff": {
@@ -51,7 +51,12 @@
                     "Spread": 2,
                     "ProjectileSpeed": 48000,
                     "RateOfFire": 140
-               }
+               },
+			   "Name": "Robot Dog",
+			   "Faction": {
+					"ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
+					"Name": "Boston Cybernetics"
+			   }
           },
           "LeaderStats": {
                "HealthMax": 1200,
@@ -64,7 +69,12 @@
                     "Spread": 2,
                     "ProjectileSpeed": 48000,
                     "RateOfFire": 140
-               }
+               },
+			   "Name": "Robot Dog",
+			   "Faction": {
+					"ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
+					"Name": "Boston Cybernetics"
+			   }
           }
      },
      "Reinforcements": {

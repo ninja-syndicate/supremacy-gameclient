@@ -1,5 +1,5 @@
-import {AIController, JavascriptContext} from "types"
-import {onBegin, onTick} from "./mech"
+import { AIController, JavascriptContext } from "types"
+import { onBegin, onTick } from "./mech"
 
 declare var Context: JavascriptContext
 export const AI: AIController = Context.GetOwner()
