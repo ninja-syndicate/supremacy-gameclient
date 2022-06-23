@@ -1,13 +1,8 @@
-import { Task, SUCCESS, FAILURE, RUNNING } from "behaviortree"
-import { AI } from "../index"
+import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
+import { Action, Status } from "enums"
 import { AIBlackboard } from "../blackboard"
-import { IsVector } from "../utils"
-import { Ability, Status, MovementResult, Action } from "enums"
+import { AI } from "../index"
 
-/**
- * Move to a location.
- *
- */
 export const BTT_Taunt = new Task({
     start: (blackboard: AIBlackboard) => {
         const success: boolean = AI.Taunt()

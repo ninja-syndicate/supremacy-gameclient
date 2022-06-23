@@ -1,8 +1,8 @@
-import {Task, RUNNING, SUCCESS, FAILURE} from 'behaviortree'
-import {AI} from "../index"
-import {AIBlackboard} from "../blackboard"
-import {IsVector, IsWarMachine} from "../utils"
-import { Ability, Action, Status } from 'enums';
+import { FAILURE, RUNNING, SUCCESS, Task } from 'behaviortree';
+import { Action, Status } from 'enums';
+import { AIBlackboard } from "../blackboard";
+import { AI } from "../index";
+import { IsVector } from "../utils";
 
 /**
  * Makes the AI look at a War Machine or location.

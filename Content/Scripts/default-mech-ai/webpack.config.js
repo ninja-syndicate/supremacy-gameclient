@@ -1,5 +1,4 @@
 const path = require('path');
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 module.exports = {
     mode: "development",
     devtool: "source-map",
@@ -12,7 +11,6 @@ module.exports = {
     },
     resolve: {
         extensions: [".ts", ".js"],
-        fallback: { "timers": require.resolve("timers-browserify") }
     },
     module: {
         rules: [
@@ -23,10 +21,6 @@ module.exports = {
         ]
     },
     optimization: {
-        minimize: false,
+        minimize: true,
     },
-    // Other rules...
-	plugins: [
-		new NodePolyfillPlugin()
-	]
 };

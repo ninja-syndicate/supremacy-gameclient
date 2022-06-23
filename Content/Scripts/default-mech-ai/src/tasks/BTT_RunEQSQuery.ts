@@ -1,8 +1,8 @@
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
-import { AI } from "../index"
 import { EnvironmentQueryStatus, EQSQueryType } from "enums"
 import { EnvironmentQuery } from "types"
 import { AIBlackboard } from "../blackboard"
+import { AI } from "../index"
 
 /**
  * Runs an environment query and returns the resulting location.

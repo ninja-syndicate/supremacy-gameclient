@@ -1,8 +1,8 @@
-import { Task, SUCCESS, FAILURE, RUNNING } from "behaviortree"
-import { AI } from "../index"
-import { AIBlackboard } from "../blackboard"
-import { IsVector } from "../utils"
+import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
 import { MovementResult } from "enums"
+import { AIBlackboard } from "../blackboard"
+import { AI } from "../index"
+import { IsVector } from "../utils"
 
 /**
  * Move to a location.

@@ -1,11 +1,8 @@
-import { AI } from "../index"
-import { AIBlackboard } from "../blackboard"
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
-import { Signal, Status, WeaponTag } from "enums"
+import { Signal, Status } from "enums"
+import { AIBlackboard } from "../blackboard"
+import { AI } from "../index"
 
-/**
- * Shoots the specified weapon.
- */
 export const BTT_Signal = (signal: Signal) =>
     new Task({
         start: (blackboard: AIBlackboard) => {

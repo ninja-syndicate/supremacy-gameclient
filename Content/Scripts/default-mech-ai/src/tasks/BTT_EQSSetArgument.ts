@@ -1,18 +1,9 @@
-import {Task, SUCCESS, FAILURE} from 'behaviortree'
-import {AI} from "../index"
-import {AIBlackboard} from "../blackboard"
-import {IsVector, IsWarMachine} from "../utils"
-import {add, multiply} from "../helper"
+import { SUCCESS, Task } from 'behaviortree'
 import { EQSArgument, EQSQueryType } from 'enums'
 import { Vector } from 'types'
+import { AIBlackboard } from "../blackboard"
+import { AI } from "../index"
 
-/**
- * Makes the AI look at a War Machine or location.
- *
- * Call {@link BTT_StopFocus} to stop looking at anything
- * @param blackboardKey WarMachine or IntVector
- * @constructor
- */
 export const BTT_EQSSetArgumentString = (queryType: EQSQueryType, key: EQSArgument, func: (blackboard: AIBlackboard) => string) => new Task({
     run: (blackboard: AIBlackboard) => {
         const value: string = func(blackboard);
@@ -22,13 +13,6 @@ export const BTT_EQSSetArgumentString = (queryType: EQSQueryType, key: EQSArgume
     }
 });
 
-/**
- * Makes the AI look at a War Machine or location.
- *
- * Call {@link BTT_StopFocus} to stop looking at anything
- * @param blackboardKey WarMachine or IntVector
- * @constructor
- */
  export const BTT_EQSSetArgumentVector = (queryType: EQSQueryType, key: EQSArgument, func: (blackboard: AIBlackboard) => Vector) => new Task({
     run: (blackboard: AIBlackboard) => {
         const value = func(blackboard);

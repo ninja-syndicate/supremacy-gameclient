@@ -1,12 +1,9 @@
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
 
-import { AI } from "../index"
-import { Action, Status, WeaponTag } from "enums"
+import { Action, Status } from "enums"
 import { AIBlackboard } from "../blackboard"
+import { AI } from "../index"
 
-/**
- * Triggers the specified weapon by tag.
- */
 export const BTT_Wait = (seconds: number) =>
     new Task({
         start: (blackboard: AIBlackboard) => {

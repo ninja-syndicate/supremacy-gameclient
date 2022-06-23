@@ -1,8 +1,5 @@
-import { FAILURE, SUCCESS, RUNNING, Parallel, RunConfig } from "behaviortree"
-import BranchNode from "behaviortree"
+import { Blackboard, FAILURE, Parallel, ParallelRunConfig, RUNNING, RunResult, StatusWithState, SUCCESS } from "behaviortree"
 import Node from "behaviortree/src/Node"
-import { ParallelRunConfig, RunResult, StatusWithState, Blackboard, MinimalBlueprint, NodeOrRegistration } from "behaviortree"
-import { IsDecorator } from "behaviortree/lib/Decorator"
 
 /**
  * The parallel background branch node is a variant of parallel node that keeps

@@ -1,6 +1,5 @@
-import { EnvironmentQuery, WarMachine, Vector, Weapon, Perception, BrainInput, InteractableDetails } from "types"
 import { EQSQueryType } from "enums"
-import { Pickup } from "./pickup"
+import { BrainInput, EnvironmentQuery, InteractableDetails, Vector, WarMachine, Weapon } from "types"
 
 /**
  *

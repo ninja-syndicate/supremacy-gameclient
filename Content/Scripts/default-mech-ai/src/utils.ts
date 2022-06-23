@@ -1,5 +1,5 @@
-import {EQSQueryType} from "enums";
-import {Vector, WarMachine} from "types";
+import { EQSQueryType } from "enums";
+import { Vector, WarMachine } from "types";
 
 export const StringToEQSQueryType = (key: string) => {
     switch (key) {

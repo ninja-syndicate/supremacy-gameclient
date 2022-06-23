@@ -1,14 +1,11 @@
-import { EnvironmentQueryStatus, EQSQueryType, InteractableTag, SoundType, WeaponTag } from "enums"
-import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine } from "types"
-import { StringToEQSQueryType } from "./utils"
+import { BehaviorTree } from "behaviortree"
+import { EnvironmentQueryStatus, InteractableTag, SoundType, WeaponTag } from "enums"
+import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, WarMachine } from "types"
+import { AIBlackboard } from "./blackboard"
+import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "./index"
 import { BT_Root } from "./trees/BT_Root"
-import { BehaviorTree, Introspector } from "behaviortree"
-import { AIBlackboard } from "./blackboard"
-import { distanceTo, isDead, add, multiply, distanceToVec, getForwardVector, rotateZ } from "./helper"
-import { Pickup } from "./pickup"
-import { OutnumberingEnemies } from "./predicates/Predicate_OutnumberingEnemies"
-import { AIController, JavascriptContext } from "types"
+import { StringToEQSQueryType } from "./utils"
 // import { setTimeout } from "timers/promises"
 
 export let tree = new BehaviorTree({
@@ -36,14 +33,6 @@ export const onBegin = (input: BrainInput) => {
         }
     }
     console.log(`${input.self.name} AI Started`)
-    /*
-    let kick = () => {
-        console.log("Hello timer!")
-        setTimeout(kick, 1000)
-        // NodePolyfillPlugin(kick, 1000)
-    }
-    kick()
-    */
 }
 
 export const onTick = (input: BrainInput) => {
@@ -55,8 +44,6 @@ export const onTick = (input: BrainInput) => {
     }
 
     updateBlackboard(input)
-
-    // console.log(JSON.stringify(rotateZ(vec3(1, 0, 0), vec3(1, 0, 0), 90)))
 
     // Run Behaviour Tree
     tree.step()

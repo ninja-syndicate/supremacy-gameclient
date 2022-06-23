@@ -1,7 +1,7 @@
-import {SUCCESS, Task} from 'behaviortree'
+import { SUCCESS, Task } from 'behaviortree';
 
-import {AI} from "../index";
-import {WeaponTag} from "enums";
+import { WeaponTag } from "enums";
+import { AI } from "../index";
 
 /**
  * Triggers the specified weapon by tag.

@@ -1,6 +1,6 @@
-import { Task, SUCCESS, FAILURE } from "behaviortree"
-import { AI } from "../../index"
+import { FAILURE, SUCCESS, Task } from "behaviortree"
 import { AIBlackboard } from "../../blackboard"
+import { AI } from "../../index"
 import { IsVector, IsWarMachine } from "../../utils"
 
 /**

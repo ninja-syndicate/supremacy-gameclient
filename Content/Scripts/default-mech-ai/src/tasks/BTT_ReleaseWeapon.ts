@@ -1,10 +1,7 @@
-import {AI} from "../index"
+import { AI } from "../index";
 
-import {FAILURE, RUNNING, SUCCESS, Task} from 'behaviortree'
-import {Ability, Status} from "enums"
-import {IsVector} from "../utils"
-import {AIBlackboard} from "../blackboard"
-import {WeaponTag} from "enums"
+import { SUCCESS, Task } from 'behaviortree';
+import { WeaponTag } from "enums";
 
 /**
  * Releases the triggered weapon by tag.

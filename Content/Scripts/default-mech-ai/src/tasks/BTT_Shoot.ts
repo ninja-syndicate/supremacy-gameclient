@@ -1,7 +1,7 @@
-import { AI } from "../index"
+import { FAILURE, RUNNING, Task } from "behaviortree"
+import { WeaponTag } from "enums"
 import { AIBlackboard } from "../blackboard"
-import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
-import { Status, WeaponTag } from "enums"
+import { AI } from "../index"
 
 /**
  * Shoots the specified weapon.

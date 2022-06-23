@@ -1,8 +1,8 @@
-import { FAILURE, RUNNING, RunResult, SUCCESS, Task } from "behaviortree"
-import { AI } from "../index"
-import { Ability, Action, Status } from "enums"
-import { IsVector } from "../utils"
+import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
+import { Action, Status } from "enums"
 import { AIBlackboard } from "../blackboard"
+import { AI } from "../index"
+import { IsVector } from "../utils"
 
 /**
  * Performs a special attack.

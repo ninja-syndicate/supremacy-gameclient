@@ -1,15 +1,13 @@
-import { Sequence, SUCCESS, Task } from "behaviortree"
-import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
-import { IsSet } from "../decorators/IsSet"
+import { Sequence } from "behaviortree"
+import { EQSArgument, EQSQueryType } from "../../../types/enums"
 import { AIBlackboard } from "../blackboard"
-import { EQSArgument, EQSQueryType, WeaponTag } from "../../../types/enums"
-import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
 import { ParallelBackground } from "../branches/ParallelBackground"
-import { BTT_RunEQSQuery } from "../tasks/BTT_RunEQSQuery"
-import { BTT_EQSSetArgumentVector } from "../tasks/BTT_EQSSetArgument"
-import { BTT_ClearValue } from "../tasks/BTT_ClearValue"
-import { BT_SetFocal } from "./BT_SetFocal"
+import { IsSet } from "../decorators/IsSet"
 import { BTT_ClearTarget } from "../tasks/BTT_ClearTarget"
+import { BTT_EQSSetArgumentVector } from "../tasks/BTT_EQSSetArgument"
+import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
+import { BTT_RunEQSQuery } from "../tasks/BTT_RunEQSQuery"
+import { BT_SetFocal } from "./BT_SetFocal"
 
 export const BT_SearchTarget = new Sequence({
     nodes: [

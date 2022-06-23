@@ -1,7 +1,7 @@
 import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
-import { Ability, Action } from "../../../types/enums"
 import { AI } from ".."
+import { Action } from "../../../types/enums"
+import { AIBlackboard } from "../blackboard"
 
 interface CanActivateActionProps {
     action: Action

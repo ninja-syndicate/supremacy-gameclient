@@ -1,7 +1,7 @@
 import { WarMachine } from "types"
 import { AIBlackboard } from "../blackboard"
 
-export const OutnumberingEnemies = (blackboard: AIBlackboard) => {
+export const IsOutnumberingEnemies = (blackboard: AIBlackboard) => {
     const factionID: string = blackboard.input.self.factionID
 
     // TODO: maintain a list of friendly mechs in some radius and factor that into account.

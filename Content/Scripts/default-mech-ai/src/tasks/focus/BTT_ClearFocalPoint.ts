@@ -1,4 +1,4 @@
-import { Task, SUCCESS, FAILURE } from "behaviortree"
+import { SUCCESS, Task } from "behaviortree"
 import { AI } from "../../index"
 
 /**

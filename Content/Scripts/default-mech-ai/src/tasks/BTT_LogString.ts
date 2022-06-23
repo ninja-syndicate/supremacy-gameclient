@@ -1,5 +1,4 @@
-import { Task, SUCCESS, FAILURE } from "behaviortree"
-import { AI } from "../index"
+import { SUCCESS, Task } from "behaviortree"
 
 /**
  * Logs the string.
