@@ -5,14 +5,16 @@ import { IsSet } from "../../decorators/IsSet"
 import { Predicate } from "../../decorators/Predicate"
 import { HasVeryLowTotalHealth } from "../../predicates/Predicate_HasVeryLowTotalHealth"
 import { BTT_MeleeAttack } from "../../tasks/BTT_MeleeAttack"
-import { BTT_MoveTo } from "../../tasks/BTT_MoveTo"
+import { BTT_MoveTo } from "../../tasks/movement/BTT_MoveTo"
 import { BTT_Success } from "../../tasks/BTT_Success"
 import { BT_GetCover } from "../BT_GetCover"
 import { BT_GetPickup } from "../BT_GetPickup"
 import { BT_SetFocal } from "../BT_SetFocal"
 
 /**
+ * Behavior when the AI is in close combat.
  *
+ * 
  */
 export const BT_CloseCombat = new ParallelBackground({
     nodes: [

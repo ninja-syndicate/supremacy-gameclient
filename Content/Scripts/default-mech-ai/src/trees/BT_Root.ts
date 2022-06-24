@@ -14,7 +14,11 @@ import { BT_Patrol } from "./BT_Patrol"
 import { BT_ReceivedDamage } from "./BT_ReceivedDamage"
 
 /**
+ * The root of the behavior tree for AI.
  *
+ * It will perform a selection of behavior trees/tasks listed under nodes depending on the specified conditions.
+ * 
+ * 
  */
 export const BT_Root = new Selector({
     nodes: [

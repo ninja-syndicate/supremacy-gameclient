@@ -1,5 +1,11 @@
 import { AIBlackboard } from "../blackboard"
 
+/**
+ * 
+ * 
+ * @param blackboard 
+ * @returns 
+ */
 export const TargetHasMoreTotalHealth = (blackboard: AIBlackboard) => {
     const self = blackboard.input.self
     const target = blackboard.target

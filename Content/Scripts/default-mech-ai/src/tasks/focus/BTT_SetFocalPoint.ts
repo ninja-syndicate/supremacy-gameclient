@@ -4,7 +4,9 @@ import { AI } from "../../index"
 import { IsVector, IsWarMachine } from "../../utils"
 
 /**
- * Sets the focal point of AI.
+ * Sets the focal point of the AI to the specified war machine/location.
+ *
+ * Note that this task is different from {@link BTT_LookAt} which waits until the AI is actually facing the specified location.
  *
  * @param blackboardKey WarMachine or Vector
  */

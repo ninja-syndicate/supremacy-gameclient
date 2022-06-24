@@ -1,14 +1,18 @@
 import { Selector, Sequence } from "behaviortree"
 import { BT_GetCover } from "./BT_GetCover"
-// import { BT_LookAround } from "./BT_LookAround"
 import { AIBlackboard } from "../blackboard"
 import { ParallelBackground } from "../branches/ParallelBackground"
 import { IsSet } from "../decorators/IsSet"
-import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
+import { BTT_MoveTo } from "../tasks/movement/BTT_MoveTo"
 import { BT_LookAround } from "./BT_LookAround"
 import { BT_SetFocal } from "./BT_SetFocal"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 
+/**
+ * Camping behavior
+ * 
+ * 
+ */
 export const BT_Camp = new Sequence({
     nodes: [
         new ParallelBackground({

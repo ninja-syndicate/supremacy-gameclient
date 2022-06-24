@@ -1,13 +1,13 @@
 import { Sequence } from "behaviortree"
 import { EQSArgument, EQSQueryType } from "../../../types/enums"
 import { AIBlackboard } from "../blackboard"
-import { BTT_EQSSetArgumentString } from "../tasks/BTT_EQSSetArgument"
-import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
-import { BTT_RunEQSQuery } from "../tasks/BTT_RunEQSQuery"
+import { BTT_EQSSetArgumentString } from "../tasks/environment/BTT_EQSSetArgument"
+import { BTT_MoveTo } from "../tasks/movement/BTT_MoveTo"
+import { BTT_RunEQSQuery } from "../tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 
 /**
- *
+ * AI strafing behavior.
  */
 export const BT_Strafe = new Sequence({
     nodes: [

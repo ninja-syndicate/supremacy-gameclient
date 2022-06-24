@@ -5,7 +5,10 @@ import { BTT_LookAt } from "../tasks/BTT_LookAt"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 import { BTT_Wait } from "../tasks/BTT_Wait"
 
-// TODO: use Loop decorator
+/**
+ * 
+ * Look around behavior.
+ */
 export const BT_LookAround = new Sequence({
     nodes: [
         BTT_SetValue(

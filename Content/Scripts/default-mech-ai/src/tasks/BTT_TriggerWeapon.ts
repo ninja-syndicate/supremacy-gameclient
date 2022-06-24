@@ -9,9 +9,7 @@ import { AI } from "../index"
  *
  * If the specified weapon(s) is already triggered, this will not do anything.
  *
- * Note that this task will return SUCCESS immediately and if this task is
- * aborted by {@link ObserverAborts} the triggered weapon(s) by tag will be
- * released.
+ * Note that this task will return SUCCESS immediately and if this task is aborted by {@link ObserverAborts} the triggered weapon(s) by tag will be released.
  *
  * @see {@link AI.WeaponTrigger} for details.
  *

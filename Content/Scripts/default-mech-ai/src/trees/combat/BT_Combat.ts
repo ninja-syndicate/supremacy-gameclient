@@ -8,6 +8,9 @@ import { BT_CanSeeTarget } from "./BT_CanSeeTarget"
 import { BT_GetPickup } from "../BT_GetPickup"
 import { BT_SearchTarget } from "../BT_SearchTarget"
 
+/**
+ * The main combat behavior tree 
+ */
 export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),

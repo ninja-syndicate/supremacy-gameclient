@@ -9,7 +9,12 @@ import { IsVector } from "../utils";
  *
  * Call {@link BTT_StopFocus} to stop looking at anything
  * @param blackboardKey WarMachine or IntVector
- * @constructor
+ */
+
+/**
+ * 
+ * 
+ * @param blackboardKey 
  */
 export const BTT_LookAt = (blackboardKey: keyof AIBlackboard) => new Task({
     start: (blackboard: AIBlackboard) => {
