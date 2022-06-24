@@ -11,6 +11,19 @@ import { IsVector } from "../utils"
  * @param blackboardKey IntVector
  * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
  */
+
+/**
+ * Makes the AI move to a specified location.
+ *
+ *
+ *
+ * @see {@link AI.MoveToVector} for details.
+ *
+ * @param blackboardKey The location where the AI will move to.
+ * @param observeBlackboardKey Whether the change in 
+ * @param {number} [acceptanceRadius=800]
+ * @param {number} [timeout=20] The timeout before giving up. This is not implemented yet. //TODO: do implementation for timeout.
+ */
 export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 800, timeout: number = 20) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
@@ -21,7 +34,6 @@ export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardK
             return success ? SUCCESS : FAILURE
         },
         run: (blackboard: AIBlackboard) => {
-            // TODO: testing
             if (observeBlackboardKey) {
                 const location = blackboard[blackboardKey]
                 if (!location || !IsVector(location)) return FAILURE
@@ -38,8 +50,6 @@ export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardK
                 case MovementResult.Success:
                     return SUCCESS
                 case MovementResult.Aborted:
-                    return FAILURE
-                case MovementResult.Invalid:
                     return FAILURE
                 default:
                     return FAILURE

@@ -5,9 +5,11 @@ import { AI } from "../index"
 import { IsVector } from "../utils"
 
 /**
- * Performs a special attack.
+ * Makes AI perform a special attack.
  *
- * @param blackboardKey IntVector
+ * @param blackboardKey The target location for the special attack.
+ *
+ * @see {@link AI.TrySpecialAttack} for details
  */
 export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
     new Task({
