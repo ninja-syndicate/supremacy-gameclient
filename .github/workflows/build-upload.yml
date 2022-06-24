@@ -1,0 +1,59 @@
+name: Build Supremacy
+
+on:
+  workflow_dispatch: { }
+
+env:
+  PROJECT: ..\..\Supremacy.uproject
+  BUILD_DIR: ..\..\Build
+  CONFIG_FILE: ..\..\Build\Windows\Supremacy\Saved\Config\Windows\Engine.ini
+  DEFAULT_ENGINE_FILE: ..\..\Config\DefaultEngine.ini
+
+jobs:
+  build-setup:
+    runs-on: [ self-hosted, windows, x64 ]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+          fetch-depth: "0"
+      - name: Git LFS Pull
+        run: |
+            git lfs pull
+            git add .
+
+      - name: Set versions
+        run: |
+          echo "GITVERSION=$(git describe --tags)" >> $GITHUB_ENV
+          echo "GITBRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+          echo "GITHASH=$(git rev-parse --verify HEAD)" >> $GITHUB_ENV
+
+      - name: Check if UAT Exist
+        id: check_uat
+        uses: andstor/file-existence-action@v1
+        with: "%RunUAT%"
+
+      - name: UAT exists
+        if: steps.check_uat.outputs.files_exists == 'false'
+        run: |
+          echo UAT doesn't exist on runner pc
+          exit 1
+
+      - name: Chck if V8 library xist
+        id: check_v8
+        uses: andstor/file-existence-action@v1
+        with: "..\..\Plugins\UnrealJs\ThirdParty\v8\lib\Win64\Release\v8_init.lib"
+
+      - name: Download V8 library if doesn't exist
+        if: steps.check_v8.outputs.files_exists == 'false'
+        run: |
+          echo V8 library doesn't exist, downloading and unpacking now
+          setlocal
+          cd "%~dp0\Plugins\UnrealJs"
+          sh "install-v8-libs.sh"
+          endlocal
+  build:
+    runs-on: [ self-hosted, windows, x64 ]
+    needs: [ build-setup ]
+
