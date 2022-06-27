@@ -8,6 +8,7 @@ on:
 
 env:
     version: ${{ git describe --tags }}
+    branch: main
 
 jobs:
     build:
