@@ -9,7 +9,9 @@ import { BT_GetPickup } from "../BT_GetPickup"
 import { BT_SearchTarget } from "../BT_SearchTarget"
 
 /**
- * The main combat behavior tree 
+ * The main combat behavior tree.
+ *
+ * 
  */
 export const BT_Combat = new Selector({
     nodes: [

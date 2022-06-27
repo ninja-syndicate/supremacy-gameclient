@@ -4,9 +4,17 @@ import { BTT_Success } from "../tasks/BTT_Success"
 import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 
 /**
- * Behavior for setting the focal point of the AI.
+ * Behavior for setting the focal point of AI.
  *
- * The focal point 
+ * Sets the focal point of AI to the most desirable target/location.
+ * Currently, the priority for setting the focal point is defined as follows:
+ *
+ *  - {@link AIBlackboard.target} if AI can see the current target
+ *  - {@link AIblackboard.damageStimulusFocalPoint} if AI received the damage
+ *  - {@link AIBlackboard.targetPredictedLocation} if AI has the target's predicted location
+ *  - {@link AIBlackboard.targetLastKnownLocation} if AI has the target's last known location
+ *
+ * You may want to wrap around this behavior with a {@link ForceSuccess} decorator if used with a {@link ParalellBackground} branch node.
  */
 export const BT_SetFocal = new Selector({
     nodes: [

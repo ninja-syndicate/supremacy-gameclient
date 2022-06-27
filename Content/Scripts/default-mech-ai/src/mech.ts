@@ -7,6 +7,9 @@ import { AI } from "./index"
 import { BT_Root } from "./trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
 
+/**
+ * 
+ */
 export let tree = new BehaviorTree({
     tree: BT_Root,
     blackboard: {
@@ -105,6 +108,9 @@ export function clearBlackboardTarget(): void {
     }
 }
 
+/**
+ * 
+ */
 function clearDamageInfo(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 

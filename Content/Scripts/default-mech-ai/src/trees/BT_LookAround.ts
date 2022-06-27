@@ -5,9 +5,12 @@ import { BTT_LookAt } from "../tasks/BTT_LookAt"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 import { BTT_Wait } from "../tasks/BTT_Wait"
 
+// TODO: Use loop decorator.
 /**
- * 
  * Look around behavior.
+ *
+ * Makes the AI look at 90 degrees right from the current rotation twice (@see {@link BTT_LookAt}).
+ * Intended to be used to detect friendlies and enemies near the AI.
  */
 export const BT_LookAround = new Sequence({
     nodes: [
@@ -30,6 +33,5 @@ export const BT_LookAround = new Sequence({
         BTT_LookAt("lookAtLocation"),
         BTT_Wait(1),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.lookAtLocation = undefined)),
-        // BTT_Wait(50),
     ],
 })

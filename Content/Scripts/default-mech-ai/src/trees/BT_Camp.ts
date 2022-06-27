@@ -9,9 +9,14 @@ import { BT_SetFocal } from "./BT_SetFocal"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 
 /**
- * Camping behavior
- * 
- * 
+ * Camping behavior.
+ *
+ * Makes the AI move to the cover location if it.
+ *
+ * If it already has a cover location, it will move to it. This is useful in case the task to move to the cover location gets cancelled. So it doesn't need to
+ * request a new cover location which may be further than the current cover location.
+ *
+ * At the end, 
  */
 export const BT_Camp = new Sequence({
     nodes: [

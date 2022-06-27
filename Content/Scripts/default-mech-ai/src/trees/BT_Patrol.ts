@@ -8,6 +8,8 @@ import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 
 /**
  * Patrol behavior.
+ *
+ * Makes an environment query to get the patrol location and moves to it (@see {@link EQSQueryType.Patrol}).
  */
 export const BT_Patrol = new Sequence({
     nodes: [

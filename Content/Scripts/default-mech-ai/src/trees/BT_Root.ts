@@ -16,9 +16,21 @@ import { BT_ReceivedDamage } from "./BT_ReceivedDamage"
 /**
  * The root of the behavior tree for AI.
  *
- * It will perform a selection of behavior trees/tasks listed under nodes depending on the specified conditions.
- * 
- * 
+ * Perform a selection of behavior trees/tasks listed under nodes property based on the specified conditions.
+ * The higher priority behaviors are placed on top, and specifying aborting conditions via {@link ObserverAborts}.
+ *
+ * Currently, the behavior of AI is broken into following sub-behaviors:
+ *
+ * - {@link BT_Combat} -
+ * - {@link BT_GetPickup} -
+ * - {@link BT_Camp} -
+ * - {@link BTT_Taunt} -
+ * - {@link BT_ReceivedDamage} -
+ * - {@link BT_InvestigateNoise} -
+ * - {@link BT_Patrol} -
+ *
+ * The {@link BTT_Wait} is a fallback task when every other behaviors fail. This may be because your AI temporaily lost control via user actions, stuck or error
+ * in your logic.
  */
 export const BT_Root = new Selector({
     nodes: [

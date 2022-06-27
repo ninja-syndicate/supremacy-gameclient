@@ -11,7 +11,9 @@ import { BTT_StopMoveTo } from "../tasks/movement/BTT_StopMoveTo"
 import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 
 /**
- * Behavior when AI receives damage.
+ * Behavior when AI receives a damage.
+ *
+ * Makes the AI stop its current movement and look at its 
  */
 export const BT_ReceivedDamage = new Sequence({
     nodes: [
