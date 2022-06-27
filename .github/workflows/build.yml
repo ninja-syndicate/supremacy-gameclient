@@ -9,12 +9,6 @@ on:
 jobs:
     build:
         runs-on: [self-hosted, windows, x64]
-        env:
-            project: ${{ env.GITHUB_WORKSPACE }}\Supremacy.uproject
-            build_dir: ${{ env.GITHUB_WORKSPACE }}\Build
-            ConfigFile: ${{ env.GITHUB_WORKSPACE }}\Build\Windows\Supremacy\Saved\Config\Windows\Engine.ini
-            DefaultEngine: ${{ env.GITHUB_WORKSPACE }}\Config\DefaultEngine.ini
-
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
@@ -22,18 +16,19 @@ jobs:
                   fetch-depth: "0"
                   lfs: true
 
-            - name: Set git info
-              id: git_info
+            - name: Set variables
+              id: var
               run: |
                   Write-Output ::set-output name=branch::"main"
-                  Write-Output ::set-ouptup name=version::$(git describe --tags)
-
-            - name: V8 library check
-              id: library
-              run: Write-Output ::set-output name=exists::$(Test-Path -Path "${{ env.GITHUB_WOKRSPACE }}\Plugins\UnrealJs\ThirdParty\v8\lib\Win64\Release\v8_init.lib")
+                  Write-Output ::set-output name=version::"$(git describe --tags)"
+                  Write-Output ::set-output name=project::"${{ env.GITHUB_WORKSPACE }}\Supremacy.uproject"
+                  Write-Output ::set-output name=build_dir::"${{ env.GITHUB_WORKSPACE }}\Build"
+                  Write-Output ::set-output name=ConfigFile::${{ env.GITHUB_WORKSPACE }}\Build\Windows\Supremacy\Saved\Config\Windows\Engine.ini
+                  Write-Output ::set-output name=DefaultEngineFile::${{ env.GITHUB_WORKSPACE }}\Config\DefaultEngine.ini
+                  Write-Output ::set-output name=exists::"$(Test-Path -Path '${{ env.GITHUB_WOKRSPACE }}\Plugins\UnrealJs\ThirdParty\v8\lib\Win64\Release\v8_init.lib')"
 
             - name: Install V8 library if not exists
-              if: steps.library.outputs.exists == "False"
+              if: steps.var.outputs.exists == "False"
               run: |
                   Write-Output "V8 library required for UnrealJS is missing, will download/unpack now"
                   Push-Location ${{ env.GITHUB_WOKSPACE }}\Plugins\UnrealJS
@@ -42,19 +37,19 @@ jobs:
 
             - name: Prebuild - engine config
               run: |
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "$env:DefaultEngineFile [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0" -Wait
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumnetList "$env:DefaultEngineFile [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "${ steps.var.outputs.DefaultEngineFile } [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumnetList "${ steps.var.outputs.DefaultEngineFile } [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11" -Wait
 
             - name: Build cook run
-              run: Start-Process -FilePath $env:RunUAT -ArgumentList "BuildCookRun -project='$env:project' -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory='$env:build_dir'" -Wait
+              run: Start-Process -FilePath $env:RunUAT -ArgumentList "BuildCookRun -project='${ steps.var.outputs.project }' -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory='${ steps.var.output.build_dir }'" -Wait
 
             - name: Post build - config
               run: |
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "$env:ConfigFile [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0" -Wait
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumnetList "$env:ConfigFile [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11" -Wait
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgurmentList "[/Script/Engine.RendererSettings] r.Nanite.RequireDX12=" -Wait
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "[/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX12" -Wait
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "$env:ConfigFile [/Game/UI/HUD.HUD_C] Version=${{ steps.git_info.outputs.version}}" -Wait
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "$env:ConfigFile [/Game/UI/HUD.HUD_C] BuildBranch=${{ steps.git_info.outputs.branch }}" -Wait
-                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "$env:ConfigFile [/Game/UI/HUD.HUD_C] Hash=${{ env.GITHUB_SHA }}" -Wait
-                  Write-Host BuildNo ${{ steps.git_info.outputs.version}}  Branch ${{ steps.git_info.outputs.branch }} Hash ${{ env.GITHUB_SHA }}
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "${ steps.var.outputs.ConfigFile } [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumnetList "${ steps.var.outputs.ConfigFile } [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgurmentList "${ steps.var.outputs.DefaultEngineFile } [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "${ steps.var.outputs.DefaultEngineFile } [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX12" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "${ steps.var.outputs.ConfigFile } [/Game/UI/HUD.HUD_C] Version=${{ steps.var.outputs.version}}" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "${ steps.var.outputs.ConfigFile } [/Game/UI/HUD.HUD_C] BuildBranch=${{ steps.var.outputs.branch }}" -Wait
+                  Start-Process -FilePath ${{ env.GITHUB_WORKSPACE }}\Config\inifile -ArgumentList "${ steps.var.outputs.ConfigFile } [/Game/UI/HUD.HUD_C] Hash=${{ env.GITHUB_SHA }}" -Wait
+                  Write-Host BuildNo ${{ steps.var.outputs.version}}  Branch ${{ steps.var.outputs.branch }} Hash ${{ env.GITHUB_SHA }}
