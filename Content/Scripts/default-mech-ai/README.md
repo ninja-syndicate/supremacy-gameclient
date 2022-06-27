@@ -14,6 +14,7 @@ understanding of
 https://www.gamedeveloper.com/programming/behavior-trees-for-ai-how-they-work
 
 In addition to the standard behavior tree, Observer Aborts feature is implemented.
+Providing another layer to make tweaking behavior to make things easier for user is not done yet.
 
 The main script file is mech.ts and BT_Root.
 

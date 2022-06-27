@@ -31,7 +31,7 @@ export interface AIBlackboard {
     coverLocation?: Vector
 
     interactables: InteractableDetails[]
-    desiredPickUpLocation?: Vector
+    desiredPickupLocation?: Vector
 
     targetLastKnownLocation?: Vector
     targetLastKnownVelocity?: Vector
@@ -41,6 +41,7 @@ export interface AIBlackboard {
     damageStimulusDirection?: Vector
     damageStimulusFocalPoint?: Vector
     damageStimulusEstimateLocation?: Vector
+    damageHiddenLocation?: Vector
     isLastDamageFromTarget: boolean
 
     leftArmWeapon: Weapon

@@ -4,7 +4,7 @@ import { BTT_Success } from "../tasks/BTT_Success"
 import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
 
 /**
- * Behavior for setting the focal point of AI.
+ * Behavior for setting the focal point of AI (@see {@link BTT_SetFocalPoint}).
  *
  * Sets the focal point of AI to the most desirable target/location.
  * Currently, the priority for setting the focal point is defined as follows:

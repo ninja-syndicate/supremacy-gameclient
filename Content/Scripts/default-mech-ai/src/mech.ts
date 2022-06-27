@@ -213,13 +213,13 @@ function updateBlackboardInteractable(interactables: InteractableDetails[]): voi
 
     blackboard.interactables = interactables
     if (blackboard.interactables.length === 0) {
-        blackboard.desiredPickUpLocation = undefined
+        blackboard.desiredPickupLocation = undefined
         return
     }
 
     const bestPickup = findBestPickup(blackboard)
     if (bestPickup !== undefined) {
-        blackboard.desiredPickUpLocation = bestPickup.location
+        blackboard.desiredPickupLocation = bestPickup.location
     }
 }
 

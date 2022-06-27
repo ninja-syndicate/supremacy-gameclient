@@ -12,7 +12,8 @@ import { BTT_SetValue } from "../tasks/BTT_SetValue"
  * This behavior makes an environment query to get a cover location and moves to it.
  *
  * The cover environment query requires the arguments {@link EQSArgument.TargetLastKnownLocation} and {@link EQSArgument.LastHitLocation} to be set before it
- * gets called (@see {@link EQSQueryType.Cover}). If any of these are undefined, the current location of the AI will be used for the undefined location.
+ * gets called (@see {@link EQSQueryType.Cover}). In this behavior, if any of these are undefined, the current location of the AI will be used for the undefined
+ * location.
  */
 export const BT_GetCover = new Sequence({
     nodes: [

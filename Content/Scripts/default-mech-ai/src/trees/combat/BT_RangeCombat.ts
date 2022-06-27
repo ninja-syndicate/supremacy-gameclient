@@ -16,18 +16,22 @@ import { BT_GetPickup } from "../BT_GetPickup"
 import { BT_SetFocal } from "../BT_SetFocal"
 import { BT_Strafe } from "../BT_Strafe"
 
-// TODO: Separate ParallelBackgorund into main and backgorund tasks properties.
-
+// TODO: Separate ParallelBackgorund into main and background tasks properties.
+// TODO: Replace with ForceSuccess decorator? and replace comments
 /**
- * Behavior when the AI is in range combat.
+ * Behavior when AI is in range combat.
  *
- * The range combat behavior is basically a parallel task that executes main and background tasks and keep running background tasks until the main task
- * completes (@see {@link ParallelBackground}). Currently, the main task is the Parallel node which causes the weapons attached to the left and right arm to
- * shoot. The background tasks are the BT_SetFocal and the selector beneath it. It will set the focal point to the appropriate place depending on what the AI
- * has on its blackboard. The selector , in case movement fails, BTT_Success (TODO: Replace with ForceSuccess decorator?) will make the behavior keep running.
+ * The range combat behavior is a parallel task that executes the main and background tasks and keep running background tasks until the main task completes
+ * (@see {@link ParallelBackground}). Currently, the main task is the Parallel node which causes the weapons attached to the left and right arm to shoot. The
+ * background tasks are the {@link BT_SetFocal} and the selector beneath it. {@link BT_SetFocal} sets the focal point to the appropriate place depending on what
+ * the AI has on its blackboard (@see {@link BT_SetFocal}). The selector selects most appropriate move to location based on the current state. You can customize
+ * these behaviors as you wish. 
+ * 
+ * The {@link BTT_Success} at the end forces the selector to succeed when the other behaviors fail (e.g. movement/env query fail) which will keep
+ * {@link BT_RangeCombat} running.
  *
- * because the BTT_Shoot will never complete or fail unelss there are no ammo (or not shootable), this behavior will continue running until it is aborted by
- * {@link ObserverAborts}.
+ * Note that {@link BTT_Shoot} will never complete or fail unelss there are no ammo or the weapon is not shootable, so this behavior will continue running until
+ * it is aborted by {@link ObserverAborts}.
  */
 export const BT_RangeCombat = new ParallelBackground({
     nodes: [
@@ -38,7 +42,7 @@ export const BT_RangeCombat = new ParallelBackground({
         BT_SetFocal,
         new Selector({
             nodes: [
-                IsSet(BT_GetPickup, "desiredPickUpLocation", true, ObserverAborts.Both),
+                IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
                     // TODO: This should ideally be getting closer, not directly to target.

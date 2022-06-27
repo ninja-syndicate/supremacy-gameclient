@@ -8,12 +8,14 @@ import { BTT_SpecialAttack } from "../../tasks/BTT_SpecialAttack"
 import { BT_CloseCombat } from "./BT_CloseCombat"
 import { BT_RangeCombat } from "./BT_RangeCombat"
 
+// TODO: Provide the close combat range (currently 4000) as a constant somewhere.
 /**
  * Behavior when AI can see the current target.
  *
- * Currently, this behavior is broken into three sub-behaviors.
- * - If the AI can activate special attack, it will perform the attack to the target's last known location (@see {@link BTT_SpecialAttack}).
- * - Otherwise, if the target is close enough and the AI can melee, it will enter close combat behavior (@see {@link BT_CloseCombat}).
+ * This is where the main fighting logic is placed. Currently, it is broken into three sub-behaviors:
+ *
+ * - If the AI can activate special attack, it will perform the special attack to the target's last known location (@see {@link BTT_SpecialAttack}).
+ * - Otherwise, if the target is close enough and AI can melee, it will enter close combat behavior (@see {@link BT_CloseCombat}).
  * - Otherwise, it will fallback to range combat behavior (@see {@link BT_RangeCombat}).
  *
  * You can modify this behavior tree as you may desire to customize the behavior of AI when it can see the current target.

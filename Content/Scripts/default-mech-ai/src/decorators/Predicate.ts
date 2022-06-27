@@ -28,9 +28,9 @@ export const Predicate = (
 ): Node =>
     new PredicateDecorator({
         node: node,
+        start: (node as Node).blueprint.start,
         config: {
             predicate,
-            start: (node as Node).blueprint.start,
             isSet,
             observerAborts,
         },

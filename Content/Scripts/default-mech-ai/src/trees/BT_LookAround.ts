@@ -9,7 +9,7 @@ import { BTT_Wait } from "../tasks/BTT_Wait"
 /**
  * Look around behavior.
  *
- * Makes the AI look at 90 degrees right from the current rotation twice (@see {@link BTT_LookAt}).
+ * Makes the AI look at 90 degrees right from the current rotation twice.
  * Intended to be used to detect friendlies and enemies near the AI.
  */
 export const BT_LookAround = new Sequence({
