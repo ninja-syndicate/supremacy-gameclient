@@ -28,7 +28,7 @@ jobs:
                   Write-Output ::set-output name=exists::"$(Test-Path -Path '${{ env.GITHUB_WOKRSPACE }}\Plugins\UnrealJs\ThirdParty\v8\lib\Win64\Release\v8_init.lib')"
 
             - name: Install V8 library if not exists
-              if: steps.var.outputs.exists == "False"
+              if: ${{ steps.var.outputs.exists == 'False' }}
               run: |
                   Write-Output "V8 library required for UnrealJS is missing, will download/unpack now"
                   Push-Location ${{ env.GITHUB_WOKSPACE }}\Plugins\UnrealJS
