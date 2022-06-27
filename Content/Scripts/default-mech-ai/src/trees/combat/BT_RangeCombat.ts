@@ -25,8 +25,8 @@ import { BT_Strafe } from "../BT_Strafe"
  * (@see {@link ParallelBackground}). Currently, the main task is the Parallel node which causes the weapons attached to the left and right arm to shoot. The
  * background tasks are the {@link BT_SetFocal} and the selector beneath it. {@link BT_SetFocal} sets the focal point to the appropriate place depending on what
  * the AI has on its blackboard (@see {@link BT_SetFocal}). The selector selects most appropriate move to location based on the current state. You can customize
- * these behaviors as you wish. 
- * 
+ * these behaviors as you wish.
+ *
  * The {@link BTT_Success} at the end forces the selector to succeed when the other behaviors fail (e.g. movement/env query fail) which will keep
  * {@link BT_RangeCombat} running.
  *
