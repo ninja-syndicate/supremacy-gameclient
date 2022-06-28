@@ -4,7 +4,7 @@ import { AIBlackboard } from "../blackboard"
 import { AI } from "../index"
 
 /**
- * Makes the AI perform a taunt.
+ * Makes AI taunt.
  *
  * @see {@link AI.Taunt} for details.
  */

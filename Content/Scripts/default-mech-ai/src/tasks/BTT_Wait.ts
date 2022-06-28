@@ -1,11 +1,10 @@
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
-
 import { Action, Status } from "enums"
 import { AIBlackboard } from "../blackboard"
 import { AI } from "../index"
 
 /**
- * Makes the AI wait for the specified number of seconds.
+ * Makes AI wait for the specified number of seconds.
  *
  * @see {@link AI.Wait} for details.
  *

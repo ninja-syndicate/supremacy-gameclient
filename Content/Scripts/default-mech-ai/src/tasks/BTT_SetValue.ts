@@ -2,11 +2,11 @@ import { SUCCESS, Task } from "behaviortree"
 import { AIBlackboard } from "../blackboard"
 
 /**
- * A task that can be used to set the properties of the blackboard using {@link func} function.
+ * A task that can be used to set/clear the properties of the blackboard.
  *
- * You may want to set the properties of the blackboard when certain conditions are met while the behavior tree is being executed. You can use this task to achieve that.
+ * Intended to be used to set the properties of the blackboard while certain branch of the behavior tree is being executed.
  *
- * @param func A setter function that accepts blackboard and modify its properties as you need.
+ * @param func A setter function that accepts blackboard and modify its properties as you need
  */
 export const BTT_SetValue = (func: (blackboard: AIBlackboard) => void) =>
     new Task({

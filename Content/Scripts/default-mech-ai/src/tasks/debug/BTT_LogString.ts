@@ -1,11 +1,11 @@
 import { SUCCESS, Task } from "behaviortree"
 
 /**
- * This task logs the given message to the console.
+ * Logs the given message to the console.
  *
  * Intended to be used for debugging purpose.
  *
- * @param message The message to log.
+ * @param message The message to log
  */
 export const BTT_LogString = (message: string) =>
     new Task({

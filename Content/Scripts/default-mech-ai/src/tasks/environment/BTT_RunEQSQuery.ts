@@ -7,12 +7,13 @@ import { AI } from "../../index"
 /**
  * Runs the specified environment query.
  *
- * Depending on the environment query type, you may need to execute {@link BTT_EQSSetArgument} to set the arguments for the query before executing this task.
+ * Depending on the environment query type, you may need to execute {@link BTT_QuerySetArgumentString} or {@link BTT_QuerySetArgumentVector} to set the
+ * arguments for the query before executing this task.
  *
  * @see {@link AI.EQS_Query} for additional details.
  *
- * @param query The type of EQS query to run.
- * @param blackboardKey The key of blackboard where the resulting location will be stored.
+ * @param query The type of EQS query to run
+ * @param blackboardKey The key of blackboard where the resulting location will be stored
  */
 export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlackboard) =>
     new Task({

@@ -7,13 +7,14 @@ import { IsVector } from "../utils"
 /**
  * Makes AI perform a special attack.
  *
- * @param blackboardKey The target location for the special attack.
+ * @param {Vector} blackboardKey The target location for the special attack
  *
- * @see {@link AI.TrySpecialAttack} for details
+ * @see {@link AI.TrySpecialAttack} for details.
  */
 export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
+            // Check if the `blackboardKey` is a Vector.
             const location = blackboard[blackboardKey]
             if (!location || !IsVector(location)) return FAILURE
 
@@ -27,7 +28,6 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
 
         run: (blackboard: AIBlackboard) => {
             const status = AI.QueryStatus(Action.SpecialAttack)
-
             switch (status) {
                 case Status.Running:
                     return RUNNING

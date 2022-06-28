@@ -4,21 +4,28 @@ import { AIBlackboard } from "../../blackboard"
 import { AI } from "../../index"
 import { IsVector } from "../../utils"
 
+// TODO: test timeout after getting setTimeout done and refactor a bit.
+// TODO: do implementation for timeout and change comments.
 /**
- * Makes the AI move to a specified location.
+ * Makes AI move to a specified location.
+ *
+ * You may want to use {@link observeBlackboardKey} if you want to track the location AI is moving to (e.g. {@link AIBlackboard.TargetLastKnownLocation}). Also,
+ * using a large value of {@link acceptanceRadius} is recommended to prevent AI potentially getting stuck for a while if the destination is occupied by
+ * something else.
  *
  * It's recommended to use {@link BTT_RunEQSQuery} in combination with this.
  *
- * @see {@link AI.MoveToVector} for details.
+ * @see {@link AI.MoveToVector} for additional details.
  *
- * @param blackboardKey The location where the AI will move to.
- * @param observeBlackboardKey Whether the change in the location that AI is moving to will make a new move to request.
- * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
- * @param {number} [timeout=20] The timeout before giving up. This is not implemented yet. //TODO: do implementation for timeout.
+ * @param {Vector} blackboardKey The location where the AI will move to
+ * @param {boolean} observeBlackboardKey Whether the change in the location that AI is moving to will make a new move to request
+ * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+ * @param {number} [timeout=20] The timeout before giving up. This is not implemented yet
  */
 export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 800, timeout: number = 20) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
+            // Check if the blackboard key is a Vector.
             const value = blackboard[blackboardKey]
             if (!value || !IsVector(value)) return FAILURE
 
@@ -26,6 +33,7 @@ export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardK
             return success ? SUCCESS : FAILURE
         },
         run: (blackboard: AIBlackboard) => {
+            // Make a new MoveTo request if observing blackboard key.
             if (observeBlackboardKey) {
                 const location = blackboard[blackboardKey]
                 if (!location || !IsVector(location)) return FAILURE
@@ -33,7 +41,6 @@ export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardK
                 const success: boolean = AI.MoveToVector(location, acceptanceRadius)
                 if (!success) return FAILURE
             }
-            // TODO: test timeout after getting setTimeout done.
 
             const status = AI.QueryMovementResult()
             switch (status) {
