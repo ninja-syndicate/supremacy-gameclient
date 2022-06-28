@@ -1,10 +1,10 @@
 import { AIBlackboard } from "../blackboard"
 
 /**
- * 
- * 
- * @param blackboard 
- * @returns 
+ * Checks if the current target has more total health (health + shield).
+ *
+ * @param blackboard
+ * @returns true if the target has more total health and false otherwise
  */
 export const TargetHasMoreTotalHealth = (blackboard: AIBlackboard) => {
     const self = blackboard.input.self

@@ -7,8 +7,13 @@ import { AI } from "./index"
 import { BT_Root } from "./trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
 
+// TODO: some clean up
+// TODO: handle signaling.
+
 /**
- * 
+ * Creates a new behavior tree based off {@link BT_Root}.
+ *
+ * @see {@link BT_Root} for the root behavior tree and {@link AIBlackboard} for blackboard details.
  */
 export let tree = new BehaviorTree({
     tree: BT_Root,
@@ -19,15 +24,16 @@ export let tree = new BehaviorTree({
 })
 
 /**
- * This funciton gets called when the AI begins.
+ * This function gets called when AI begins.
  *
  * You can set up things that only need to be done once here.
  *
- * @param input
+ * @param input @see {@link BrainInput} for details.
  */
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
+    // Check for secondary weapons and melee weapons and initialize blackboard
     for (let weapon of input.self.weapons) {
         if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
             blackboard.secondaryWeapon = weapon
@@ -45,25 +51,25 @@ export const onBegin = (input: BrainInput) => {
 }
 
 /**
- * This function gets called every tick rate.
+ * This function gets called every tick rate that AI is capable of.
  *
- *
- * @param input
+ * @param input @see {@link BrainInput} for details.
  */
 export const onTick = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    // Check errors
+    // Check for any errors and log it.
     if (input.errors.length !== 0) {
         input.errors.forEach((e) => console.log(`${e.severity}: ${e.command}: ${e.message}`))
     }
 
+    // Update the blackboard based on the new input.
     updateBlackboard(input)
 
-    // Run Behaviour Tree
+    // Run behavior tree.
     tree.step()
 
-    // EQS - Run callbacks when they succeed
+    // EQS - Run callbacks when they succeed.
     for (let [key, value] of Object.entries(input.eqs)) {
         blackboard.eqsResults[key] = value
         if (value.status === EnvironmentQueryStatus.Success) {
@@ -73,59 +79,38 @@ export const onTick = (input: BrainInput) => {
 }
 
 /**
- * Updates the blackboard.
- * 
- * @param input
+ * Updates the blackboard based on the new input.
+ *
+ * @param input @see {@link BrainInput} for details.
  */
 function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
+    // Copy over the new input for easy access.
     blackboard.input = input
 
-    const bestTarget: WarMachine = findBestTarget(blackboard)
+    // Find a best target based on the current blackboard.
+    const bestTarget: WarMachine = findBestTarget()
     if (bestTarget === null) {
         clearBlackboardTarget()
     } else {
         blackboard.target = bestTarget
     }
-    updateBlackboardSight(input.perception.sight)
-    updateBlackboardDamage(input.perception.damage)
-    updateBlackboardSound(input.perception.sound)
-    updateBlackboardInteractable(input.perception.interactable)
+    // Update perception related information in the blackboard.
+    updateBlackboardSight()
+    updateBlackboardDamage()
+    updateBlackboardSound()
+    updateBlackboardInteractable()
 }
 
 /**
- * 
- */
-export function clearBlackboardTarget(): void {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
-
-    blackboard.target = null
-    blackboard.canSeeTarget = false
-    if (blackboard.targetLastKnownLocation !== undefined) {
-        delete blackboard.targetLastKnownLocation
-        delete blackboard.targetPredictedLocation
-    }
-}
-
-/**
- * 
- */
-function clearDamageInfo(): void {
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
-
-    blackboard.damageInstigatorHash = undefined
-    blackboard.damageStimulusDirection = undefined
-    blackboard.damageStimulusFocalPoint = undefined
-}
-
-/**
- * Only update the sight info.
+ * Updates
  *
- * @param perception
  */
-function updateBlackboardSight(sight: WarMachine[]): void {
+function updateBlackboardSight(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const sight: WarMachine[] = blackboard.input.perception.sight
+
     if (blackboard.damageInstigatorHash !== undefined) {
         const idx = sight.findIndex((m) => m.hash === blackboard.damageInstigatorHash && m.health <= 0)
         if (idx !== -1) {
@@ -133,7 +118,6 @@ function updateBlackboardSight(sight: WarMachine[]): void {
         }
     }
 
-    // TODO: figure out why it doesn't update target sometimes...
     if (!blackboard.target) return
 
     if (sight.length === 0) {
@@ -158,16 +142,14 @@ function updateBlackboardSight(sight: WarMachine[]): void {
 /**
  * Only update the damage info.
  *
- * @param perception
- *
- * @returns
  */
-function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
+function updateBlackboardDamage(): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const damageDetails: DamageDetails[] = blackboard.input.perception.damage
+
     if (damageDetails.length === 0) return
 
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const lastIdx: number = damageDetails.length - 1
-
     if (damageDetails[lastIdx].friendly) return
 
     blackboard.damageInstigatorHash = damageDetails[lastIdx].instigatorHash
@@ -177,19 +159,17 @@ function updateBlackboardDamage(damageDetails: DamageDetails[]): void {
     blackboard.isLastDamageFromTarget = blackboard.target && blackboard.target.hash === damageDetails[lastIdx].instigatorHash
 }
 
-// TODO: handle signaling.
 /**
  * Updates the sound related blackboard information (@see {@link SoundDetails}).
  *
  * Currently, it only considers last taunt sound generated by the enemy AI. You may modify this implementation to also consider noise generated by the friendly
  * AIs, gun sound, and evaluate the score of new sounds based on the distance and type.
- *
- * @param soundDetails
  */
-function updateBlackboardSound(soundDetails: SoundDetails[]): void {
-    if (soundDetails.length === 0) return
-
+function updateBlackboardSound(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const soundDetails: SoundDetails[] = blackboard.input.perception.sound
+
+    if (soundDetails.length === 0) return
 
     // Ignore sound generated by friendly AIs.
     const enemySounds = soundDetails.filter((s) => !s.friendly)
@@ -208,8 +188,9 @@ function updateBlackboardSound(soundDetails: SoundDetails[]): void {
  *
  * @param interactables
  */
-function updateBlackboardInteractable(interactables: InteractableDetails[]): void {
+function updateBlackboardInteractable(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const interactables: InteractableDetails[] = blackboard.input.perception.interactable
 
     blackboard.interactables = interactables
     if (blackboard.interactables.length === 0) {
@@ -275,7 +256,8 @@ function evaluateInteractable(blackboard: AIBlackboard): number[] {
 /**
  *
  */
-function findBestTarget(blackboard: AIBlackboard): WarMachine {
+function findBestTarget(): WarMachine {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const mechsBySight: WarMachine[] = blackboard.input.perception.sight
     const damageDetails: DamageDetails[] = blackboard.input.perception.damage
 
@@ -344,4 +326,29 @@ function score(mech: WarMachine): number {
 
     // Normalize total score.
     return totalScore / scoreFuncs.length
+}
+
+/**
+ * Clears target related information in the blackboard.
+ */
+export function clearBlackboardTarget(): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+
+    blackboard.target = null
+    blackboard.canSeeTarget = false
+    if (blackboard.targetLastKnownLocation !== undefined) {
+        delete blackboard.targetLastKnownLocation
+        delete blackboard.targetPredictedLocation
+    }
+}
+
+/**
+ * Clears damage related information in the blackboard.
+ */
+function clearDamageInfo(): void {
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+
+    blackboard.damageInstigatorHash = undefined
+    blackboard.damageStimulusDirection = undefined
+    blackboard.damageStimulusFocalPoint = undefined
 }

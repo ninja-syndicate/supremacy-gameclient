@@ -1,6 +1,7 @@
 import { EQSQueryType } from "enums"
 import { BrainInput, EnvironmentQuery, InteractableDetails, Vector, WarMachine, Weapon } from "types"
 
+// TODO: some clean up and documentation for each property maybe
 /**
  * This is the memory of the AI.
  *
@@ -19,7 +20,6 @@ export interface AIBlackboard {
     target: WarMachine | null
     canSeeTarget: boolean
 
-    // TODO: clean up
     heardNoise: boolean
     noiseLocation?: Vector
     lastHitLocation?: Vector

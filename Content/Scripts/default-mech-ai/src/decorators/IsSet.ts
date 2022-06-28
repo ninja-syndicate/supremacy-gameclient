@@ -7,6 +7,9 @@ interface IsSetProps {
     observerAborts: ObserverAborts
 }
 
+/**
+ * A decorator that checks if the truth of blackboard key is set matches {@link IsSetProps.isSet}.
+ */
 class IsSetDecorator extends Decorator {
     nodeType = "IsSetDecorator"
 
@@ -20,6 +23,17 @@ class IsSetDecorator extends Decorator {
     }
 }
 
+/**
+ * Helper function for creating a new IsSetDecorator.
+ *
+ * @see {@link IsSetDecorator} for details about the IsSet decorator.
+ *
+ * @param node The node to run if the truth of {@link blackboardKey} is set matches {@link isSet}
+ * @param blackboardKey The blackboard key to test
+ * @param isSet Whether to test for is set or not
+ * @param observerAborts Observer abort value to use (@see {@link ObserverAborts}). By default, this is {@link ObserverAborts.None}
+ * @returns a new IsSetDecorator
+ */
 export const IsSet = (
     node: NodeOrRegistration,
     blackboardKey: keyof AIBlackboard,
