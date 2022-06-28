@@ -30,7 +30,6 @@ export interface AIBlackboard {
     hiddenLocation?: Vector
     coverLocation?: Vector
 
-    interactables: InteractableDetails[]
     desiredPickupLocation?: Vector
 
     targetLastKnownLocation?: Vector

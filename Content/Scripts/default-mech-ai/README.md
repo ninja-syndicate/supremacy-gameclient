@@ -1,10 +1,4 @@
-## Supremacy Mech AI
-
-### Setup
-
--   `npm install`
--   `npm run-script build` (or `npm run-script watch` if you want to build after each change)
--   Set the AI to use the compiled script file: `default-mech-ai/build/mech.js`
+## Supremacy Scriptable AI
 
 ### Getting Started
 
@@ -30,3 +24,9 @@ onBegin()
 This is the function that will be called from
 
 onTick()
+
+### Setup
+
+-   `npm install`
+-   `npm run-script build` (or `npm run-script watch` if you want to build after each change)
+-   Set the AI to use the compiled script file: `default-mech-ai/build/mech.js`

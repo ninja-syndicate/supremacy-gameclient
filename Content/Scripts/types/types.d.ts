@@ -1,5 +1,5 @@
 import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, MovementResult, Signal, WeaponTag } from "./enums"
-import { Ability, Status } from "./enums"
+import { Status } from "./enums"
 //import { Vec3 } from "vec3"
 
 // The AI Controller, containing all the available commands a Mech can be given
@@ -87,14 +87,12 @@ declare class AIController {
     TryMeleeAttack(): boolean
     TrySpecialAttack(location: Vector): boolean
 
-    CanActivateAbility(ability: Ability): boolean
-
     /**
      * Queries status for the given ability.
      *
      * @param ability
      */
-    QueryStatus(ability: Action | Ability | Signal): Status
+    QueryStatus(ability: Action | Signal): Status
 
     QueryMovementResult(): MovementResult
 
