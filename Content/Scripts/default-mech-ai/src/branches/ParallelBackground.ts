@@ -2,9 +2,9 @@ import { Blackboard, FAILURE, Parallel, ParallelRunConfig, RUNNING, RunResult, S
 import Node from "behaviortree/src/Node"
 
 /**
- * The parallel background branch node is a variant of parallel node that keeps
- * running the background task repeatedly after it completes. But finishes when
- * the main task succeeds.
+ * The {@link ParallelBackground} branch node is a variant of {@link Parallel} node that keeps running the background task repeatedly after it returns SUCCESS.
+ * The nodes are split into a main and background tasks and until the main task finishes (i.e. returns SUCCESS), background tasks run in parallel and restarts
+ * when it finishes. If the main or any background tasks return FAILURE, this node will fail immediately.
  */
 export class ParallelBackground extends Parallel {
     nodeType = "ParallelBackground"

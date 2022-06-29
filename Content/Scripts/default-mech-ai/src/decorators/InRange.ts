@@ -1,3 +1,5 @@
+// NOTE: This decorator may be removed in the future.
+
 import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
 import { AIBlackboard } from "../blackboard"
 import { distanceToVec } from "../helper"
