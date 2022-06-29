@@ -1,9 +1,14 @@
 import { EQSQueryType } from "enums"
-import { BrainInput, EnvironmentQuery, InteractableDetails, Vector, WarMachine, Weapon } from "types"
+import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
 
+// TODO: some clean up and documentation for each property maybe
 /**
+ * This is the memory of the AI.
  *
+ * It stores all the information that the AI needs to make a decision. The blackboard will be provided as input to your behavior tree nodes to allow you to
+ * make decision based on the state of the memory.
  *
+ * You can add/remove properties as you deem necessary to customize your own AI.
  */
 export interface AIBlackboard {
     input: BrainInput
@@ -15,7 +20,6 @@ export interface AIBlackboard {
     target: WarMachine | null
     canSeeTarget: boolean
 
-    // TODO: clean up
     heardNoise: boolean
     noiseLocation?: Vector
     lastHitLocation?: Vector
@@ -26,9 +30,8 @@ export interface AIBlackboard {
     hiddenLocation?: Vector
     coverLocation?: Vector
 
-    interactables: InteractableDetails[]
-    desiredPickUpLocation?: Vector
-    
+    desiredPickupLocation?: Vector
+
     targetLastKnownLocation?: Vector
     targetLastKnownVelocity?: Vector
     targetPredictedLocation?: Vector
@@ -37,6 +40,7 @@ export interface AIBlackboard {
     damageStimulusDirection?: Vector
     damageStimulusFocalPoint?: Vector
     damageStimulusEstimateLocation?: Vector
+    damageHiddenLocation?: Vector
     isLastDamageFromTarget: boolean
 
     leftArmWeapon: Weapon

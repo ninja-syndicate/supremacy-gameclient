@@ -1,14 +1,19 @@
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
 import { EnvironmentQueryStatus, EQSQueryType } from "enums"
 import { EnvironmentQuery } from "types"
-import { AIBlackboard } from "../blackboard"
-import { AI } from "../index"
+import { AIBlackboard } from "../../blackboard"
+import { AI } from "../../index"
 
 /**
- * Runs an environment query and returns the resulting location.
+ * Runs the specified environment query.
  *
- * @param query The query to run
- * @param blackboardKey IntVector
+ * Depending on the environment query type, you may need to execute {@link BTT_QuerySetArgumentString} or {@link BTT_QuerySetArgumentVector} to set the
+ * arguments for the query before executing this task.
+ *
+ * @see {@link AI.EQS_Query} for additional details.
+ *
+ * @param query The type of EQS query to run
+ * @param blackboardKey The key of blackboard where the resulting location will be stored
  */
 export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlackboard) =>
     new Task({

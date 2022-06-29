@@ -1,6 +1,12 @@
 import { WarMachine } from "types"
 import { AIBlackboard } from "../blackboard"
 
+/**
+ * Checks if the number of detected teammates (including itself) is larger than the number of detected enemies.
+ *
+ * @param blackboard
+ * @returns true if outnumbering and false otherwise.
+ */
 export const IsOutnumberingEnemies = (blackboard: AIBlackboard) => {
     const factionID: string = blackboard.input.self.factionID
 
