@@ -1,124 +1,212 @@
 import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, MovementResult, Signal, WeaponTag } from "./enums"
 import { Status } from "./enums"
-//import { Vec3 } from "vec3"
 
-// The AI Controller, containing all the available commands a Mech can be given
+/**
+ * The AI Controller, containing all the available commands a Mech can be given.
+ */
 declare class AIController {
     /**
-     * Move to the following location. Will automatically path find.
-     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
+     * Move to the following location ignoring Z-axis. Will automatically path find.
+     *
+     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+     * @returns true if MoveTo request succeed and false otherwise
      */
     MoveTo(x: number, y: number, acceptanceRadius?: number): boolean
 
     /**
      * Move to the following location. Will automatically path find.
-     * *For cases when you know the z axis (ie: from an EQS result)*
-     * @param location The location to move to.
-     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test.
+     * For cases when you know the z axis.
+     *
+     * @param location The location to move to
+     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+     * @returns true if MoveTo request succeed and false otherwise
      */
     MoveToVector(location: Vector, acceptanceRadius?: number): boolean
 
     /**
-     *
+     * Stops the current AI movement. This will cancel {@link MoveTo} and {@link MoveToVector}.
      */
     StopMoveTo(): void
 
+    // TODO: Remove boolean return?
     /**
-     * Note that this will change the current focal point.
+     * Makes AI look at the specified location. Note that this will change the current focal point as well.
      *
-     * @param location
-     *
+     * @param location The location to look at
+     * @returns
      */
     LookAt(location: Vector): boolean
 
     /**
-     * Aim at a target. The war machine will continously aim towards this target until it loses sight or focus is cleared with {@link ClearFocus}.
-     * @param hash The hash of the target (Mech or damageable AI like Robot Dogs). Get hashes and other details from perception in {@link BrainInput}.
+     * Sets the focal point of AI to the target. AI will continuously set the focal point to the target until it loses sight to the target or focus is cleared
+     * with {@link ClearFocus}. Note that this will also make primary shootable weapons aim at the target. You will need to use this function to properly aim
+     * at small mechs like Robot Dogs.
+     *
+     * @param hash The hash of the target (Mech or other AI like Robot Dogs). Get hashes and other details from perception in {@link BrainInput}.
+     * @returns true if setting the focal point by hash succeed and false otherwise
      */
     SetFocalPointByHash(hash: string): boolean
 
-    /** Aim at location.  The war machine will continously aim towards this location until focus is cleared with {@link ClearFocus}. */
+    /**
+     * Sets the focal point of AI to the specified location.
+     *
+     * AI will maintain the focal point towards this location until the focus is cleared with {@link ClearFocus}.
+     * @returns true if setting the focal point by location succeed and false otherwise
+     */
     SetFocalPointByLocation(location: Vector): boolean
 
+    /**
+     * Checks if the focal point is set.
+     *
+     * @returns true if AI has focal point and false otherwise.
+     */
     IsFocalPointSet(): boolean
 
-    // Stop aiming at the current target.
+    /**
+     * Clears the current focal point.
+     */
     ClearFocus(): void
 
     /**
      * Starts firing all weapons that match the supplied tag, defaults to All Weapons
      *
-     * *Will not trigger weapons that are currently out of ammo*
-     * @param tag
-     * @param location If set, will not trigger limited-range weapons if location is not within the weapon's range (eg: melee weapons and flamethrowers)
-     * @constructor
+     * *Note that this will not trigger weapons that are currently out of ammo.*
+     *
+     * @param tag The weapon tag to trigger
+     * @param location If set, will not trigger limited-range weapons if the location is not within the weapon's range (eg: melee weapons and flamethrowers)
      */
     WeaponTrigger(tag?: WeaponTag, location?: Vector): void
 
-    // Stops firing all weapons that match the supplied tag, defaults to All Weapons
+    /**
+     * Releases triggered weapons that match the supplied tag, defaults to All Weapons.
+     *
+     * @param tag The weapon tag to release
+     */
     WeaponRelease(tag?: WeaponTag): void
 
     /**
      * Get the current ammo count of a weapon.
      *
      * Always returns 1 if weapon has infinite ammo.
-     * *Note: Can only get the ammo count of your own weapons*
+     *
+     * *Note: Can only get the ammo count of your own weapons.*
+     *
+     * @param hash The hash of the weapon you want to get ammo count of
+     * @returns The ammo count of the weapon
      */
     WeaponGetAmmo(hash: string): number
 
     /**
-     * Get the current ammo count of a weapon by tag. Note that if the AI has
-     * more than one weapon of the specified tag, the sum of ammos for all
-     * those weapons will be returned.
+     * Get the current ammo count of a weapon by tag. Note that if AI has more than one weapon of the specified tag, the sum of ammo count for all those weapons
+     * is returned.
      *
-     * @param tag
+     * @param tag The weapon tag to get ammo count of
+     * @returns the sum of ammo count for all weapons that match the {@link tag}
      */
     WeaponGetAmmoByTag(tag: WeaponTag): number
 
+    // TODO: Remove this as it probably won't be needed anymore
     /** Returns true if location is within {@link range} of the war machine */
     InRange(location: Vector, range: number): boolean
 
     /**
      * Shoot up a flare and trigger a loud horn, attracting enemies towards you.
+     *
      * Useful if the AI is having trouble finding any enemies to fight.
+     *
+     * @returns true if taunt action succeed and false otherwise
      */
     Taunt(): boolean
 
+    // TODO: This probably isn't needed anymore. Might be removed.
+    /**
+     *
+     */
     TryMeleeAttack(): boolean
+
+    /**
+     * Launch missiles from the rocket pod (secondary weapon) to the specified location.
+     *
+     * @param location The location where you want to launch missile to
+     * @returns true if special attack request succeed and false otherwise
+     */
     TrySpecialAttack(location: Vector): boolean
 
     /**
-     * Queries status for the given ability.
+     * Query action status for the given action.
      *
-     * @param ability
+     * @param action The action to query status for
+     * @returns @see {@link Status}
      */
-    QueryStatus(ability: Action | Signal): Status
+    QueryStatus(action: Action | Signal): Status
 
+    /**
+     * Query current movement result of {@link MoveTo} or {@link MoveToVector}.
+     *
+     * @returns @see {@link MovementResult}
+     */
     QueryMovementResult(): MovementResult
 
+    /**
+     * Checks if the action can be activated (i.e. not on a cooldown).
+     *
+     * @param action The action to check activation for
+     * @returns true if the {@link action} can be activated and false otherwise
+     */
     CanActivateAction(action: Action): boolean
 
     /**
-     * Run an Environment Query System query to get the optimal position to move the war machine to
-     * Get results from eqs in {@link BrainInput}.
+     * Run an Environment Query System query to get the optimal position to move the war machine to.
+     *
+     * Get results from EQS in {@link BrainInput}.
+     *
+     * @param query The environment query type (@see {@link EQSQueryType})
      */
     EQS_Query(query: EQSQueryType): void
-    /** Removes EQS query status from {@link BrainInput.eqs}, essentially marking it as complete so you know you can run it again */
+
+    /**
+     * Removes EQS query status from {@link BrainInput.eqs}, essentially marking it as complete so you know you can run it again.
+     *
+     * @param query The environment query type (@see {@link EQSQueryType})
+     */
     EQS_Complete(query: EQSQueryType): void
 
-    /** Set string argument for an EQS query, generally a {@link WarMachine} hash. Call before {@link EQS_Query} */
+    /**
+     * Set string argument for an EQS query, generally a {@link WarMachine} hash. Call before {@link EQS_Query}.
+     *
+     * @param query The environment query type (@see {@link EQSQueryType})
+     * @param argument The argument type (@see {@link EQSArgument})
+     * @param value The value you want to set the argument to
+     */
     EQS_SetArgumentString(query: EQSQueryType, argument: EQSArgument, value: string): void
-    /** Set vector argument for an EQS query. Call before {@link EQS_Query} */
+
+    /**
+     * Set vector argument for an EQS query. Call before {@link EQS_Query}.
+     *
+     * @param query The environment query type (@see {@link EQSQueryType})
+     * @param argument The argument type (@see {@link EQSArgument})
+     * @param value The value you want to set the argument to
+     */
     EQS_SetArgumentVector(query: EQSQueryType, argument: EQSArgument, value: Vector): void
 
+    /**
+     * Makes AI wait for the specified number of {@link seconds}.
+     *
+     * @param seconds the number of seconds to wait
+     * @returns true if wait request succeed and false otherwise
+     */
     Wait(seconds: number): boolean
 
+    // TODO: Don't use this yet, not complete.
+    /**
+     *
+     * @param signal
+     */
     SendSignal(signal: Signal): boolean
 }
 
 declare class JavascriptContext {
     GetOwner(): AIController
-
     OnMessage(name: string, message: string)
 }
 
@@ -128,6 +216,9 @@ export interface Vector {
     Z: number
 }
 
+/**
+ * Detected script errors.
+ */
 export interface ScriptError {
     // Which function from {@link AIController} the error/warning is from
     command: string
@@ -135,6 +226,9 @@ export interface ScriptError {
     message: string
 }
 
+/**
+ * Weapon details.
+ */
 export interface Weapon {
     // Unique hash of the weapon
     hash: string
@@ -156,9 +250,9 @@ export interface Weapon {
     damageRadiusFalloff: number
     // The damage type of the weapon
     damageType: DamageType
-    //  Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees.
+    // Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees.
     spread: number
-    //  Rounds per minute
+    // Rounds per minute
     rateOfFire: number
     // Speed of the weapon's projectiles in cm/s
     projectileSpeed: number
@@ -180,7 +274,7 @@ export interface WarMachine {
     hash: string
     // Last known location of the war machine
     location: Vector
-    // Last known yaw of the war machine (direction the war machine is facing)
+    // Last known rotation (roll, pitch, yaw) of the war machine
     rotation: Vector
     // Last known velocity of the war machine
     velocity: Vector
@@ -224,6 +318,9 @@ export interface SoundDetails {
     friendly: boolean
 }
 
+/**
+ * Details of a received damage.
+ */
 export interface DamageDetails {
     // The amount of damage
     amount: number
@@ -233,7 +330,7 @@ export interface DamageDetails {
     friendly?: boolean
     // The type of damage
     damageType: DamageType
-    // The direction of the damage relative to the war machine that received the damage
+    // The direction of the damage. This is normalized.
     damageDirection: Vector
     // The unique hash of the war machine that caused the damage
     instigatorHash: string
@@ -255,11 +352,19 @@ export interface Perception {
     interactable: InteractableDetails[]
 }
 
+/**
+ * Environment query.
+ */
 export interface EnvironmentQuery {
+    /** The current status of environment query (@see {@link EnvironmentQueryStatus}). */
     status: EnvironmentQueryStatus
+    /** The resulting location of environment query. Only valid if the environment query succeeded. */
     location: Vector
 }
 
+/**
+ * Environment query result.
+ */
 export interface EQSResults {
     away?: EnvironmentQuery
     cover?: EnvironmentQuery
@@ -268,18 +373,29 @@ export interface EQSResults {
     strafe?: EnvironmentQuery
 }
 
+/**
+ * Details of an interactable such as heal crate.
+ */
 export interface InteractableDetails {
     tag: InteractableTag
     eventID: string
     location: Vector
+    /** If this interactable is spawned via user action, this will be set to the faction ID that instigated it. Empty string otherwise. */
     instigatorFactionID: string
 }
 
-// The input provided to {@link onTick}
+/**
+ * The input provided to {@link onBegin} and {@link onTick}.
+ */
 export interface BrainInput {
+    /** Information about itself (@see {@link WarMachine}). */
     self: WarMachine
+    /** Time elapsed since last tick. 0 on {@link onBegin}. */
     deltaTime: number
+    /** Things that AI can currently perceive (@see {@link Perception}). */
     perception: Perception
+    /** List of detected runtime warnings/errors in the script (@see {@link ScriptError}). */
     errors: ScriptError[]
+    /** Result of executed environment queries (@see {@link EQSResults}). */
     eqs: EQSResults
 }

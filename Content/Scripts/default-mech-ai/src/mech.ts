@@ -58,7 +58,7 @@ export const onBegin = (input: BrainInput) => {
 export const onTick = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    // Check for any errors and log it.
+    // Check for any errors and log it. This will be useful for debugging.
     if (input.errors.length !== 0) {
         input.errors.forEach((e) => console.log(`${e.severity}: ${e.command}: ${e.message}`))
     }
@@ -235,7 +235,7 @@ function findBestPickup(): InteractableDetails {
  *
  * Gives a score for each interactable using the predefined scoring functions based on its type.
  *
- * @returns An array of sum of scores evaluted by the scoring functions. These scores maintain the same ordering as interactables array. That is, scores[i] is
+ * @returns An array of sum of scores evaluated by the scoring functions. These scores maintain the same ordering as interactables array. That is, scores[i] is
  * for interactable[i] for all i
  */
 function evaluateInteractable(): number[] {

@@ -30,12 +30,12 @@ import { BT_ReceivedDamage } from "./BT_ReceivedDamage"
  * - {@link BT_Patrol} otherwise
  *
  * The wrapping function around these behaviors are decorators (@see {@link IsSet}, {@link Predicate} and {@link CanActivateAction}). They are used to specify
- * the conditions to enter that behavior. And the {@link ObseverAborts} is used to specify aborting condition for that decorator. Basically,
+ * the conditions to enter that behavior. And the {@link ObserverAborts} is used to specify aborting condition for that decorator. Basically,
  * {@link ObserverAbort.Self} aborts the currently running behavior/task if the condition is not met and {@link ObserverAborts.LowerPriority} aborts the
  * currently running lower priority behavior/task when the condition is met. By default, {@link ObserverAborts.None} is used if you do not specify it.
  * @see {@link ObserverAborts} for additional details.
  *
- * The {@link BTT_Wait} is a fallback task when every other behaviors fail. This may be because your AI temporaily lost control by user actions, stuck or error
+ * The {@link BTT_Wait} is a fallback task when every other behaviors fail. This may be because your AI temporarily lost control by user actions, stuck or error
  * in your AI logic.
  */
 export const BT_Root = new Selector({

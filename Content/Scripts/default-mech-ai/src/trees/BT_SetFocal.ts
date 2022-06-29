@@ -14,7 +14,7 @@ import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
  *  - {@link AIBlackboard.targetPredictedLocation} if AI has the target's predicted location
  *  - {@link AIBlackboard.targetLastKnownLocation} if AI has the target's last known location
  *
- * You may want to wrap around this behavior with a {@link ForceSuccess} decorator if used with a {@link ParalellBackground} branch node.
+ * You may want to wrap around this behavior with a {@link ForceSuccess} decorator if used with a {@link ParallelBackground} branch node.
  */
 export const BT_SetFocal = new Selector({
     nodes: [

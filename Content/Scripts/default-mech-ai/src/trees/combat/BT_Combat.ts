@@ -19,7 +19,7 @@ import { BTT_Success } from "../../tasks/BTT_Success"
  * {@link BT_Camp} - otherwise get to the cover location and camp if its shield is low
  * {@link BT_SearchTarget} - otherwise searches for the current target based on the target's last known location
  *
- * You can change this behavior to prioritise certain behaviors or anything you deem appropriate.
+ * You can change this behavior to prioritize certain behaviors or anything you deem appropriate.
  */
 export const BT_Combat = new Selector({
     nodes: [

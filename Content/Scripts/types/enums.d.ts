@@ -16,7 +16,7 @@ export const enum WeaponTag {
  * Available environment query types
  *
  * {@link EQSQueryType.Cover} - Generates a cover location. This requires {@link TargetLastKnownLocation} and {@link LastHitLocation} arguments to be set.
- * {@link EQSQueryType.Hidden} - Generates a possible target hidden location. This requires {@link EQSARgument.TargetPredictedLocation} argument to be set.
+ * {@link EQSQueryType.Hidden} - Generates a possible target hidden location. This requires {@link EQSArgument.TargetPredictedLocation} argument to be set.
  * {@link EQSQueryType.Patrol} - Generates a patrol location.
  * {@link EQSQueryType.Strafe} - Generates a strafe location. Useful when AI is in combat state. This environment query requires {@link EQSArgument.TargetHash}
  * argument to be set.
@@ -32,7 +32,7 @@ export const enum EQSQueryType {
 /**
  * Environment query arguments.
  *
- * Some environment query needs some of these arguments.
+ * Some environment query need some of these arguments.
  * @see {@link EQSQueryType} for which environment query needs which arguments.
  */
 export const enum EQSArgument {

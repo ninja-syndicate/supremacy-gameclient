@@ -8,7 +8,7 @@ interface PredicateProps {
 }
 
 /**
- * A decorator that checks if the truth of blackboard key is set matches {@link IsSetProps.isSet}.
+ * A decorator that checks if the result of running predicate function matches {@link PredicateProps.isMatch}.
  */
 class PredicateDecorator extends Decorator {
     nodeType = "PredicateDecorator"

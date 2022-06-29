@@ -1,5 +1,5 @@
 import { EQSQueryType } from "enums"
-import { BrainInput, EnvironmentQuery, InteractableDetails, Vector, WarMachine, Weapon } from "types"
+import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
 
 // TODO: some clean up and documentation for each property maybe
 /**

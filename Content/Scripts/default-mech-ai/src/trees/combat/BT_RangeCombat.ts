@@ -16,7 +16,7 @@ import { BT_GetPickup } from "../BT_GetPickup"
 import { BT_SetFocal } from "../BT_SetFocal"
 import { BT_Strafe } from "../BT_Strafe"
 
-// TODO: Separate ParallelBackgorund into main and background tasks properties.
+// TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
 /**
  * Behavior when AI is in range combat.
@@ -30,7 +30,7 @@ import { BT_Strafe } from "../BT_Strafe"
  * The {@link BTT_Success} at the end forces the selector to succeed when the other behaviors fail (e.g. movement/env query fail) which will keep
  * {@link BT_RangeCombat} running.
  *
- * Note that {@link BTT_Shoot} will never complete or fail unelss there are no ammo or the weapon is not shootable, so this behavior will continue running until
+ * Note that {@link BTT_Shoot} will never complete or fail unless there are no ammo or the weapon is not shootable, so this behavior will continue running until
  * it is aborted by {@link ObserverAborts}.
  */
 export const BT_RangeCombat = new ParallelBackground({
