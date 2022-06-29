@@ -49,7 +49,7 @@ A task is where you will usually give command(s) to the AI (see the list of comm
 you can implement start, run, end and/or abort properties to do something in its respective stages. The `start` property only gets called when the task begins,
 `run` when it is running, `end` when `run` ends, `abort` if the task aborted by observer aborts. Note that `end` does not get called if the task is aborted. You
 will also need to return a status in {`SUCCESS`, `RUNNING`, `FAILURE`} for `run` function to denote whether the task succeed, is running or has failed,
-respectively. The status `RUNNING` is invalid for `start` function and if `start` function returns FAILURE, `run` and `end` functions will not run.
+respectively. The status `RUNNING` is invalid for `start` function and if `start` function returns `FAILURE`, `run` and `end` functions will not run.
 
 Finally, there's a lot of freedom on what you can do, but it can be daunting to figure out something as simple as strafe location while AI is fighting. To help
 you with this, the Environment Query System is provided to allow you to query the environment to generate an optimal location for the most of the things you
