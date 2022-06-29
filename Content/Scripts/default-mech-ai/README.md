@@ -20,7 +20,7 @@ The compiled script file is located in the `default-mech-ai/build/mech.js`.
 If you are testing within Unreal Engine, you don't need to do anything after building the script. By default, the AI will use the script from
 `default-mech-ai/build/mech.js`. But if you're trying to hot-swap the AI script on built gameclient, after you've built, you will need to copy the folder
 `default-mech-ai` and place it relative to where gameclient binary file is located at. This is because the AI is trying to find the `mech.js` script relative to
-the base directory of where gameclient is running (note that this may change in the future).
+the base directory of where gameclient is running (note that this may change in the future). If this is not done, AI won't do anything.
 
 ### Getting Started
 
