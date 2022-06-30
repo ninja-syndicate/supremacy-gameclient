@@ -1,29 +1,27 @@
 import { Sequence } from "behaviortree"
-import { EQSArgument, EQSQueryType } from "enums"
 import { AIBlackboard } from "../blackboard"
 import { add, multiply } from "../helper"
-import { BTT_EQSSetArgumentVector } from "../tasks/BTT_EQSSetArgument"
 import { BTT_LookAt } from "../tasks/BTT_LookAt"
-import { BTT_MoveTo } from "../tasks/BTT_MoveTo"
-import { BTT_RunEQSQuery } from "../tasks/BTT_RunEQSQuery"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
-import { BTT_StopMoveTo } from "../tasks/BTT_StopMoveTo"
-import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
+import { BTT_StopMoveTo } from "../tasks/movement/BTT_StopMoveTo"
+import { BT_SearchHiddenLocation } from "./BT_SearchHiddenLocation"
 
 /**
- * Behavior when AI receives damage.
+ * Behavior when AI receives a damage.
+ *
+ * Makes the AI stop its current movement, look at its damage direction and search for the possible hidden location that damage instigator may be at.
+ * Currently, not intended to be used when AI is in combat state as {@link BTT_LookAt} takes some time to rotate AI to look at the desired location.
  */
 export const BT_ReceivedDamage = new Sequence({
     nodes: [
-        BTT_StopMoveTo(),
+        BTT_StopMoveTo,
         BTT_LookAt("damageStimulusFocalPoint"),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
-        BTT_EQSSetArgumentVector(EQSQueryType.Hidden, EQSArgument.TargetPredictedLocation, (blackboard: AIBlackboard) =>
-            add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000)),
+        BTT_SetValue(
+            (blackboard: AIBlackboard) =>
+                (blackboard.damageHiddenLocation = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))),
         ),
-        BTT_RunEQSQuery(EQSQueryType.Hidden, "hiddenLocation"),
-        BTT_SetFocalPoint("hiddenLocation"),
-        BTT_MoveTo("hiddenLocation"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.hiddenLocation = undefined)),
+        BT_SearchHiddenLocation("damageHiddenLocation"),
+        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageHiddenLocation = undefined)),
     ],
 })
