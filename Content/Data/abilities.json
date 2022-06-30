@@ -24,7 +24,7 @@
           ]
      },
      "Heal": {
-          "HealAmmount": 2000,
+          "HealAmount": 2000,
           "TriggerRadius": 3000
      },
      "ShieldBuff": {
@@ -36,6 +36,23 @@
      },
      "Ammo": {
           "TriggerRadius": 3000
+     },
+     "EMP": {
+          "Duration": 5,
+          "Radius": 10000
+     },
+     "HackerDrone": {
+          "Duration": 18
+     },
+     "CameraDrone": {
+          "Duration": 20
+     },
+     "Incognito": {
+          "Duration": 5
+     },
+     "Blackout": {
+          "Duration": 15,
+          "Radius": 20000
      },
      "RobotDogs": {
           "Amount": 5,
@@ -51,7 +68,12 @@
                     "Spread": 2,
                     "ProjectileSpeed": 48000,
                     "RateOfFire": 140
-               }
+               },
+			   "Name": "Robot Dog",
+			   "Faction": {
+					"ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
+					"Name": "Boston Cybernetics"
+			   }
           },
           "LeaderStats": {
                "HealthMax": 1200,
@@ -64,7 +86,12 @@
                     "Spread": 2,
                     "ProjectileSpeed": 48000,
                     "RateOfFire": 140
-               }
+               },
+			   "Name": "Robot Dog",
+			   "Faction": {
+					"ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
+					"Name": "Boston Cybernetics"
+			   }
           }
      },
      "Reinforcements": {

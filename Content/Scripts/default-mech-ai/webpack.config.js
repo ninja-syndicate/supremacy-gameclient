@@ -1,8 +1,7 @@
 const path = require('path');
-
 module.exports = {
     mode: "development",
-    devtool: false,
+    devtool: "source-map",
     entry: {
         main: "./src/mech.ts",
     },
