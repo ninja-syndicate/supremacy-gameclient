@@ -17,7 +17,7 @@ The compiled script file is located in the `default-mech-ai/build/mech.js`.
 
 ### Testing
 
-The AI will the script located in the `default-mech-ai/build/mech.js` by default.
+The AI will use the script located in the `default-mech-ai/build/mech.js` by default.
 
 ### Getting Started
 
