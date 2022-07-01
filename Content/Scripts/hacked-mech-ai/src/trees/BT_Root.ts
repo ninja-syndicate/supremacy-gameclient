@@ -41,8 +41,8 @@ import { BT_ReceivedDamage } from "./BT_ReceivedDamage"
 export const BT_Root = new Selector({
     nodes: [
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
-        IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-        Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
+        //IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
+        //Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         CanActivateAction(BTT_Taunt, Action.Taunt, true),
         IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
         IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),

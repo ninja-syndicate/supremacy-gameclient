@@ -42,8 +42,9 @@ export const BT_RangeCombat = new ParallelBackground({
         BT_SetFocal,
         new Selector({
             nodes: [
-                IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                //IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
+                //Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                /*
                 Predicate(
                     // TODO: This should ideally be getting closer, not directly to target.
                     BTT_MoveTo("targetLastKnownLocation"),
@@ -51,6 +52,8 @@ export const BT_RangeCombat = new ParallelBackground({
                     true,
                     ObserverAborts.Both,
                 ),
+                */
+                BTT_MoveTo("targetLastKnownLocation"),
                 BT_Strafe,
                 BTT_Success,
             ],

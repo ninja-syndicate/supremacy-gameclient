@@ -32,8 +32,8 @@ export const BT_CloseCombat = new ParallelBackground({
         BT_SetFocal,
         new Selector({
             nodes: [
-                IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                //IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
+                //Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 BTT_MoveTo("targetLastKnownLocation", true),
                 BTT_Success,
             ],
