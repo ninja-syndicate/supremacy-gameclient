@@ -192,3 +192,13 @@ Each line is a battle command; starting with `BATTLE:INIT`, each line after that
 140|{"battleCommand":"BATTLE:ABILITY","payload":{"eventID":"6e4d504d-abb1-439a-a9b7-d0718a80d276","gameClientAbilityID":7,"participantID":7,"warMachineHash":"l1EjB77EAX","isTriggered":true,"triggeredByUsername":null,"gameLocation":{"x":0,"y":0}}}
 ```
 </details>
+
+
+## Final Builds
+
+These should be produced via `update_and_build.bat` on a windows machine.
+
+This command can be run from windows in the project's root directory.
+
+This command will require the environment variable `UNREAL_ROOT_5_0` be set and be pointing to the root directory of that machine's UE5 engine install
+
