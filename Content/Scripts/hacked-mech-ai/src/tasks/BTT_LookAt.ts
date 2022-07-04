@@ -20,8 +20,8 @@ export const BTT_LookAt = (blackboardKey: keyof AIBlackboard) =>
             const location = blackboard[blackboardKey]
             if (!location || !IsVector(location)) return
 
-            AI.LookAt(location)
-            return SUCCESS
+            const success: boolean = AI.LookAt(location)
+            return success ? SUCCESS : FAILURE
         },
         run: (blackboard: AIBlackboard) => {
             const status = AI.QueryStatus(Action.LookAt)
