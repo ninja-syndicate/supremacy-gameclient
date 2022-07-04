@@ -4,27 +4,30 @@ import { AIBlackboard } from "../blackboard"
 import { AI } from "../index"
 import { IsVector } from "../utils"
 
-// TODO: Make LookAt return boolean and handle that in task?
 /**
- * Makes AI look at a location.
+ * Makes AI perform a special attack.
  *
- * This task is different from {@link BTT_SetFocalPoint} as this {@link AI.LookAt} action waits for AI to actually face in the location you specified. Setting
- * the focal point by {@link BTT_SetFocalPoint} or making a move to request by {@link BTT_MoveTo} will cancel this action (@see {@link AI.LookAt}).
+ * @param {Vector} blackboardKey The target location for the special attack
  *
- * @param {Vector} blackboardKey the location to look at
+ * @see {@link AI.TrySpecialAttack} for details.
  */
-export const BTT_LookAt = (blackboardKey: keyof AIBlackboard) =>
+export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
-            // Check if the blackboard key is a Vector.
+            // Check if the `blackboardKey` is a Vector.
             const location = blackboard[blackboardKey]
-            if (!location || !IsVector(location)) return
+            if (!location || !IsVector(location)) return FAILURE
 
-            const success: boolean = AI.LookAt(location)
+            // TODO: move this to decorator?
+            const hasSecondaryWeapon = blackboard.secondaryWeapon !== undefined && blackboard.secondaryWeapon !== null
+            if (!hasSecondaryWeapon) return FAILURE
+
+            const success: boolean = AI.TrySpecialAttack(location)
             return success ? SUCCESS : FAILURE
         },
+
         run: (blackboard: AIBlackboard) => {
-            const status = AI.QueryStatus(Action.LookAt)
+            const status = AI.QueryStatus(Action.SpecialAttack)
             switch (status) {
                 case Status.Running:
                     return RUNNING
