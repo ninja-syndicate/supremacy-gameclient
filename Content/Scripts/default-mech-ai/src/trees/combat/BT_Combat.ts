@@ -8,6 +8,7 @@ import { BT_CanSeeTarget } from "./BT_CanSeeTarget"
 import { BT_GetPickup } from "../BT_GetPickup"
 import { BT_SearchTarget } from "../BT_SearchTarget"
 import { BTT_Success } from "../../tasks/BTT_Success"
+import { BT_Patrol } from "../BT_Patrol"
 
 /**
  * The main combat behavior tree.
@@ -18,6 +19,7 @@ import { BTT_Success } from "../../tasks/BTT_Success"
  * {@link BT_GetPickup} otherwise get to the pickup location if AI has any
  * {@link BT_Camp} - otherwise get to the cover location and camp if its shield is low
  * {@link BT_SearchTarget} - otherwise searches for the current target based on the target's last known location
+ * {@link BT_Patrol} otherwise fallback to patrol if {@link BT_SearchTarget} fails.
  *
  * You can change this behavior to prioritize certain behaviors or anything you deem appropriate.
  */
@@ -29,6 +31,7 @@ export const BT_Combat = new Selector({
         // TODO: Handle damage stimulus location
         // TODO: Handle taunt
         Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
+        BT_Patrol,
         // HACK: In case AI performs special attack, loses sight to target, movement action fails, and regains sight again, this task is
         // needed to ensure it can recover. Some predicate change is needed to remove this HACK.
         BTT_Success,
