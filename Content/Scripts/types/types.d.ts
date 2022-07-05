@@ -28,12 +28,11 @@ declare class AIController {
      */
     StopMoveTo(): void
 
-    // TODO: Remove boolean return?
     /**
      * Makes AI look at the specified location. Note that this will change the current focal point as well.
      *
      * @param location The location to look at
-     * @returns
+     * @returns true if setting the look at by location succeed and false otherwise
      */
     LookAt(location: Vector): boolean
 

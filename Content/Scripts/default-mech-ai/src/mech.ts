@@ -284,8 +284,11 @@ function findBestTarget(): WarMachine {
     // TODO: Also consider damage
 
     // Filter the mechs and maintain the same target if there are no suitable mechs.
+    const targetVisIndex: number = blackboard.target ? mechsBySight.findIndex((m) => m.hash === blackboard.target.hash) : -1
     const filteredMechs = mechsBySight.filter((m) => filter(m))
-    if (filteredMechs.length === 0) return blackboard.target
+    if (filteredMechs.length === 0) {
+        return targetVisIndex === -1 ? blackboard.target : null
+    }
 
     // Get the index of the first target with a largest score.
     const scores: number[] = filteredMechs.map(score)
