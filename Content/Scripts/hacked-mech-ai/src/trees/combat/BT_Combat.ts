@@ -26,8 +26,8 @@ import { BT_Patrol } from "../BT_Patrol"
 export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
-        IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-        Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
+        //IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
+        //Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         // TODO: Handle damage stimulus location
         // TODO: Handle taunt
         Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
