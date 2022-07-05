@@ -95,6 +95,50 @@
           }
      },
      "Reinforcements": {
+          "HealthMax": 1400,
+          "ShieldMax": 0,
+          "ShieldRechargeRate": 0,
+          "Speed": 1750,
+          "Weapons": [
+               {
+                    "ID": "RedMountainCannon",
+                    "Name": "Dual Cannons",
+                    "Damage": 10,
+                    "DamageFalloff": 20000,
+                    "DamageFalloffRate": 12,
+                    "DamageRadius": 100,
+                    "DamageRadiusFalloff": 0,
+                    "Spread": 4,
+                    "ProjectileSpeed": 36000,
+                    "RateOfFire": 270
+               },
+               {
+                    "ID": "RocketPods",
+                    "Name": "Rocket Pods",
+                    "Damage": 70,
+                    "DamageRadius": 850,
+                    "DamageType": 2,
+                    "ProjectileSpeed": 100000,
+                    "RateOfFire": 2
+               }
+          ]
+     },
+     "Overcharge": {
+          "RadialDamagePercentageOfShield": 3,
+          "RadialDamageMin": 300,
+          "RadialDamageMax": 2000,
+          "RadialDamageFriendlyFire": false,
+          "SelfShieldDamagePercentage": 0.5
+     },
+     "Landmines": {
+          "Amount": 20,
+          "HealthMax": 1000,
+          "Damage": 325,
+          "DamageRadius": 1000,
+          "DamageRadiusFalloff": 10,
+          "FriendlyFire": false
+     },
+     "MiniMech": {
           "ZaiStats": {
                "HealthMax": 900,
                "ShieldMax": 0,
@@ -191,20 +235,5 @@
                     }
                ]
           }
-     },
-     "Overcharge": {
-          "RadialDamagePercentageOfShield": 3,
-          "RadialDamageMin": 300,
-          "RadialDamageMax": 2000,
-          "RadialDamageFriendlyFire": false,
-          "SelfShieldDamagePercentage": 0.5
-     },
-     "Landmines": {
-          "Amount": 20,
-          "HealthMax": 1000,
-          "Damage": 325,
-          "DamageRadius": 1000,
-          "DamageRadiusFalloff": 10,
-          "FriendlyFire": false
      }
 }
