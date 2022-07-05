@@ -58,11 +58,11 @@
           "Amount": 5,
           "SpawnLeader": true,
           "Stats": {
-               "HealthMax": 800,
+               "HealthMax": 400,
                "Speed": 3000,
                "Weapon": {
                     "Name": "Robot Dog Laser",
-                    "Damage": 10,
+                    "Damage": 9,
                     "DamageRadius": 40,
                     "DamageType": 1,
                     "Spread": 2,
@@ -76,11 +76,11 @@
 			   }
           },
           "LeaderStats": {
-               "HealthMax": 1200,
+               "HealthMax": 600,
                "Speed": 3000,
                "Weapon": {
                     "Name": "Robot Dog Laser",
-                    "Damage": 10,
+                    "Damage": 9,
                     "DamageRadius": 40,
                     "DamageType": 1,
                     "Spread": 2,
@@ -125,10 +125,10 @@
      },
      "Overcharge": {
           "RadialDamagePercentageOfShield": 3,
-          "RadialDamageMin": 300,
+          "RadialDamageMin": 500,
           "RadialDamageMax": 2000,
           "RadialDamageFriendlyFire": false,
-          "SelfShieldDamagePercentage": 0.5
+          "SelfShieldDamagePercentage": 0
      },
      "Landmines": {
           "Amount": 20,
