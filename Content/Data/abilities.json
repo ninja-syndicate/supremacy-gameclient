@@ -37,6 +37,23 @@
      "Ammo": {
           "TriggerRadius": 3000
      },
+     "EMP": {
+          "Duration": 5,
+          "Radius": 10000
+     },
+     "HackerDrone": {
+          "Duration": 18
+     },
+     "CameraDrone": {
+          "Duration": 20
+     },
+     "Incognito": {
+          "Duration": 5
+     },
+     "Blackout": {
+          "Duration": 15,
+          "Radius": 20000
+     },
      "RobotDogs": {
           "Amount": 5,
           "SpawnLeader": true,
