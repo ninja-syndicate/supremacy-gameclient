@@ -1,10 +1,10 @@
 import { BehaviorTree } from "behaviortree"
 import { EnvironmentQueryStatus, InteractableTag, SoundType, WeaponTag } from "enums"
 import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, WarMachine } from "types"
-import { AIBlackboard } from "./blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
-import { AI } from "./index"
-import { BT_Root } from "./trees/BT_Root"
+import { AI } from "@root/index"
+import { BT_Root } from "@trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
 
 // TODO: some clean up

@@ -1,4 +1,4 @@
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 /**
  * Checks if the current target has more total health (health + shield).

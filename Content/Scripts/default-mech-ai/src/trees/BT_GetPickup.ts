@@ -1,10 +1,10 @@
 import { Selector, Sequence } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
-import { ParallelBackground } from "../branches/ParallelBackground"
-import { BTT_MoveTo } from "../tasks/movement/BTT_MoveTo"
-import { BTT_SetValue } from "../tasks/BTT_SetValue"
-import { BTT_Success } from "../tasks/BTT_Success"
-import { BT_SetFocal } from "./BT_SetFocal"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { ParallelBackground } from "@branches/ParallelBackground"
+import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
+import { BTT_SetValue } from "@tasks/BTT_SetValue"
+import { BTT_Success } from "@tasks/BTT_Success"
+import { BT_SetFocal } from "@trees/BT_SetFocal"
 
 /**
  * Getting the pickup behavior.

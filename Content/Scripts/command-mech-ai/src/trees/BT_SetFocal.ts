@@ -1,7 +1,7 @@
 import { ObserverAborts, Selector } from "behaviortree"
-import { IsSet } from "../decorators/IsSet"
-import { BTT_Success } from "../tasks/BTT_Success"
-import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
+import { IsSet } from "@decorators/IsSet"
+import { BTT_Success } from "@tasks/BTT_Success"
+import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 
 /**
  * Behavior for setting the focal point of AI (@see {@link BTT_SetFocalPoint}).

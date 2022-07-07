@@ -1,8 +1,8 @@
 import { SUCCESS, Task } from "behaviortree"
 import { EQSArgument, EQSQueryType } from "enums"
 import { Vector } from "types"
-import { AIBlackboard } from "../../blackboard"
-import { AI } from "../../index"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { AI } from "@root/index"
 
 /**
  * Sets the string {@link argument} for the environment query {@link queryType}.

@@ -1,11 +1,11 @@
 import { Sequence } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
-import { ParallelBackground } from "../branches/ParallelBackground"
-import { IsSet } from "../decorators/IsSet"
-import { BTT_ClearTarget } from "../tasks/BTT_ClearTarget"
-import { BTT_MoveTo } from "../tasks/movement/BTT_MoveTo"
-import { BT_SetFocal } from "./BT_SetFocal"
-import { BT_SearchHiddenLocation } from "./BT_SearchHiddenLocation"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { ParallelBackground } from "@branches/ParallelBackground"
+import { IsSet } from "@decorators/IsSet"
+import { BTT_ClearTarget } from "@tasks/BTT_ClearTarget"
+import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
+import { BT_SetFocal } from "@trees/BT_SetFocal"
+import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
 
 /**
  * Behavior for searching the target.

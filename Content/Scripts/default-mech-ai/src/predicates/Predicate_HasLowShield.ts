@@ -1,4 +1,4 @@
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 /**
  * Checks if AI has low shield.

@@ -1,7 +1,7 @@
-import { AI } from "../index"
+import { AI } from "@root/index"
 import { RUNNING, Task } from "behaviortree"
 import { WeaponTag } from "enums"
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 // TODO: add melee tag check at the start and return false if is not.
 /**

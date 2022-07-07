@@ -1,10 +1,10 @@
 import { Sequence } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
-import { ForceSuccess } from "../decorators/ForceSuccess"
-import { BTT_MoveTo } from "../tasks/movement/BTT_MoveTo"
-import { BTT_SetValue } from "../tasks/BTT_SetValue"
-import { BTT_SetFocalPoint } from "../tasks/focus/BTT_SetFocalPoint"
-import { BT_SearchHiddenLocation } from "./BT_SearchHiddenLocation"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { ForceSuccess } from "@decorators/ForceSuccess"
+import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
+import { BTT_SetValue } from "@tasks/BTT_SetValue"
+import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
+import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
 
 /**
  * Behavior when AI heard a noise.

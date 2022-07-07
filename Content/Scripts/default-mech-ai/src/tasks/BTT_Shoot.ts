@@ -1,7 +1,7 @@
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
 import { WeaponTag } from "enums"
-import { AIBlackboard } from "../blackboard"
-import { AI } from "../index"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { AI } from "@root/index"
 
 // TODO: Also checks whether the given weapon(s) by tag is actually shootable and return FAILURE otherwise.
 /**

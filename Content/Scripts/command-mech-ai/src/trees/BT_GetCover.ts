@@ -1,10 +1,10 @@
 import { Sequence } from "behaviortree"
-import { EQSArgument, EQSQueryType } from "../../../types/enums"
-import { AIBlackboard } from "../blackboard"
-import { BTT_QuerySetArgumentVector } from "../tasks/environment/BTT_QuerySetArgument"
-import { BTT_MoveTo } from "../tasks/movement/BTT_MoveTo"
-import { BTT_RunEQSQuery } from "../tasks/environment/BTT_RunEQSQuery"
-import { BTT_SetValue } from "../tasks/BTT_SetValue"
+import { EQSArgument, EQSQueryType } from "enums"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { BTT_QuerySetArgumentVector } from "@tasks/environment/BTT_QuerySetArgument"
+import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
+import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
+import { BTT_SetValue } from "@tasks/BTT_SetValue"
 
 /**
  * Getting a cover behavior.

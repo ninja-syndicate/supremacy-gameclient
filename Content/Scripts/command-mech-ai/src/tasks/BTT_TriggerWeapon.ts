@@ -1,7 +1,7 @@
 import { SUCCESS, Task } from "behaviortree"
 import { WeaponTag } from "enums"
-import { AIBlackboard } from "../blackboard"
-import { AI } from "../index"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { AI } from "@root/index"
 
 /**
  * Triggers the specified weapon(s) by tag.
