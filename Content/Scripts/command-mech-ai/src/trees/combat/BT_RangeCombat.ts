@@ -1,4 +1,4 @@
-import { ObserverAborts, Parallel, Selector } from "behaviortree"
+import { ObserverAborts, Parallel, Selector, Sequence } from "behaviortree"
 import { WeaponTag } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { ParallelBackground } from "@branches/ParallelBackground"
@@ -15,6 +15,8 @@ import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_Strafe } from "@trees/BT_Strafe"
+import { BT_MoveToCommand } from "../BT_MoveToCommand"
+import { BT_Patrol } from "../BT_Patrol"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -42,17 +44,9 @@ export const BT_RangeCombat = new ParallelBackground({
         BT_SetFocal,
         new Selector({
             nodes: [
-                IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
-                Predicate(
-                    // TODO: This should ideally be getting closer, not directly to target.
-                    BTT_MoveTo("targetLastKnownLocation"),
-                    (blackboard: AIBlackboard) => (!TargetHasMoreTotalHealth(blackboard) && !IsOutnumbered(blackboard)) || IsOutnumberingEnemies(blackboard),
-                    true,
-                    ObserverAborts.Both,
-                ),
-                BT_Strafe,
-                BTT_Success,
+                IsSet(BT_MoveToCommand, "isCommanded", true, ObserverAborts.Both),
+                IsSet(BT_Patrol, "moveCommandLocation", true),
+                BTT_Success
             ],
         }),
     ],

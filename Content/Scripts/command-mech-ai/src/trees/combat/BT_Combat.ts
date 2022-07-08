@@ -26,11 +26,11 @@ import { BT_Patrol } from "@trees/BT_Patrol"
 export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
-        IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-        Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
+        // IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
+        // Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         // TODO: Handle damage stimulus location
         // TODO: Handle taunt
-        Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
+        // Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
         BT_Patrol,
         // HACK: In case AI performs special attack, loses sight to target, movement action fails, and regains sight again, this task is
         // needed to ensure it can recover. Some predicate change is needed to remove this HACK.

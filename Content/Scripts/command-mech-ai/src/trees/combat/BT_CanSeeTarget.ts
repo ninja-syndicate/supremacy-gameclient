@@ -22,7 +22,7 @@ import { BT_RangeCombat } from "@trees/combat/BT_RangeCombat"
  */
 export const BT_CanSeeTarget = new Selector({
     nodes: [
-        CanActivateAction(BTT_SpecialAttack("targetLastKnownLocation"), Action.SpecialAttack, true, ObserverAborts.LowerPriority),
+        // CanActivateAction(BTT_SpecialAttack("targetLastKnownLocation"), Action.SpecialAttack, true, ObserverAborts.LowerPriority),
         Predicate(
             BT_CloseCombat,
             (blackboard: AIBlackboard) =>

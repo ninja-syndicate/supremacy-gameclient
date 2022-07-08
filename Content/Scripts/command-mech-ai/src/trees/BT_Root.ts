@@ -1,5 +1,4 @@
 import { ObserverAborts, Selector } from "behaviortree"
-import { Action } from "enums"
 import { CanActivateAction } from "@decorators/CanActivateAction"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
@@ -12,6 +11,11 @@ import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_InvestigateNoise } from "@trees/BT_InvestigateNoise"
 import { BT_Patrol } from "@trees/BT_Patrol"
 import { BT_ReceivedDamage } from "@trees/BT_ReceivedDamage"
+import { BT_MoveToCommand } from "@trees/BT_MoveToCommand"
+import { BT_SetFocal } from "./BT_SetFocal"
+import { ParallelBackground } from "@root/branches/ParallelBackground"
+
+export const Parallel_MoveToCommand = new ParallelBackground({ nodes: [BT_MoveToCommand, BT_SetFocal] })
 
 /**
  * The root of the behavior tree for AI.
@@ -41,12 +45,8 @@ import { BT_ReceivedDamage } from "@trees/BT_ReceivedDamage"
 export const BT_Root = new Selector({
     nodes: [
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
-        IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-        Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
-        CanActivateAction(BTT_Taunt, Action.Taunt, true),
-        IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
-        IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),
-        BT_Patrol,
+        IsSet(Parallel_MoveToCommand, "isCommanded", true, ObserverAborts.Both),
+        IsSet(BT_Patrol, "moveCommandLocation", true),
         BTT_Wait(1),
     ],
 })

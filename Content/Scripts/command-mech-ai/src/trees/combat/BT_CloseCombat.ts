@@ -1,4 +1,4 @@
-import { ObserverAborts, Selector } from "behaviortree"
+import { ObserverAborts, Selector, Sequence } from "behaviortree"
 import { WeaponTag } from "enums"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
@@ -10,6 +10,8 @@ import { BTT_Success } from "@tasks/BTT_Success"
 import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
+import { BT_MoveToCommand } from "../BT_MoveToCommand"
+import { BT_Patrol } from "../BT_Patrol"
 
 // TODO: provide main and background properties for ParallelBackground
 /**
@@ -28,14 +30,13 @@ export const BT_CloseCombat = new ParallelBackground({
         // Main task
         BTT_MeleeAttack(WeaponTag.Melee),
 
-        // Backgorund tasks
+        // Background tasks
         BT_SetFocal,
         new Selector({
             nodes: [
-                IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
-                BTT_MoveTo("targetLastKnownLocation", true),
-                BTT_Success,
+                IsSet(BT_MoveToCommand, "isCommanded", true, ObserverAborts.Both),
+                IsSet(BT_Patrol, "moveCommandLocation", true),
+                BTT_Success
             ],
         }),
     ],

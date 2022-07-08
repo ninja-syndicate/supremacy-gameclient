@@ -1,10 +1,11 @@
 import { Sequence } from "behaviortree"
-import { EQSQueryType } from "enums"
+import { EQSArgument, EQSQueryType } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
+import { BTT_QuerySetArgumentFloat, BTT_QuerySetArgumentVector } from "@tasks/environment/BTT_QuerySetArgument"
 
 /**
  * Patrol behavior.
@@ -13,6 +14,10 @@ import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
  */
 export const BT_Patrol = new Sequence({
     nodes: [
+        // TODO: Set grid size and space between
+        BTT_QuerySetArgumentVector(EQSQueryType.Patrol, EQSArgument.Origin, (blackboard: AIBlackboard) => blackboard.moveCommandLocation),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.GridSize, (blackboard: AIBlackboard) => 5000),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.SpaceBetween, (blackboard: AIBlackboard) => 1000),
         BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),
         BTT_SetFocalPoint("patrolLocation"),
         BTT_MoveTo("patrolLocation"),
