@@ -35,3 +35,12 @@ export const BTT_QuerySetArgumentVector = (queryType: EQSQueryType, argument: EQ
             return SUCCESS
         },
     })
+
+export const BTT_QuerySetArgumentFloat = (queryType: EQSQueryType, argument: EQSArgument, func: (blackboard: AIBlackboard) => number) =>
+    new Task({
+        run: (blackboard: AIBlackboard) => {
+            const value: number = func(blackboard)
+            AI.EQS_SetArgumentFloat(queryType, argument, value)
+            return SUCCESS
+        },
+    })
