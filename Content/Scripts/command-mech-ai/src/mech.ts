@@ -66,6 +66,11 @@ export const onTick = (input: BrainInput) => {
     // Update the blackboard based on the new input.
     updateBlackboard(input)
 
+    blackboard.isCommanded = AI.IsMoveCommanded()
+    if (blackboard.isCommanded) {
+        blackboard.moveCommandLocation = AI.GetMoveCommandLocation()
+    }
+
     // Run behavior tree.
     tree.step()
 
