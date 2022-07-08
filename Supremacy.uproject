@@ -80,6 +80,10 @@
 		{
 			"Name": "BlueprintFileUtils",
 			"Enabled": true
+		},
+		{
+			"Name": "ReplayTracks",
+			"Enabled": true
 		}
 	]
 }
