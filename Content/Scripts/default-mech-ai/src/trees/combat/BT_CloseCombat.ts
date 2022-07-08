@@ -28,7 +28,7 @@ export const BT_CloseCombat = new ParallelBackground({
         // Main task
         BTT_MeleeAttack(WeaponTag.Melee),
 
-        // Backgorund tasks
+        // Background tasks
         BT_SetFocal,
         new Selector({
             nodes: [
