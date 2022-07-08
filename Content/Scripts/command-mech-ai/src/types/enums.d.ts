@@ -15,7 +15,7 @@ export const enum WeaponTag {
 /**
  * Available environment query types
  *
- * {@link EQSQueryType.Cover} - Generates a cover location. This requires {@link TargetLastKnownLocation} and {@link LastHitLocation} arguments to be set.
+ * {@link EQSQueryType.Cover} - Generates a cover location. This requires {@link Origin} and {@link LastHitLocation} arguments to be set.
  * {@link EQSQueryType.Hidden} - Generates a possible target hidden location. This requires {@link EQSArgument.TargetPredictedLocation} argument to be set.
  * {@link EQSQueryType.Patrol} - Generates a patrol location.
  * {@link EQSQueryType.Strafe} - Generates a strafe location. Useful when AI is in combat state. This environment query requires {@link EQSArgument.TargetHash}
@@ -36,8 +36,10 @@ export const enum EQSQueryType {
  * @see {@link EQSQueryType} for which environment query needs which arguments.
  */
 export const enum EQSArgument {
+    Origin = "Origin",
+    GridSize = "GridSize",
+    SpaceBetween = "SpaceBetween",
     TargetHash = "TargetHash",
-    TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
     LastHitLocation = "LastHitLocation",
 }
@@ -134,4 +136,8 @@ export const enum InteractableTag {
  */
 export const enum Signal {
     Help = "Signal.Help",
+}
+
+export const enum Message {
+    MoveCommandComplete = "Message.MoveCommandComplete"
 }

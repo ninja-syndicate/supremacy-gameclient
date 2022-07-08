@@ -1,4 +1,4 @@
-import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, MovementResult, Signal, WeaponTag } from "./enums"
+import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, Message, MovementResult, Signal, WeaponTag } from "./enums"
 import { Status } from "./enums"
 
 /**
@@ -202,6 +202,11 @@ declare class AIController {
      * @param signal
      */
     SendSignal(signal: Signal): boolean
+
+    IsMoveCommanded(): boolean
+    GetMoveCommandLocation(): Vector
+    SendMessage(message: Message): boolean
+    EQS_SetArgumentFloat(query: EQSQueryType, argument: EQSArgument, value: number): void
 }
 
 declare class JavascriptContext {
