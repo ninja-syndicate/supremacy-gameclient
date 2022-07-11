@@ -55,7 +55,7 @@
                "Damage": 70,
                "DamageRadius": 850,
                "DamageType": 2,
-			   "Spread": 1500,
+               "Spread": 1500,
                "ProjectileSpeed": 50000,
                "RateOfFire": 2
           },
