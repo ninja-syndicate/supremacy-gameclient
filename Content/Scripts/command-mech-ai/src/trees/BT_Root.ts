@@ -16,6 +16,7 @@ import { BT_SetFocal } from "./BT_SetFocal"
 import { ParallelBackground } from "@root/branches/ParallelBackground"
 
 export const Parallel_MoveToCommand = new ParallelBackground({ nodes: [BT_MoveToCommand, BT_SetFocal] })
+export const Parallel_Patrol = new ParallelBackground({ nodes: [BT_Patrol, BT_SetFocal] })
 
 /**
  * The root of the behavior tree for AI.
@@ -46,7 +47,7 @@ export const BT_Root = new Selector({
     nodes: [
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
         IsSet(Parallel_MoveToCommand, "isCommanded", true, ObserverAborts.Both),
-        IsSet(BT_Patrol, "moveCommandLocation", true),
+        IsSet(Parallel_Patrol, "moveCommandLocation", true),
         BTT_Wait(1),
     ],
 })
