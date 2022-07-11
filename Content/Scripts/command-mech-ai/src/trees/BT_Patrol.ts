@@ -14,12 +14,11 @@ import { BTT_QuerySetArgumentFloat, BTT_QuerySetArgumentVector } from "@tasks/en
  */
 export const BT_Patrol = new Sequence({
     nodes: [
-        // TODO: Set grid size and space between
         BTT_QuerySetArgumentVector(EQSQueryType.Patrol, EQSArgument.Origin, (blackboard: AIBlackboard) => blackboard.moveCommandLocation),
-        BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.GridSize, (blackboard: AIBlackboard) => 5000),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.GridSize, (blackboard: AIBlackboard) => 3000),
         BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.SpaceBetween, (blackboard: AIBlackboard) => 1000),
         BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),
-        BTT_SetFocalPoint("patrolLocation"),
+        // BTT_SetFocalPoint("patrolLocation"),
         BTT_MoveTo("patrolLocation"),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.patrolLocation = undefined)),
     ],
