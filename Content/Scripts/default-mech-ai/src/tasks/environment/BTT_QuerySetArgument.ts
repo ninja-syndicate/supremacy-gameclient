@@ -35,3 +35,19 @@ export const BTT_QuerySetArgumentVector = (queryType: EQSQueryType, argument: EQ
             return SUCCESS
         },
     })
+
+/**
+ * Sets the float {@link argument} for the environment query {@link queryType}.
+ *
+ * @param queryType The type of environment query to set the argument for
+ * @param argument The argument type to set. This must be compatible with with specified {@link queryType}.
+ * @param func A function that provides the Vector argument value.
+ */
+export const BTT_QuerySetArgumentFloat = (queryType: EQSQueryType, argument: EQSArgument, func: (blackboard: AIBlackboard) => number) =>
+    new Task({
+        run: (blackboard: AIBlackboard) => {
+            const value: number = func(blackboard)
+            AI.EQS_SetArgumentFloat(queryType, argument, value)
+            return SUCCESS
+        },
+    })
