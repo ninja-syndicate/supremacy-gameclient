@@ -23,9 +23,15 @@
                }
           ]
      },
-     "Heal": {
+     "HealCrate": {
           "HealAmount": 2000,
           "TriggerRadius": 3000
+     },
+     "Repair": {
+          "HealAmount": 2000,
+          "Duration": 40,
+          "InitialPercent": 0.5,
+          "InitialDuration": 8
      },
      "ShieldBuff": {
           "InstantShieldHealPercentage": 0.5,
