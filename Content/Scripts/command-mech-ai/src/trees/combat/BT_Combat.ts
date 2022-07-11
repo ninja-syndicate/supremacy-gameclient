@@ -9,6 +9,12 @@ import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_SearchTarget } from "@trees/BT_SearchTarget"
 import { BTT_Success } from "@tasks/BTT_Success"
 import { BT_Patrol } from "@trees/BT_Patrol"
+import { BT_MoveToCommand } from "../BT_MoveToCommand"
+import { ParallelBackground } from "@root/branches/ParallelBackground"
+import { BT_SetFocal } from "../BT_SetFocal"
+
+export const Parallel_MoveToCommand = new ParallelBackground({ nodes: [BT_MoveToCommand, BT_SetFocal] })
+export const Parallel_Patrol = new ParallelBackground({ nodes: [BT_Patrol, BT_SetFocal] })
 
 /**
  * The main combat behavior tree.
@@ -31,7 +37,8 @@ export const BT_Combat = new Selector({
         // TODO: Handle damage stimulus location
         // TODO: Handle taunt
         // Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
-        BT_Patrol,
+        IsSet(Parallel_MoveToCommand, "isCommanded", true, ObserverAborts.Both),
+        IsSet(Parallel_Patrol, "moveCommandLocation", true),
         // HACK: In case AI performs special attack, loses sight to target, movement action fails, and regains sight again, this task is
         // needed to ensure it can recover. Some predicate change is needed to remove this HACK.
         BTT_Success,

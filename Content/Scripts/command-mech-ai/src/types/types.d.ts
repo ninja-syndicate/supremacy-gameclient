@@ -189,6 +189,15 @@ declare class AIController {
     EQS_SetArgumentVector(query: EQSQueryType, argument: EQSArgument, value: Vector): void
 
     /**
+     * Set float argument for an EQS query. Call before {@link EQS_Query}.
+     * 
+     * @param query The environment query type (@see {@link EQSQueryType})
+     * @param argument The argument type (@see {@link EQSArgument})
+     * @param value The value you want to set the argument to
+     */
+     EQS_SetArgumentFloat(query: EQSQueryType, argument: EQSArgument, value: number): void
+
+    /**
      * Makes AI wait for the specified number of {@link seconds}.
      *
      * @param seconds the number of seconds to wait
@@ -204,9 +213,9 @@ declare class AIController {
     SendSignal(signal: Signal): boolean
 
     IsMoveCommanded(): boolean
+    HasMoveCommandLocation(): boolean
     GetMoveCommandLocation(): Vector
     SendMessage(message: Message): boolean
-    EQS_SetArgumentFloat(query: EQSQueryType, argument: EQSArgument, value: number): void
 }
 
 declare class JavascriptContext {
