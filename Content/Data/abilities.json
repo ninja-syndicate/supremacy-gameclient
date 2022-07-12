@@ -138,7 +138,7 @@
      },
      "Landmines": {
           "Amount": 20,
-          "HealthMax": 1000,
+          "HealthMax": 100,
           "Damage": 325,
           "DamageRadius": 1000,
           "DamageRadiusFalloff": 10,
