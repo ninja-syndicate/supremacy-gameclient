@@ -141,8 +141,12 @@
           "HealthMax": 100,
           "Damage": 325,
           "DamageRadius": 1000,
-          "DamageRadiusFalloff": 10,
-          "FriendlyFire": false
+          "1DamageRadiusFalloff": 10,
+          "FriendlyFire": false,
+          "SpreadInRangeA": 3000,
+          "SpreadInRangeB": 30000,
+          "SpreadOutRangeA": 2500,
+          "SpreadOutRangeB": 400
      },
      "MiniMech": {
           "ZaiStats": {
