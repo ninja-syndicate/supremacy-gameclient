@@ -207,7 +207,9 @@ function updateBlackboardInteractable(): void {
 
     // Clear the desired pickup location if there are no interactables.
     if (interactables.length === 0) {
-        blackboard.desiredPickupLocation = undefined
+        if (typeof blackboard.desiredPickupLocation !== "undefined")
+            delete blackboard.desiredPickupLocation
+
         return
     }
 
