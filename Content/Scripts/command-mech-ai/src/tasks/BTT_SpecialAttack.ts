@@ -19,11 +19,7 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
             if (!location || !IsVector(location)) return FAILURE
 
             // TODO: move this to decorator?
-<<<<<<< HEAD
             const hasSecondaryWeapon = typeof blackboard.secondaryWeapon !== "undefined" && blackboard.secondaryWeapon !== null
-=======
-            const hasSecondaryWeapon = blackboard.secondaryWeapon !== undefined && blackboard.secondaryWeapon !== null
->>>>>>> develop
             if (!hasSecondaryWeapon) return FAILURE
 
             const success: boolean = AI.TrySpecialAttack(location)
