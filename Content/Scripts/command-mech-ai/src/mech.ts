@@ -354,10 +354,17 @@ export function clearBlackboardTarget(): void {
 
     blackboard.target = null
     blackboard.canSeeTarget = false
+<<<<<<< HEAD
     if (typeof blackboard.targetLastKnownLocation !== "undefined") {
         delete blackboard.targetLastKnownLocation
     }
     if (typeof blackboard.targetPredictedLocation !== "undefined") {
+=======
+    if (blackboard.targetLastKnownLocation !== undefined) {
+        delete blackboard.targetLastKnownLocation
+    }
+    if (blackboard.targetPredictedLocation !== undefined) {
+>>>>>>> develop
         delete blackboard.targetPredictedLocation
     }
 }
