@@ -6,7 +6,13 @@
           "Count": 12,
           "Spread": 3000,
           "DelayMin": 0.03,
-          "DelayMax": 0.15
+          "DelayMax": 0.15,
+          "JetSpeed": 50000,
+          "AngleDistanceOffset": 30000,
+          "SpreadInRangeA": 3000,
+          "SpreadInRangeB": 30000,
+          "SpreadOutRangeA": 3000,
+          "SpreadOutRangeB": 800
      },
      "Nuke": {
           "Damage": 1200,
@@ -141,7 +147,7 @@
           "HealthMax": 100,
           "Damage": 325,
           "DamageRadius": 1000,
-          "1DamageRadiusFalloff": 10,
+          "DamageRadiusFalloff": 10,
           "FriendlyFire": false,
           "SpreadInRangeA": 3000,
           "SpreadInRangeB": 30000,
