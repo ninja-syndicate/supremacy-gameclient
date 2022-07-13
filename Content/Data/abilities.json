@@ -1,24 +1,30 @@
 {
      "Airstrike": {
-          "Damage": 700,
+          "Damage": 1200,
           "DamageRadius": 2000,
           "DamageRadiusFalloff": 600,
           "Count": 12,
           "Spread": 3000,
           "DelayMin": 0.03,
-          "DelayMax": 0.15
+          "DelayMax": 0.15,
+          "JetSpeed": 50000,
+          "AngleDistanceOffset": 30000,
+          "SpreadInRangeA": 3000,
+          "SpreadInRangeB": 30000,
+          "SpreadOutRangeA": 3000,
+          "SpreadOutRangeB": 800
      },
      "Nuke": {
-          "Damage": 1200,
+          "Damage": 3200,
           "DamageRadius": 5200,
           "DamageRadiusFalloff": 0,
           "DamageOverTime": [
                {
-                    "Damage": 120,
+                    "Damage": 140,
                     "Seconds": 3
                },
                {
-                    "Damage": 40,
+                    "Damage": 50,
                     "Seconds": 5
                }
           ]
@@ -28,7 +34,7 @@
           "TriggerRadius": 3000
      },
      "Repair": {
-          "HealAmount": 2000,
+          "HealAmount": 6000,
           "Duration": 40,
           "InitialPercent": 0.5,
           "InitialDuration": 8
@@ -64,7 +70,7 @@
           "Amount": 5,
           "SpawnLeader": true,
           "Stats": {
-               "HealthMax": 400,
+               "HealthMax": 1100,
                "Speed": 3000,
                "Weapon": {
                     "Name": "Robot Dog Laser",
@@ -75,14 +81,14 @@
                     "ProjectileSpeed": 48000,
                     "RateOfFire": 140
                },
-			   "Name": "Robot Dog",
-			   "Faction": {
-					"ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
-					"Name": "Boston Cybernetics"
-			   }
+               "Name": "Robot Dog",
+               "Faction": {
+                    "ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
+                    "Name": "Boston Cybernetics"
+               }
           },
           "LeaderStats": {
-               "HealthMax": 600,
+               "HealthMax": 1800,
                "Speed": 3000,
                "Weapon": {
                     "Name": "Robot Dog Laser",
@@ -93,15 +99,15 @@
                     "ProjectileSpeed": 48000,
                     "RateOfFire": 140
                },
-			   "Name": "Robot Dog",
-			   "Faction": {
-					"ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
-					"Name": "Boston Cybernetics"
-			   }
+               "Name": "Robot Dog",
+               "Faction": {
+                    "ID": "7c6dde21-b067-46cf-9e56-155c88a520e2",
+                    "Name": "Boston Cybernetics"
+               }
           }
      },
      "Reinforcements": {
-          "HealthMax": 1400,
+          "HealthMax": 4400,
           "ShieldMax": 0,
           "ShieldRechargeRate": 0,
           "Speed": 1750,
@@ -131,17 +137,17 @@
      },
      "Overcharge": {
           "RadialDamagePercentageOfShield": 3,
-          "RadialDamageMin": 500,
-          "RadialDamageMax": 2000,
+          "RadialDamageMin": 1700,
+          "RadialDamageMax": 6000,
           "RadialDamageFriendlyFire": false,
           "SelfShieldDamagePercentage": 0
      },
      "Landmines": {
           "Amount": 20,
           "HealthMax": 100,
-          "Damage": 325,
+          "Damage": 700,
           "DamageRadius": 1000,
-          "1DamageRadiusFalloff": 10,
+          "DamageRadiusFalloff": 10,
           "FriendlyFire": false,
           "SpreadInRangeA": 3000,
           "SpreadInRangeB": 30000,
