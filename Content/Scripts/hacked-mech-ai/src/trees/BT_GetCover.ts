@@ -18,10 +18,10 @@ import { BTT_SetValue } from "../tasks/BTT_SetValue"
 export const BT_GetCover = new Sequence({
     nodes: [
         BTT_QuerySetArgumentVector(EQSQueryType.Cover, EQSArgument.Origin, (blackboard: AIBlackboard) =>
-            blackboard.targetLastKnownLocation !== undefined ? blackboard.targetLastKnownLocation : blackboard.input.self.location,
+            typeof blackboard.targetLastKnownLocation !== "undefined" ? blackboard.targetLastKnownLocation : blackboard.input.self.location,
         ),
         BTT_QuerySetArgumentVector(EQSQueryType.Cover, EQSArgument.LastHitLocation, (blackboard: AIBlackboard) =>
-            blackboard.lastHitLocation !== undefined ? blackboard.lastHitLocation : blackboard.input.self.location,
+            typeof blackboard.lastHitLocation !== "undefined" ? blackboard.lastHitLocation : blackboard.input.self.location,
         ),
         BTT_RunEQSQuery(EQSQueryType.Cover, "coverLocation"),
         BTT_MoveTo("coverLocation"),

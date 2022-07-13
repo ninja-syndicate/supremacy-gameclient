@@ -116,7 +116,7 @@ function updateBlackboardSight(): void {
     const sight: WarMachine[] = blackboard.input.perception.sight
 
     // Clear damage related information if the one that caused damage is dead.
-    if (blackboard.damageInstigatorHash !== undefined) {
+    if (typeof blackboard.damageInstigatorHash !== "undefined") {
         const idx = sight.findIndex((m) => m.hash === blackboard.damageInstigatorHash && m.health <= 0)
         if (idx !== -1) {
             clearDamageInfo()
@@ -141,7 +141,7 @@ function updateBlackboardSight(): void {
         }
     }
     // Calculate a new target predicted location based on its last known velocity and the time elapsed since last tick.
-    if (blackboard.targetLastKnownLocation !== undefined) {
+    if (typeof blackboard.targetLastKnownLocation !== "undefined") {
         // TODO: Project to navigation and clear if not valid when navigating.
         blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime))
     }
@@ -212,7 +212,9 @@ function updateBlackboardInteractable(): void {
 
     // Clear the desired pickup location if there are no interactables.
     if (interactables.length === 0) {
-        blackboard.desiredPickupLocation = undefined
+        if (typeof blackboard.desiredPickupLocation !== "undefined")
+            delete blackboard.desiredPickupLocation
+
         return
     }
 
@@ -354,10 +356,10 @@ export function clearBlackboardTarget(): void {
 
     blackboard.target = null
     blackboard.canSeeTarget = false
-    if (blackboard.targetLastKnownLocation !== undefined) {
+    if (typeof blackboard.targetLastKnownLocation !== "undefined") {
         delete blackboard.targetLastKnownLocation
     }
-    if (blackboard.targetPredictedLocation !== undefined) {
+    if (typeof blackboard.targetPredictedLocation !== "undefined") {
         delete blackboard.targetPredictedLocation
     }
 }
@@ -368,7 +370,13 @@ export function clearBlackboardTarget(): void {
 function clearDamageInfo(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    blackboard.damageInstigatorHash = undefined
-    blackboard.damageStimulusDirection = undefined
-    blackboard.damageStimulusFocalPoint = undefined
+    if (typeof blackboard.damageInstigatorHash !== "undefined") {
+        delete blackboard.damageInstigatorHash
+    }
+    if (typeof blackboard.damageStimulusDirection !== "undefined") {
+        delete blackboard.damageStimulusDirection
+    }
+    if (typeof blackboard.damageStimulusFocalPoint !== "undefined") {
+        delete blackboard.damageStimulusFocalPoint
+    }
 }
