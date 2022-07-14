@@ -1,21 +1,39 @@
 {
      "Mechs": {
           "Mech_BostonCybernetics": {
-               "HealthMax": 1000,
-               "ShieldMax": 1000,
-               "ShieldRechargeRate": 80,
+               "HealthMax": 3000,
+               "ShieldMax": 3000,
+               "ShieldRechargeRate": 240,
                "Speed": 2750
           },
           "Mech_RedMountain": {
-               "HealthMax": 1500,
-               "ShieldMax": 1000,
-               "ShieldRechargeRate": 80,
+               "HealthMax": 4500,
+               "ShieldMax": 3000,
+               "ShieldRechargeRate": 240,
                "Speed": 1750
           },
           "Mech_Zaibastsu": {
-               "HealthMax": 1000,
-               "ShieldMax": 1000,
-               "ShieldRechargeRate": 100,
+               "HealthMax": 3000,
+               "ShieldMax": 3000,
+               "ShieldRechargeRate": 300,
+               "Speed": 2500
+          },
+          "NewMech_Boston": {
+               "HealthMax": 3000,
+               "ShieldMax": 3000,
+               "ShieldRechargeRate": 240,
+               "Speed": 2750
+          },
+          "NewMech_RedMountain": {
+               "HealthMax": 4500,
+               "ShieldMax": 3000,
+               "ShieldRechargeRate": 240,
+               "Speed": 1750
+          },
+          "NewMech_Zaibatsu": {
+               "HealthMax": 3000,
+               "ShieldMax": 3000,
+               "ShieldRechargeRate": 300,
                "Speed": 2500
           }
      }
