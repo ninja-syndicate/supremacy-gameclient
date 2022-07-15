@@ -1,30 +1,31 @@
 {
      "Airstrike": {
-          "Damage": 1200,
-          "DamageRadius": 2000,
-          "DamageRadiusFalloff": 600,
-          "Count": 12,
+          "Damage": 1400,
+          "DamageRadius": 2300,
+          "DamageRadiusFalloff": 800,
+          "Count": 32,
           "Spread": 3000,
           "DelayMin": 0.03,
           "DelayMax": 0.15,
-          "JetSpeed": 50000,
+          "JetSpeed": 120000,
           "AngleDistanceOffset": 30000,
           "SpreadInRangeA": 3000,
           "SpreadInRangeB": 30000,
           "SpreadOutRangeA": 3000,
-          "SpreadOutRangeB": 800
+          "SpreadOutRangeB": 800,
+          "FriendlyFire": false
      },
      "Nuke": {
           "Damage": 3200,
-          "DamageRadius": 5200,
+          "DamageRadius": 8600,
           "DamageRadiusFalloff": 0,
           "DamageOverTime": [
                {
-                    "Damage": 140,
+                    "Damage": 160,
                     "Seconds": 3
                },
                {
-                    "Damage": 50,
+                    "Damage": 65,
                     "Seconds": 5
                }
           ]
