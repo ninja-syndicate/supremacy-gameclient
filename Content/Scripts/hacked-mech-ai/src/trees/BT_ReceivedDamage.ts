@@ -16,12 +16,12 @@ export const BT_ReceivedDamage = new Sequence({
     nodes: [
         BTT_StopMoveTo,
         BTT_LookAt("damageStimulusFocalPoint"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
+        BTT_SetValue((blackboard: AIBlackboard) => (delete blackboard.damageStimulusFocalPoint)),
         BTT_SetValue(
             (blackboard: AIBlackboard) =>
                 (blackboard.damageHiddenLocation = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))),
         ),
         BT_SearchHiddenLocation("damageHiddenLocation"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageHiddenLocation = undefined)),
+        BTT_SetValue((blackboard: AIBlackboard) => (delete blackboard.damageHiddenLocation)),
     ],
 })

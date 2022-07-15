@@ -42,19 +42,9 @@
 			"Enabled": true
 		},
 		{
-			"Name": "ObjectPool",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/e3c6aea892b748eb9e2241b9c4b74d36"
-		},
-		{
 			"Name": "SubsystemBrowserPlugin",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f1ba87b348774d338e75d25ddbc46b98"
-		},
-		{
-			"Name": "DonAINavigation",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/81b4bd085c8c41508edfeb160b6ddf62"
 		},
 		{
 			"Name": "Bridge",
@@ -84,6 +74,20 @@
 		},
 		{
 			"Name": "BlueprintFileUtils",
+			"Enabled": true
+		},
+		{
+			"Name": "PoolManager",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/e25d628414564ed49499c5014ff62983"
+		},
+		{
+			"Name": "EasyBallistics",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/bbecde0f66914263b57fd2af5a0c7ffe"
+		},
+		{
+			"Name": "ReplayTracks",
 			"Enabled": true
 		}
 	]
