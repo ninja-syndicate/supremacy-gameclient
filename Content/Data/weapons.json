@@ -55,6 +55,7 @@
                "Damage": 70,
                "DamageRadius": 850,
                "DamageType": 2,
+               "Spread": 1500,
                "ProjectileSpeed": 50000,
                "RateOfFire": 2
           },
@@ -107,6 +108,11 @@
                "Spread": 5,
                "RateOfFire": 600
           },
+          "Weapon_AM_GrenadeLauncher": {
+               "Name": "AM Grenade Launcher",
+               "Damage": 200,
+               "RateOfFire": 60
+          },
           "Weapon_AM_LaserBeam": {
                "Name": "Archon Militech Laser Beam",
                "Damage": 5,
@@ -158,6 +164,7 @@
                "RateOfFire": 600
           },
           "Weapon_Pyro_GrenadeLauncher": {
+               "Name": "Pyro Grenade Launcher",
                "Damage": 200,
                "RateOfFire": 60
           },
@@ -189,8 +196,8 @@
                "Spread": 3,
                "RateOfFire": 100
           },
-          "Weapon_Pyro_RocketLauncher": {
-               "Name": "Pyro Rocket Launcher",
+          "Weapon_Pyro_MissileLauncher": {
+               "Name": "Pyro Missile Launcher",
                "Damage": 100,
                "DamageRadius": 300,
                "Spread": 1,
@@ -217,6 +224,11 @@
                "RateOfFire": 100,
                "Amount": 20
           },
+          "Weapon_Warsui_GrenadeLauncher": {
+               "Name": "Warsui Grenade Launcher",
+               "Damage": 200,
+               "RateOfFire": 60
+          },
           "Weapon_Warsui_LaserBeam": {
                "Name": "Warsui Laser Beam",
                "Damage": 5,
@@ -232,6 +244,12 @@
                "Damage": 9,
                "Spread": 3,
                "RateOfFire": 750
+          },
+          "Weapon_Warsui_Minigun": {
+               "Name": "Warsui Minigun",
+               "Damage": 6,
+               "Spread": 5,
+               "RateOfFire": 6000
           },
           "Weapon_Warsui_MissileLauncher": {
                "Name": "Warsui Missile Launcher",
