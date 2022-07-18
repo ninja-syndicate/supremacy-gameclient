@@ -2,7 +2,7 @@ pipeline {
   agent {
     node {
       label 'windows-agent-02'
-      customWorkspace "D:\\jenkins-workspace"
+      customWorkspace "D:\\jenkins-workspace\\supremacy-gameclient"
     }
   }
   environment {
@@ -70,9 +70,8 @@ pipeline {
         echo 'Deploy stage started.'
         bat "\"${zip}\" a ${buildZipPath}\\${env.GIT_COMMIT.take(7)}.zip ${buildPath}"
         echo 'Deploy stage finished.'
-
-    }
-    post {
+      }
+      post {
         success {
           echo 'Deploy stage successful.'
           slackSend channel: '#test-notifications',
