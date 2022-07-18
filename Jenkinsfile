@@ -86,6 +86,7 @@ pipeline {
           message: "*${currentBuild.currentResult}:* *supremacy-gameclient* deploy has *failed* :astonished:. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
         }
       }
+    }
   }
 }
   
