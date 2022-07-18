@@ -1,8 +1,8 @@
 pipeline {
   agent {
     node {
-      label 'windows-agent-01'
-      customWorkspace "C:\\Users\\Ninja\\Documents\\supremacy-gameclient-ci-workspace"
+      label 'windows-agent-02'
+      customWorkspace "D:\\jenkins-workspace"
     }
   }
   environment {
@@ -12,23 +12,21 @@ pipeline {
     configFile= "${buildPath}\\Windows\\Supremacy\\Saved\\Config\\Windows\\Engine.ini"
     defaultEngineFile = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
     v8path = "${env.WORKSPACE}"
-    verison = """${bat(
+    version = """${bat(
                   returnStdout: true,
-                  script: 'git describe --tags'
+                  script: 'git describe --tags --always'
               )}"""
-    hash = """${bat(
-                  returnStdout: true,
-                  script: 'git rev-parse --verify HEAD'
-              )}"""
+    zip = "C:\\Program Files\\7-Zip\\7z.exe"
+    buildZipPath = "D:\\supremacy-builds-zip\\${env.BRANCH_NAME}"
   }
   stages {
-    stage('Building') {
+    stage('Build') {
       steps {
         echo 'Build stage started.'
         echo 'Sending notification to Slack.'
-        // slackSend channel: '#ops-deployment', 
-        //   color: '#4A90E2',
-        //   message: "Build ${env.BUILD_NUMBER} has started at node ${env.NODE_NAME}..."
+        slackSend channel: '#test-notifications', 
+          color: '#4A90E2',
+          message: "Started *supremacy-gameclient* build. Version: ${version}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
 
         bat "Config\\inifile ${defaultEngineFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0"
         bat "Config\\inifile ${DefaultEngineFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11"
@@ -38,7 +36,7 @@ pipeline {
             setup.bat
             """ 
         
-        bat "\"${runUAT}\" BuildCookRun -project=\"${project}\" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory=\"${buildPath}\""
+        bat "\"${runUAT}\" BuildCookRun -project=\"${project}\" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory=\"${buildPath}\" -log Log=\"${env.WORKSPACE}\\Log.txt\""
         
         bat "Config\\inifile ${configFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0"
         bat "Config\\inifile ${configFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11"
@@ -48,25 +46,46 @@ pipeline {
 
         bat "Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] Version=${version}"
         bat "Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] BuildBranch=${env.BRANCH_NAME}"
-	      bat "Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] Hash=${hash}"
+	      bat "Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] Hash=${env.GIT_COMMIT}"
 
-        echo "BuildNo ${verison} Branch ${env.BRANCH_NAME} Hash ${hash}"
+        echo 'Build stage finished.'
       }
       post {
         success {
           echo 'Build stage successful.'
-        //   slackSend channel: '#ops-deployment',
-        //     color: 'good', 
-        //     message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *succeded!* :innocent:"
+          slackSend channel: '#test-notifications',
+            color: 'good', 
+            message: "*${currentBuild.currentResult}:* *supremacy-gameclient* build has *succeded* :innocent:. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
         failure {
           echo 'Build stage unsuccessful.'
-        // slackSend channel: '#ops-deployement',
-        //   color: 'danger', 
-        //   message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *failed* :astonished:"
+          slackSend channel: '#test-notifications',
+          color: 'danger', 
+          message: "*${currentBuild.currentResult}:* *supremacy-gameclient* build has *failed* :astonished:. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
       }
     }
+    stage('Deploy'){
+      steps {
+        echo 'Deploy stage started.'
+        bat "\"${zip}\" a ${buildZipPath}\\${env.GIT_COMMIT.take(7)}.zip ${buildPath}"
+        echo 'Deploy stage finished.'
+
+    }
+    post {
+        success {
+          echo 'Deploy stage successful.'
+          slackSend channel: '#test-notifications',
+            color: 'good', 
+            message: "*${currentBuild.currentResult}:* *supremacy-gameclient* deploy has *succeded* :innocent:. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+        }
+        failure {
+          echo 'Deploy stage unsuccessful.'
+          slackSend channel: '#test-notifications',
+          color: 'danger', 
+          message: "*${currentBuild.currentResult}:* *supremacy-gameclient* deploy has *failed* :astonished:. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+        }
+      }
   }
 }
   
