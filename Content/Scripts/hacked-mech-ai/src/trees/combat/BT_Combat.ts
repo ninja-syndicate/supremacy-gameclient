@@ -9,6 +9,9 @@ import { BT_GetPickup } from "../BT_GetPickup"
 import { BT_SearchTarget } from "../BT_SearchTarget"
 import { BTT_Success } from "../../tasks/BTT_Success"
 import { BT_Patrol } from "../BT_Patrol"
+import { Action } from "enums"
+import { BTT_Taunt } from "../../tasks/BTT_Taunt"
+import { CanActivateAction } from "../../decorators/CanActivateAction"
 
 /**
  * The main combat behavior tree.
@@ -30,6 +33,7 @@ export const BT_Combat = new Selector({
         //Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         // TODO: Handle damage stimulus location
         // TODO: Handle taunt
+        CanActivateAction(Predicate(BTT_Taunt, (blackboard: AIBlackboard) => !blackboard.canSeeTarget), Action.Taunt),
         Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
         BT_Patrol,
         // HACK: In case AI performs special attack, loses sight to target, movement action fails, and regains sight again, this task is
