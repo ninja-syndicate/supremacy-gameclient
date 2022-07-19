@@ -28,6 +28,7 @@ export const enum WeaponTag {
     Hidden = "hidden",
     Patrol = "patrol",
     Strafe = "strafe",
+    CloseStrafe = "closeStrafe"
 }
 
 /**
@@ -41,6 +42,7 @@ export const enum WeaponTag {
     GridSize = "GridSize",
     SpaceBetween = "SpaceBetween",
     TargetHash = "TargetHash",
+    TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
     LastHitLocation = "LastHitLocation",
 }
