@@ -41,6 +41,7 @@ export const enum EQSArgument {
     GridSize = "GridSize",
     SpaceBetween = "SpaceBetween",
     TargetHash = "TargetHash",
+    TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
     LastHitLocation = "LastHitLocation",
 }

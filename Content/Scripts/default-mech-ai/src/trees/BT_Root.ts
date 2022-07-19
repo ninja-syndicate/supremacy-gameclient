@@ -12,6 +12,7 @@ import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_InvestigateNoise } from "@trees/BT_InvestigateNoise"
 import { BT_Patrol } from "@trees/BT_Patrol"
 import { BT_ReceivedDamage } from "@trees/BT_ReceivedDamage"
+import { AIBlackboard } from "@root/blackboards/blackboard"
 
 /**
  * The root of the behavior tree for AI.
@@ -24,7 +25,7 @@ import { BT_ReceivedDamage } from "@trees/BT_ReceivedDamage"
  * - {@link BT_Combat} if AI has {@link AIBlackboard.target}
  * - {@link BT_GetPickup} if AI has {@link AIBlackboard.desiredPickupLocation} such as heal crate location
  * - {@link BT_Camp} if AI has low shield (@see {@link HasLowShield})
- * - {@link BTT_Taunt} if AI can taunt (i.e. not on a cooldown)
+ * - {@link BTT_Taunt} if AI can taunt (i.e. not on a cooldown) and its shield is not low
  * - {@link BT_ReceivedDamage} if AI has the {@link AIBlackboard.damageStimulusFocalPoint} set as a result of receiving a damage
  * - {@link BT_InvestigateNoise} if AI heard a noise ({@link AIBlackboard.HeardNoise}) which may be taunt, gunshot or something else
  * - {@link BT_Patrol} otherwise
@@ -43,7 +44,7 @@ export const BT_Root = new Selector({
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
-        CanActivateAction(BTT_Taunt, Action.Taunt, true),
+        CanActivateAction(Predicate(BTT_Taunt, HasLowShield, false), Action.Taunt),
         IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
         IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),
         BT_Patrol,

@@ -41,6 +41,7 @@ export const enum WeaponTag {
     GridSize = "GridSize",
     SpaceBetween = "SpaceBetween",
     TargetHash = "TargetHash",
+    TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
     LastHitLocation = "LastHitLocation",
 }
