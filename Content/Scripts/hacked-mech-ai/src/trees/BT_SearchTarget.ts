@@ -10,8 +10,9 @@ import { BT_SearchHiddenLocation } from "./BT_SearchHiddenLocation"
 /**
  * Behavior for searching the target.
  *
- * Makes AI first move to the target's last known location and the possible hidden location based on the target's predicted location. The ParallelBackground
- * branch node is used to run {@link BT_SetFocal} as a background task to update the focal point to the appropriate target/location while it is moving.
+ * Makes AI first move to the target's last known location and the possible hidden location based on the target's predicted location. The 
+ * {@link ParallelBackground} branch node is used to run {@link BT_SetFocal} as a background task to update the focal point to the appropriate target/location
+ * while it is moving.
  *
  * Clears the current target when AI finishes searching for both locations and is not aborted by any higher priority behavior trees with
  * {@link ObserverAborts.LowerPriority} or {@link ObserverAborts.Both}.

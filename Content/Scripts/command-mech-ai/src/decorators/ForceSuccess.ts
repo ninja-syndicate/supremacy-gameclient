@@ -25,7 +25,7 @@ export const ForceSuccess = (node: NodeOrRegistration, observerAborts: ObserverA
     new ForceSuccessDecorator({
         node: node,
         config: {
-            start: (node as Node).blueprint.start,
+            // start: (node as Node).blueprint.start,
             observerAborts,
         },
     })

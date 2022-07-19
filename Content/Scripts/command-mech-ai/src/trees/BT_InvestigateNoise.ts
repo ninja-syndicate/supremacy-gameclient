@@ -5,6 +5,8 @@ import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
+import { ParallelBackground } from "@branches/ParallelBackground"
+import { BT_SetFocal } from "@trees/BT_SetFocal"
 
 /**
  * Behavior when AI heard a noise.
@@ -12,16 +14,19 @@ import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
  * This behavior will cause AI to move to the noise location. Also, makes an environment query get a possible hidden location based on the noise location and
  * moves to it (@see {@link EQSQueryType.Hidden} and {@link BT_SearchHiddenLocation}).
  *
- * Currently, this behavior is not intended to be used when AI is in combat state. If you want the AI to investigate noise while it is in combat state, you
- * may want to wrap around this behavior with {@link ParallelBackground} and have the background task execute {@link BT_SetFocal} to be able to respond to
- * stimulus such as damage while it is moving to the noise/hidden location.
+ * The {@link ParallelBackground} branch node is used to update the current focal point based on different stimulus in background.
  */
-export const BT_InvestigateNoise = new Sequence({
+export const BT_InvestigateNoise = new ParallelBackground({
     nodes: [
-        BTT_SetFocalPoint("noiseLocation"),
-        ForceSuccess(BTT_MoveTo("noiseLocation")), // Force success in case noise location is not navigable
-        BT_SearchHiddenLocation("noiseLocation"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.noiseLocation = undefined)),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.heardNoise = false)),
+        new Sequence({
+            nodes: [
+                // BTT_SetFocalPoint("noiseLocation"),
+                BTT_MoveTo("noiseLocation"),
+                BT_SearchHiddenLocation("noiseLocation"),
+                BTT_SetValue((blackboard: AIBlackboard) => (blackboard.noiseLocation = undefined)),
+                BTT_SetValue((blackboard: AIBlackboard) => (blackboard.heardNoise = false)),
+            ],
+        }),
+        BT_SetFocal,
     ],
 })

@@ -19,6 +19,8 @@ export interface AIBlackboard {
 
     target: WarMachine | null
     canSeeTarget: boolean
+    /** Only valid when AI cannot see the target. That is, {@link canSeeTarget} is false. */
+    targetLostSightTime?: number
 
     heardNoise: boolean
     noiseLocation?: Vector
@@ -38,6 +40,7 @@ export interface AIBlackboard {
     targetLastKnownVelocity?: Vector
     targetPredictedLocation?: Vector
 
+    damageStimulusTime?: number
     damageInstigatorHash?: string
     damageStimulusDirection?: Vector
     damageStimulusFocalPoint?: Vector
@@ -51,4 +54,6 @@ export interface AIBlackboard {
 
     canMelee: boolean
     canUseSpecialAttack: boolean
+
+    currentTime: number
 }

@@ -10,6 +10,8 @@ import { BTT_Success } from "@tasks/BTT_Success"
 import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
+import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
+import { TargetInRange } from "@predicates/Predicate_InRange"
 
 // TODO: provide main and background properties for ParallelBackground
 /**
@@ -34,7 +36,8 @@ export const BT_CloseCombat = new ParallelBackground({
             nodes: [
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
-                BTT_MoveTo("targetLastKnownLocation", true),
+                Predicate(BTT_MoveTo("targetLastKnownLocation", true), TargetInRange(2500), false, ObserverAborts.LowerPriority),
+                BT_CloseStrafe,
                 BTT_Success,
             ],
         }),
