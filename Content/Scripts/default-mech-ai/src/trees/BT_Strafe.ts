@@ -15,7 +15,7 @@ import { BTT_SetValue } from "@tasks/BTT_SetValue"
  *
  * Intended to be used during the combat to be able to strafe while shooting.
  */
- export const BT_Strafe = new Sequence({
+export const BT_Strafe = new Sequence({
     nodes: [
         BTT_QuerySetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
         BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => 8000),
