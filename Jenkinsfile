@@ -38,7 +38,7 @@ pipeline {
             """
         echo 'V8 library setup'
         script {
-          if (!fileExists(\\Plugins\\UnrealJs\\ThirdParty\\v8\\lib\\Win64\\Release\\v8_init.lib )){
+          if (!fileExists(${env.WORKSPACE}\\Plugins\\UnrealJs\\ThirdParty\\v8\\lib\\Win64\\Release\\v8_init.lib )){
             bat "${env.WORKSPACE}\\Plugins\\UnrealJs\\install-v8-libs.bat"
           }
         }
