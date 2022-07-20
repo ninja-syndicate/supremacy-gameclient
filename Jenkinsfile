@@ -30,12 +30,18 @@ pipeline {
         echo 'Sending notification to Slack.'
         slackSend channel: '#test-notifications', 
           color: '#4A90E2',
-          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         
         bat """
             echo 'V8 library setup'
             setup.bat
-            """ 
+            """
+        echo 'V8 library setup'
+        script {
+          if (!fileExists(\\Plugins\\UnrealJs\\ThirdParty\\v8\\lib\\Win64\\Release\\v8_init.lib )){
+            bat "${env.WORKSPACE}\\Plugins\\UnrealJs\\install-v8-libs.bat"
+          }
+        }
         echo 'Temporarily change default config to DX11 (fix UE5 crash)'
         bat """
             Config\\inifile ${defaultEngineFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0
@@ -79,13 +85,13 @@ pipeline {
           echo 'Build stage successful.'
           slackSend channel: '#test-notifications',
             color: 'good', 
-            message: ":white_check_mark: *supremacy-gameclient* build has *succeeded*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+            message: ":white_check_mark: *supremacy-gameclient* build has *succeeded*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
         failure {
           echo 'Build stage unsuccessful.'
           slackSend channel: '#test-notifications',
           color: 'danger', 
-          message: ":x: *supremacy-gameclient* build has *failed*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":x: *supremacy-gameclient* build has *failed*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
       }
     }
@@ -101,13 +107,13 @@ pipeline {
           echo 'Deploy stage successful.'
           slackSend channel: '#test-notifications',
             color: 'good', 
-            message: ":white_check_mark: *supremacy-gameclient* deploy has *succeeded*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+            message: ":white_check_mark: *supremacy-gameclient* deploy has *succeeded*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
         }
         failure {
           echo 'Deploy stage unsuccessful.'
           slackSend channel: '#test-notifications',
           color: 'danger', 
-          message: ":x: *supremacy-gameclient* deploy has *failed*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+          message: ":x: *supremacy-gameclient* deploy has *failed*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
         }
       }
     }
