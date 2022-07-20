@@ -12,10 +12,6 @@ pipeline {
     configFolder = "${env.WORKSPACE}\\Windows\\Supremacy\\Saved\\Config\\Windows"
     configFile= "${configfolder}\\Engine.ini"
     defaultEngineFile = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
-    version = """${bat(
-                  returnStdout: true,
-                  script: 'git describe --tags --always'
-              )}"""
     zip = "C:\\Program Files\\7-Zip\\7z.exe"
     buildZipPath = "D:\\supremacy-builds-zip\\${env.BRANCH_NAME}"
   }
@@ -23,10 +19,18 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Build stage started.'
+        script {
+          echo 'Get version'
+          latestTag = bat(
+                        returnStdout: true,
+                        script: 'git describe --tags --always'
+                      )
+          env.VERSION = latestTag
+        }
         echo 'Sending notification to Slack.'
         slackSend channel: '#test-notifications', 
           color: '#4A90E2',
-          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Version: $version. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         
         bat """
             echo 'V8 library setup'
@@ -64,7 +68,7 @@ pipeline {
 
         echo 'Set version number'
         bat """
-            Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] Version=$version
+            Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] Version=${env.VERSION}
             Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] BuildBranch=${env.BRANCH_NAME}
 	          Config\\inifile ${configFile} [/Game/UI/HUD.HUD_C] Hash=${env.GIT_COMMIT}
             """
@@ -75,13 +79,13 @@ pipeline {
           echo 'Build stage successful.'
           slackSend channel: '#test-notifications',
             color: 'good', 
-            message: ":white_check_mark: *supremacy-gameclient* build has *succeeded*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+            message: ":white_check_mark: *supremacy-gameclient* build has *succeeded*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
         failure {
           echo 'Build stage unsuccessful.'
           slackSend channel: '#test-notifications',
           color: 'danger', 
-          message: ":x: *supremacy-gameclient* build has *failed*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":x: *supremacy-gameclient* build has *failed*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
       }
     }
@@ -89,6 +93,7 @@ pipeline {
       steps {
         echo 'Deploy stage started.'
         bat "\"${zip}\" a ${buildZipPath}\\${env.GIT_COMMIT.take(7)}.zip ${buildDir}"
+        bat "for %i in (${buildZipPath}\\*) do if not %~nxi == ${env.GIT_COMMIT.take(7)}.zip del %i"
         echo 'Deploy stage finished.'
       }
       post {
@@ -96,13 +101,13 @@ pipeline {
           echo 'Deploy stage successful.'
           slackSend channel: '#test-notifications',
             color: 'good', 
-            message: ":white_check_mark: *supremacy-gameclient* deploy has *succeeded*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+            message: ":white_check_mark: *supremacy-gameclient* deploy has *succeeded*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
         }
         failure {
           echo 'Deploy stage unsuccessful.'
           slackSend channel: '#test-notifications',
           color: 'danger', 
-          message: ":x: *supremacy-gameclient* deploy has *failed*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+          message: ":x: *supremacy-gameclient* deploy has *failed*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
         }
       }
     }
