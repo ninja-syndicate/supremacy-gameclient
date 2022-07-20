@@ -13,6 +13,8 @@ import { BT_InvestigateNoise } from "../BT_InvestigateNoise"
 import { CanActivateAction } from "@decorators/CanActivateAction"
 import { BTT_Taunt } from "@root/tasks/BTT_Taunt"
 import { Action } from "enums"
+import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveToBattleZone"
+import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 
 /**
  * The main combat behavior tree.
@@ -30,6 +32,7 @@ import { Action } from "enums"
 export const BT_Combat = new Selector({
     nodes: [
         IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
+        Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         // TODO: Need to decide priority between investigating noise and searching target.
