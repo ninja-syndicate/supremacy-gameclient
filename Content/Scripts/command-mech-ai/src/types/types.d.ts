@@ -384,6 +384,7 @@ export interface EQSResults {
     hidden?: EnvironmentQuery
     patrol?: EnvironmentQuery
     strafe?: EnvironmentQuery
+    closeStrafe?: EnvironmentQuery
 }
 
 /**
