@@ -9,7 +9,7 @@ pipeline {
     runUAT = "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Build\\BatchFiles\\RunUAT.bat"
     project = "${env.WORKSPACE}\\Supremacy.uproject"
     buildDir = "${env.WORKSPACE}\\Build"
-    configFolder = "${env.WORKSPACE}\\Windows\Supremacy\\Saved\\Config\\Windows"
+    configFolder = "${env.WORKSPACE}\\Windows\\Supremacy\\Saved\\Config\\Windows"
     configFile= "${configfolder}\\Engine.ini"
     defaultEngineFile = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
     version = """${bat(
