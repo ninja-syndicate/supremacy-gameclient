@@ -5,6 +5,8 @@ import { BTT_LookAt } from "@tasks/BTT_LookAt"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { BTT_StopMoveTo } from "@tasks/movement/BTT_StopMoveTo"
 import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
+import { ParallelBackground } from "@branches/ParallelBackground"
+import { BT_SetFocal } from "@trees/BT_SetFocal"
 
 /**
  * Behavior when AI receives a damage.
@@ -16,12 +18,21 @@ export const BT_ReceivedDamage = new Sequence({
     nodes: [
         BTT_StopMoveTo,
         BTT_LookAt("damageStimulusFocalPoint"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
-        BTT_SetValue(
-            (blackboard: AIBlackboard) =>
-                (blackboard.damageHiddenLocation = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))),
-        ),
-        BT_SearchHiddenLocation("damageHiddenLocation"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageHiddenLocation = undefined)),
-    ],
+        new ParallelBackground({
+            nodes: [
+                new Sequence({
+                    nodes: [
+                        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
+                        BTT_SetValue(
+                            (blackboard: AIBlackboard) =>
+                                (blackboard.damageHiddenLocation = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))),
+                        ),
+                        BT_SearchHiddenLocation("damageHiddenLocation"),
+                        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageHiddenLocation = undefined)),
+                    ]
+                }),
+                BT_SetFocal
+            ]
+        })
+    ]
 })

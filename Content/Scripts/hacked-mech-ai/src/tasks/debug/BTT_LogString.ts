@@ -10,8 +10,12 @@ import { AIBlackboard } from "../../blackboard"
  */
 export const BTT_LogString = (message: string) =>
     new Task({
-        run: (blackboard: AIBlackboard) => {
+        start: (blackboard: AIBlackboard) => {
             console.log(message)
+            return SUCCESS
+        },
+
+        run: (blackboard: AIBlackboard) => {
             return SUCCESS
         },
     })
