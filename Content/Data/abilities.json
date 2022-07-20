@@ -138,10 +138,13 @@
           ]
      },
      "Overcharge": {
-          "RadialDamagePercentageOfShield": 3,
-          "RadialDamageMin": 1700,
-          "RadialDamageMax": 6000,
-          "RadialDamageFriendlyFire": false,
+          "DamagePercentageOfShield": 3,
+          "DamageMin": 1700,
+          "DamageMax": 6000,
+          "DamageRadius": 10500,
+          "DamageRadiusFalloff": 1250,
+          "DamageType": 1,
+          "FriendlyFire": false,
           "SelfShieldDamagePercentage": 0
      },
      "Landmines": {
