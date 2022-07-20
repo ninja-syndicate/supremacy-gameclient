@@ -19,7 +19,7 @@ class PredicateDecorator extends Decorator {
     }
 
     condition(blackboard: AIBlackboard) {
-        return this.config.predicate(blackboard) === this.config.isMatch
+        return !!this.config.predicate(blackboard) === this.config.isMatch
     }
 }
 
@@ -42,7 +42,7 @@ export const Predicate = (
 ): Node =>
     new PredicateDecorator({
         node: node,
-        start: (node as Node).blueprint.start,
+        // start: (node as Node).blueprint.start,
         config: {
             predicate,
             isMatch,

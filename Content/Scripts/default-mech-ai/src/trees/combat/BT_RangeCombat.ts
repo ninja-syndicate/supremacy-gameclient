@@ -1,20 +1,21 @@
-import { ObserverAborts, Parallel, Selector } from "behaviortree"
-import { WeaponTag } from "../../../../types/enums"
-import { AIBlackboard } from "../../blackboard"
-import { ParallelBackground } from "../../branches/ParallelBackground"
-import { IsSet } from "../../decorators/IsSet"
-import { Predicate } from "../../decorators/Predicate"
-import { HasVeryLowTotalHealth } from "../../predicates/Predicate_HasVeryLowTotalHealth"
-import { IsOutnumbered } from "../../predicates/Predicate_IsOutnumbered"
-import { IsOutnumberingEnemies } from "../../predicates/Predicate_IsOutnumberingEnemies"
-import { TargetHasMoreTotalHealth } from "../../predicates/Predicate_TargetHasMoreTotalHealth"
-import { BTT_MoveTo } from "../../tasks/movement/BTT_MoveTo"
-import { BTT_Shoot } from "../../tasks/BTT_Shoot"
-import { BTT_Success } from "../../tasks/BTT_Success"
-import { BT_GetCover } from "../BT_GetCover"
-import { BT_GetPickup } from "../BT_GetPickup"
-import { BT_SetFocal } from "../BT_SetFocal"
-import { BT_Strafe } from "../BT_Strafe"
+import { ObserverAborts, Parallel, Selector, Sequence } from "behaviortree"
+import { WeaponTag } from "enums"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { ParallelBackground } from "@branches/ParallelBackground"
+import { IsSet } from "@decorators/IsSet"
+import { Predicate } from "@decorators/Predicate"
+import { HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
+import { IsOutnumbered } from "@predicates/Predicate_IsOutnumbered"
+import { IsOutnumberingEnemies } from "@predicates/Predicate_IsOutnumberingEnemies"
+import { TargetHasMoreTotalHealth } from "@predicates/Predicate_TargetHasMoreTotalHealth"
+import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
+import { BTT_Shoot } from "@tasks/BTT_Shoot"
+import { BTT_Success } from "@tasks/BTT_Success"
+import { BT_GetCover } from "@trees/BT_GetCover"
+import { BT_GetPickup } from "@trees/BT_GetPickup"
+import { BT_SetFocal } from "@trees/BT_SetFocal"
+import { BT_Strafe } from "@trees/BT_Strafe"
+import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -45,8 +46,9 @@ export const BT_RangeCombat = new ParallelBackground({
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
-                    // TODO: This should ideally be getting closer, not directly to target.
-                    BTT_MoveTo("targetLastKnownLocation"),
+                    new Selector({
+                        nodes: [BT_CloseStrafe, BTT_MoveTo("targetLastKnownLocation")],
+                    }),
                     (blackboard: AIBlackboard) => (!TargetHasMoreTotalHealth(blackboard) && !IsOutnumbered(blackboard)) || IsOutnumberingEnemies(blackboard),
                     true,
                     ObserverAborts.Both,

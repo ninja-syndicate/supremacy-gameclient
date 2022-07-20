@@ -1,15 +1,17 @@
 import { ObserverAborts, Selector } from "behaviortree"
-import { WeaponTag } from "../../../../types/enums"
-import { ParallelBackground } from "../../branches/ParallelBackground"
-import { IsSet } from "../../decorators/IsSet"
-import { Predicate } from "../../decorators/Predicate"
-import { HasVeryLowTotalHealth } from "../../predicates/Predicate_HasVeryLowTotalHealth"
-import { BTT_MeleeAttack } from "../../tasks/BTT_MeleeAttack"
-import { BTT_MoveTo } from "../../tasks/movement/BTT_MoveTo"
-import { BTT_Success } from "../../tasks/BTT_Success"
-import { BT_GetCover } from "../BT_GetCover"
-import { BT_GetPickup } from "../BT_GetPickup"
-import { BT_SetFocal } from "../BT_SetFocal"
+import { WeaponTag } from "enums"
+import { ParallelBackground } from "@branches/ParallelBackground"
+import { IsSet } from "@decorators/IsSet"
+import { Predicate } from "@decorators/Predicate"
+import { HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
+import { BTT_MeleeAttack } from "@tasks/BTT_MeleeAttack"
+import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
+import { BTT_Success } from "@tasks/BTT_Success"
+import { BT_GetCover } from "@trees/BT_GetCover"
+import { BT_GetPickup } from "@trees/BT_GetPickup"
+import { BT_SetFocal } from "@trees/BT_SetFocal"
+import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
+import { TargetInRange } from "@predicates/Predicate_InRange"
 
 // TODO: provide main and background properties for ParallelBackground
 /**
@@ -28,13 +30,14 @@ export const BT_CloseCombat = new ParallelBackground({
         // Main task
         BTT_MeleeAttack(WeaponTag.Melee),
 
-        // Backgorund tasks
+        // Background tasks
         BT_SetFocal,
         new Selector({
             nodes: [
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
-                BTT_MoveTo("targetLastKnownLocation", true),
+                Predicate(BTT_MoveTo("targetLastKnownLocation", true), TargetInRange(2500), false, ObserverAborts.LowerPriority),
+                BT_CloseStrafe,
                 BTT_Success,
             ],
         }),

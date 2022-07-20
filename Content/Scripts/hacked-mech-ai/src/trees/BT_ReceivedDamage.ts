@@ -1,10 +1,12 @@
 import { Sequence } from "behaviortree"
 import { AIBlackboard } from "../blackboard"
+import { ParallelBackground } from "../branches/ParallelBackground"
 import { add, multiply } from "../helper"
 import { BTT_LookAt } from "../tasks/BTT_LookAt"
 import { BTT_SetValue } from "../tasks/BTT_SetValue"
 import { BTT_StopMoveTo } from "../tasks/movement/BTT_StopMoveTo"
 import { BT_SearchHiddenLocation } from "./BT_SearchHiddenLocation"
+import { BT_SetFocal } from "./BT_SetFocal"
 
 /**
  * Behavior when AI receives a damage.
@@ -12,16 +14,25 @@ import { BT_SearchHiddenLocation } from "./BT_SearchHiddenLocation"
  * Makes the AI stop its current movement, look at its damage direction and search for the possible hidden location that damage instigator may be at.
  * Currently, not intended to be used when AI is in combat state as {@link BTT_LookAt} takes some time to rotate AI to look at the desired location.
  */
-export const BT_ReceivedDamage = new Sequence({
+ export const BT_ReceivedDamage = new Sequence({
     nodes: [
         BTT_StopMoveTo,
         BTT_LookAt("damageStimulusFocalPoint"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
-        BTT_SetValue(
-            (blackboard: AIBlackboard) =>
-                (blackboard.damageHiddenLocation = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))),
-        ),
-        BT_SearchHiddenLocation("damageHiddenLocation"),
-        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageHiddenLocation = undefined)),
-    ],
+        new ParallelBackground({
+            nodes: [
+                new Sequence({
+                    nodes: [
+                        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageStimulusFocalPoint = undefined)),
+                        BTT_SetValue(
+                            (blackboard: AIBlackboard) =>
+                                (blackboard.damageHiddenLocation = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))),
+                        ),
+                        BT_SearchHiddenLocation("damageHiddenLocation"),
+                        BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageHiddenLocation = undefined)),
+                    ]
+                }),
+                BT_SetFocal
+            ]
+        })
+    ]
 })
