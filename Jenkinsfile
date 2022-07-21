@@ -15,7 +15,7 @@ pipeline {
     defaultEngineFile = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
     zip = "C:\\Program Files\\7-Zip\\7z.exe"
     buildZipPath = "D:\\supremacy-builds-zip\\${env.BRANCH_NAME}"
-    sh = "C:\Program Files\Git\bin\sh.exe"
+    sh = "C:\\Program Files\\Git\\bin\\sh.exe"
   }
   stages {
     stage('Init'){
@@ -47,7 +47,7 @@ pipeline {
             bat """
                   setlocal
                   cd "${env.WORKSPACE}\\Plugins\\UnrealJs"
-                  sh install-v8-libs.sh
+                  "$sh" install-v8-libs.sh
                   endlocal
                 """
           }
