@@ -11,8 +11,15 @@
             },
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
+              "Radius": 20000,
+              "Time": 10,
+              "ShrinkTime": 10
+            },
+            {
+              "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 3000,
-              "Time": 0
+              "Time": 0,
+              "ShrinkTime": 5
             }
           ]
         },
@@ -26,7 +33,8 @@
             {
               "Location": { "X": -17374, "Y": -13551, "Z": -2876 },
               "Radius": 3000,
-              "Time": 0
+              "Time": 0,
+              "ShrinkTime": 10
             }
           ]
         }
