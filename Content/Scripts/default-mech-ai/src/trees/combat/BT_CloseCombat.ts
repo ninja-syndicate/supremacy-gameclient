@@ -12,6 +12,9 @@ import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 import { TargetInRange } from "@predicates/Predicate_InRange"
+import { Predicate_IsInsideBattleZone, Predicate_IsTargetInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 
 // TODO: provide main and background properties for ParallelBackground
 /**
@@ -34,9 +37,15 @@ export const BT_CloseCombat = new ParallelBackground({
         BT_SetFocal,
         new Selector({
             nodes: [
+                Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
-                Predicate(BTT_MoveTo("targetLastKnownLocation", true), TargetInRange(2500), false, ObserverAborts.LowerPriority),
+                Predicate(
+                    BTT_MoveTo("targetLastKnownLocation", true),
+                    (blackboard: AIBlackboard) => !TargetInRange(2500)(blackboard) && Predicate_IsTargetInsideBattleZone(blackboard),
+                    true,
+                    ObserverAborts.LowerPriority,
+                ),
                 BT_CloseStrafe,
                 BTT_Success,
             ],

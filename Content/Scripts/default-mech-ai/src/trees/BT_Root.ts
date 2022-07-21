@@ -13,6 +13,8 @@ import { BT_InvestigateNoise } from "@trees/BT_InvestigateNoise"
 import { BT_Patrol } from "@trees/BT_Patrol"
 import { BT_ReceivedDamage } from "@trees/BT_ReceivedDamage"
 import { AIBlackboard } from "@root/blackboards/blackboard"
+import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveToBattleZone"
+import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 
 /**
  * The root of the behavior tree for AI.
@@ -42,6 +44,7 @@ import { AIBlackboard } from "@root/blackboards/blackboard"
 export const BT_Root = new Selector({
     nodes: [
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
+        Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         CanActivateAction(Predicate(BTT_Taunt, HasLowShield, false), Action.Taunt),

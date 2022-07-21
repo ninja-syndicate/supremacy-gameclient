@@ -16,6 +16,8 @@ import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_Strafe } from "@trees/BT_Strafe"
 import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
+import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
+import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -43,6 +45,7 @@ export const BT_RangeCombat = new ParallelBackground({
         BT_SetFocal,
         new Selector({
             nodes: [
+                Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
