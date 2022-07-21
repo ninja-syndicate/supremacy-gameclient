@@ -10,7 +10,7 @@ pipeline {
     runUAT = "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Build\\BatchFiles\\RunUAT.bat"
     project = "${env.WORKSPACE}\\Supremacy.uproject"
     buildDir = "${env.WORKSPACE}\\Build"
-    configFolder = "${env.WORKSPACE}\\Windows\\Supremacy\\Saved\\Config\\Windows"
+    configFolder = "${buildDir}\\Windows\\Supremacy\\Saved\\Config\\Windows"
     configFile= "${configfolder}\\Engine.ini"
     defaultEngineFile = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
     zip = "C:\\Program Files\\7-Zip\\7z.exe"
@@ -39,7 +39,7 @@ pipeline {
         echo 'Sending notification to Slack.'
         slackSend channel: '#test-notifications', 
           color: '#4A90E2',
-          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: *${env.VERSION}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: *$env.VERSION*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         
         echo 'Setup V8'
         script {
