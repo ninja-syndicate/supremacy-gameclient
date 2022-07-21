@@ -75,7 +75,7 @@ pipeline {
         }
 
         echo 'Setup local config to DX11'
-        sh """
+        bat """
             Config\\inifile ${configFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0
             Config\\inifile ${configFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
             """
