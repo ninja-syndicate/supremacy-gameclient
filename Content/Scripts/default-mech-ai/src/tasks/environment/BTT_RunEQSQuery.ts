@@ -19,8 +19,8 @@ export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlac
     new Task({
         start: (blackboard: AIBlackboard) => {
             blackboard.eqsResults[query] = { status: EnvironmentQueryStatus.Processing }
-            AI.EQS_Query(query)
-            return SUCCESS
+            const success: boolean = AI.EQS_Query(query)
+            return success ? SUCCESS : FAILURE
         },
 
         run: (blackboard: AIBlackboard) => {
