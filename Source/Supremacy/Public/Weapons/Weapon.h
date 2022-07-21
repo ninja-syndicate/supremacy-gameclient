@@ -20,7 +20,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags", Replicated, Meta=(ExposeOnSpawn="true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags", Replicated)
     FGameplayTagContainer GameplayTagContainer;
 
 public:	
