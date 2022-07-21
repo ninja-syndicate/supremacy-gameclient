@@ -1,3 +1,4 @@
+@Library("shared-library") _
 pipeline {
   agent {
     node {
@@ -16,6 +17,13 @@ pipeline {
     buildZipPath = "D:\\supremacy-builds-zip\\${env.BRANCH_NAME}"
   }
   stages {
+    stage('Init'){
+      steps {
+        script {
+          cancelPreviousBuilds()
+        }
+      }
+    }
     stage('Build') {
       steps {
         echo 'Build stage started.'
@@ -23,7 +31,7 @@ pipeline {
           echo 'Get version'
           latestTag = bat(
                         returnStdout: true,
-                        script: 'git describe --tags --always'
+                        script: '@git describe --tags --always'
                       )
           env.VERSION = latestTag
         }
@@ -36,12 +44,7 @@ pipeline {
             echo 'V8 library setup'
             setup.bat
             """
-        echo 'V8 library setup'
-        script {
-          if (!fileExists("${env.WORKSPACE}\\Plugins\\UnrealJs\\ThirdParty\\v8\\lib\\Win64\\Release\\v8_init.lib")){
-            bat "${env.WORKSPACE}\\Plugins\\UnrealJs\\install-v8-libs.bat"
-          }
-        }
+       
         echo 'Temporarily change default config to DX11 (fix UE5 crash)'
         bat """
             Config\\inifile ${defaultEngineFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0
