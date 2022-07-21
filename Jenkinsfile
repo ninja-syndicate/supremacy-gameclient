@@ -39,7 +39,7 @@ pipeline {
         echo 'Sending notification to Slack.'
         slackSend channel: '#test-notifications', 
           color: '#4A90E2',
-          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: *${env.VERSION}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         
         echo 'Setup V8'
         script {
@@ -72,7 +72,7 @@ pipeline {
           if (!fileExists("$configFile")) {
               bat """
                   mkdir ${configFolder}
-                  type nul > ${configFile}
+                  echo -n "" > ${configFile}
                   """
           } 
         }
