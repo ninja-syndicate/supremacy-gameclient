@@ -63,8 +63,8 @@ pipeline {
         
         echo 'Revert default config back to DX12'
         bat """
-            Config\\inifile ${configFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=
-            Config\\inifile ${configFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
+            Config\\inifile ${defaultEngineFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=
+            Config\\inifile ${defaultEngineFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX12
             """
         
         echo "Create Config Folder and Engine.ini file if they don't exist"
