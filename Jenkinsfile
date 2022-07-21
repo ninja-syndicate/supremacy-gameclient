@@ -15,6 +15,7 @@ pipeline {
     defaultEngineFile = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
     zip = "C:\\Program Files\\7-Zip\\7z.exe"
     buildZipPath = "D:\\supremacy-builds-zip\\${env.BRANCH_NAME}"
+    sh = "C:\Program Files\Git\bin\sh.exe"
   }
   stages {
     stage('Init'){
@@ -40,10 +41,17 @@ pipeline {
           color: '#4A90E2',
           message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(7)}*. Version: ${env.VERSION}. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         
-        bat """
-            echo 'V8 library setup'
-            setup.bat
-            """
+        echo 'Setup V8'
+        script {
+          if (!fileExists("${env.WORKSPACE}\\Plugins\\UnrealJs\\ThirdParty\\v8\\lib\\Win64\\Release\\v8_init.lib ")){
+            bat """
+                  setlocal
+                  cd "${env.WORKSPACE}\\Plugins\\UnrealJs"
+                  sh install-v8-libs.sh
+                  endlocal
+                """
+          }
+        }
        
         echo 'Temporarily change default config to DX11 (fix UE5 crash)'
         bat """
@@ -70,7 +78,7 @@ pipeline {
         }
 
         echo 'Setup local config to DX11'
-        bat """
+        sh """
             Config\\inifile ${configFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0
             Config\\inifile ${configFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
             """
