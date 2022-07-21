@@ -160,8 +160,9 @@ declare class AIController {
      * Get results from EQS in {@link BrainInput}.
      *
      * @param query The environment query type (@see {@link EQSQueryType})
+     * @returns true if the specified EQS query succeeded and false otherwise.
      */
-    EQS_Query(query: EQSQueryType): void
+    EQS_Query(query: EQSQueryType): boolean
 
     /**
      * Removes EQS query status from {@link BrainInput.eqs}, essentially marking it as complete so you know you can run it again.
