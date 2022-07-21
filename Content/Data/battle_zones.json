@@ -1,0 +1,36 @@
+{
+  "BattleZones": {
+    "DesertCity": {
+      "configs": [
+        {
+          "zones": [
+            {
+              "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
+              "Radius": 50000,
+              "Time": 2
+            },
+            {
+              "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
+              "Radius": 3000,
+              "Time": 0
+            }
+          ]
+        },
+        {
+          "zones": [
+            {
+              "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
+              "Radius": 50000,
+              "Time": 2
+            },
+            {
+              "Location": { "X": -17374, "Y": -13551, "Z": -2876 },
+              "Radius": 3000,
+              "Time": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
