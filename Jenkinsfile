@@ -16,7 +16,7 @@ pipeline {
     zip = "C:\\Program Files\\7-Zip\\7z.exe"
     buildZipPath = "D:\\supremacy-builds-zip\\${env.BRANCH_NAME}"
     sh = "C:\\Program Files\\Git\\bin\\sh.exe"
-    verison = """${bat(
+    version = """${bat(
                   returnStdout: true,
                   script: '@git describe --tags --always'
               )}"""
