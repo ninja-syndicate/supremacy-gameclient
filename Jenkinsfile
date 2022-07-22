@@ -53,10 +53,12 @@ pipeline {
         echo 'Temporarily change default config to DX11 (fix UE5 crash)'
         bat """
             Config\\inifile ${defaultEngineFile} [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0
-            Config\\inifile ${DefaultEngineFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
+            Config\\inifile ${defaultEngineFile} [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
             """
 
-        bat "\"${runUAT}\" BuildCookRun -project=\"${project}\" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory=\"${buildDir}\" -log Log=\"${env.WORKSPACE}\\Log.txt\""
+        bat """
+            "${runUAT}" BuildCookRun -project="${project}" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory="${buildDir}\\" -log Log="${env.WORKSPACE}\\Log.txt"
+            """
         
         echo 'Revert default config back to DX12'
         bat """
