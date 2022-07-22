@@ -57,7 +57,7 @@ pipeline {
             """
 
         bat """
-            "${runUAT}" BuildCookRun -project="${project}" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory="${buildDir}\\"
+            "${runUAT}" BuildCookRun -project="${project}" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory="${buildDir}"
             """
         
         echo 'Revert default config back to DX12'
