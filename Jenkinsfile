@@ -36,7 +36,7 @@ pipeline {
         echo 'Sending notification to Slack.'
         slackSend channel: '#test-notifications', 
           color: '#4A90E2',
-          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(7)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":arrow_upper_right: *supremacy-gameclient* build has *started*. Commit: *${env.GIT_COMMIT.take(8)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         
         echo 'Setup V8'
         script {
@@ -93,20 +93,20 @@ pipeline {
           echo 'Build stage successful.'
           slackSend channel: '#test-notifications',
             color: 'good', 
-            message: ":white_check_mark: *supremacy-gameclient* build has *succeeded*. Commit: *${env.GIT_COMMIT.take(7)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+            message: ":white_check_mark: *supremacy-gameclient* build has *succeeded*. Commit: *${env.GIT_COMMIT.take(8)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
         failure {
           echo 'Build stage unsuccessful.'
           slackSend channel: '#test-notifications',
           color: 'danger', 
-          message: ":x: *supremacy-gameclient* build has *failed*. Commit: *${env.GIT_COMMIT.take(7)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
+          message: ":x: *supremacy-gameclient* build has *failed*. Commit: *${env.GIT_COMMIT.take(8)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-build>"
         }
       }
     }
     stage('Deploy'){
       steps {
         echo 'Deploy stage started.'
-        bat "\"${zip}\" a ${buildZipPath}\\${env.GIT_COMMIT.take(7)}.zip ${buildDir}"
+        bat "\"${zip}\" a ${buildZipPath}\\${env.GIT_COMMIT.take(8)}.zip ${buildDir}"
         bat "for %i in (${buildZipPath}\\*) do if not %~nxi == ${env.GIT_COMMIT.take(7)}.zip del %i"
         echo 'Deploy stage finished.'
       }
@@ -115,13 +115,13 @@ pipeline {
           echo 'Deploy stage successful.'
           slackSend channel: '#test-notifications',
             color: 'good', 
-            message: ":white_check_mark: *supremacy-gameclient* deploy has *succeeded*. Commit: *${env.GIT_COMMIT.take(7)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+            message: ":white_check_mark: *supremacy-gameclient* deploy has *succeeded*. Commit: *${env.GIT_COMMIT.take(8)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
         }
         failure {
           echo 'Deploy stage unsuccessful.'
           slackSend channel: '#test-notifications',
           color: 'danger', 
-          message: ":x: *supremacy-gameclient* deploy has *failed*. Commit: *${env.GIT_COMMIT.take(7)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
+          message: ":x: *supremacy-gameclient* deploy has *failed*. Commit: *${env.GIT_COMMIT.take(8)}*. Job name: *${env.JOB_NAME}*. Build no: *${env.BUILD_NUMBER}*. More info: <${env.BUILD_URL}|supremacy-gameclient-deploy>"
         }
       }
     }
