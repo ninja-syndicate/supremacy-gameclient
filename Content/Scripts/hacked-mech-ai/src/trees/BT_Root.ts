@@ -12,6 +12,7 @@ import { BT_GetPickup } from "./BT_GetPickup"
 import { BT_InvestigateNoise } from "./BT_InvestigateNoise"
 import { BT_Patrol } from "./BT_Patrol"
 import { BT_ReceivedDamage } from "./BT_ReceivedDamage"
+import { AIBlackboard } from "../blackboard"
 
 /**
  * The root of the behavior tree for AI.
@@ -43,7 +44,7 @@ export const BT_Root = new Selector({
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
         //IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         //Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
-        CanActivateAction(BTT_Taunt, Action.Taunt, true),
+        CanActivateAction(BTT_Taunt, Action.Taunt),
         IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
         IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),
         BT_Patrol,
