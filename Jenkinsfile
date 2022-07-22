@@ -109,7 +109,6 @@ pipeline {
       steps {
         echo 'Deploy stage started.'
         bat "\"${zip}\" a ${buildZipPath}\\${env.GIT_COMMIT.take(8)}.zip ${buildDir}"
-        bat "for %i in (${buildZipPath}\\*) do if not %~nxi == ${env.GIT_COMMIT.take(7)}.zip del %i"
         echo 'Deploy stage finished.'
       }
       post {
