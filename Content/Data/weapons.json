@@ -255,7 +255,7 @@
                "Name": "Warsui Missile Launcher",
                "Damage": 100,
                "DamageRadius": 300,
-               "Spread": 1,
+               "Spread": 800,
                "RateOfFire": 100
           },
           "Weapon_Warsui_PlasmaGun": {
