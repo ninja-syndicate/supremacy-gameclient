@@ -133,7 +133,8 @@
           "Weapon_AM_MissileLauncher": {
                "Name": "Archon Militech Missile Launcher",
                "Damage": 100,
-               "DamageRadius": 300,
+               "DamageRadius": 600,
+               "DamageType": 2,
                "Spread": 800,
                "RateOfFire": 300
           },
@@ -199,7 +200,8 @@
           "Weapon_Pyro_MissileLauncher": {
                "Name": "Pyro Missile Launcher",
                "Damage": 100,
-               "DamageRadius": 300,
+               "DamageRadius": 600,
+               "DamageType": 2,
                "Spread": 1,
                "RateOfFire": 60
           },
@@ -254,7 +256,8 @@
           "Weapon_Warsui_MissileLauncher": {
                "Name": "Warsui Missile Launcher",
                "Damage": 100,
-               "DamageRadius": 300,
+               "DamageRadius": 600,
+               "DamageType": 2,
                "Spread": 800,
                "RateOfFire": 100
           },
