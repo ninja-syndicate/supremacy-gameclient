@@ -136,7 +136,8 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 800,
-               "RateOfFire": 300
+               "RateOfFire": 45,
+               "Amount": 4
           },
           "Weapon_AM_PlasmaRifle": {
                "Name": "Archon Militech Plasma Rifle",
