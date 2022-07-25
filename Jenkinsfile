@@ -14,7 +14,7 @@ pipeline {
     configFile= "${configFolder}\\Engine.ini"
     defaultEngineFile = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
     zip = "C:\\Program Files\\7-Zip\\7z.exe"
-    buildZipPath = "D:\\supremacy-builds-zip\\${env.BRANCH_NAME}"
+    buildZipPath = "D:\\supremacy-builds-zip"
     sh = "C:\\Program Files\\Git\\bin\\sh.exe"
     version = """${bat(
                   returnStdout: true,
