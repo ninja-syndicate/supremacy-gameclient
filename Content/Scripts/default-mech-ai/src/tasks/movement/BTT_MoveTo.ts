@@ -19,10 +19,10 @@ import { IsVector } from "../../utils"
  *
  * @param {Vector} blackboardKey The location where the AI will move to
  * @param {boolean} observeBlackboardKey Whether the change in the location that AI is moving to will make a new move to request
- * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+ * @param {number} [acceptanceRadius=600] Fixed distance added to threshold between AI and goal location in destination reach test
  * @param {number} [timeout=20] The timeout before giving up. This is not implemented yet
  */
-export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 800, timeout: number = 20) =>
+export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 600, timeout: number = 20) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
             // Check if the blackboard key is a Vector.

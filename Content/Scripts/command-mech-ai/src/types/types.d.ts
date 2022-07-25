@@ -8,7 +8,7 @@ declare class AIController {
     /**
      * Move to the following location ignoring Z-axis. Will automatically path find.
      *
-     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+     * @param {number} [acceptanceRadius=525] Fixed distance added to threshold between AI and goal location in destination reach test
      * @returns true if MoveTo request succeed and false otherwise
      */
     MoveTo(x: number, y: number, acceptanceRadius?: number): boolean
@@ -18,7 +18,7 @@ declare class AIController {
      * For cases when you know the z axis.
      *
      * @param location The location to move to
-     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+     * @param {number} [acceptanceRadius=600] Fixed distance added to threshold between AI and goal location in destination reach test
      * @returns true if MoveTo request succeed and false otherwise
      */
     MoveToVector(location: Vector, acceptanceRadius?: number): boolean
