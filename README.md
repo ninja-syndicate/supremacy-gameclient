@@ -9,9 +9,10 @@ To get started, you will need to meet the prerequisites first:
 + [Unreal Engine 5](https://www.unrealengine.com/en-US/unreal-engine-5)
 + [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 
-> **_NOTE:_**  It is recommended that you have at least 100GiB of free space to install Unreal Engine 5 and clone the repository.
+> **_NOTE:_**  It is recommended that you have at least 300GiB of free space to install Unreal Engine 5 and clone the repository.
 
-While you are installing VS2019 or you have already met all those prerequisites, in the Visual Studio Installer that comes along with VS2019, modify the installation to check the following:
+While you are installing VS2019 or you have already met all those prerequisites, in the Visual Studio Installer that comes along with VS2019, modify the 
+installation to check the following:
 
 - ASP.NET and web development ✅
   - .NET Core 3.1 Runtime (LTS) ✅
@@ -23,7 +24,8 @@ And then, click install.
 
 ### Git
 
-Note that if you are using Git on Cmd or Bash, you will also need to download [Git LFS](https://git-lfs.github.com/). Install it and execute the following command on Git Cmd/Bash:
+Note that if you are using Git on Cmd or Bash, you will also need to download [Git LFS](https://git-lfs.github.com/). Install it and execute the following 
+command on Git Cmd/Bash:
 
 ```
 git lfs install
@@ -31,11 +33,16 @@ git lfs install
 
 Once Git LFS has been installed and configured by the above step, clone the repository by executing the following command:
 
+> **_NOTE:_** Cloning the repository can take very long time. If you already have a local copy of supremacy-gameclient, you can skip this clone step. If your
+> local copy of supremacy-gameclient contains auto-generated files that were built on other PC, you will need to regenerate them. See 
+> [Troubleshooting](#Troubleshooting) section on how to clean up the auto-generated files.
+
 ```
 git clone https://github.com/ninja-syndicate/supremacy-gameclient.git
 ```
 
-After the repository has been cloned, you may want to set your Git username and email by executing the following commands on the repository you have cloned to unless you have already done so.
+After the repository has been cloned, you may want to set your Git username and email by executing the following commands on the repository you have cloned to 
+unless you have already done so.
 
 ```
 git config user.name "Your Full Name"
@@ -51,19 +58,27 @@ The following Unreal Engine Plugins need to be installed. Find them in the Libra
 - Quixel Bridge
 - [BlueprintWebSocket](https://www.unrealengine.com/marketplace/en-US/product/blueprintwebsocket)
 - [JSONParser](https://www.unrealengine.com/marketplace/en-US/product/jsonparser)
-- [Object Pool Plugin](https://www.unrealengine.com/marketplace/en-US/product/object-pool-plugin)
+- [EasyBallistics Plugin](https://www.unrealengine.com/marketplace/en-US/product/easyballistics-plugin)
+- [Actor Pool Manager Plugin](https://www.unrealengine.com/marketplace/en-US/product/actor-pool-manager-plugin)
 - [Flying Navigation System](https://www.unrealengine.com/marketplace/en-US/product/flying-navigation-system)
 
-[UnrealJS](https://github.com/getnamo/UnrealJs) is also used but is included in the repo. It does however require the V8 library to be installed which can be done via `setup.bat`.
+[UnrealJS](https://github.com/getnamo/UnrealJs) is also used but is included in the repo. It does however require the V8 library to be installed which can be 
+done via `setup.bat`. If `setup.bat` doesn't work due to `sh` command not being recognised, navigate to `Plugins/UnrealJs` directory and run 
+`install-v8-libs.bat` instead.
 
-Now, simply open up Supremacy.uproject in the repository, and you are ready for the development!
+Once you have finished installing all the necessary plugins, right click `Supremacy.uproject`, click "Show More Options" if you are using Windows 11, and click
+"Generate Visual Studio Project files". Then, open the `Supremacy.sln`, click "Build" in the menu bar and click "Build Solution". Once the project is built, you
+can simply open up `Supremacy.uproject` in the repository, and you are ready for the development!
 
 ### Recommended Workflow
 #### Turn-off Editor Auto Save Option
-Since Unreal's blueprints are binary, it is recommended to turn off auto-save option in the Editor Preferences setting. Sometimes, when this auto-save option is enabled, Unreal will save blueprints that are open even if there are no changes. This can make it hard to track which files have actually changed and more time-consuming to resolve merge conflicts.
+Since Unreal's blueprints are binary, it is recommended to turn off auto-save option in the Editor Preferences setting. Sometimes, when this auto-save option is
+enabled, Unreal will save blueprints that are open even if there are no changes. This can make it hard to track which files have actually changed and more 
+time-consuming to resolve merge conflicts.
 
 #### Make a GitHub Issue and Assign Yourself
-Before making changes to the existing files or work on a new feature, make a GitHub issue if it doesn't already exist and assign yourself. This will help others know which conflicts are expected. 
+Before making changes to the existing files or work on a new feature, make a GitHub issue if it doesn't already exist and assign yourself. This will help others
+know which conflicts are expected and possibly work on something else meanwhile. 
 
 ## Keybinds
 
@@ -79,6 +94,7 @@ Before making changes to the existing files or work on a new feature, make a Git
 - **SHIFT+Q:** Possess Red Mountain Mech
 - **SHIFT+W:** Possess Boston Mech
 - **SHIFT+E:** Possess Zaibatsu Mech
+- **SHIFT+H:** Toggle Health Bars
 - **CTRL+ALT+SHIFT+BACKSPACE:** Force Crash
 - **CTRL+ALT+SHIFT+\\:** Force Not Responding
 
@@ -90,6 +106,7 @@ Before making changes to the existing files or work on a new feature, make a Git
 - **ALT+3 :** Ammo *(on random mech)*
 - **4 :** Robot Dogs
 - **5 :** Red Mountain Reinforcements
+- **SHIFT+5 :** Mini Mech
 - **6 :** Satellite Overload *(on random mech)*
 - **7 :** Landmines *(on random mech)*
 - **8 :** EMP *(on random mech)*
@@ -105,11 +122,15 @@ Before making changes to the existing files or work on a new feature, make a Git
 ## Troubleshooting
 **Missing C++ files after pulling, warnings/errors or certain things don't work**
 
-Unreal sometimes fail to recognise new C++ files if you open up the project after pulling. It sometimes works and sometimes doesn't. So if there were changes to C++ files, often you will have to rebuild the project.
+Unreal sometimes fail to recognise new C++ files if you open up the project after pulling. It sometimes works and sometimes doesn't. So if there were changes to
+C++ files, often you will have to rebuild the project.
 
 > **_NOTE:_**  Rebuilding the project can take quite some time and storage space, so it is recommended that you have sufficient disk space for it.
 
-If the problem persists even after rebuilding the project, it could be the case that existing auto-generated folders are causing conflicts. So, close Unreal and try deleting automatically generated folders in the project. These are:
+**Cleaning up auto-generated files**
+
+If the problem persists even after rebuilding the project, it could be the case that existing auto-generated folders are causing conflicts. So, close Unreal and
+try deleting automatically generated folders in the project. These are:
 
 - Binaries
 - DerivedDataCache
@@ -124,7 +145,8 @@ And then open up the project again. This will cause those folders to be re-gener
 + [Recommended Asset Naming Convention](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/AssetNaming/)
 
 ## Configs
-If you'd like to run the built game-client for development purposes, you can edit `GameUserSettings.ini` file (found in `Supremacy/Saved/Config/Windows/GameUserSettings.ini`) to reduce CPU and GPU usage:
+If you'd like to run the built game-client for development purposes, you can edit `GameUserSettings.ini` file (found in 
+`Supremacy/Saved/Config/Windows/GameUserSettings.ini`) to reduce CPU and GPU usage:
 
 <details>
   <summary>Recommended settings for <code>GameUserSettings.ini</code> <strong>(Click to expand)</strong></summary>
@@ -175,7 +197,8 @@ HDRDisplayOutputNits=1000
 </details>
 
 ## Battle Replaying
-You can emulate incoming messages from the server to "replay" a previous battle. With a list of battles commands in your clipboard you can use **CTRL+SHIFT+R** to start a match that uses them.
+You can emulate incoming messages from the server to "replay" a previous battle. With a list of battles commands in your clipboard you can use **CTRL+SHIFT+R** 
+to start a match that uses them.
 
 Each line is a battle command; starting with `BATTLE:INIT`, each line after that starts with the delay in seconds followed by a `|`.
 

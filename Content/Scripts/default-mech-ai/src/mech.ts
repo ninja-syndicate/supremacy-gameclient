@@ -1,10 +1,10 @@
 import { BehaviorTree } from "behaviortree"
 import { EnvironmentQueryStatus, InteractableTag, SoundType, WeaponTag } from "enums"
 import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, WarMachine } from "types"
-import { AIBlackboard } from "./blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
-import { AI } from "./index"
-import { BT_Root } from "./trees/BT_Root"
+import { AI } from "@root/index"
+import { BT_Root } from "@trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
 
 // TODO: some clean up
@@ -47,6 +47,7 @@ export const onBegin = (input: BrainInput) => {
             break
         }
     }
+    blackboard.currentTime = 0
     console.log(`${input.self.name} AI Started`)
 }
 
@@ -88,6 +89,7 @@ function updateBlackboard(input: BrainInput): void {
 
     // Copy over the new input for easy access.
     blackboard.input = input
+    blackboard.currentTime += input.deltaTime
 
     // Find a best target based on the current blackboard.
     const bestTarget: WarMachine = findBestTarget()
@@ -111,7 +113,7 @@ function updateBlackboardSight(): void {
     const sight: WarMachine[] = blackboard.input.perception.sight
 
     // Clear damage related information if the one that caused damage is dead.
-    if (blackboard.damageInstigatorHash !== undefined) {
+    if (typeof blackboard.damageInstigatorHash !== "undefined") {
         const idx = sight.findIndex((m) => m.hash === blackboard.damageInstigatorHash && m.health <= 0)
         if (idx !== -1) {
             clearDamageInfo()
@@ -122,13 +124,23 @@ function updateBlackboardSight(): void {
     if (!blackboard.target) return
 
     if (sight.length === 0) {
+        // Initial loss, set the target lost time.
+        if (blackboard.canSeeTarget) {
+            blackboard.targetLostSightTime = blackboard.currentTime
+        }
         blackboard.canSeeTarget = false
     } else {
         // Get the index of the current target in the sight array.
         const targetVisIndex: number = sight.findIndex((m) => m.hash === blackboard.target.hash)
+        const isTargetInSight: boolean = targetVisIndex !== -1
+
+        if (blackboard.canSeeTarget && !isTargetInSight) {
+            // Initial loss, set the target lost time.
+            blackboard.targetLostSightTime = blackboard.currentTime
+        }
 
         // Update the target information if it's in sight.
-        blackboard.canSeeTarget = targetVisIndex !== -1
+        blackboard.canSeeTarget = isTargetInSight
         if (blackboard.canSeeTarget) {
             blackboard.targetLastKnownLocation = blackboard.target.location
             blackboard.targetPredictedLocation = blackboard.target.location
@@ -136,7 +148,7 @@ function updateBlackboardSight(): void {
         }
     }
     // Calculate a new target predicted location based on its last known velocity and the time elapsed since last tick.
-    if (blackboard.targetLastKnownLocation !== undefined) {
+    if (typeof blackboard.targetLastKnownLocation !== "undefined") {
         // TODO: Project to navigation and clear if not valid when navigating.
         blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime))
     }
@@ -163,6 +175,7 @@ function updateBlackboardDamage(): void {
 
     // Update damage info using the last enemy damage details.
     const lastIdx: number = enemyDamageDetails.length - 1
+    blackboard.damageStimulusTime = blackboard.currentTime
     blackboard.damageInstigatorHash = enemyDamageDetails[lastIdx].instigatorHash
     blackboard.damageStimulusDirection = enemyDamageDetails[lastIdx].damageDirection
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))
@@ -207,7 +220,8 @@ function updateBlackboardInteractable(): void {
 
     // Clear the desired pickup location if there are no interactables.
     if (interactables.length === 0) {
-        blackboard.desiredPickupLocation = undefined
+        if (typeof blackboard.desiredPickupLocation !== "undefined") delete blackboard.desiredPickupLocation
+
         return
     }
 
@@ -349,8 +363,13 @@ export function clearBlackboardTarget(): void {
 
     blackboard.target = null
     blackboard.canSeeTarget = false
-    if (blackboard.targetLastKnownLocation !== undefined) {
+    if (typeof blackboard.targetLostSightTime !== "undefined") {
+        delete blackboard.targetLostSightTime
+    }
+    if (typeof blackboard.targetLastKnownLocation !== "undefined") {
         delete blackboard.targetLastKnownLocation
+    }
+    if (typeof blackboard.targetPredictedLocation !== "undefined") {
         delete blackboard.targetPredictedLocation
     }
 }
@@ -361,7 +380,16 @@ export function clearBlackboardTarget(): void {
 function clearDamageInfo(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    blackboard.damageInstigatorHash = undefined
-    blackboard.damageStimulusDirection = undefined
-    blackboard.damageStimulusFocalPoint = undefined
+    if (typeof blackboard.damageStimulusTime !== "undefined") {
+        delete blackboard.damageStimulusTime
+    }
+    if (typeof blackboard.damageInstigatorHash !== "undefined") {
+        delete blackboard.damageInstigatorHash
+    }
+    if (typeof blackboard.damageStimulusDirection !== "undefined") {
+        delete blackboard.damageStimulusDirection
+    }
+    if (typeof blackboard.damageStimulusFocalPoint !== "undefined") {
+        delete blackboard.damageStimulusFocalPoint
+    }
 }
