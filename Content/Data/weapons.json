@@ -134,7 +134,7 @@
                "Name": "Archon Militech Missile Launcher",
                "Damage": 100,
                "DamageRadius": 300,
-               "Spread": 0,
+               "Spread": 800,
                "RateOfFire": 300
           },
           "Weapon_AM_PlasmaRifle": {
