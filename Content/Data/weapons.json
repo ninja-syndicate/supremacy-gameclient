@@ -57,7 +57,8 @@
                "DamageType": 2,
                "Spread": 1500,
                "ProjectileSpeed": 50000,
-               "RateOfFire": 2
+               "RateOfFire": 2,
+               "IsArced": true
           },
           "SniperRifle": {
                "Name": "Sniper Rifle",
@@ -128,14 +129,19 @@
                "Name": "Archon Militech Minigun",
                "Damage": 6,
                "Spread": 5,
-               "RateOfFire": 6000
+               "RateOfFire": 6000,
+               "ChargeTime": 2
           },
           "Weapon_AM_MissileLauncher": {
                "Name": "Archon Militech Missile Launcher",
                "Damage": 100,
-               "DamageRadius": 300,
-               "Spread": 1,
-               "RateOfFire": 100
+               "DamageRadius": 600,
+               "DamageType": 2,
+               "Spread": 800,
+               "RateOfFire": 45,
+               "BurstRateOfFire": 900,
+               "Amount": 4,
+               "IsArced": true
           },
           "Weapon_AM_PlasmaRifle": {
                "Name": "Archon Militech Plasma Rifle",
@@ -188,7 +194,8 @@
                "Name": "Pyro Minigun",
                "Damage": 6,
                "Spread": 5,
-               "RateOfFire": 6000
+               "RateOfFire": 6000,
+               "ChargeTime": 2
           },
           "Weapon_Pyro_PlasmaGun": {
                "Name": "Pyro Plasma Gun",
@@ -199,9 +206,12 @@
           "Weapon_Pyro_MissileLauncher": {
                "Name": "Pyro Missile Launcher",
                "Damage": 100,
-               "DamageRadius": 300,
+               "DamageRadius": 600,
+               "DamageType": 2,
                "Spread": 1,
-               "RateOfFire": 60
+               "RateOfFire": 60,
+               "Amount": 4,
+               "BurstRateOfFire": 1000
           },
           "Weapon_Pyro_Shotgun": {
                "Name": "Pyro Shotgun",
@@ -249,14 +259,18 @@
                "Name": "Warsui Minigun",
                "Damage": 6,
                "Spread": 5,
-               "RateOfFire": 6000
+               "RateOfFire": 6000,
+               "ChargeTime": 2
           },
           "Weapon_Warsui_MissileLauncher": {
                "Name": "Warsui Missile Launcher",
                "Damage": 100,
-               "DamageRadius": 300,
-               "Spread": 1,
-               "RateOfFire": 100
+               "DamageRadius": 600,
+               "DamageType": 2,
+               "Spread": 3,
+               "RateOfFire": 30,
+               "BurstRateOfFire": 1200,
+               "Amount": 8
           },
           "Weapon_Warsui_PlasmaGun": {
                "Name": "Warsui Plasma Gun",
