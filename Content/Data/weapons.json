@@ -112,7 +112,8 @@
           "Weapon_AM_GrenadeLauncher": {
                "Name": "AM Grenade Launcher",
                "Damage": 200,
-               "RateOfFire": 60
+               "RateOfFire": 120,
+               "IsArced": true
           },
           "Weapon_AM_LaserBeam": {
                "Name": "Archon Militech Laser Beam",
@@ -172,7 +173,8 @@
           "Weapon_Pyro_GrenadeLauncher": {
                "Name": "Pyro Grenade Launcher",
                "Damage": 200,
-               "RateOfFire": 60
+               "RateOfFire": 60,
+               "IsArced": true
           },
           "Weapon_Pyro_LaserBeam": {
                "Name": "Pyro Laser Beam",
@@ -237,7 +239,8 @@
           "Weapon_Warsui_GrenadeLauncher": {
                "Name": "Warsui Grenade Launcher",
                "Damage": 200,
-               "RateOfFire": 60
+               "RateOfFire": 60,
+               "IsArced": true
           },
           "Weapon_Warsui_LaserBeam": {
                "Name": "Warsui Laser Beam",
