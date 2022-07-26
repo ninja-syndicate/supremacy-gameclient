@@ -7,8 +7,9 @@
           "Spread": 3000,
           "DelayMin": 0.03,
           "DelayMax": 0.15,
-          "JetSpeed": 120000,
+          "JetSpeed": 60000,
           "AngleDistanceOffset": 30000,
+          "SpawnDistance": 50000,
           "FriendlyFire": false,
           "SpreadInRangeA": 3000,
           "SpreadInRangeB": 30000,
@@ -137,10 +138,13 @@
           ]
      },
      "Overcharge": {
-          "RadialDamagePercentageOfShield": 3,
-          "RadialDamageMin": 1700,
-          "RadialDamageMax": 6000,
-          "RadialDamageFriendlyFire": false,
+          "DamagePercentageOfShield": 3,
+          "DamageMin": 1700,
+          "DamageMax": 6000,
+          "DamageRadius": 10500,
+          "DamageRadiusFalloff": 1250,
+          "DamageType": 1,
+          "FriendlyFire": false,
           "SelfShieldDamagePercentage": 0
      },
      "Landmines": {

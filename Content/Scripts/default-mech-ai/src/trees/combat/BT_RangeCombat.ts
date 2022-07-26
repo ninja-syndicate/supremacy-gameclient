@@ -1,4 +1,4 @@
-import { ObserverAborts, Parallel, Selector } from "behaviortree"
+import { ObserverAborts, Parallel, Selector, Sequence } from "behaviortree"
 import { WeaponTag } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { ParallelBackground } from "@branches/ParallelBackground"
@@ -15,6 +15,9 @@ import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_Strafe } from "@trees/BT_Strafe"
+import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
+import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
+import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -42,11 +45,13 @@ export const BT_RangeCombat = new ParallelBackground({
         BT_SetFocal,
         new Selector({
             nodes: [
+                Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
-                    // TODO: This should ideally be getting closer, not directly to target.
-                    BTT_MoveTo("targetLastKnownLocation"),
+                    new Selector({
+                        nodes: [BT_CloseStrafe, BTT_MoveTo("targetLastKnownLocation")],
+                    }),
                     (blackboard: AIBlackboard) => (!TargetHasMoreTotalHealth(blackboard) && !IsOutnumbered(blackboard)) || IsOutnumberingEnemies(blackboard),
                     true,
                     ObserverAborts.Both,

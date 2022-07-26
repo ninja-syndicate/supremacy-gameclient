@@ -18,7 +18,7 @@ declare class AIController {
      * For cases when you know the z axis.
      *
      * @param location The location to move to
-     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+     * @param {number} [acceptanceRadius=600] Fixed distance added to threshold between AI and goal location in destination reach test
      * @returns true if MoveTo request succeed and false otherwise
      */
     MoveToVector(location: Vector, acceptanceRadius?: number): boolean
@@ -160,8 +160,9 @@ declare class AIController {
      * Get results from EQS in {@link BrainInput}.
      *
      * @param query The environment query type (@see {@link EQSQueryType})
+     * @returns true if the specified EQS query succeeded and false otherwise.
      */
-    EQS_Query(query: EQSQueryType): void
+     EQS_Query(query: EQSQueryType): boolean
 
     /**
      * Removes EQS query status from {@link BrainInput.eqs}, essentially marking it as complete so you know you can run it again.
@@ -379,6 +380,7 @@ export interface EQSResults {
     hidden?: EnvironmentQuery
     patrol?: EnvironmentQuery
     strafe?: EnvironmentQuery
+    closeStrafe?: EnvironmentQuery
 }
 
 /**
