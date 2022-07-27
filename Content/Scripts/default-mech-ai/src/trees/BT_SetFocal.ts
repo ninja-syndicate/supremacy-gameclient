@@ -25,6 +25,7 @@ export const BT_SetFocal = new Selector({
         Predicate(BTT_SetFocalPoint("damageStimulusFocalPoint"), Predicate_FocusToDamage, true, ObserverAborts.LowerPriority),
         IsSet(BTT_SetFocalPoint("targetPredictedLocation"), "targetPredictedLocation", true, ObserverAborts.LowerPriority),
         IsSet(BTT_SetFocalPoint("targetLastKnownLocation"), "targetLastKnownLocation", true, ObserverAborts.LowerPriority),
+        // TODO: Also consider sound.
         // TODO: This success can be removed if ForceSuccess decorator worked.
         BTT_Success,
     ],
