@@ -90,11 +90,11 @@
           },
           "Weapon_AM_BFG": {
                "Name": "Archon Militech BFG",
-               "Damage": 800,
+               "Damage": 1200,
                "DamageRadius": 1000,
                "DamageType": 2,
                "Spread": 6,
-               "ProjectileSpeed": 2000,
+               "ProjectileSpeed": 10000,
                "RateOfFire": 20,
                "ChargeTime": 3
           },
