@@ -23,7 +23,7 @@ export const BT_Patrol = new ParallelBackground({
                 BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.GridSize, (blackboard: AIBlackboard) => 15000),
                 BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.SpaceBetween, (blackboard: AIBlackboard) => 1000),
                 BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),
-                // BTT_SetFocalPoint("patrolLocation"),
+                BTT_SetFocalPoint("patrolLocation"),
                 BTT_MoveTo("patrolLocation"),
                 BTT_SetValue((blackboard: AIBlackboard) => (blackboard.patrolLocation = undefined)),
             ],
