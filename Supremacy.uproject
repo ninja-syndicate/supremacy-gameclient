@@ -89,6 +89,10 @@
 		{
 			"Name": "ReplayTracks",
 			"Enabled": true
+		},
+		{
+			"Name": "ImagePlate",
+			"Enabled": true
 		}
 	]
 }

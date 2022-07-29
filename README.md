@@ -94,6 +94,7 @@ know which conflicts are expected and possibly work on something else meanwhile.
 - **SHIFT+Q:** Possess Red Mountain Mech
 - **SHIFT+W:** Possess Boston Mech
 - **SHIFT+E:** Possess Zaibatsu Mech
+- **SHIFT+H:** Toggle Health Bars
 - **CTRL+ALT+SHIFT+BACKSPACE:** Force Crash
 - **CTRL+ALT+SHIFT+\\:** Force Not Responding
 
