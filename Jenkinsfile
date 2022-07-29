@@ -1,5 +1,4 @@
 @Library("shared-library") _
-def plasticVars
 pipeline {
   agent {
     node {
@@ -14,13 +13,13 @@ pipeline {
     CONFIG_FOLDER = "${BUILD_DIR}\\Windows\\Supremacy\\Saved\\Config\\Windows"
     CONFIG_FILE = "${CONFIG_FOLDER}\\Engine.ini"
     DEFAULT_ENGINE_FILE = "${env.WORKSPACE}\\Config\\DefaultEngine.ini"
-    7ZIP_EXE = "C:\\Program Files\\7-Zip\\7z.exe"
+    ZIP_EXE = "C:\\Program Files\\7-Zip\\7z.exe"
     ZIP_FOLDER = "D:\\supremacy-builds-zip"
     SH_EXE = "C:\\Program Files\\Git\\bin\\sh.exe"
 
   }
   stages {
-    stage(' Cancel previous builds') {
+    stage('Cancel previous builds') {
       steps {
         script {
           cancelPreviousBuilds()
@@ -104,7 +103,7 @@ pipeline {
     stage('Deploy'){
       steps {
         echo 'Deploy staging started.'
-        bat "\"${7ZIP_EXE}\" a ${ZIP_FOLDER}\\${env.GIT_COMMIT.take(8)}.zip ${BUILD_DIR}"
+        bat "\"${ZIP_EXE}\" a ${ZIP_FOLDER}\\${env.GIT_COMMIT.take(8)}.zip ${BUILD_DIR}"
         echo 'Deploy stage finished.'
       }
       post {
