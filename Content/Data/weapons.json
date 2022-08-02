@@ -119,8 +119,8 @@
           },
           "Weapon_AM_LaserBeam": {
                "Name": "Archon Militech Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_AM_MachineGun": {
                "Name": "Archon Militech Machine Gun",
@@ -180,13 +180,13 @@
           },
           "Weapon_Pyro_LaserBeam": {
                "Name": "Pyro Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Pyro_LightningGun": {
                "Name": "Pyro Lightning Gun",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Pyro_MachineGun": {
                "Name": "Pyro Machine Gun",
@@ -246,13 +246,13 @@
           },
           "Weapon_Warsui_LaserBeam": {
                "Name": "Warsui Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Warsui_LightningGun": {
                "Name": "Warsui Lightning Gun",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Warsui_MachineGun": {
                "Name": "Warsui Machinegun",
