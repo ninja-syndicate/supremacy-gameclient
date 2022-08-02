@@ -95,6 +95,7 @@ know which conflicts are expected and possibly work on something else meanwhile.
 - **SHIFT+W:** Possess Boston Mech
 - **SHIFT+E:** Possess Zaibatsu Mech
 - **SHIFT+H:** Toggle Health Bars
+- **SHIFT+z:** Force Next Battle Zone
 - **CTRL+ALT+SHIFT+BACKSPACE:** Force Crash
 - **CTRL+ALT+SHIFT+\\:** Force Not Responding
 
