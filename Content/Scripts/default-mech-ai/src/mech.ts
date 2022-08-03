@@ -228,7 +228,10 @@ function updateBlackboardInteractable(): void {
     // Otherwise find the best pickup and update desired pickup location.
     const bestPickup = findBestPickup()
     if (bestPickup !== undefined) {
-        blackboard.desiredPickupLocation = bestPickup.location
+        const isNavigable: boolean = AI.IsNavigable(bestPickup.location)
+        if (isNavigable) {
+            blackboard.desiredPickupLocation = bestPickup.location
+        }
     }
 }
 

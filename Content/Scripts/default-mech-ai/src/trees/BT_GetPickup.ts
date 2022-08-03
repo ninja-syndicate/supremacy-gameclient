@@ -21,7 +21,6 @@ export const BT_GetPickup = new ParallelBackground({
     nodes: [
         new Sequence({
             nodes: [
-                // Force success to clear the desired pickup location if not navigable.
                 new Selector({
                     nodes: [
                         Predicate(
@@ -30,7 +29,6 @@ export const BT_GetPickup = new ParallelBackground({
                             true,
                             ObserverAborts.Self,
                         ),
-                        BTT_Success,
                     ],
                 }),
                 BTT_SetValue((blackboard: AIBlackboard) => (blackboard.desiredPickupLocation = undefined)),
