@@ -141,6 +141,7 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 800,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 45,
                "BurstRateOfFire": 900,
                "Amount": 4,
@@ -213,6 +214,7 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 1,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 60,
                "Amount": 4,
                "BurstRateOfFire": 1000
@@ -273,6 +275,7 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 3,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 30,
                "BurstRateOfFire": 1200,
                "Amount": 8
