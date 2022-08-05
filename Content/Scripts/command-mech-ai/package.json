@@ -18,7 +18,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "behaviortree": "github:Torrunt/BehaviorTree#observer_aborts",
+    "behaviortree": "github:Torrunt/BehaviorTree",
     "vec3": "^0.1.7"
   }
 }

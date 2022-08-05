@@ -28,7 +28,7 @@ export const BT_CanSeeTarget = new Selector({
             (blackboard: AIBlackboard) =>
                 blackboard.canMelee &&
                 typeof blackboard.targetLastKnownLocation !== "undefined" &&
-                distanceToVec(blackboard.input.self.location, blackboard.targetLastKnownLocation) <= 4000,
+                distanceToVec(blackboard.input.self.location, blackboard.targetLastKnownLocation) <= 3000,
             true,
             ObserverAborts.Both,
         ),
