@@ -93,10 +93,4 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-STOP RESPONDING-", DisplayName = "Stop Responding"))
 	static void StopResponding();
-
-	/**
-	 * Assumes that CurrentVector and TargetVector are normalized.
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Math Helper")
-	static FQuat GetLookAtQuat(FVector CurrentVector, FVector TargetVector, float ClampAngleInDegrees);
 };
