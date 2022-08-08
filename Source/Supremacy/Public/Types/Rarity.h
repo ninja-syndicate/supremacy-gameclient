@@ -3,10 +3,10 @@
 #include "CoreMinimal.h"
 #include "Rarity.generated.h"
 
-UENUM()
-enum ERarity
+UENUM(BlueprintType)
+enum class ERarity : uint8
 {
-	Rarity_Default UMETA(DisplayName = "Default"),
+	Rarity_Default = 0 UMETA(DisplayName = "Default"),
 	Rarity_Mega UMETA(DisplayName = "Mega"),
 	Rarity_Colossal UMETA(DisplayName = "Colossal"),
 	Rarity_Rare UMETA(DisplayName = "Rare"),

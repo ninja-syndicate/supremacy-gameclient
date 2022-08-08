@@ -67,7 +67,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="skin"))
 	FString Skin;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="rarity"))
-	TEnumAsByte<ERarity> Rarity;
+	ERarity Rarity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="weapons"))
 	TArray<FWeaponStruct> Weapons;
@@ -94,6 +94,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="stats"))
 	FWarMachineStats Stats;
 
-	FWarMachineStruct(): Rarity(Rarity_Default), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0)
+	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0)
 	{}
 };
