@@ -25,6 +25,7 @@ export interface AIBlackboard {
     heardNoise: boolean
     noiseLocation?: Vector
     lastHitLocation?: Vector
+    lastWeaponNoiseLocation: Vector
 
     lookAtLocation?: Vector
 
