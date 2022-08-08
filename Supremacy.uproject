@@ -89,6 +89,13 @@
 		{
 			"Name": "ReplayTracks",
 			"Enabled": true
+		},
+		{
+			"Name": "AppleProResMedia",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
 		}
 	]
 }

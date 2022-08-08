@@ -16,3 +16,6 @@ Build
 .idea
 Plugins/Developer/
 node_modules/
+Content/Maps/TheHive.umap
+Content/Maps/AITestMap.umap
+Content/Default_level_Sequence.uasset
