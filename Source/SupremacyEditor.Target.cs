@@ -10,6 +10,10 @@ public class SupremacyEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
+		// Changes in the plugin may not get detected if adaptive unity build is enabled.
+		// This works in Perforce, but not for Git.
+		bUseAdaptiveUnityBuild = false;
+
 		ExtraModuleNames.AddRange( new string[] { "Supremacy" } );
-	}
+    }
 }
