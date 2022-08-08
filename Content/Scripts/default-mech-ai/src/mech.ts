@@ -6,6 +6,7 @@ import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "@root/index"
 import { BT_Root } from "@trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
+import { Sound } from "@root/Sound"
 
 // TODO: some clean up
 // TODO: handle signaling.
@@ -205,7 +206,7 @@ function updateBlackboardSound(): void {
     const lastWeaponIdx: number = enemyWeaponSounds.length - 1
     const lastTauntIdx: number = enemyTauntSounds.length - 1
     if (lastWeaponIdx >= 0) {
-        blackboard.lastWeaponNoiseLocation = enemyWeaponSounds[lastWeaponIdx].location
+        blackboard.lastWeaponNoise = new Sound(enemyWeaponSounds[lastWeaponIdx].location, blackboard.currentTime)
     }
     if (lastTauntIdx >= 0) {
         // Update the last noise location to the last enemy taunt noise location.
