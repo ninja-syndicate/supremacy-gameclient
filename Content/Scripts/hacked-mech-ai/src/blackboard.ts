@@ -1,5 +1,6 @@
 import { EQSQueryType } from "enums"
 import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
+import { Sound } from "./sound"
 
 // TODO: some clean up and documentation for each property maybe
 /**
@@ -25,6 +26,7 @@ export interface AIBlackboard {
     heardNoise: boolean
     noiseLocation?: Vector
     lastHitLocation?: Vector
+    lastWeaponNoise: Sound
 
     lookAtLocation?: Vector
 
