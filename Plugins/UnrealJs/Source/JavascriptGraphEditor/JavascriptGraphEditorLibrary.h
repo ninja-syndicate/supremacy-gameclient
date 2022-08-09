@@ -141,16 +141,7 @@ struct FJavascriptPerformSecondPassLayoutContainer
 	UPROPERTY()
 	int32 MaxNodes;
 
-	FJavascriptPerformSecondPassLayoutContainer()
-	{
-		PrevNode = nullptr;
-		NextNode = nullptr;
-		NodeIndex = 0;
-		MaxNodes = 0;
-	}
-	
-	FJavascriptPerformSecondPassLayoutContainer(UEdGraphNode* PrevNode, UEdGraphNode* NextNode, const int32 NodeIndex, const int32 MaxNodes)
-		: PrevNode(PrevNode), NextNode(NextNode), NodeIndex(NodeIndex), MaxNodes(MaxNodes) {}
+	FJavascriptPerformSecondPassLayoutContainer();
 };
 
 USTRUCT(BlueprintType)
@@ -202,15 +193,8 @@ struct FJavascriptGraphMenuBuilder : public FJavascriptMenuBuilder
 
 	UPROPERTY(BlueprintReadWrite, Category = "Javascript | Editor")
 	bool bIsDebugging;
-
-	FJavascriptGraphMenuBuilder()
-	{
-		Graph = nullptr;
-		GraphNode = nullptr;
-		bIsDebugging = false;
-	}
 	
-	FJavascriptGraphMenuBuilder(const UEdGraph* Graph, const UEdGraphNode* GraphNode, const FJavascriptEdGraphPin GraphPin, const bool IsDebugging) : Graph(Graph), GraphNode(GraphNode), GraphPin(GraphPin), bIsDebugging(IsDebugging) {}
+	FJavascriptGraphMenuBuilder();
 };
 
 USTRUCT(BlueprintType)
@@ -223,13 +207,7 @@ struct FJavascriptNodeCreator
 
 	TSharedPtr<class IJavascriptGraphNodeCreator> Instance;
 
-	FJavascriptNodeCreator()
-	{
-		Node = nullptr;
-	}
-	
-	FJavascriptNodeCreator(UJavascriptGraphEdNode* Node, TSharedPtr<class IJavascriptGraphNodeCreator> Instance)
-		: Node(Node), Instance(Instance) {}
+	FJavascriptNodeCreator();
 };
 
 USTRUCT(BlueprintType)

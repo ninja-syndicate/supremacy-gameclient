@@ -144,7 +144,7 @@
                "ProjectileSpeed": 50000,
                "RateOfFire": 45,
                "BurstRateOfFire": 900,
-               "Amount": 4,
+               "ProjectileAmount": 4,
                "IsArced": true
           },
           "Weapon_AM_PlasmaRifle": {
@@ -158,7 +158,7 @@
                "Damage": 6,
                "Spread": 8,
                "RateOfFire": 100,
-               "Amount": 12
+               "ProjectileAmount": 12
           },
           "Weapon_Pyro_Cannon": {
                "Name": "Pyro Cannon",
@@ -216,7 +216,7 @@
                "Spread": 1,
                "ProjectileSpeed": 50000,
                "RateOfFire": 60,
-               "Amount": 4,
+               "ProjectileAmount": 4,
                "BurstRateOfFire": 1000
           },
           "Weapon_Pyro_Shotgun": {
@@ -224,7 +224,7 @@
                "Damage": 8,
                "Spread": 8,
                "RateOfFire": 80,
-               "Amount": 12
+               "ProjectileAmount": 12
           },
           "Weapon_Warsui_Cannon": {
                "Name": "Warsui Cannon",
@@ -238,7 +238,7 @@
                "Damage": 5,
                "Spread": 8,
                "RateOfFire": 100,
-               "Amount": 20
+               "ProjectileAmount": 20
           },
           "Weapon_Warsui_GrenadeLauncher": {
                "Name": "Warsui Grenade Launcher",
@@ -278,7 +278,7 @@
                "ProjectileSpeed": 50000,
                "RateOfFire": 30,
                "BurstRateOfFire": 1200,
-               "Amount": 8
+               "ProjectileAmount": 8
           },
           "Weapon_Warsui_PlasmaGun": {
                "Name": "Warsui Plasma Gun",
