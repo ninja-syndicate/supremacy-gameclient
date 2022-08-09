@@ -57,6 +57,8 @@ struct FPerformActionContext
 
 	UPROPERTY()
 	bool bSelectNewNode;
+
+	FPerformActionContext();
 };
 
 UCLASS(MinimalAPI)
