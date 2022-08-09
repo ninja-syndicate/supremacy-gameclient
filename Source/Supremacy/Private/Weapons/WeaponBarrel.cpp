@@ -101,13 +101,19 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 
 		ApplyRecoil(Parent, OutLocation, -Velocity * Default->Mass * RecoilMultiplier);
 	}
-	
-	//UGameplayStatics::SuggestProjectileVelocity_CustomArc(GetWorld(), Velocity, LocalLocation, )
 
 	BeforeShotFired.Broadcast();
 
 	AActor* Owner = GetOwner();
 
+	// Arc
+	if (IsArced)
+	{
+		const FVector EndPos = UKismetMathLibrary::RandomPointInBoundingBox(CurrentTargetLocation, FVector(Spread));
+		UGameplayStatics::SuggestProjectileVelocity_CustomArc(GetWorld(), Velocity, OutLocation, EndPos, Default->Gravity.Z, ArcParam);
+	}
+
+	// Spawn Projectiles
 	if (ProjectileAmount > 0 && BurstFireRate == 0)
 	{
 		// Shotgun

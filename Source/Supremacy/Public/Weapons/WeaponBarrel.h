@@ -29,9 +29,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Fire rate inside a burst, rounds per minute. 0 = Non-burst weapon.")) float BurstFireRate = 0.0f;
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, Category = "Weapon") bool ShootingBlocked;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "If true; projectiles will arc towards TargetLocation.")) bool IsArced = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "If true; projectiles will arc towards CurrentTargetLocation.")) bool IsArced = false;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "Optional override of WorldGravityZ for calculating arc. If 0; will use projectile's gravity.")) float ArcOverrideGravityZ = 0;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "Change height of arc between 0.0-1.0 where 0.5 is the default medium arc, 0 is up, and 1 is directly toward TargetLocation.")) float ArcParam = 0.5;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "Change height of arc between 0.0-1.0 where 0.5 is the default medium arc, 0 is up, and 1 is directly toward CurrentTargetLocation.")) float ArcParam = 0.5;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "World location that projectile will land at when arcing.")) FVector CurrentTargetLocation;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Number of projectiles spawned per shot")) int ProjectileAmount = 1;
 
