@@ -70,18 +70,7 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 			//shoot when ready
 			if (Shooting && (!ShootingBlocked) && Cooldown <= 0)
 			{
-				if (ProjectileAmount > 0 && BurstFireRate == 0)
-				{
-					// Shotgun
-					for (int i = 0; i < ProjectileAmount; i++)
-					{
-						SpawnBullet(Location, Aim);
-					}
-				}
-				else
-				{
-					SpawnBullet(Location, Aim);
-				}
+				SpawnBullet(Location, Aim);
 			}
 		}
 		while (RemainingDelta > 0 && Cooldown > 0);
@@ -100,13 +89,10 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 	const AEBBullet* Default = Cast<AEBBullet>(Ammo->GetDefaultObject());
 
 	OutAim = RandomStream.VRandCone(OutAim, Spread + Default->Spread);
-	FVector Velocity = OutAim * MuzzleVelocityMultiplier;
+	FVector Velocity = OutAim * MuzzleVelocityMultiplier + AdditionalVelocity;
 
-	//get parent physics body
-	UPrimitiveComponent* Parent = Cast<UPrimitiveComponent>(GetAttachParent());
-	Velocity += AdditionalVelocity;
-
-	if (Parent != nullptr)
+	// get parent physics body
+	if (UPrimitiveComponent* Parent = Cast<UPrimitiveComponent>(GetAttachParent()); Parent != nullptr)
 	{
 		if (Parent->IsSimulatingPhysics())
 		{
@@ -121,10 +107,23 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 	BeforeShotFired.Broadcast();
 
 	AActor* Owner = GetOwner();
-	AEBBullet::SpawnWithExactVelocity(Ammo, Owner, Owner->GetInstigator(), OutLocation, Velocity);
+
+	if (ProjectileAmount > 0 && BurstFireRate == 0)
+	{
+		// Shotgun
+		for (int i = 0; i < ProjectileAmount; i++)
+		{
+			AEBBullet::SpawnWithExactVelocity(Ammo, Owner, Owner->GetInstigator(), OutLocation, Velocity);
+
+			OutAim = RandomStream.VRandCone(OutAim, Spread + Default->Spread);
+			Velocity = OutAim * MuzzleVelocityMultiplier + AdditionalVelocity;
+		}
+	} else
+	{
+		AEBBullet::SpawnWithExactVelocity(Ammo, Owner, Owner->GetInstigator(), OutLocation, Velocity);
+	}
 
 	Cooldown = 60.0f / FireRate;
-	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("Cooldown: %f"), Cooldown));
 	
 	if (ReplicateShotFiredEvents)
 	{
