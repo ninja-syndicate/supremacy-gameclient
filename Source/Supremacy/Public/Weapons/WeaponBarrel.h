@@ -23,8 +23,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Amount of recoil applied to the barrel, only works with physics enabled")) float RecoilMultiplier = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Additional velocity, for use with InheritVelocity")) FVector AdditionalVelocity = FVector(0,0,0);
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Additional maximum spread, in radians, applied on top of bullet spread", ClampMin = "0")) float Spread=0.0f;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Additional Spread bias, higher is more accurate on average", ClampMin = "0")) float SpreadBias = 0.0f;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Additional Spread, applied on top of bullet spread", ClampMin = "0")) float Spread=0.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Multiplier applied to bullet muzzle velocity")) float MuzzleVelocityMultiplier = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Fire rate, rounds per minute")) float FireRate = 60.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Fire rate inside a burst, rounds per minute. 0 = Non-burst weapon.")) float BurstFireRate = 0.0f;
@@ -52,6 +51,8 @@ public:
 	FRandomStream RandomStream;
 
 	UFUNCTION(BlueprintCallable, Category = "Shooting") void Shoot(const bool Trigger);
+	UFUNCTION(BlueprintCallable, Category = "Shooting", meta=(ToolTip="Manually spawn a bullet at location with direction.")) void SpawnBullet(const FVector InLocation, const FVector InDirection);
+	UFUNCTION(BlueprintCallable, Category = "Shooting", meta=(ToolTip="Manually spawn a bullet from the barrel.")) void SpawnBulletFromBarrel();
 
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "IgnoredActors"), Category = "Prediction") void PredictHit(bool& Hit, FHitResult& HitResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TSubclassOf<class AEBBullet> BulletClass, const TArray<AActor*>IgnoredActors, const float MaxTime = 10.0f, const float Step = 0.1f) const;
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "IgnoredActors"), Category = "Prediction") void PredictHitFromLocation(bool &Hit, FHitResult& TraceResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TSubclassOf<class AEBBullet> BulletClass, const FVector StartLocation, const FVector AimDirection, const TArray<AActor*>IgnoredActors, const float MaxTime = 10.0f, const float Step = 0.1f) const;
@@ -82,8 +83,6 @@ public:
 #endif
 
 private:
-	void SpawnBullet(AActor* Owner, const FVector LocalLocation, const FVector LocalAim);
-
 	UFUNCTION(Server, Unreliable, WithValidation) void ClientAim(const FVector_NetQuantize NewLocation, const FVector_NetQuantizeNormal NewAim);
 	UFUNCTION(Server, Reliable, WithValidation) void ShootRep(const bool Trigger);
 	UFUNCTION(Server, Reliable, WithValidation) void ShootRepCSA(const bool Trigger, const FVector_NetQuantize NewLocation, const FVector_NetQuantizeNormal NewAim);

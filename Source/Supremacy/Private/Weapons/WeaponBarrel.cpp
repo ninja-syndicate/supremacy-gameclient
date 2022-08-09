@@ -68,19 +68,19 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 			RemainingDelta -= Step;
 
 			//shoot when ready
-			if (Shooting && (!ShootingBlocked))
+			if (Shooting && (!ShootingBlocked) && Cooldown <= 0)
 			{
-				if (ProjectileAmount > 0 &&  BurstFireRate == 0)
+				if (ProjectileAmount > 0 && BurstFireRate == 0)
 				{
 					// Shotgun
 					for (int i = 0; i < ProjectileAmount; i++)
 					{
-						SpawnBullet(GetOwner(), Location, Aim);
+						SpawnBullet(Location, Aim);
 					}
 				}
 				else
 				{
-					SpawnBullet(GetOwner(), Location, Aim);
+					SpawnBullet(Location, Aim);
 				}
 			}
 		}
@@ -88,25 +88,18 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 	}
 }
 
-void UWeaponBarrel::SpawnBullet(AActor* Owner, const FVector LocalLocation, const FVector LocalAim)
+void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirection)
 {
+	if (!Ammo) return;
+	
 	FVector OutLocation;
 	FVector OutAim;
 
-	InitialBulletTransform(LocalLocation, LocalAim, OutLocation, OutAim);
+	InitialBulletTransform(InLocation, InDirection, OutLocation, OutAim);
 
 	const AEBBullet* Default = Cast<AEBBullet>(Ammo->GetDefaultObject());
 
-	float BarrelSpread = Spread;
-	if (SpreadBias > 0.0f)
-	{
-		const float SpreadMulti = FMath::Pow(FMath::FRand(), SpreadBias);
-		BarrelSpread *= SpreadMulti;
-	}
-
-	const float TotalSpread = BarrelSpread;
-
-	OutAim = RandomStream.VRandCone(OutAim, TotalSpread);
+	OutAim = RandomStream.VRandCone(OutAim, Spread + Default->Spread);
 	FVector Velocity = OutAim * MuzzleVelocityMultiplier;
 
 	//get parent physics body
@@ -127,9 +120,11 @@ void UWeaponBarrel::SpawnBullet(AActor* Owner, const FVector LocalLocation, cons
 
 	BeforeShotFired.Broadcast();
 
+	AActor* Owner = GetOwner();
 	AEBBullet::SpawnWithExactVelocity(Ammo, Owner, Owner->GetInstigator(), OutLocation, Velocity);
 
 	Cooldown = 60.0f / FireRate;
+	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("Cooldown: %f"), Cooldown));
 	
 	if (ReplicateShotFiredEvents)
 	{
@@ -139,6 +134,11 @@ void UWeaponBarrel::SpawnBullet(AActor* Owner, const FVector LocalLocation, cons
 	{
 		ShotFired.Broadcast();
 	}
+}
+
+void UWeaponBarrel::SpawnBulletFromBarrel()
+{
+	SpawnBullet(GetComponentTransform().GetLocation(), GetComponentTransform().GetUnitAxis(EAxis::X));
 }
 
 void UWeaponBarrel::InitialBulletTransform_Implementation(const FVector InLocation, const FVector InDirection, FVector& OutLocation,
