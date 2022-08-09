@@ -64,7 +64,8 @@ public:
 	                 ProjectileSpeed(0), MaxAmmo(0),
 	                 ProjectileAmount(0),
 	                 ChargeTime(0),
-	                 IsArced(false),
+	                 IsArced(false), OptimalRange(0),
 	                 PowerCost(0), PowerInstantDrain(false)
-	{}
+	{
+	}
 };

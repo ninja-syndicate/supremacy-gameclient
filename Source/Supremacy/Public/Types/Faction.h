@@ -14,5 +14,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="color"))
 	FColor Color;
 
-	FFaction() {}
+	FFaction(): Color(FColor(255, 255, 255, 255)) {}
 };
