@@ -387,12 +387,12 @@
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 50000,
-              "Time": 300
+              "Time": 210
             },
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 20000,
-              "Time": 60,
+              "Time": 90,
               "ShrinkTime": 30
             },
             {
@@ -413,12 +413,12 @@
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 50000,
-              "Time": 300
+              "Time": 210
             },
             {
               "Location": { "X": 5700, "Y": -2790, "Z": -2736 },
               "Radius": 20000,
-              "Time": 60,
+              "Time": 90,
               "ShrinkTime": 30
             },
             {
@@ -439,12 +439,12 @@
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 50000,
-              "Time": 300
+              "Time": 210
             },
             {
               "Location": { "X": -18780, "Y": -22510, "Z": -1296 },
               "Radius": 20000,
-              "Time": 60,
+              "Time": 90,
               "ShrinkTime": 30
             },
             {
@@ -539,6 +539,115 @@
             {
               "Location": { "X": 1450, "Y": -7390, "Z": 0 },
               "Radius": 5000,
+              "ShrinkTime": 20
+            }
+          ]
+        }
+      ]
+    },
+
+    "RedMountainMine": {
+      "configs": [
+        {
+          "zones": [
+            {
+              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
+              "Radius": 100000,
+              "Time": 240
+            },
+            {
+              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
+              "Radius": 40000,
+              "Time": 60,
+              "ShrinkTime": 30
+            },
+            {
+              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
+              "Radius": 23500,
+              "Time": 120,
+              "ShrinkTime": 15
+            },
+            {
+              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
+              "Radius": 8000,
+              "ShrinkTime": 20
+            }
+          ]
+        },
+        {
+          "zones": [
+            {
+              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
+              "Radius": 100000,
+              "Time": 240
+            },
+            {
+              "Location": { "X": -17490, "Y": 41960, "Z": -10830 },
+              "Radius": 45000,
+              "Time": 60,
+              "ShrinkTime": 30
+            },
+            {
+              "Location": { "X": -28550, "Y": 43235, "Z": -10830 },
+              "Radius": 23500,
+              "Time": 120,
+              "ShrinkTime": 15
+            },
+            {
+              "Location": { "X": -42375, "Y": 45060, "Z": -10830 },
+              "Radius": 8000,
+              "ShrinkTime": 20
+            }
+          ]
+        },
+        {
+          "zones": [
+            {
+              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
+              "Radius": 100000,
+              "Time": 240
+            },
+            {
+              "Location": { "X": 48787, "Y": 43274, "Z": -10830 },
+              "Radius": 45000,
+              "Time": 60,
+              "ShrinkTime": 30
+            },
+            {
+              "Location": { "X": 53775, "Y": 37790, "Z": -10830 },
+              "Radius": 23500,
+              "Time": 120,
+              "ShrinkTime": 15
+            },
+            {
+              "Location": { "X": 56439, "Y": 20575, "Z": -10830 },
+              "Radius": 8000,
+              "ShrinkTime": 20
+            }
+          ]
+        },
+        {
+          "zones": [
+            {
+              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
+              "Radius": 100000,
+              "Time": 240
+            },
+            {
+              "Location": { "X": 17869, "Y": 110682, "Z": -10830 },
+              "Radius": 45000,
+              "Time": 60,
+              "ShrinkTime": 30
+            },
+            {
+              "Location": { "X": 17898, "Y": 111737, "Z": -10830 },
+              "Radius": 23500,
+              "Time": 120,
+              "ShrinkTime": 15
+            },
+            {
+              "Location": { "X": 29747, "Y": 126610, "Z": -10830 },
+              "Radius": 8000,
               "ShrinkTime": 20
             }
           ]

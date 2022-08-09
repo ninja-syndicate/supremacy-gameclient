@@ -443,7 +443,8 @@ void UJavascriptLibrary::GetAllActorsOfClassAndTags(UObject* WorldContextObject,
 	{
 		for (TActorIterator<AActor> It(World, ActorClass); It; ++It)
 		{
-			if (AActor* Actor = *It; IsValidChecked(Actor))
+			AActor* Actor = *It;
+			if (IsValid(Actor))
 			{
 				bool bReject{ false };
 				bool bAccept{ false };
@@ -483,7 +484,8 @@ void UJavascriptLibrary::GetAllActorsOfClassAndTagsInCurrentLevel(UObject* World
 		UWorld* PersistentWorld = World->PersistentLevel->OwningWorld;
 		for (TActorIterator<AActor> It(PersistentWorld, ActorClass); It; ++It)
 		{
-			if (AActor* Actor = *It; IsValidChecked(Actor) && Actor->GetLevel() == CurrentLevel)
+			AActor* Actor = *It;
+			if (IsValid(Actor) && Actor->GetLevel() == CurrentLevel)
 			{
 				bool bReject{ false };
 				bool bAccept{ false };
@@ -918,7 +920,7 @@ bool UJavascriptLibrary::IsGeneratedByBlueprint(UClass* InClass)
 bool UJavascriptLibrary::IsPendingKill(AActor* InActor)
 {
 	if (InActor != nullptr)
-		return !IsValidChecked(InActor);
+		return !IsValid(InActor);
 	return true;
 }
 

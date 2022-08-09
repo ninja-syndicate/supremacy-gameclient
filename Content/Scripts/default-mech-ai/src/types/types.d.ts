@@ -29,6 +29,14 @@ declare class AIController {
     StopMoveTo(): void
 
     /**
+     * Checks if the given location is navigable.
+     *
+     * @param location the location to check for
+     * @returns true if the given location is navigable and false otherwise
+     */
+    IsNavigable(location: Vector): boolean
+
+    /**
      * Makes AI look at the specified location. Note that this will change the current focal point as well.
      *
      * @param location The location to look at
@@ -287,33 +295,33 @@ export interface Weapon {
  * *Note: If war machine is not currently visible; not all details will be up to date.*
  */
 export interface WarMachine {
-    // Unique hash of the war machine
+    /** The unique hash of the war machine. This can be used to identify a particular mech. */
     hash: string
-    // Last known location of the war machine
+    /** The last known location of the war machine. */
     location: Vector
-    // Last known rotation (roll, pitch, yaw) of the war machine
+    /** The last known rotation (roll, pitch, yaw) of the war machine. */
     rotation: Vector
-    // Last known velocity of the war machine
+    /** The last known velocity of the war machine. */
     velocity: Vector
-    // The ID of faction the mech belongs to
+    /** The ID of the faction the mech belongs to. */
     factionID: string
-    // The name of the war machine
+    /** The name of the war machine. */
     name: string
-    // The model name of the war machine
+    /** The model name of the war machine. */
     model: string
-    // Last known health of the war machine
+    /** The last known health of the war machine. */ 
     health: number
-    // Max amount of health of the war machine
+    /** The maximum amount of health this war machine has. */
     healthMax: number
-    // Last known shield health of the war machine
+    /** The last known shield of the war machine. */
     shield: number
-    // Max amount of shield health of the war machine
+    /** The maximum amount of shield this war machine has. */
     shieldMax: number
-    // Rate at which the shield is recharged when out of combat (health per second)
+    /** The rate at which the shield is re-charged when out of combat (shield per second). */
     shieldRechargeRate: number
-    // Movement speed (cm/s)
+    /** The maximum movement speed (cm/s) of the war machine. */
     speed: number
-    // All the weapons this war machine has
+    /** All the weapons this war machine has. */
     weapons: Weapon[]
 }
 

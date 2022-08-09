@@ -5,6 +5,7 @@ import { BTT_Success } from "@tasks/BTT_Success"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { Predicate_FocusToDamage } from "@predicates/Predicate_FocusToDamage"
+import { Predicate_FocusToPredictedLocation } from "@predicates/Predicate_FocusToPredictedLocation"
 
 /**
  * Behavior for setting the focal point of AI (@see {@link BTT_SetFocalPoint}).
@@ -21,10 +22,10 @@ import { Predicate_FocusToDamage } from "@predicates/Predicate_FocusToDamage"
  */
 export const BT_SetFocal = new Selector({
     nodes: [
-        IsSet(BTT_SetFocalPoint("target"), "canSeeTarget", true, ObserverAborts.LowerPriority),
-        Predicate(BTT_SetFocalPoint("damageStimulusFocalPoint"), Predicate_FocusToDamage, true, ObserverAborts.LowerPriority),
-        IsSet(BTT_SetFocalPoint("targetPredictedLocation"), "targetPredictedLocation", true, ObserverAborts.LowerPriority),
-        IsSet(BTT_SetFocalPoint("targetLastKnownLocation"), "targetLastKnownLocation", true, ObserverAborts.LowerPriority),
+        IsSet(BTT_SetFocalPoint("target"), "canSeeTarget"),
+        Predicate(BTT_SetFocalPoint("damageStimulusFocalPoint"), Predicate_FocusToDamage),
+        Predicate(BTT_SetFocalPoint("targetPredictedLocation"), Predicate_FocusToPredictedLocation),
+        IsSet(BTT_SetFocalPoint("targetLastKnownLocation"), "targetLastKnownLocation"),
         // TODO: Also consider sound.
         // TODO: This success can be removed if ForceSuccess decorator worked.
         BTT_Success,
