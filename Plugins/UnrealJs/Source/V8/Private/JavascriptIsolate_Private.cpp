@@ -626,11 +626,39 @@ public:
 #else
 		if (false) {}
 #endif
-		else if (auto p = CastField<FIntProperty>(Property))
+		if (auto p = CastField<FIntProperty>(Property))
 		{
 			return Int32::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
 		}
+		else if (auto p = CastField<FUInt32Property>(Property))
+		{
+			return Uint32::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
+		}
+		else if (auto p = CastField<FInt64Property>(Property))
+		{
+			return Integer::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
+		}
+		else if (auto p = CastField<FUInt64Property>(Property))
+		{
+			return BigInt::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
+		}
+		else if (auto p = CastField<FInt8Property>(Property))
+		{
+			return Int32::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
+		}
+		else if (auto p = CastField<FInt16Property>(Property))
+		{
+			return Int32::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
+		}
+		else if (auto p = CastField<FUInt16Property>(Property))
+		{
+			return Uint32::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
+		}
 		else if (auto p = CastField<FFloatProperty>(Property))
+		{
+			return Number::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
+		}
+		else if (auto p = CastField<FDoubleProperty>(Property))
 		{
 			return Number::New(isolate_, p->GetPropertyValue_InContainer(Buffer));
 		}
@@ -668,8 +696,8 @@ public:
 					FTextInspector::GetTableIdAndKey(Data, TableId, Key);
 				}
 				FPropertyLocalizationDataGatherer::ExtractTextIdentity(Data, Namespace, Key, false);
-				FJavascriptText Wrapper = { Data.ToString(), TextNamespaceUtil::StripPackageNamespace(Namespace), Key, TableId, Data };
-				auto Memory = FStructMemoryInstance::Create(FJavascriptText::StaticStruct(), FNoPropertyOwner(), (void*)&Wrapper);
+				FJavascriptText wrapper = { Data.ToString(), TextNamespaceUtil::StripPackageNamespace(Namespace), Key, TableId, Data };
+				auto Memory = FStructMemoryInstance::Create(FJavascriptText::StaticStruct(), FNoPropertyOwner(), (void*)&wrapper);
 				// set FJavascriptText's lifetime to Owner's;
 				GetSelf(isolate_)->RegisterScriptStructInstance(Memory, v8::External::New(isolate_, Owner.GetOwnerInstancePtr()));
 				return ExportStructInstance(FJavascriptText::StaticStruct(), (uint8*)Memory->GetMemory(), FNoPropertyOwner());
@@ -888,7 +916,36 @@ public:
 		{
 			p->SetPropertyValue_InContainer(Buffer, Value->Int32Value(isolate_->GetCurrentContext()).ToChecked());
 		}
+		else if (auto p = CastField<FInt64Property>(Property))
+		{
+			p->SetPropertyValue_InContainer(Buffer, Value->IntegerValue(isolate_->GetCurrentContext()).ToChecked());
+		}
+		else if (auto p = CastField<FUInt32Property>(Property))
+		{
+			p->SetPropertyValue_InContainer(Buffer, Value->Uint32Value(isolate_->GetCurrentContext()).ToChecked());
+		}
+		else if (auto p = CastField<FInt8Property>(Property))
+		{
+			p->SetPropertyValue_InContainer(Buffer, Value->Int32Value(isolate_->GetCurrentContext()).ToChecked());
+		}
+		else if (auto p = CastField<FInt16Property>(Property))
+		{
+			p->SetPropertyValue_InContainer(Buffer, Value->Int32Value(isolate_->GetCurrentContext()).ToChecked());
+		}
+		else if (auto p = CastField<FUInt16Property>(Property))
+		{
+			p->SetPropertyValue_InContainer(Buffer, Value->Uint32Value(isolate_->GetCurrentContext()).ToChecked());
+		}
+		else if (auto p = CastField<FUInt64Property>(Property))
+		{
+			auto v = Value->ToBigInt(isolate_->GetCurrentContext()).ToLocalChecked();
+			p->SetPropertyValue_InContainer(Buffer, v->Uint64Value());
+		}
 		else if (auto p = CastField<FFloatProperty>(Property))
+		{
+			p->SetPropertyValue_InContainer(Buffer, Value->NumberValue(isolate_->GetCurrentContext()).ToChecked());
+		}
+		else if (auto p = CastField<FDoubleProperty>(Property))
 		{
 			p->SetPropertyValue_InContainer(Buffer, Value->NumberValue(isolate_->GetCurrentContext()).ToChecked());
 		}
