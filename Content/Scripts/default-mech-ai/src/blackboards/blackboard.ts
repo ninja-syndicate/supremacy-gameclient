@@ -1,7 +1,7 @@
+import { Sound } from "@root/Sound"
 import { EQSQueryType } from "enums"
 import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
 
-// TODO: some clean up and documentation for each property maybe
 /**
  * This is the memory of the AI.
  *
@@ -12,6 +12,12 @@ import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
  */
 export interface AIBlackboard {
     input: BrainInput
+
+    /** 
+     * Accumulation of the elapsed time since the script has been running in seconds. 
+     * Note that this may not actually correspond to the real elapsed time since the script can be disabled as a result of user action.
+     */
+    currentTime: number
 
     eqsResults: Map<EQSQueryType, EnvironmentQuery>
     weapons: Weapon[]
@@ -25,7 +31,7 @@ export interface AIBlackboard {
     heardNoise: boolean
     noiseLocation?: Vector
     lastHitLocation?: Vector
-    lastWeaponNoiseLocation: Vector
+    lastWeaponNoise: Sound
 
     lookAtLocation?: Vector
 
@@ -56,6 +62,4 @@ export interface AIBlackboard {
 
     canMelee: boolean
     canUseSpecialAttack: boolean
-
-    currentTime: number
 }
