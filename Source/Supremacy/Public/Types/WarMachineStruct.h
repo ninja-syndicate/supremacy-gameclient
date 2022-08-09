@@ -12,14 +12,18 @@ struct FWarMachineStats
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="wins"))
-	int Wins;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="deaths"))
-	int Deaths;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="kills"))
-	int Kills;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_wins"))
+	int TotalWins;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_deaths"))
+	int TotalDeaths;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_kills"))
+	int TotalKills;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="battles_survived"))
+	int BattlesSurvived;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_losses"))
+	int TotalLosses;
 
-	FWarMachineStats(): Wins(0), Deaths(0), Kills(0) {}
+	FWarMachineStats(): TotalWins(0), TotalDeaths(0), TotalKills(0), BattlesSurvived(0), TotalLosses(0) {}
 };
 
 USTRUCT(BlueprintType)
