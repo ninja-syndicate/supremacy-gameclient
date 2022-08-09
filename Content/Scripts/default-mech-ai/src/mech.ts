@@ -353,10 +353,11 @@ function score(mech: WarMachine): number {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const MaxDistanceToConsider: number = 50000
 
-    // Normalized score functions. Add more scoring functions as you desire.
+    // Score functions. Add more scoring functions as you desire.
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
     const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
-    const scoreFuncs = [scoreByHealth, scoreByDistance]
+    const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.hash === m.hash ? 1 : 0)
+    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByCurrentTarget]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
 
