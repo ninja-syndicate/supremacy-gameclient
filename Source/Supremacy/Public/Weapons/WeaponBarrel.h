@@ -19,15 +19,19 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Debug") float DebugArrowSize = 100.0f;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Multiplier applied to bullet muzzle velocity")) float MuzzleVelocityMultiplier = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Bullet inherits barrel velocity, only works with physics enabled or with additional velocity set")) float InheritVelocity = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Amount of recoil applied to the barrel, only works with physics enabled")) float RecoilMultiplier = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Additional velocity, for use with InheritVelocity")) FVector AdditionalVelocity = FVector(0,0,0);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Additional Spread, applied on top of bullet spread. Half-angle of cone, in radians. If IsArced Spread is the half size of bounding box at CurrentTargetLocation.", ClampMin = "0")) float Spread=0.0f;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Multiplier applied to bullet muzzle velocity")) float MuzzleVelocityMultiplier = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Fire rate, rounds per minute")) float FireRate = 60.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Fire rate inside a burst, rounds per minute. 0 = Non-burst weapon.")) float BurstFireRate = 0.0f;
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, Category = "Weapon") bool ShootingBlocked;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Charging", meta = (ToolTip = "Time before barrel will start shooting.")) float ChargeTime = 0.0f;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Charging", meta = (ToolTip = "If true, charge will be reset after each shot.")) bool ChargeEachShot = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Charging", meta = (ToolTip = "Whether charge is cancelled on release or not.")) bool ChargeCancellable = true;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "If true; projectiles will arc towards CurrentTargetLocation.")) bool IsArced = false;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Arced Firing", meta = (ToolTip = "Optional override of WorldGravityZ for calculating arc. If 0; will use projectile's gravity.")) float ArcOverrideGravityZ = 0;
@@ -39,10 +43,11 @@ public:
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, Category = "Ammo") TSubclassOf<class AEBBullet> BulletClass;
 
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "WeaponState") bool Shooting;
-	
+	UPROPERTY(Replicated, BlueprintReadWrite, Category = "WeaponState") bool Charging = false;
 	UPROPERTY(BlueprintReadWrite, Category = "WeaponState") float Cooldown;
 	UPROPERTY(BlueprintReadWrite, Category = "WeaponState") float BurstCooldown;
 	UPROPERTY(BlueprintReadWrite, Category = "WeaponState") int BurstCount = 0;
+	UPROPERTY(BlueprintReadWrite, Category = "WeaponState") float CurrentCharge = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Replication") bool ReplicateVariables=true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Replication") bool ReplicateShotFiredEvents = true;
@@ -80,6 +85,14 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FReadyToShoot ReadyToShoot;
 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FChargeStarted);
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FChargeStarted ChargeStarted;
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FChargeCompleted);
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FChargeCompleted ChargeCompleted;
+
 #ifdef WITH_EDITOR
 	virtual FPrimitiveSceneProxy* CreateSceneProxy() override;
 #endif
@@ -89,8 +102,9 @@ private:
 	UFUNCTION(Server, Reliable, WithValidation) void ShootRep(const bool Trigger);
 	UFUNCTION(Server, Reliable, WithValidation) void ShootRepCSA(const bool Trigger, const FVector_NetQuantize NewLocation, const FVector_NetQuantizeNormal NewAim);
 
-	UFUNCTION(NetMulticast, Reliable)
-		void ShotFiredMulticast();
+	UFUNCTION(NetMulticast, Reliable) void ShotFiredMulticast();
+	UFUNCTION(NetMulticast, Reliable) void ChargeStartedMulticast();
+	UFUNCTION(NetMulticast, Reliable) void ChargeCompletedMulticast();
 
 	FVector Aim;
 	FVector Location;

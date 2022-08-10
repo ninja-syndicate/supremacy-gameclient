@@ -57,45 +57,81 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 	// Only server can tick
 	if (GetOwner()->GetLocalRole() == ROLE_Authority)
 	{
-		float RemainingDelta = DeltaTime;
-
-		do
+		bool ShouldShoot = false;
+		
+		// Charging
+		if (Charging && !Shooting && ChargeCancellable)
+			Charging = false;
+		if (Charging)
 		{
-			const float Step = FMath::Min(Cooldown, RemainingDelta);
-
-			if (BurstCooldown > 0)
+			CurrentCharge += DeltaTime;
+			if (CurrentCharge >= ChargeTime)
 			{
-				BurstCooldown -= Step;
-				if (BurstCooldown <= 0)
-				{
-					BurstCount = 0;
-				}
-			}
-			const bool InBurst = BurstFireRate > 0 && BurstCooldown <= 0 && BurstCount > 0 && BurstCount <
-				ProjectileAmount;
-
-			if (BurstCooldown <= 0)
-			{
-				Cooldown -= Step;
-			}
-
-			RemainingDelta -= Step;
-
-			// Shoot
-			if ((Shooting || InBurst) && (!ShootingBlocked) && Cooldown <= 0)
-			{
-				SpawnBullet(Location, Aim);
-
-				// Burst fire?
-				if (BurstFireRate > 0)
-				{
-					BurstCount++;
-					if (BurstCount >= ProjectileAmount)
-						BurstCooldown = 60.0f / FireRate;
-				}
+				CurrentCharge = ChargeTime;
+				Charging = false;
+				ChargeCompletedMulticast();
+				if (!ChargeCancellable)
+					ShouldShoot = true;
 			}
 		}
-		while (RemainingDelta > 0 && Cooldown > 0);
+		else if (ChargeCancellable && CurrentCharge > 0 && !Shooting)
+		{
+			CurrentCharge = FMath::Max(CurrentCharge - DeltaTime, 0);
+		}
+
+		if (!Charging)
+		{
+			float RemainingDelta = DeltaTime;
+			do
+			{
+				const float Step = FMath::Min(Cooldown, RemainingDelta);
+				
+				if (!ShouldShoot) ShouldShoot = Shooting;
+			
+				// Burst Gap
+				if (BurstCooldown > 0)
+				{
+					BurstCooldown -= Step;
+					if (BurstCooldown <= 0)
+						BurstCount = 0;
+				}
+
+				// Fire Gap
+				if (BurstCooldown <= 0)
+					Cooldown -= Step;
+			
+				RemainingDelta -= Step;
+
+				// Shoot while in burst
+				if (!ShouldShoot)
+					ShouldShoot = BurstFireRate > 0 && BurstCooldown <= 0 && BurstCount > 0 && BurstCount < ProjectileAmount;
+
+				// Shoot
+				if (ShouldShoot && (!ShootingBlocked) && Cooldown <= 0)
+				{
+					if (ChargeTime > 0 && !Charging && CurrentCharge < ChargeTime)
+					{
+						// Start Charging
+						Charging = true;
+						ChargeStartedMulticast();
+						RemainingDelta = 0;
+					}
+					else
+					{
+						SpawnBullet(Location, Aim);
+
+						// Burst fire?
+						if (BurstFireRate > 0)
+						{
+							BurstCount++;
+							if (BurstCount >= ProjectileAmount)
+								BurstCooldown = 60.0f / FireRate;
+						}
+					}
+				}
+			}
+			while (RemainingDelta > 0 && Cooldown > 0);
+		}
 	}
 }
 
@@ -167,6 +203,8 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 	{
 		Cooldown = 60.0f / FireRate;
 	}
+
+	if (ChargeEachShot) CurrentCharge = 0;
 
 	if (ReplicateShotFiredEvents)
 	{

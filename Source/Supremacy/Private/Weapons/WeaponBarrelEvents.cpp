@@ -6,6 +6,15 @@ void UWeaponBarrel::ShotFiredMulticast_Implementation() {
 	ShotFired.Broadcast();
 }
 
+void UWeaponBarrel::ChargeStartedMulticast_Implementation()
+{
+	ChargeStarted.Broadcast();
+};
+
+void UWeaponBarrel::ChargeCompletedMulticast_Implementation()
+{
+	ChargeCompleted.Broadcast();
+};
 
 void UWeaponBarrel::Shoot(const bool Trigger) {
 	if (ClientSideAim && GetOwner()->GetRemoteRole() == ROLE_Authority && Trigger) {
