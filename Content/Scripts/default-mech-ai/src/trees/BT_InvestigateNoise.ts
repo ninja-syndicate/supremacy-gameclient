@@ -22,7 +22,7 @@ export const BT_InvestigateNoise = new ParallelBackground({
     nodes: [
         new Sequence({
             nodes: [
-                // BTT_SetFocalPoint("noiseLocation"),
+                BTT_SetFocalPoint("noiseLocation"),
                 Predicate(BTT_MoveTo("noiseLocation"), Predicate_IsLocationInsideBattleZone("noiseLocation"), true, ObserverAborts.Self),
                 BT_SearchHiddenLocation("noiseLocation"),
                 BTT_SetValue((blackboard: AIBlackboard) => (blackboard.noiseLocation = undefined)),

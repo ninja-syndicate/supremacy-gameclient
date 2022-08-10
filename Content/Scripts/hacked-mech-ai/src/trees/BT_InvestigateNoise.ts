@@ -20,7 +20,7 @@ import { BT_SetFocal } from "./BT_SetFocal"
     nodes: [
         new Sequence({
             nodes: [
-                // BTT_SetFocalPoint("noiseLocation"),
+                BTT_SetFocalPoint("noiseLocation"),
                 BTT_MoveTo("noiseLocation"),
                 BT_SearchHiddenLocation("noiseLocation"),
                 BTT_SetValue((blackboard: AIBlackboard) => (blackboard.noiseLocation = undefined)),
