@@ -1,13 +1,13 @@
 ﻿#include "Weapons/WeaponBarrel.h"
 #include "EBBullet.h"
 
-void UWeaponBarrel::PredictHit(bool& Hit, FHitResult& HitResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TSubclassOf<class AEBBullet> BulletClass, const TArray<AActor*> IgnoredActors, const float MaxTime, const float Step) const {
+void UWeaponBarrel::PredictHit(bool& Hit, FHitResult& HitResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TArray<AActor*> IgnoredActors, const float MaxTime, const float Step) const {
 	const FVector StartLocation = GetComponentLocation();
 	const FVector AimDirection = GetComponentQuat().GetForwardVector();
-	PredictHitFromLocation(Hit, HitResult, HitLocation, HitTime, HitActor, Trajectory, BulletClass, StartLocation, AimDirection, IgnoredActors, MaxTime, Step);
+	PredictHitFromLocation(Hit, HitResult, HitLocation, HitTime, HitActor, Trajectory, StartLocation, AimDirection, IgnoredActors, MaxTime, Step);
 }
 
-void UWeaponBarrel::PredictHitFromLocation(bool &Hit, FHitResult& HitResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TSubclassOf<class AEBBullet> BulletClass, const FVector StartLocation, const FVector AimDirection, const TArray<AActor*> IgnoredActors, const float MaxTime, const float Step) const{
+void UWeaponBarrel::PredictHitFromLocation(bool &Hit, FHitResult& HitResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const FVector StartLocation, const FVector AimDirection, const TArray<AActor*> IgnoredActors, const float MaxTime, const float Step) const{
 	if (!BulletClass->IsValidLowLevel()) {
 		UE_LOG(LogTemp, Warning, TEXT("PredictHit - invalid bullet class"));
 		return;

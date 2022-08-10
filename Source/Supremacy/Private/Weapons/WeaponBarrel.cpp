@@ -54,7 +54,7 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 		Location = GetComponentTransform().GetLocation();
 	}
 
-	//Only server can tick
+	// Only server can tick
 	if (GetOwner()->GetLocalRole() == ROLE_Authority)
 	{
 		float RemainingDelta = DeltaTime;
@@ -63,14 +63,36 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 		{
 			const float Step = FMath::Min(Cooldown, RemainingDelta);
 
-			Cooldown -= Step;
+			if (BurstCooldown > 0)
+			{
+				BurstCooldown -= Step;
+				if (BurstCooldown <= 0)
+				{
+					BurstCount = 0;
+				}
+			}
+			const bool InBurst = BurstFireRate > 0 && BurstCooldown <= 0 && BurstCount > 0 && BurstCount <
+				ProjectileAmount;
+
+			if (BurstCooldown <= 0)
+			{
+				Cooldown -= Step;
+			}
 
 			RemainingDelta -= Step;
 
-			//shoot when ready
-			if (Shooting && (!ShootingBlocked) && Cooldown <= 0)
+			// Shoot
+			if ((Shooting || InBurst) && (!ShootingBlocked) && Cooldown <= 0)
 			{
 				SpawnBullet(Location, Aim);
+
+				// Burst fire?
+				if (BurstFireRate > 0)
+				{
+					BurstCount++;
+					if (BurstCount >= ProjectileAmount)
+						BurstCooldown = 60.0f / FireRate;
+				}
 			}
 		}
 		while (RemainingDelta > 0 && Cooldown > 0);
@@ -79,14 +101,14 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 
 void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirection)
 {
-	if (!Ammo) return;
-	
+	if (!BulletClass) return;
+
 	FVector OutLocation;
 	FVector OutAim;
 
 	InitialBulletTransform(InLocation, InDirection, OutLocation, OutAim);
 
-	const AEBBullet* Default = Cast<AEBBullet>(Ammo->GetDefaultObject());
+	const AEBBullet* Default = Cast<AEBBullet>(BulletClass->GetDefaultObject());
 
 	OutAim = RandomStream.VRandCone(OutAim, Spread + Default->Spread);
 	FVector Velocity = OutAim * MuzzleVelocityMultiplier + AdditionalVelocity;
@@ -110,7 +132,13 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 	if (IsArced)
 	{
 		const FVector EndPos = UKismetMathLibrary::RandomPointInBoundingBox(CurrentTargetLocation, FVector(Spread));
-		UGameplayStatics::SuggestProjectileVelocity_CustomArc(GetWorld(), Velocity, OutLocation, EndPos, Default->Gravity.Z, ArcParam);
+		UGameplayStatics::SuggestProjectileVelocity_CustomArc(
+			GetWorld(),
+			Velocity,
+			OutLocation,
+			EndPos,
+			Default->Gravity.Z, ArcParam
+		);
 	}
 
 	// Spawn Projectiles
@@ -119,18 +147,27 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 		// Shotgun
 		for (int i = 0; i < ProjectileAmount; i++)
 		{
-			AEBBullet::SpawnWithExactVelocity(Ammo, Owner, Owner->GetInstigator(), OutLocation, Velocity);
+			AEBBullet::SpawnWithExactVelocity(BulletClass, Owner, Owner->GetInstigator(), OutLocation, Velocity);
 
 			OutAim = RandomStream.VRandCone(OutAim, Spread + Default->Spread);
 			Velocity = OutAim * MuzzleVelocityMultiplier + AdditionalVelocity;
 		}
-	} else
+	}
+	else
 	{
-		AEBBullet::SpawnWithExactVelocity(Ammo, Owner, Owner->GetInstigator(), OutLocation, Velocity);
+		AEBBullet::SpawnWithExactVelocity(BulletClass, Owner, Owner->GetInstigator(), OutLocation, Velocity);
 	}
 
-	Cooldown = 60.0f / FireRate;
-	
+	// Cooldown (if burst fire, BurstFireRate is used otherwise FireRate)
+	if (BurstFireRate > 0)
+	{
+		Cooldown = 60.0f / BurstFireRate;
+	}
+	else
+	{
+		Cooldown = 60.0f / FireRate;
+	}
+
 	if (ReplicateShotFiredEvents)
 	{
 		ShotFiredMulticast();
@@ -146,14 +183,16 @@ void UWeaponBarrel::SpawnBulletFromBarrel()
 	SpawnBullet(GetComponentTransform().GetLocation(), GetComponentTransform().GetUnitAxis(EAxis::X));
 }
 
-void UWeaponBarrel::InitialBulletTransform_Implementation(const FVector InLocation, const FVector InDirection, FVector& OutLocation,
+void UWeaponBarrel::InitialBulletTransform_Implementation(const FVector InLocation, const FVector InDirection,
+                                                          FVector& OutLocation,
                                                           FVector& OutDirection)
 {
 	OutLocation = InLocation;
 	OutDirection = InDirection;
 }
 
-void UWeaponBarrel::ApplyRecoil_Implementation(UPrimitiveComponent* Component, const FVector InLocation, const FVector Impulse)
+void UWeaponBarrel::ApplyRecoil_Implementation(UPrimitiveComponent* Component, const FVector InLocation,
+                                               const FVector Impulse)
 {
 	if (Component->IsSimulatingPhysics())
 	{
@@ -161,19 +200,19 @@ void UWeaponBarrel::ApplyRecoil_Implementation(UPrimitiveComponent* Component, c
 	}
 }
 
-void UWeaponBarrel::CalculateAimDirection(TSubclassOf<class AEBBullet> BulletClass, FVector TargetLocation,
+void UWeaponBarrel::CalculateAimDirection(FVector TargetLocation,
                                           FVector TargetVelocity, FVector& AimDirection,
                                           FVector& PredictedTargetLocation, FVector& PredictedIntersectionLocation,
                                           float& PredictedFlightTime, float& Error, float MaxTime, float Step,
                                           int NumIterations) const
 {
 	const FVector StartLocation = GetComponentLocation();
-	CalculateAimDirectionFromLocation(BulletClass, StartLocation, TargetLocation, TargetVelocity, AimDirection,
+	CalculateAimDirectionFromLocation(StartLocation, TargetLocation, TargetVelocity, AimDirection,
 	                                  PredictedTargetLocation, PredictedIntersectionLocation, PredictedFlightTime,
 	                                  Error, MaxTime, Step, NumIterations);
 }
 
-void UWeaponBarrel::CalculateAimDirectionFromLocation(TSubclassOf<class AEBBullet> BulletClass, FVector StartLocation,
+void UWeaponBarrel::CalculateAimDirectionFromLocation(FVector StartLocation,
                                                       FVector TargetLocation, FVector TargetVelocity,
                                                       FVector& AimDirection, FVector& PredictedTargetLocation,
                                                       FVector& PredictedIntersectionLocation,

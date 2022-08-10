@@ -51,7 +51,7 @@ void UWeaponBarrel::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Out
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UWeaponBarrel, Ammo);
+	DOREPLIFETIME(UWeaponBarrel, BulletClass);
 	DOREPLIFETIME(UWeaponBarrel, Shooting);
 	DOREPLIFETIME(UWeaponBarrel, ShootingBlocked);
 }

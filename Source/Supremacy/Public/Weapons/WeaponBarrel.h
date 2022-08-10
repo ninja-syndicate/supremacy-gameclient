@@ -23,7 +23,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Amount of recoil applied to the barrel, only works with physics enabled")) float RecoilMultiplier = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Additional velocity, for use with InheritVelocity")) FVector AdditionalVelocity = FVector(0,0,0);
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Additional Spread, applied on top of bullet spread", ClampMin = "0")) float Spread=0.0f;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Additional Spread, applied on top of bullet spread. Half-angle of cone, in radians. If IsArced Spread is the half size of bounding box at CurrentTargetLocation.", ClampMin = "0")) float Spread=0.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Multiplier applied to bullet muzzle velocity")) float MuzzleVelocityMultiplier = 1.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Fire rate, rounds per minute")) float FireRate = 60.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Fire rate inside a burst, rounds per minute. 0 = Non-burst weapon.")) float BurstFireRate = 0.0f;
@@ -36,12 +36,13 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon", meta = (ToolTip = "Number of projectiles spawned per shot")) int ProjectileAmount = 1;
 
-	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, Category = "Ammo") TSubclassOf<class AEBBullet> Ammo;
+	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, Category = "Ammo") TSubclassOf<class AEBBullet> BulletClass;
 
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "WeaponState") bool Shooting;
 	
 	UPROPERTY(BlueprintReadWrite, Category = "WeaponState") float Cooldown;
 	UPROPERTY(BlueprintReadWrite, Category = "WeaponState") float BurstCooldown;
+	UPROPERTY(BlueprintReadWrite, Category = "WeaponState") int BurstCount = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Replication") bool ReplicateVariables=true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Replication") bool ReplicateShotFiredEvents = true;
@@ -55,10 +56,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Shooting", meta=(ToolTip="Manually spawn a bullet at location with direction.")) void SpawnBullet(const FVector InLocation, const FVector InDirection);
 	UFUNCTION(BlueprintCallable, Category = "Shooting", meta=(ToolTip="Manually spawn a bullet from the barrel.")) void SpawnBulletFromBarrel();
 
-	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "IgnoredActors"), Category = "Prediction") void PredictHit(bool& Hit, FHitResult& HitResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TSubclassOf<class AEBBullet> BulletClass, const TArray<AActor*>IgnoredActors, const float MaxTime = 10.0f, const float Step = 0.1f) const;
-	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "IgnoredActors"), Category = "Prediction") void PredictHitFromLocation(bool &Hit, FHitResult& TraceResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TSubclassOf<class AEBBullet> BulletClass, const FVector StartLocation, const FVector AimDirection, const TArray<AActor*>IgnoredActors, const float MaxTime = 10.0f, const float Step = 0.1f) const;
-	UFUNCTION(BlueprintCallable, Category = "Prediction") void CalculateAimDirection(TSubclassOf<class AEBBullet> BulletClass, FVector TargetLocation, FVector TargetVelocity, FVector& AimDirection, FVector& PredictedTargetLocation, FVector& PredictedIntersectionLocation, float& PredictedFlightTime, float& Error, float MaxTime = 10.0f, float Step = 0.1f, int NumIterations = 4) const;
-	UFUNCTION(BlueprintCallable, Category = "Prediction") void CalculateAimDirectionFromLocation(TSubclassOf<class AEBBullet> BulletClass, FVector StartLocation, FVector TargetLocation, FVector TargetVelocity, FVector& AimDirection, FVector& PredictedTargetLocation, FVector& PredictedIntersectionLocation, float& PredictedFlightTime, float& Error, float MaxTime = 10.0f, float Step=0.1f, int NumIterations = 4) const;
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "IgnoredActors"), Category = "Prediction") void PredictHit(bool& Hit, FHitResult& HitResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const TArray<AActor*>IgnoredActors, const float MaxTime = 10.0f, const float Step = 0.1f) const;
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "IgnoredActors"), Category = "Prediction") void PredictHitFromLocation(bool &Hit, FHitResult& TraceResult, FVector& HitLocation, float& HitTime, AActor*& HitActor, TArray<FVector>& Trajectory, const FVector StartLocation, const FVector AimDirection, const TArray<AActor*>IgnoredActors, const float MaxTime = 10.0f, const float Step = 0.1f) const;
+	UFUNCTION(BlueprintCallable, Category = "Prediction") void CalculateAimDirection(FVector TargetLocation, FVector TargetVelocity, FVector& AimDirection, FVector& PredictedTargetLocation, FVector& PredictedIntersectionLocation, float& PredictedFlightTime, float& Error, float MaxTime = 10.0f, float Step = 0.1f, int NumIterations = 4) const;
+	UFUNCTION(BlueprintCallable, Category = "Prediction") void CalculateAimDirectionFromLocation(FVector StartLocation, FVector TargetLocation, FVector TargetVelocity, FVector& AimDirection, FVector& PredictedTargetLocation, FVector& PredictedIntersectionLocation, float& PredictedFlightTime, float& Error, float MaxTime = 10.0f, float Step=0.1f, int NumIterations = 4) const;
 	
 	UFUNCTION(BlueprintNativeEvent, Category = "Events") void InitialBulletTransform(const FVector InLocation, const FVector InDirection, FVector& OutLocation, FVector& OutDirection);
 	UFUNCTION(BlueprintNativeEvent, Category = "Events") void ApplyRecoil(UPrimitiveComponent* Component, const FVector InLocation, const FVector Impulse);
