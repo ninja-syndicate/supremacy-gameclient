@@ -33,6 +33,18 @@ export let tree = new BehaviorTree({
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
+    let avgOptimalRange: number = 80000
+    // Uncomment below after weapons have been set up to have correct optimal range.
+    /*
+    let primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
+    if (primaryWeapons.length !== 0) {
+        avgOptimalRange = primaryWeapons.map((w) => w.optimalRange).reduce((a, b) => a + b) / primaryWeapons.length
+    } else {
+        avgOptimalRange = 80000
+    }
+    */
+    blackboard.rangeCombatEngagementRange = avgOptimalRange
+
     // Check for secondary weapons and melee weapons and initialize blackboard
     for (let weapon of input.self.weapons) {
         if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
@@ -355,6 +367,7 @@ function score(mech: WarMachine): number {
     // Normalized score functions. Add more scoring functions as you desire.
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
     const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
+    // const scoreByDamageWindow = (m: WarMachine) => 
     const scoreFuncs = [scoreByHealth, scoreByDistance]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)

@@ -7,6 +7,9 @@ import { distanceToVec } from "../../helper"
 import { BTT_SpecialAttack } from "@tasks/BTT_SpecialAttack"
 import { BT_CloseCombat } from "@trees/combat/BT_CloseCombat"
 import { BT_RangeCombat } from "@trees/combat/BT_RangeCombat"
+import { TargetInRange } from "@predicates/Predicate_InRange"
+import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
+import { BTT_LogString } from "@tasks/debug/BTT_LogString"
 
 // TODO: Provide the close combat range (currently 4000) as a constant somewhere.
 /**
@@ -32,6 +35,9 @@ export const BT_CanSeeTarget = new Selector({
             true,
             ObserverAborts.Both,
         ),
-        BT_RangeCombat,
+        Predicate(BT_RangeCombat, (blackboard: AIBlackboard) => TargetInRange(blackboard.rangeCombatEngagementRange)(blackboard)),
+        // TODO: Add cond to check for ammo
+        BTT_LogString("this should never trigger."),
+        // BTT_MoveTo("targetLastKnownLocation"),
     ],
 })

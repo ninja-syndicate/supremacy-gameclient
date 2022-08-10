@@ -53,6 +53,7 @@ export interface AIBlackboard {
     leftArmWeapon: Weapon
     rightArmWeapon: Weapon
     secondaryWeapon?: Weapon
+    rangeCombatEngagementRange: number
 
     canMelee: boolean
     canUseSpecialAttack: boolean
