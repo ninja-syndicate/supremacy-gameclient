@@ -6,6 +6,7 @@ import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "@root/index"
 import { BT_Root } from "@trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
+import { Sound } from "@root/Sound"
 
 // TODO: some clean up
 // TODO: handle signaling.
@@ -217,7 +218,7 @@ function updateBlackboardSound(): void {
     const lastWeaponIdx: number = enemyWeaponSounds.length - 1
     const lastTauntIdx: number = enemyTauntSounds.length - 1
     if (lastWeaponIdx >= 0) {
-        blackboard.lastWeaponNoiseLocation = enemyWeaponSounds[lastWeaponIdx].location
+        blackboard.lastWeaponNoise = new Sound(enemyWeaponSounds[lastWeaponIdx].location, blackboard.currentTime)
     }
     if (lastTauntIdx >= 0) {
         // Update the last noise location to the last enemy taunt noise location.
@@ -364,11 +365,12 @@ function score(mech: WarMachine): number {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const MaxDistanceToConsider: number = 50000
 
-    // Normalized score functions. Add more scoring functions as you desire.
+    // Score functions. Add more scoring functions as you desire.
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
     const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
     // const scoreByDamageWindow = (m: WarMachine) => 
-    const scoreFuncs = [scoreByHealth, scoreByDistance]
+    const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.hash === m.hash ? 1 : 0)
+    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByCurrentTarget]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
 
