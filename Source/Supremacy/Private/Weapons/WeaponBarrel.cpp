@@ -146,8 +146,7 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 
 	const AEBBullet* Default = Cast<AEBBullet>(BulletClass->GetDefaultObject());
 
-	OutAim = RandomStream.VRandCone(OutAim, Spread + Default->Spread);
-	FVector Velocity = OutAim * MuzzleVelocityMultiplier + AdditionalVelocity;
+	FVector Velocity = RandomStream.VRandCone(OutAim, Spread + Default->Spread) * MuzzleVelocityMultiplier + AdditionalVelocity;
 
 	// get parent physics body
 	if (UPrimitiveComponent* Parent = Cast<UPrimitiveComponent>(GetAttachParent()); Parent != nullptr)
@@ -185,8 +184,7 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 		{
 			AEBBullet::SpawnWithExactVelocity(BulletClass, Owner, Owner->GetInstigator(), OutLocation, Velocity);
 
-			OutAim = RandomStream.VRandCone(OutAim, Spread + Default->Spread);
-			Velocity = OutAim * MuzzleVelocityMultiplier + AdditionalVelocity;
+			Velocity = RandomStream.VRandCone(OutAim, Spread + Default->Spread) * MuzzleVelocityMultiplier + AdditionalVelocity;
 		}
 	}
 	else
