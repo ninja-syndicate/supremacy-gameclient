@@ -140,6 +140,8 @@ struct FJavascriptPerformSecondPassLayoutContainer
 
 	UPROPERTY()
 	int32 MaxNodes;
+
+	FJavascriptPerformSecondPassLayoutContainer();
 };
 
 USTRUCT(BlueprintType)
@@ -191,6 +193,8 @@ struct FJavascriptGraphMenuBuilder : public FJavascriptMenuBuilder
 
 	UPROPERTY(BlueprintReadWrite, Category = "Javascript | Editor")
 	bool bIsDebugging;
+	
+	FJavascriptGraphMenuBuilder();
 };
 
 USTRUCT(BlueprintType)
@@ -202,6 +206,8 @@ struct FJavascriptNodeCreator
 	UJavascriptGraphEdNode* Node;
 
 	TSharedPtr<class IJavascriptGraphNodeCreator> Instance;
+
+	FJavascriptNodeCreator();
 };
 
 USTRUCT(BlueprintType)
