@@ -15,6 +15,7 @@ import { BTT_Taunt } from "@root/tasks/BTT_Taunt"
 import { Action } from "enums"
 import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
+import { Predicate_IsUsingLatentAction } from "@root/predicates/Predicate_IsUsingLatentAction"
 
 /**
  * The main combat behavior tree.
@@ -31,7 +32,12 @@ import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBatt
  */
 export const BT_Combat = new Selector({
     nodes: [
-        IsSet(BT_CanSeeTarget, "canSeeTarget", true, ObserverAborts.Both),
+        Predicate(
+            BT_CanSeeTarget,
+            (blackboard: AIBlackboard) => blackboard.canSeeTarget || Predicate_IsUsingLatentAction(blackboard),
+            true,
+            ObserverAborts.Both,
+        ),
         Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
@@ -40,8 +46,6 @@ export const BT_Combat = new Selector({
         // CanActivateAction(Predicate(BTT_Taunt, (blackboard: AIBlackboard) => !blackboard.canSeeTarget && !HasLowShield(blackboard)), Action.Taunt),
         Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
         BT_Patrol,
-        // HACK: In case AI performs special attack, loses sight to target, movement action fails, and regains sight again, this task is
-        // needed to ensure it can recover. Some predicate change is needed to remove this HACK.
         BTT_Success,
     ],
 })
