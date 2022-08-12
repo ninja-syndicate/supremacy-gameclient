@@ -13,7 +13,7 @@ import { Predicate_CloseCombat } from "@predicates/Predicate_CloseCombat"
  * This is where the main fighting logic is placed. Currently, it is broken into three sub-behaviors:
  *
  * - If the AI can activate special attack, it will perform the special attack to the target's last known location (@see {@link BTT_SpecialAttack}).
- * - Otherwise, if the target is close enough and AI can melee, it will enter close combat behavior (@see {@link BT_CloseCombat}).
+ * - Otherwise, if {@link Predicate_CloseCombat} is satisfied, it will enter close combat behavior (@see {@link BT_CloseCombat}).
  * - Otherwise, it will fallback to range combat behavior (@see {@link BT_RangeCombat}).
  *
  * You can modify this behavior tree as you may desire to customize the behavior of AI when it can see the current target.
