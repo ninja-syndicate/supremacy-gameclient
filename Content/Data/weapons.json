@@ -132,8 +132,8 @@
                "Name": "Archon Militech Minigun",
                "Damage": 6,
                "Spread": 5,
-               "RateOfFire": 6000,
-               "ChargeTime": 2
+               "RateOfFire": 4000,
+               "ChargeTime": 3
           },
           "Weapon_AM_MissileLauncher": {
                "Name": "Archon Militech Missile Launcher",
