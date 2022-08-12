@@ -1,17 +1,12 @@
 import { ObserverAborts, Selector } from "behaviortree"
 import { Action } from "enums"
-import { AIBlackboard } from "@blackboards/blackboard"
 import { CanActivateAction } from "@decorators/CanActivateAction"
 import { Predicate } from "@decorators/Predicate"
-import { distanceToVec } from "../../helper"
 import { BTT_SpecialAttack } from "@tasks/BTT_SpecialAttack"
 import { BT_CloseCombat } from "@trees/combat/BT_CloseCombat"
 import { BT_RangeCombat } from "@trees/combat/BT_RangeCombat"
-import { TargetInRange } from "@predicates/Predicate_InRange"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
-import { BTT_LogString } from "@tasks/debug/BTT_LogString"
+import { Predicate_CloseCombat } from "@predicates/Predicate_CloseCombat"
 
-// TODO: Provide the close combat range (currently 4000) as a constant somewhere.
 /**
  * Behavior when AI can see the current target.
  *
@@ -26,18 +21,7 @@ import { BTT_LogString } from "@tasks/debug/BTT_LogString"
 export const BT_CanSeeTarget = new Selector({
     nodes: [
         CanActivateAction(BTT_SpecialAttack("targetLastKnownLocation"), Action.SpecialAttack, true, ObserverAborts.LowerPriority),
-        Predicate(
-            BT_CloseCombat,
-            (blackboard: AIBlackboard) =>
-                blackboard.canMelee &&
-                typeof blackboard.targetLastKnownLocation !== "undefined" &&
-                distanceToVec(blackboard.input.self.location, blackboard.targetLastKnownLocation) <= 3000,
-            true,
-            ObserverAborts.Both,
-        ),
-        Predicate(BT_RangeCombat, (blackboard: AIBlackboard) => TargetInRange(blackboard.rangeCombatEngagementRange)(blackboard)),
-        // TODO: Add cond to check for ammo
-        BTT_LogString("this should never trigger."),
-        // BTT_MoveTo("targetLastKnownLocation"),
+        Predicate(BT_CloseCombat, Predicate_CloseCombat, true, ObserverAborts.Both),
+        BT_RangeCombat,
     ],
 })
