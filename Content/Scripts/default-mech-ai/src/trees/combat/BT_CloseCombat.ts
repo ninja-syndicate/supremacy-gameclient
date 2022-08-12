@@ -9,12 +9,12 @@ import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_Success } from "@tasks/BTT_Success"
 import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
-import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 import { TargetInRange } from "@predicates/Predicate_InRange"
 import { Predicate_IsInsideBattleZone, Predicate_IsTargetInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
+import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 
 // TODO: provide main and background properties for ParallelBackground
 /**
@@ -34,7 +34,7 @@ export const BT_CloseCombat = new ParallelBackground({
         BTT_MeleeAttack(WeaponTag.Melee),
 
         // Background tasks
-        BT_SetFocal,
+        BTT_SetFocalPoint("target"),
         new Selector({
             nodes: [
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
@@ -42,7 +42,7 @@ export const BT_CloseCombat = new ParallelBackground({
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
                     BTT_MoveTo("targetLastKnownLocation", true),
-                    (blackboard: AIBlackboard) => !TargetInRange(2500)(blackboard) && Predicate_IsTargetInsideBattleZone(blackboard),
+                    (blackboard: AIBlackboard) => !TargetInRange(2000)(blackboard) && Predicate_IsTargetInsideBattleZone(blackboard),
                     true,
                     ObserverAborts.LowerPriority,
                 ),
