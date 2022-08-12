@@ -22,7 +22,7 @@ import { Predicate_IsUsingLatentAction } from "@root/predicates/Predicate_IsUsin
  *
  * This behavior represents what AI can do when it is in combat state. It is composed of the following sub-behavior trees:
  *
- * {@link BT_CanSeeTarget} if AI can see the current target and this behavior is where the actual fighting logic is placed
+ * {@link BT_CanSeeTarget} if AI can see the current target and isn't using any latent actions. This behavior is where the actual fighting logic is placed
  * {@link BT_GetPickup} otherwise get to the pickup location if AI has any
  * {@link BT_Camp} - otherwise get to the cover location and camp if its shield is low
  * {@link BT_SearchTarget} - otherwise searches for the current target based on the target's last known location
