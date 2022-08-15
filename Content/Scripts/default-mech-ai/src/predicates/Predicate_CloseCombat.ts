@@ -3,7 +3,6 @@ import { AIBlackboard } from "@blackboards/blackboard"
 import { CURRENT_AI_CONFIG } from "@root/aiconfig"
 import { distanceToVec } from "@root/helper"
 import { Action } from "enums"
-import { IsOutnumbered } from "@predicates/Predicate_IsOutnumbered"
 
 /**
  * Check if the AI should engage in close combat.
