@@ -1,4 +1,4 @@
-import { ObserverAborts, Selector } from "behaviortree"
+import { ObserverAborts, Selector, Sequence } from "behaviortree"
 import { WeaponTag } from "enums"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
@@ -15,8 +15,12 @@ import { Predicate_IsInsideBattleZone, Predicate_IsTargetInsideBattleZone } from
 import { AIBlackboard } from "@blackboards/blackboard"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
+import { IsOutnumbered } from "@root/predicates/Predicate_IsOutnumbered"
+import { BT_Strafe } from "@trees/BT_Strafe"
+import { TargetHasWayMoreTotalHealthRatio } from "@predicates/Predicate_TargetHasMoreTotalHealth"
 
 // TODO: provide main and background properties for ParallelBackground
+// TODO: Update code to actually reflect comment
 /**
  * Behavior when the AI is in close combat.
  *
@@ -40,6 +44,12 @@ export const BT_CloseCombat = new ParallelBackground({
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                Predicate(
+                    BT_Strafe,
+                    (blackboard: AIBlackboard) => IsOutnumbered(blackboard) || TargetHasWayMoreTotalHealthRatio(blackboard),
+                    true,
+                    ObserverAborts.LowerPriority,
+                ),
                 Predicate(
                     BTT_MoveTo("targetLastKnownLocation", true),
                     (blackboard: AIBlackboard) => !TargetInRange(2000)(blackboard) && Predicate_IsTargetInsideBattleZone(blackboard),
