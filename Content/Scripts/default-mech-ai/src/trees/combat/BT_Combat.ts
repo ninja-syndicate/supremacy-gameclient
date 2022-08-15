@@ -15,7 +15,7 @@ import { BTT_Taunt } from "@root/tasks/BTT_Taunt"
 import { Action } from "enums"
 import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
-import { Predicate_IsUsingLatentAction } from "@root/predicates/Predicate_IsUsingLatentAction"
+import { Predicate_IsUsingAction } from "@predicates/Predicate_IsUsingAction"
 
 /**
  * The main combat behavior tree.
@@ -34,7 +34,7 @@ export const BT_Combat = new Selector({
     nodes: [
         Predicate(
             BT_CanSeeTarget,
-            (blackboard: AIBlackboard) => blackboard.canSeeTarget || Predicate_IsUsingLatentAction(blackboard),
+            (blackboard: AIBlackboard) => blackboard.canSeeTarget || Predicate_IsUsingAction(Action.SpecialAttack)(blackboard),
             true,
             ObserverAborts.Both,
         ),

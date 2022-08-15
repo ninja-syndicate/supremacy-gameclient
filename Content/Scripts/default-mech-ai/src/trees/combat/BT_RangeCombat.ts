@@ -22,6 +22,7 @@ import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
+// TODO: Update code to actually reflect comment
 /**
  * Behavior when AI is in range combat.
  *
