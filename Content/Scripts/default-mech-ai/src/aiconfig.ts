@@ -3,6 +3,7 @@
  * 
  * Recommended for non-programmers to get started.
  */
+// TODO: Update README documentation to point to this.
 interface AIConfig {
     /** The range at which AI will enter the close combat behavior. */
     closeCombatEnterRange: number
