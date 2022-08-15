@@ -119,8 +119,8 @@
           },
           "Weapon_AM_LaserBeam": {
                "Name": "Archon Militech Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_AM_MachineGun": {
                "Name": "Archon Militech Machine Gun",
@@ -132,8 +132,8 @@
                "Name": "Archon Militech Minigun",
                "Damage": 6,
                "Spread": 5,
-               "RateOfFire": 6000,
-               "ChargeTime": 2
+               "RateOfFire": 4000,
+               "ChargeTime": 3
           },
           "Weapon_AM_MissileLauncher": {
                "Name": "Archon Militech Missile Launcher",
@@ -141,6 +141,7 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 800,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 45,
                "BurstRateOfFire": 900,
                "ProjectileAmount": 4,
@@ -180,13 +181,13 @@
           },
           "Weapon_Pyro_LaserBeam": {
                "Name": "Pyro Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Pyro_LightningGun": {
                "Name": "Pyro Lightning Gun",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Pyro_MachineGun": {
                "Name": "Pyro Machine Gun",
@@ -213,6 +214,7 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 1,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 60,
                "ProjectileAmount": 4,
                "BurstRateOfFire": 1000
@@ -246,13 +248,13 @@
           },
           "Weapon_Warsui_LaserBeam": {
                "Name": "Warsui Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Warsui_LightningGun": {
                "Name": "Warsui Lightning Gun",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Warsui_MachineGun": {
                "Name": "Warsui Machinegun",
@@ -273,6 +275,7 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 3,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 30,
                "BurstRateOfFire": 1200,
                "ProjectileAmount": 8

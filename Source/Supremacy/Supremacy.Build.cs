@@ -8,7 +8,7 @@ public class Supremacy : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "GameplayTasks", "GameplayTags", "AIModule", "NavigationSystem", "Landscape", "ApplicationCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "GameplayTasks", "GameplayTags", "AIModule", "NavigationSystem", "Landscape", "ApplicationCore", "EasyBallistics" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
