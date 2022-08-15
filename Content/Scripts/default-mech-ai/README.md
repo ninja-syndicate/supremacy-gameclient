@@ -54,7 +54,7 @@ will need (see `EQSQueryType` in `src/types/enums.d.ts` and `src/trees/BT_Strafe
 
 As a starting point, if you want to only tweak the overall behaviors of the existing AI, take a look at `src/trees/BT_Root.ts`. It contains the root behavior
 tree that is run by AI. But if you want to dive straight to nitty-gritty details such as how it should behave on different perception stimulus or just want to
-understand how everything works, see the main script file in `src/mech.ts` and step through each line of code, especially `onBegin` and `onTick` functions.
+understand how everything works, see the main script file in `src/mech.ts`, especially `onBegin` and `onTick` functions.
 
 ### Naming Convention
 
