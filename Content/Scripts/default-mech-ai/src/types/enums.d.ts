@@ -45,6 +45,8 @@ export const enum EQSArgument {
     TargetHash = "TargetHash",
     TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
+    MinDistanceToTarget = "MinDistanceToTarget",
+    MaxDistanceToTarget = "MaxDistanceToTarget",
     LastHitLocation = "LastHitLocation",
 }
 
@@ -96,6 +98,7 @@ export const enum MovementResult {
 export const enum Action {
     LookAt = "Action.LookAt",
     Wait = "Action.Wait",
+    MeleeAttack = "Action.MeleeAttack", // NOTE: Not currently supported in Unreal-side. Internal script usage only.
     SpecialAttack = "Action.SpecialAttack",
     Taunt = "Action.Taunt",
 }
