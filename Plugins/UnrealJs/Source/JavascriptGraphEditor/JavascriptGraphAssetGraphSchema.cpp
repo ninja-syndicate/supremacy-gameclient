@@ -33,10 +33,6 @@ UEdGraphNode* FJavascriptGraphAction_NewNode::PerformAction(class UEdGraph* Pare
 	}
 }
 
-FPerformActionContext::FPerformActionContext(): ParentGraph(nullptr), bSelectNewNode(false), Location(0)
-{
-}
-
 void UJavascriptGraphAssetGraphSchema::BreakPinLinks(FJavascriptEdGraphPin TargetPin, bool bSendsNodeNotifcation)
 {
 	if (TargetPin.IsValid())

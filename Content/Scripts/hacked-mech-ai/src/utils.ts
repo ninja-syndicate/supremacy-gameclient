@@ -1,6 +1,5 @@
 import { EQSQueryType } from "enums";
 import { Vector, WarMachine } from "types";
-import { ProvideVectorContext } from "./blackboardkeycontext";
 
 export const StringToEQSQueryType = (key: string) => {
     switch (key) {
@@ -23,8 +22,4 @@ export const IsVector = (object: any): object is Vector => {
 
 export const IsWarMachine = (object: any): object is WarMachine => {
     return 'hash' in object;
-}
-
-export const DoesProvideVectorContext = (object: any): object is ProvideVectorContext => {
-    return "getVectorValue" in object
 }

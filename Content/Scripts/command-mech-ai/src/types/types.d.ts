@@ -29,14 +29,6 @@ declare class AIController {
     StopMoveTo(): void
 
     /**
-     * Checks if the given location is navigable.
-     *
-     * @param location the location to check for
-     * @returns true if the given location is navigable and false otherwise
-     */
-    IsNavigable(location: Vector): boolean
-
-    /**
      * Makes AI look at the specified location. Note that this will change the current focal point as well.
      *
      * @param location The location to look at

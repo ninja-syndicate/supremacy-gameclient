@@ -23,13 +23,6 @@ FJavascriptConnectionParams::operator FConnectionParams () const
 #undef OP
 		return Out;
 }
-
-FJavascriptPerformSecondPassLayoutContainer::FJavascriptPerformSecondPassLayoutContainer(): PrevNode(nullptr),
-	NextNode(nullptr),
-	NodeIndex(0), MaxNodes(0)
-{
-}
-
 #undef DO_OP
 
 FJavascriptNodeCreator UJavascriptGraphEditorLibrary::NodeCreator(UJavascriptGraphEdGraph* Graph, bool bSelectNewNode/* = true*/)
@@ -48,14 +41,6 @@ FJavascriptNodeCreator UJavascriptGraphEditorLibrary::CustomNodeCreator(UJavascr
 	Out.Instance = MakeShareable(static_cast<IJavascriptGraphNodeCreator*>(Creator));
 	Out.Node = Creator->CreateNode(false);
 	return Out;
-}
-
-FJavascriptGraphMenuBuilder::FJavascriptGraphMenuBuilder(): Graph(nullptr), GraphNode(nullptr), bIsDebugging(false)
-{
-}
-
-FJavascriptNodeCreator::FJavascriptNodeCreator(): Node(nullptr)
-{
 }
 
 void UJavascriptGraphEditorLibrary::Finalize(FJavascriptNodeCreator& Creator)

@@ -1,4 +1,5 @@
-import { Blackboard, FAILURE, Parallel, ParallelRunConfig, RUNNING, RunResult, StatusWithState, SUCCESS, Node } from "behaviortree"
+import { Blackboard, FAILURE, Parallel, ParallelRunConfig, RUNNING, RunResult, StatusWithState, SUCCESS } from "behaviortree"
+import Node from "behaviortree/src/Node"
 
 /**
  * The {@link ParallelBackground} branch node is a variant of {@link Parallel} node that keeps running the background task repeatedly after it returns SUCCESS.
