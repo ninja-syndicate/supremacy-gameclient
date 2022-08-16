@@ -228,6 +228,16 @@ declare class AIController {
      * @returns true if the given location is inside the battle zone and false otherwise
      */
     IsInsideBattleZone(location: Vector): boolean
+
+    /**
+     * Checks if the mech with the given hash is in weapon line of sight.
+     * 
+     * *Note: Will always return false if the mech with the given hash is not in sight.*
+     * 
+     * @param hash The hash of the mech to check for
+     * @returns true if the mech is in weapon line of sight and false otherwise
+     */
+    IsTargetInLOS(hash: string): boolean
 }
 
 declare class JavascriptContext {
@@ -255,36 +265,38 @@ export interface ScriptError {
  * Weapon details.
  */
 export interface Weapon {
-    // Unique hash of the weapon
+    /** The unique hash of the weapon. */
     hash: string
-    // The weapon model
+    /** The weapon model. */ 
     model: string
-    // The weapon skin
+    /** The weapon skin. */
     skin: string
-    // The weapon name
+    /** The weapon name. */
     name: string
-    // The amount of damage the weapon deals per shot/projectile
+    /** The amount of damage the weapon deals per shot/projectile. */
     damage: number
-    // Distance at which damage starts decreasing
+    /** The distance at which the damage starts decreasing. */
     damageFalloff: number
-    // How much the damage decreases by per km
+    /** How much the damage decreases by per km. */ 
     damageFalloffRate: number
-    // Enemies within this radius when the projectile hits something is damaged
+    /** Enemies within this radius when the projectile hits something is damaged (radial damage). */ 
     damageRadius: number
-    // Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect)
+    /** Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect). */
     damageRadiusFalloff: number
-    // The damage type of the weapon
+    /** The damage type of the weapon. */ 
     damageType: DamageType
-    // Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees.
+    /** The spread of the weapon. Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees. */
     spread: number
-    // Rounds per minute
+    /** The number of rounds that can be fired per minute. */
     rateOfFire: number
-    // Speed of the weapon's projectiles in cm/s
+    /** The speed of the weapon's projectiles in cm/s. */
     projectileSpeed: number
-    // The max amount of ammo this weapon can hold
+    /** The maximum amount of ammo this weapon can hold. */
     maxAmmo: number
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
     tags: WeaponTag[]
+    /** The maximum range for this weapon to be used to remain effective. */
+    optimalRange: number
 }
 
 /**
@@ -292,7 +304,7 @@ export interface Weapon {
  * -----
  * A War Machine may be a Mech or pure AI controlled machine (eg: Robot Dog).
  *
- * *Note: If war machine is not currently visible; not all details will be up to date.*
+ * *Note: If the war machine is not currently visible; not all details will be up to date (hence the "last known").*
  */
 export interface WarMachine {
     /** The unique hash of the war machine. This can be used to identify a particular mech. */
