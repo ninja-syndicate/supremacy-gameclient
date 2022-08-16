@@ -25,7 +25,9 @@ export interface AIBlackboard {
     patrolLocation?: Vector
 
     target: WarMachine | null
+    /** Can AI currently see the {@link target}? */
     canSeeTarget: boolean
+    isTargetInWeaponLOS: boolean
     /** Only valid when AI cannot see the target. That is, {@link canSeeTarget} is false. */
     targetLostSightTime?: number
 

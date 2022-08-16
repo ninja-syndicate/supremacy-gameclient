@@ -121,6 +121,17 @@ function updateBlackboard(input: BrainInput): void {
     updateBlackboardDamage()
     updateBlackboardSound()
     updateBlackboardInteractable()
+    updateTargetLOS()
+}
+
+function updateTargetLOS() {
+    // TODO: Add LOS to target selection.
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    if (blackboard.target) {
+        blackboard.isTargetInWeaponLOS = AI.IsTargetInLOS(blackboard.target.hash)
+    } else {
+        blackboard.isTargetInWeaponLOS = false
+    }
 }
 
 /**
@@ -400,6 +411,7 @@ export function clearBlackboardTarget(): void {
 
     blackboard.target = null
     blackboard.canSeeTarget = false
+    blackboard.isTargetInWeaponLOS = false
     if (typeof blackboard.targetLostSightTime !== "undefined") {
         delete blackboard.targetLostSightTime
     }
