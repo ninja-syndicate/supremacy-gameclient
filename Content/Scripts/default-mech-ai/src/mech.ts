@@ -65,6 +65,7 @@ export const onBegin = (input: BrainInput) => {
         }
     }
     blackboard.currentTime = 0
+    blackboard.isBattleZonePresent = AI.IsBattleZonePresent()
     console.log(`${input.self.hash}: ${input.self.name} AI Started`)
 }
 

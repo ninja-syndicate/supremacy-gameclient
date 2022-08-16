@@ -230,6 +230,13 @@ declare class AIController {
     IsInsideBattleZone(location: Vector): boolean
 
     /**
+     * Checks whether the battle zone present in the current map.
+     * 
+     * @returns true if the battle zone is present in the current map and false otherwise
+     */
+    IsBattleZonePresent(): boolean
+
+    /**
      * Checks if the mech with the given hash is in weapon line of sight.
      * 
      * *Note: Will always return false if the mech with the given hash is not in sight.*
