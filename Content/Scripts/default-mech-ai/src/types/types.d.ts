@@ -231,16 +231,16 @@ declare class AIController {
 
     /**
      * Checks whether the battle zone present in the current map.
-     * 
+     *
      * @returns true if the battle zone is present in the current map and false otherwise
      */
     IsBattleZonePresent(): boolean
 
     /**
      * Checks if the mech with the given hash is in weapon line of sight.
-     * 
+     *
      * *Note: Will always return false if the mech with the given hash is not in sight.*
-     * 
+     *
      * @param hash The hash of the mech to check for
      * @returns true if the mech is in weapon line of sight and false otherwise
      */
@@ -274,7 +274,7 @@ export interface ScriptError {
 export interface Weapon {
     /** The unique hash of the weapon. */
     hash: string
-    /** The weapon model. */ 
+    /** The weapon model. */
     model: string
     /** The weapon skin. */
     skin: string
@@ -284,13 +284,13 @@ export interface Weapon {
     damage: number
     /** The distance at which the damage starts decreasing. */
     damageFalloff: number
-    /** How much the damage decreases by per km. */ 
+    /** How much the damage decreases by per km. */
     damageFalloffRate: number
-    /** Enemies within this radius when the projectile hits something is damaged (radial damage). */ 
+    /** Enemies within this radius when the projectile hits something is damaged (radial damage). */
     damageRadius: number
     /** Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect). */
     damageRadiusFalloff: number
-    /** The damage type of the weapon. */ 
+    /** The damage type of the weapon. */
     damageType: DamageType
     /** The spread of the weapon. Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees. */
     spread: number
@@ -328,7 +328,7 @@ export interface WarMachine {
     name: string
     /** The model name of the war machine. */
     model: string
-    /** The last known health of the war machine. */ 
+    /** The last known health of the war machine. */
     health: number
     /** The maximum amount of health this war machine has. */
     healthMax: number
