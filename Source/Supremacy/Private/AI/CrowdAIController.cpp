@@ -9,6 +9,13 @@
 ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UWarMachineFollowingComponent>(TEXT("PathFollowingComponent")))
 {
+	bEnableSeparation = true;
+	bEnableEyesViewPointOffset = false;
+	bEnableCustomEyesViewPoint = false;
+	eyesViewPointOffset = 256;
+	SeparationWeight = 2;
+	CollisionQueryRange = 8400; // Approximately 16 * AgentRadius.
+	PathOptimizationRange = 10000;
 }
 
 void ACrowdAIController::BeginPlay()
@@ -48,4 +55,29 @@ void ACrowdAIController::OnPossess(APawn* InPawn)
 void ACrowdAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const
+{
+	if (bEnableCustomEyesViewPoint)
+	{
+		// TODO: Store reference to avoid getting the object cost.
+		const APawn* ControlledPawn = GetPawn();
+		if (!IsValid(ControlledPawn)) return;
+		
+		const USkeletalMeshComponent* Mesh = Cast<USkeletalMeshComponent>(ControlledPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+		if (!IsValid(Mesh)) return;
+
+		out_Location = Mesh->GetSocketLocation("AI_Eyes");
+		out_Rotation = Mesh->GetSocketRotation("AI_Eyes");
+		return;
+	}
+
+	FVector EyesLocation;
+	Super::GetActorEyesViewPoint(EyesLocation, out_Rotation);
+
+	if (bEnableEyesViewPointOffset) {
+		EyesLocation = FVector(EyesLocation.X, EyesLocation.Y, EyesLocation.Z + eyesViewPointOffset);
+	}
+	out_Location = EyesLocation;
 }
