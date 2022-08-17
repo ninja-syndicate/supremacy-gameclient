@@ -1,6 +1,6 @@
 import { Sound } from "@root/Sound"
 import { Action, EQSQueryType } from "enums"
-import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
+import { BrainInput, DamageDetails, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
 
 /**
  * This is the memory of the AI.
@@ -52,6 +52,9 @@ export interface AIBlackboard {
     targetLastKnownLocation?: Vector
     targetLastKnownVelocity?: Vector
     targetPredictedLocation?: Vector
+
+    /** Tracks the received damage from other AIs. */
+    damageTracker: Map<string, DamageDetails>
 
     damageStimulusTime?: number
     damageInstigatorHash?: string

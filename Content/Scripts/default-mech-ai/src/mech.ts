@@ -121,9 +121,10 @@ function updateBlackboard(input: BrainInput): void {
     updateBlackboardDamage()
     updateBlackboardSound()
     updateBlackboardInteractable()
-    updateTargetLOS()
+    // updateTargetLOS()
 }
 
+/*
 function updateTargetLOS() {
     // TODO: Add LOS to target selection.
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
@@ -133,6 +134,7 @@ function updateTargetLOS() {
         blackboard.isTargetInWeaponLOS = false
     }
 }
+*/
 
 /**
  * Updates the sight related information in the blackboard.
@@ -195,12 +197,16 @@ function updateBlackboardDamage(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const damageDetails: DamageDetails[] = blackboard.input.perception.damage
 
-    // Fail-fast if nothing to update.
+    // Return if nothing to update.
     if (damageDetails.length === 0) return
 
     // Get the enemy damage details. Feel free to modify this logic to do something about friendly damage
     const enemyDamageDetails: DamageDetails[] = damageDetails.filter((d) => !d.friendly)
     if (enemyDamageDetails.length === 0) return
+
+    for (const damageDetail of damageDetails) {
+        blackboard.damageTracker.get()
+    }
 
     // Update damage info using the last enemy damage details.
     const lastIdx: number = enemyDamageDetails.length - 1
