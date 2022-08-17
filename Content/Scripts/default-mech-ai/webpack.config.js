@@ -18,7 +18,8 @@ module.exports = {
             "@blackboards": path.join(__dirname, "src", "blackboards"),
             "@decorators": path.join(__dirname, "src", "decorators"),
             "@predicates": path.join(__dirname, "src", "predicates"),
-            "@branches": path.join(__dirname, "src", "branches")
+            "@branches": path.join(__dirname, "src", "branches"),
+            "@utility": path.join(__dirname, "src", "utility"),
         }
     },
     module: {
