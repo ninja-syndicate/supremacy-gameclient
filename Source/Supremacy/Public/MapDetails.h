@@ -129,7 +129,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/CityBlockArena.jpg",
       1080, 1080,
       34, 34,
-      -34500, -28200,
+      -34000, -28000,
       {}
       },
     },
