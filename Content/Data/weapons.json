@@ -3,23 +3,25 @@
           "PlasmaRifle": {
                "Name": "Plasma Rifle",
                "Damage": 20,
-               "DamageFalloff": 20000,
+               "DamageFalloff": 30000,
+               "DamageFalloffRate": 32,
                "DamageRadiusFalloff": 20,
                "DamageRadius": 100,
                "DamageType": 1,
-               "Spread": 3,
-               "ProjectileSpeed": 48000,
+               "Spread": 2,
+               "ProjectileSpeed": 30000,
                "RateOfFire": 250
           },
           "BostonGun_P7X7-Plasma-Rifle": {
                "Name": "Plasma Rifle",
                "Damage": 20,
-               "DamageFalloff": 20000,
+               "DamageFalloff": 30000,
+               "DamageFalloffRate": 32,
                "DamageRadiusFalloff": 20,
                "DamageRadius": 100,
                "DamageType": 1,
-               "Spread": 3,
-               "ProjectileSpeed": 48000,
+               "Spread": 2,
+               "ProjectileSpeed": 30000,
                "RateOfFire": 250
           },
           "Sword": {
@@ -33,26 +35,28 @@
           "RedMountainCannon": {
                "Name": "Dual Cannon",
                "Damage": 12,
-               "DamageFalloff": 20000,
-               "DamageFalloffRate": 12,
+               "DamageFalloff": 40000,
+               "DamageFalloffRate": 40,
                "DamageRadius": 100,
-               "Spread": 4,
-               "ProjectileSpeed": 36000,
+               "Spread": 3,
+               "ProjectileSpeed": 60000,
                "RateOfFire": 270
           },
           "RedMountainCannon_WarMonger-G1-Assault": {
                "Name": "Dual Cannon",
                "Damage": 12,
-               "DamageFalloff": 20000,
-               "DamageFalloffRate": 12,
+               "DamageFalloff": 40000,
+               "DamageFalloffRate": 40,
                "DamageRadius": 100,
-               "Spread": 4,
-               "ProjectileSpeed": 36000,
+               "Spread": 3,
+               "ProjectileSpeed": 60000,
                "RateOfFire": 270
           },
           "RocketPods": {
                "Name": "Rocket Pods",
                "Damage": 70,
+               "DamageFalloff": 50000,
+               "DamageFalloffRate": 125,
                "DamageRadius": 850,
                "DamageType": 2,
                "Spread": 1500,
@@ -63,19 +67,19 @@
           "SniperRifle": {
                "Name": "Sniper Rifle",
                "Damage": 130,
-               "DamageFalloff": 40000,
-               "DamageFalloffRate": 50,
-               "Spread": 3,
-               "ProjectileSpeed": 80000,
+               "DamageFalloff": 60000,
+               "DamageFalloffRate": 125,
+               "Spread": 1,
+               "ProjectileSpeed": 90000,
                "RateOfFire": 48
           },
           "ZaibatsuGun_Rapid-Extinction-9-Fire-Sniper": {
                "Name": "Sniper Rifle",
                "Damage": 130,
-               "DamageFalloff": 40000,
-               "DamageFalloffRate": 50,
-               "Spread": 3,
-               "ProjectileSpeed": 80000,
+               "DamageFalloff": 60000,
+               "DamageFalloffRate": 125,
+               "Spread": 1,
+               "ProjectileSpeed": 90000,
                "RateOfFire": 48
           },
           "PlasmaSword": {
@@ -119,8 +123,8 @@
           },
           "Weapon_AM_LaserBeam": {
                "Name": "Archon Militech Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_AM_MachineGun": {
                "Name": "Archon Militech Machine Gun",
@@ -132,8 +136,8 @@
                "Name": "Archon Militech Minigun",
                "Damage": 6,
                "Spread": 5,
-               "RateOfFire": 6000,
-               "ChargeTime": 2
+               "RateOfFire": 4000,
+               "ChargeTime": 3
           },
           "Weapon_AM_MissileLauncher": {
                "Name": "Archon Militech Missile Launcher",
@@ -141,9 +145,10 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 800,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 45,
                "BurstRateOfFire": 900,
-               "Amount": 4,
+               "ProjectileAmount": 4,
                "IsArced": true
           },
           "Weapon_AM_PlasmaRifle": {
@@ -157,7 +162,7 @@
                "Damage": 6,
                "Spread": 8,
                "RateOfFire": 100,
-               "Amount": 12
+               "ProjectileAmount": 12
           },
           "Weapon_Pyro_Cannon": {
                "Name": "Pyro Cannon",
@@ -180,13 +185,13 @@
           },
           "Weapon_Pyro_LaserBeam": {
                "Name": "Pyro Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Pyro_LightningGun": {
                "Name": "Pyro Lightning Gun",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Pyro_MachineGun": {
                "Name": "Pyro Machine Gun",
@@ -213,8 +218,9 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 1,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 60,
-               "Amount": 4,
+               "ProjectileAmount": 4,
                "BurstRateOfFire": 1000
           },
           "Weapon_Pyro_Shotgun": {
@@ -222,7 +228,7 @@
                "Damage": 8,
                "Spread": 8,
                "RateOfFire": 80,
-               "Amount": 12
+               "ProjectileAmount": 12
           },
           "Weapon_Warsui_Cannon": {
                "Name": "Warsui Cannon",
@@ -236,7 +242,7 @@
                "Damage": 5,
                "Spread": 8,
                "RateOfFire": 100,
-               "Amount": 20
+               "ProjectileAmount": 20
           },
           "Weapon_Warsui_GrenadeLauncher": {
                "Name": "Warsui Grenade Launcher",
@@ -246,13 +252,13 @@
           },
           "Weapon_Warsui_LaserBeam": {
                "Name": "Warsui Laser Beam",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Warsui_LightningGun": {
                "Name": "Warsui Lightning Gun",
-               "Damage": 5,
-               "RateOfFire": 600
+               "Damage": 25,
+               "RateOfFire": 240
           },
           "Weapon_Warsui_MachineGun": {
                "Name": "Warsui Machinegun",
@@ -273,9 +279,10 @@
                "DamageRadius": 600,
                "DamageType": 2,
                "Spread": 3,
+               "ProjectileSpeed": 50000,
                "RateOfFire": 30,
                "BurstRateOfFire": 1200,
-               "Amount": 8
+               "ProjectileAmount": 8
           },
           "Weapon_Warsui_PlasmaGun": {
                "Name": "Warsui Plasma Gun",

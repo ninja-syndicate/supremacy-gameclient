@@ -6,7 +6,6 @@ import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 
-// TODO: Change Strafe EQS argument to target last known location, not the target hash.
 /**
  * Strafing behavior.
  *
@@ -18,8 +17,8 @@ import { BTT_SetValue } from "@tasks/BTT_SetValue"
 export const BT_Strafe = new Sequence({
     nodes: [
         BTT_QuerySetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
-        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => 8000),
-        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.SpaceBetween, (blackboard: AIBlackboard) => 1000),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => 10000),
+        // BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MaxDistanceToTarget, (blackboard: AIBlackboard) => blackboard.optimalEngagementRange),
         BTT_RunEQSQuery(EQSQueryType.Strafe, "strafeLocation"),
         BTT_MoveTo("strafeLocation"),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.strafeLocation = undefined)),

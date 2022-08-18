@@ -108,6 +108,7 @@ know which conflicts are expected and possibly work on something else meanwhile.
 - **4 :** Robot Dogs
 - **5 :** Red Mountain Reinforcements
 - **SHIFT+5 :** Mini Mech
+- **ALT+5 :** Turret
 - **6 :** Satellite Overload *(on random mech)*
 - **7 :** Landmines *(on random mech)*
 - **8 :** EMP *(on random mech)*

@@ -18,6 +18,7 @@ export class PredicateDecorator extends Decorator {
         this.observerAborts = config.observerAborts
     }
 
+    // NOTE: Assumes that this condition function and its predicate function does not modify the blackboard state, i.e. pure.
     condition(blackboard: AIBlackboard) {
         return !!this.config.predicate(blackboard) === this.config.isMatch
     }

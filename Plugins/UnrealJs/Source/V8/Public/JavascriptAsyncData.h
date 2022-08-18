@@ -44,12 +44,12 @@ struct FJavascriptRemoteFunctionData
 	UPROPERTY()
 	UObject* ExposedObject;
 
-	FJavascriptRemoteFunctionData() 
+	FJavascriptRemoteFunctionData()
 	{
-		CallbackId = 0;
 		bIsFunctionCall = true;
 		bHasExposedObject = false;
 		ExposedObject = nullptr;
+		CallbackId = 0;
 	}
 };
 
