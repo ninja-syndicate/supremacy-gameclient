@@ -49,7 +49,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "DesertCity",
     {
       "DesertCity",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/desert_city.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/DesertCity.jpg",
       1080, 1080,
       30, 30,
       -36000, -38000,
@@ -60,7 +60,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "ArcticBay",
     {
       "ArcticBay",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/arctic_bay.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/ArcticBay.jpg",
       1080, 1080,
       55, 55,
       -40000, -39000,
@@ -71,7 +71,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "UrbanBuildings",
     {
       "UrbanBuildings",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/UrbanBuildings-v2.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/UrbanBuildings.jpg",
       1080, 1080,
       62, 62,
       -110500, -152500,
@@ -82,7 +82,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "NeoTokyo",
     {
       "NeoTokyo",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/NeoTokyo.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/NeoTokyo.jpg",
       1080, 1080,
       34, 34,
       -33550, -34450,
@@ -93,7 +93,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "CloudKu",
     {
       "CloudKu",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/cloud_ku.png",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/CloudKu.jpg",
       1080, 1080,
       45,  45,
       -45000, -45000,
@@ -104,7 +104,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "TheHive",
     {
       "TheHive",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/the_hive.png",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/TheHive.jpg",
       1080, 1080,
       40,  40,
       -20000, -59700,
@@ -115,7 +115,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "AokigaharaForest",
     {
       "AokigaharaForest",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/AokigaharaForest.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/AokigaharaForest.jpg",
       1080, 1080,
       46, 46,
       -51000, -51000,
@@ -126,7 +126,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "CityBlockArena",
     {
       "CityBlockArena",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/CityBlockArena.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/CityBlockArena.jpg",
       1080, 1080,
       34, 34,
       -34000, -28000,
@@ -137,7 +137,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "RedMountainMine",
     {
       "RedMountainMine",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/RedMountainMine.jpg",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/1080/RedMountainMine.jpg",
       1080, 1080,
       72, 72,
       -54000, 0,
