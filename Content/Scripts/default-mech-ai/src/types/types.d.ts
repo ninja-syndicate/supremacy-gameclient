@@ -1,4 +1,16 @@
-import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, MovementResult, Signal, WeaponTag } from "./enums"
+import {
+    Action,
+    DamageType,
+    EnvironmentQueryStatus,
+    EQSArgument,
+    EQSQueryType,
+    InteractableTag,
+    MovementMode,
+    MovementResult,
+    Signal,
+    UserAction,
+    WeaponTag,
+} from "./enums"
 import { Status } from "./enums"
 
 /**
@@ -27,6 +39,14 @@ declare class AIController {
      * Stops the current AI movement. This will cancel {@link MoveTo} and {@link MoveToVector}.
      */
     StopMoveTo(): void
+
+    /**
+     * Sets the current AI movement mode to the specified {@link movementMode}.
+     *
+     * @param movementMode The movement mode to set to. @see {@link MovementMode}
+     * @returns true if the AI movement mode is successfully set to requested {@link movementMode} and false otherwise.
+     */
+    SetMovementMode(movementMode: MovementMode): boolean
 
     /**
      * Checks if the given location is navigable.
@@ -160,7 +180,7 @@ declare class AIController {
      * @param action The action to check activation for
      * @returns true if the {@link action} can be activated and false otherwise
      */
-    CanActivateAction(action: Action): boolean
+    CanActivateAction(action: Action | UserAction): boolean
 
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to.
@@ -245,6 +265,14 @@ declare class AIController {
      * @returns true if the mech is in weapon line of sight and false otherwise
      */
     IsTargetInLOS(hash: string): boolean
+
+    /**
+     * Triggers the given user action.
+     *
+     * @param userAction The user action to trigger. @see {@link UserAction}
+     * @returns true if successfully triggerd the given {@link userAction} and false otherwise
+     */
+    TriggerUserAction(userAction: UserAction): boolean
 }
 
 declare class JavascriptContext {
@@ -342,6 +370,8 @@ export interface WarMachine {
     speed: number
     /** All the weapons this war machine has. */
     weapons: Weapon[]
+    /** All the abilities this war machine can perform. */
+    abilities: UserAction[]
 }
 
 /**
@@ -386,7 +416,7 @@ export interface DamageDetails {
 
 // Everything the mech can currently perceive
 export interface Perception {
-    // Everything the war machine can currently see
+    /** Everything the war machine can currently see. */
     sight: WarMachine[]
     // Everything the war machine heard since the last tick
     sound: SoundDetails[]
