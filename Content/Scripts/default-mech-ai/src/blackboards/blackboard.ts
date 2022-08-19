@@ -1,6 +1,7 @@
+import { DamageTracker } from "@root/damagetracker"
 import { Sound } from "@root/Sound"
 import { Action, EQSQueryType } from "enums"
-import { BrainInput, DamageDetails, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
+import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
 
 /**
  * This is the memory of the AI.
@@ -11,6 +12,7 @@ import { BrainInput, DamageDetails, EnvironmentQuery, Vector, WarMachine, Weapon
  * You can add/remove properties as you deem necessary to customize your own AI.
  */
 export interface AIBlackboard {
+    /** The input provided to the AI on onBegin and onTick. */
     input: BrainInput
 
     /**
@@ -52,9 +54,10 @@ export interface AIBlackboard {
     targetLastKnownLocation?: Vector
     targetLastKnownVelocity?: Vector
     targetPredictedLocation?: Vector
+    lastTargetUpdateTime: number
 
     /** Tracks the received damage from other AIs. */
-    damageTracker: Map<string, DamageDetails>
+    damageTracker: DamageTracker
 
     damageStimulusTime?: number
     damageInstigatorHash?: string
@@ -67,8 +70,13 @@ export interface AIBlackboard {
     leftArmWeapon: Weapon
     rightArmWeapon: Weapon
     secondaryWeapon?: Weapon
-    optimalEngagementRange: number
 
+    /** Tolerable ideal range at which shootable weapons are still effective. This value is based on the {@link optimalEngagmentRange}. */
+    idealEngagementRange: number
+    /** Optimal range at which shootable weapons do full damage. */
+    optimalEngagementRange: number
+    /** Whether AI has any melee weapons. */
     canMelee: boolean
+    /** Whether AI has rocket pod. */
     canUseSpecialAttack: boolean
 }
