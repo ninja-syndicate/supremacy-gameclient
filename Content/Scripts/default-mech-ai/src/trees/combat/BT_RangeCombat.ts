@@ -19,7 +19,7 @@ import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
-import { BTT_Running } from "@root/tasks/BTT_Running"
+import { BT_MovementMode } from "@trees/BT_MovementMode"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -45,6 +45,7 @@ export const BT_RangeCombat = new ParallelBackground({
             nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
         }),
         BTT_SetFocalPoint("target"),
+        // BT_MovementMode,
         new Selector({
             nodes: [
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
