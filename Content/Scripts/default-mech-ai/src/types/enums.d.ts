@@ -74,6 +74,13 @@ export const enum DamageType {
     Explosive,
 }
 
+export const enum MovementMode {
+    /** Walking movement mode. */
+    Walk = "Walk",
+    /** Sprint movement mode. */
+    Sprint = "Sprint",
+}
+
 /**
  * Possible movement result.
  */
@@ -101,6 +108,11 @@ export const enum Action {
     MeleeAttack = "Action.MeleeAttack", // NOTE: Not currently supported in Unreal-side. Internal script usage only.
     SpecialAttack = "Action.SpecialAttack",
     Taunt = "Action.Taunt",
+}
+
+export const enum UserAction {
+    Overcharge = "UserAction.Overcharge",
+    Repair = "UserAction.Repair",
 }
 
 /**
