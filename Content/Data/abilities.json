@@ -154,6 +154,7 @@
           "DamageRadius": 1000,
           "DamageRadiusFalloff": 10,
           "FriendlyFire": false,
+          "ArmDelay": 3,
           "SpreadInRangeA": 3000,
           "SpreadInRangeB": 30000,
           "SpreadOutRangeA": 2500,
