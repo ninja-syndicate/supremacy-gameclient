@@ -4,6 +4,7 @@ import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, WarMachin
 import { AIBlackboard } from "./blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "./index"
+import { Sound } from "./sound"
 import { BT_Root } from "./trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
 
@@ -201,13 +202,19 @@ function updateBlackboardSound(): void {
     // const enemySounds = soundDetails.filter((s) => !s.friendly)
     // const enemyTauntSounds = enemySounds.filter((s) => s.tag === SoundType.Taunt)
 
-    const tauntSounds = soundDetails.filter((s) => s.tag === SoundType.Taunt)
-    const lastIdx: number = tauntSounds.length - 1
-    if (lastIdx < 0) return
+    const tauntSounds = soundDetails.filter((s) => s.tag === SoundType.Taunt && AI.IsNavigable(s.location))
+    const weaponSounds = soundDetails.filter((s) => s.tag === SoundType.Weapon && AI.IsNavigable(s.location))
+    const lastWeaponIdx: number = weaponSounds.length - 1
+    const lastTauntIdx: number = tauntSounds.length - 1
 
-    // Update the last noise location to the last enemy taunt noise location.
-    blackboard.heardNoise = true
-    blackboard.noiseLocation = tauntSounds[lastIdx].location
+    if (lastWeaponIdx >= 0) {
+        blackboard.lastWeaponNoise = new Sound(weaponSounds[lastWeaponIdx].location, blackboard.currentTime)
+    }
+    if (lastTauntIdx >= 0) {
+        // Update the last noise location to the last taunt noise location.
+        blackboard.heardNoise = true
+        blackboard.noiseLocation = tauntSounds[lastTauntIdx].location
+    }
 }
 
 /**
@@ -349,7 +356,8 @@ function score(mech: WarMachine): number {
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
     const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
     const scoreByFaction = (m: WarMachine) => m.factionID === blackboard.input.self.factionID ? 1 : 0
-    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByFaction]
+    const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.hash === m.hash ? 1 : 0)
+    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByFaction, scoreByCurrentTarget]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
 

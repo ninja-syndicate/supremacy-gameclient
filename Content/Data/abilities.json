@@ -158,7 +158,9 @@
           "SpreadInRangeA": 3000,
           "SpreadInRangeB": 30000,
           "SpreadOutRangeA": 2500,
-          "SpreadOutRangeB": 400
+          "SpreadOutRangeB": 400,
+          "JetSpeed": 60000,
+          "SpawnDistance": 50000
      },
      "MiniMech": {
           "ZaiStats": {
