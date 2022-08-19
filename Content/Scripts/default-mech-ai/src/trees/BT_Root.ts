@@ -48,7 +48,7 @@ export const BT_Root = new Selector({
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         CanActivateAction(Predicate(BTT_Taunt, HasLowShield, false), Action.Taunt),
-        IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
+        IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.Both),
         IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),
         BT_Patrol,
         BTT_Wait(1),
