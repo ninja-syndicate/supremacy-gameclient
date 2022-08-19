@@ -10,6 +10,9 @@ import { Sound } from "@root/Sound"
 import { Evaluator } from "@utility/evaluator"
 import { Test } from "@utility/test"
 import { scoreByDistance } from "@utility/helper"
+import { CURRENT_AI_CONFIG } from "@root/aiconfig"
+import { Damage } from "@root/damage"
+import { DamageTracker } from "@root/damagetracker"
 
 // TODO: some clean up
 // TODO: handle signaling.
@@ -24,6 +27,7 @@ export let tree = new BehaviorTree({
     blackboard: {
         target: null,
         eqsResults: {},
+        damageTracker: new DamageTracker(),
         actionStatus: new Map<Action, boolean>(),
     } as AIBlackboard,
 })
@@ -38,7 +42,17 @@ export let tree = new BehaviorTree({
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    let avgOptimalRange: number = -1
+    /*
+    const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
+    const minOptimalRange = Math.min(...primaryWeapons.map((w) => w.optimalRange))
+    blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+    blackboard.optimalEngagementRange = minOptimalRange
+    */
+
+    // TODO: Change this later
+    blackboard.idealEngagementRange = 12500
+    blackboard.optimalEngagementRange = -1
+
     // Uncomment below after weapons have been set up to have correct optimal range.
     /*
     let primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
@@ -48,7 +62,6 @@ export const onBegin = (input: BrainInput) => {
         avgOptimalRange = 80000
     }
     */
-    blackboard.optimalEngagementRange = avgOptimalRange
 
     // Check for secondary weapons and melee weapons and initialize blackboard
     for (let weapon of input.self.weapons) {
@@ -176,12 +189,19 @@ function updateBlackboardSight(): void {
             blackboard.targetLastKnownLocation = blackboard.target.location
             blackboard.targetPredictedLocation = blackboard.target.location
             blackboard.targetLastKnownVelocity = blackboard.target.velocity
+            blackboard.lastTargetUpdateTime = blackboard.currentTime
         }
     }
-    // Calculate a new target predicted location based on its last known velocity and the time elapsed since last tick.
-    if (typeof blackboard.targetLastKnownLocation !== "undefined") {
+    if (typeof blackboard.targetLostSightTime === "undefined") return
+    if (typeof blackboard.targetLastKnownLocation === "undefined") return
+    if (typeof blackboard.targetLastKnownVelocity === "undefined") return
+
+    // Calculate a new target predicted location based on its last known velocity and the time elapsed since prediction update.
+    const elapsedTime: number = blackboard.currentTime - blackboard.lastTargetUpdateTime
+    if (elapsedTime >= CURRENT_AI_CONFIG.predictionUpdateInterval) {
         // TODO: Project to navigation and clear if not valid when navigating.
-        blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime))
+        blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, elapsedTime))
+        blackboard.lastTargetUpdateTime = blackboard.currentTime
     }
 }
 
@@ -204,10 +224,6 @@ function updateBlackboardDamage(): void {
     const enemyDamageDetails: DamageDetails[] = damageDetails.filter((d) => !d.friendly)
     if (enemyDamageDetails.length === 0) return
 
-    for (const damageDetail of damageDetails) {
-        blackboard.damageTracker.get()
-    }
-
     // Update damage info using the last enemy damage details.
     const lastIdx: number = enemyDamageDetails.length - 1
     blackboard.damageStimulusTime = blackboard.currentTime
@@ -216,6 +232,8 @@ function updateBlackboardDamage(): void {
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))
     blackboard.lastHitLocation = blackboard.input.self.location
     blackboard.isLastDamageFromTarget = blackboard.target && blackboard.target.hash === enemyDamageDetails[lastIdx].instigatorHash
+
+    blackboard.damageTracker.addDamage(...enemyDamageDetails.map((d) => new Damage(blackboard.currentTime, d)))
 }
 
 /**
@@ -347,8 +365,6 @@ function findBestTarget(): WarMachine {
     const mechsBySight: WarMachine[] = blackboard.input.perception.sight
     const damageDetails: DamageDetails[] = blackboard.input.perception.damage
 
-    // TODO: Also consider damage
-
     // Filter the mechs and maintain the same target if there are no suitable mechs.
     const targetVisIndex: number = blackboard.target ? mechsBySight.findIndex((m) => m.hash === blackboard.target.hash) : -1
     const filteredMechs = mechsBySight.filter((m) => filter(m))
@@ -372,12 +388,11 @@ function findBestTarget(): WarMachine {
 // TODO: Support inverse option maybe
 function filter(mech: WarMachine, inverse: boolean = false): boolean {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
-    const MaxDistanceToConsider: number = 50000
 
     // Filter functions. Add more filter functions as you deem appropriate.
     const filterByAlive = () => mech.health > 0
     const filterByFaction = () => blackboard.input.self.factionID !== mech.factionID
-    const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= MaxDistanceToConsider
+    const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= CURRENT_AI_CONFIG.sightMaxDistance
     const filterFuncs = [filterByAlive, filterByFaction, filterByDistance]
 
     return filterFuncs.map((func) => func()).reduce((a, b) => a && b)
@@ -394,14 +409,15 @@ function filter(mech: WarMachine, inverse: boolean = false): boolean {
  */
 function score(mech: WarMachine): number {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const MaxDamage: number = 2000
     const MaxDistanceToConsider: number = 50000
 
-    // Score functions. Add more scoring functions as you desire.
+    // Score functions.
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
     const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
-    // const scoreByDamageWindow = (m: WarMachine) =>
+    const scoreByDamageWindow = (m: WarMachine) => Math.min(1, blackboard.damageTracker.getTotalDamageByTime(blackboard.currentTime, 10, m.hash) / MaxDamage)
     const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.hash === m.hash ? 1 : 0)
-    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByCurrentTarget]
+    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByDamageWindow, scoreByCurrentTarget]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
 
