@@ -30,5 +30,6 @@ void AWeapon::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifet
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps); 
 	DOREPLIFETIME( AWeapon, GameplayTagContainer );
+	DOREPLIFETIME( AWeapon, TargetLocation );
 }
 

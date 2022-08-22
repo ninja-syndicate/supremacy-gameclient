@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameplayTagAssetInterface.h"
+#include "Types/WeaponStruct.h"
 #include "Weapon.generated.h"
 
 UCLASS()
@@ -16,6 +17,18 @@ public:
 	// Sets default values for this actor's properties
 	AWeapon();
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(ExposeOnSpawn="true"))
+	FWeaponStruct Struct;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
+	FVector TargetLocation;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void Trigger();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void Release();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
