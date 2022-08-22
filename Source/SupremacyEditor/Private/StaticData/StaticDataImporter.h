@@ -17,9 +17,9 @@ class SUPREMACYEDITOR_API UStaticDataImporter : public UObject
 
 	UStaticDataImporter();
 public:
-	UFUNCTION(BlueprintCallable, Category = "Static Data Importer", DisplayName = "Set Import Directory", meta=(Keywords = "Set where we get the static data from"))
+	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Set Import Directory", meta=(Keywords = "Set where we get the static data from"))
 	bool SetImportDirectory();
-	UFUNCTION(BlueprintCallable, Category = "Static Data Importer", DisplayName = "Is Ready", meta=(Keywords = "See if importer is ready to execute"))
+	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Is Ready", meta=(Keywords = "See if importer is ready to execute"))
 	bool IsReady();
 	
 private:

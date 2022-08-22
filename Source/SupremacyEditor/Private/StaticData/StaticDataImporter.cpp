@@ -30,7 +30,7 @@ bool UStaticDataImporter::SetImportDirectory()
 		return false;
 	}
 
-	UE_LOG(LogSupremacyEditor, Log, TEXT("Path is: %s"), *outFolder);
+	
 	
 	return true;
 }
