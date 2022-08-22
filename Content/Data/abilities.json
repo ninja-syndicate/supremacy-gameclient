@@ -144,7 +144,7 @@
           "DamageRadius": 10500,
           "DamageRadiusFalloff": 1750,
           "DamageType": 1,
-          "FriendlyFire": false,
+          "FriendlyFire": true,
           "SelfShieldDamagePercentage": 0
      },
      "Landmines": {
