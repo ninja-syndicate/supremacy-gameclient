@@ -1,5 +1,5 @@
 import { BehaviorTree } from "behaviortree"
-import { Action, EnvironmentQueryStatus, InteractableTag, SoundType, WeaponTag } from "enums"
+import { Action, EnvironmentQueryStatus, InteractableTag, SoundType, UserAction, WeaponTag } from "enums"
 import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine } from "types"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
@@ -49,19 +49,9 @@ export const onBegin = (input: BrainInput) => {
     blackboard.optimalEngagementRange = minOptimalRange
     */
 
-    // TODO: Change this later
+    // NOTE: For testing
     blackboard.idealEngagementRange = 12500
     blackboard.optimalEngagementRange = -1
-
-    // Uncomment below after weapons have been set up to have correct optimal range.
-    /*
-    let primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
-    if (primaryWeapons.length !== 0) {
-        avgOptimalRange = primaryWeapons.map((w) => w.optimalRange).reduce((a, b) => a + b) / primaryWeapons.length
-    } else {
-        avgOptimalRange = 80000
-    }
-    */
 
     // Check for secondary weapons and melee weapons and initialize blackboard
     for (let weapon of input.self.weapons) {
