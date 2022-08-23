@@ -12,6 +12,7 @@ ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializ
 	bEnableSeparation = true;
 	bEnableEyesViewPointOffset = false;
 	bEnableCustomEyesViewPoint = false;
+	bEnableEyesMatchRotation = true;
 	eyesViewPointOffset = 256;
 	SeparationWeight = 2;
 	CollisionQueryRange = 8400; // Approximately 16 * AgentRadius.
@@ -57,6 +58,9 @@ void ACrowdAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+/**
+ * This function needs to be overriden to provide correct eyes location and rotation if AIPerception is being used.
+ */
 void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const
 {
 	if (bEnableCustomEyesViewPoint)
@@ -74,10 +78,36 @@ void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& 
 	}
 
 	FVector EyesLocation;
-	Super::GetActorEyesViewPoint(EyesLocation, out_Rotation);
+	FRotator EyesRotation;
+	Super::GetActorEyesViewPoint(EyesLocation, EyesRotation);
 
 	if (bEnableEyesViewPointOffset) {
 		EyesLocation = FVector(EyesLocation.X, EyesLocation.Y, EyesLocation.Z + eyesViewPointOffset);
 	}
 	out_Location = EyesLocation;
+
+	if (bEnableEyesMatchRotation) {
+		// TODO: Store reference to avoid getting the object cost.
+		const APawn* ControlledPawn = GetPawn();
+		if (!IsValid(ControlledPawn)) return;
+
+		FRotator PawnRotation = ControlledPawn->GetActorRotation();
+		EyesRotation = PawnRotation;
+	}
+	out_Rotation = EyesRotation;
+}
+
+/**
+ * These functions are for setting the cooldown for now. These will be eventually replaced by GAS.
+ */
+void ACrowdAIController::SetCooldown(const FGameplayTag& ActionTag, float Cooldown)
+{
+	FTimerHandle TimerHandle;
+	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &ACrowdAIController::OnCooldownEnd, ActionTag);
+
+	GetWorldTimerManager().SetTimer(TimerHandle, TimerDelegate, Cooldown, false);
+}
+
+void ACrowdAIController::OnCooldownEnd_Implementation(const FGameplayTag ActionTag)
+{
 }

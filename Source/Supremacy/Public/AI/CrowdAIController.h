@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "GameplayTagContainer.h"
 #include "CrowdAIController.generated.h"
 
 UENUM(BlueprintType)
@@ -30,6 +31,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const override;
+
+	// NOTE: These cooldown functions will be removed later.
+	UFUNCTION(BlueprintCallable)
+	virtual void SetCooldown(const FGameplayTag& ActionTag, float Cooldown);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnCooldownEnd(const FGameplayTag ActionTag);
+	void OnCooldownEnd_Implementation(const FGameplayTag ActionTag);
+
 protected:
 	/** Whether to enable crowd separation or not. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
@@ -74,7 +84,7 @@ protected:
 	 * Whether to enable custom eyes view-point offset.
 	 * Requires pawn to have a skeletal mesh and its skeleton to have a AI_Eyes socket that's ideally attached in-between (centre) two eyes.
 	 *
-	 * Note that this option takes precedence over bEnableEyesViewPointOffset.
+	 * Note that this option takes precedence over bEnableEyesViewPointOffset and bEnableEyesMatchRotation.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Configuration")
 	bool bEnableCustomEyesViewPoint;
@@ -87,6 +97,13 @@ protected:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Configuration")
 	float eyesViewPointOffset;
+
+	/**
+	 * Whether to match the eyes rotation to the pawn's rotation.
+	 * Usually this should be set to true unless you have enabled bEnableCustomEyesViewPoint and uses different rotation.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Configuration")
+	bool bEnableEyesMatchRotation;
 
 	/** Reference to the current crowd following component. */
 	UPROPERTY()
