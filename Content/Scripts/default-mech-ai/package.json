@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "behaviortree": "github:Torrunt/BehaviorTree",
+    "queue-typescript": "^1.0.1",
     "vec3": "^0.1.7"
   }
 }

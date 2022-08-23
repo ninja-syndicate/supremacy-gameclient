@@ -1,5 +1,5 @@
 import { AIBlackboard } from "@blackboards/blackboard"
-import { Action } from "@root/types/enums"
+import { Action } from "enums"
 
 /**
  * Checks if the AI is using the specified action.

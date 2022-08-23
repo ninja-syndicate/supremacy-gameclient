@@ -18,8 +18,9 @@ export const InRange = (v1: Vector, v2: Vector, range: number) => (blackboard: A
  * @param range the range to check for
  * @returns true if the distance to target is within the range and false otherwise.
  */
-export const TargetInRange = (range: number) => (blackboard: AIBlackboard) => {
+export const Predicate_TargetInRange = (range: number) => (blackboard: AIBlackboard) => {
     if (blackboard.target === null) return false
+    if (!blackboard.canSeeTarget) return false
 
     return InRange(blackboard.input.self.location, blackboard.target.location, range)(blackboard)
 }

@@ -14,11 +14,6 @@ export class Evaluator<T> {
         return this
     }
 
-    addItems(items: T[]): Evaluator<T> {
-        this.items.push(...items)
-        return this
-    }
-
     addTest(test: Test<T>): Evaluator<T> {
         this.tests.push(test)
         return this
