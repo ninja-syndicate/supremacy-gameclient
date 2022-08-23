@@ -20,6 +20,7 @@ export const InRange = (v1: Vector, v2: Vector, range: number) => (blackboard: A
  */
 export const Predicate_TargetInRange = (range: number) => (blackboard: AIBlackboard) => {
     if (blackboard.target === null) return false
+    if (!blackboard.canSeeTarget) return false
 
     return InRange(blackboard.input.self.location, blackboard.target.location, range)(blackboard)
 }
