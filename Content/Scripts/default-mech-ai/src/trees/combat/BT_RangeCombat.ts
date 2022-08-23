@@ -1,10 +1,10 @@
 import { ObserverAborts, Parallel, Selector, Sequence } from "behaviortree"
-import { WeaponTag } from "enums"
+import { UserAction, WeaponTag } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
-import { HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
+import { Predicate_HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
 import { IsOutnumbered } from "@predicates/Predicate_IsOutnumbered"
 import { IsOutnumberingEnemies } from "@predicates/Predicate_IsOutnumberingEnemies"
 import { TargetHasMoreTotalHealth } from "@predicates/Predicate_TargetHasMoreTotalHealth"
@@ -19,6 +19,9 @@ import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
+import { BT_MovementMode } from "@trees/BT_MovementMode"
+import { ForceSuccess } from "@decorators/ForceSuccess"
+import { BT_UserAction } from "@trees/useraction/BT_UserAction"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -44,11 +47,13 @@ export const BT_RangeCombat = new ParallelBackground({
             nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
         }),
         BTT_SetFocalPoint("target"),
+        // BT_MovementMode,
+        ForceSuccess(BT_UserAction),
         new Selector({
             nodes: [
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
                     new Selector({
                         nodes: [BT_CloseStrafe, BTT_MoveTo("targetLastKnownLocation")],
