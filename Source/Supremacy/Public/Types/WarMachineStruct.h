@@ -86,6 +86,8 @@ public:
 	int ShieldMax;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="shield_recharge_rate"))
 	float ShieldRechargeRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta =(DisplayName ="sprint_spread_mod"))
+	float SprintSpreadMod;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="speed"))
 	int Speed;
