@@ -3,7 +3,7 @@ import { UserAction, WeaponTag } from "enums"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
-import { HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
+import { Predicate_HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
 import { BTT_MeleeAttack } from "@tasks/BTT_MeleeAttack"
 import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_Success } from "@tasks/BTT_Success"
@@ -20,9 +20,8 @@ import { BT_Strafe } from "@trees/BT_Strafe"
 import { TargetHasWayMoreTotalHealthRatio } from "@predicates/Predicate_TargetHasMoreTotalHealth"
 import { CURRENT_AI_CONFIG } from "@root/aiconfig"
 import { BT_MovementMode } from "@trees/BT_MovementMode"
-import { CanActivateAction } from "@decorators/CanActivateAction"
 import { ForceSuccess } from "@decorators/ForceSuccess"
-import { BTT_TriggerUserAction } from "@tasks/useraction/BTT_TriggerUserAction"
+import { BT_UserAction } from "@trees/useraction/BT_UserAction"
 
 // TODO: provide main and background properties for ParallelBackground
 // TODO: Update code to actually reflect comment
@@ -44,13 +43,13 @@ export const BT_CloseCombat = new ParallelBackground({
 
         // Background tasks
         BTT_SetFocalPoint("target"),
-        // ForceSuccess(CanActivateAction(BTT_TriggerUserAction(UserAction.Overcharge), UserAction.Overcharge)),
         // BT_MovementMode,
+        ForceSuccess(BT_UserAction),
         new Selector({
             nodes: [
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
                     BT_Strafe,
                     (blackboard: AIBlackboard) => IsOutnumbered(blackboard) || TargetHasWayMoreTotalHealthRatio(blackboard),
