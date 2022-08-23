@@ -10,8 +10,8 @@ import {
     Signal,
     UserAction,
     WeaponTag,
-} from "./enums"
-import { Status } from "./enums"
+    Status,
+} from "enums"
 
 /**
  * The AI Controller, containing all the available commands a Mech can be given.
