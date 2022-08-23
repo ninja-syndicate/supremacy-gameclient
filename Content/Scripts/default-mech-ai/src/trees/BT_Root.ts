@@ -1,5 +1,5 @@
 import { ObserverAborts, Selector } from "behaviortree"
-import { Action } from "enums"
+import { Action, UserAction } from "enums"
 import { CanActivateAction } from "@decorators/CanActivateAction"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
@@ -15,6 +15,10 @@ import { BT_ReceivedDamage } from "@trees/BT_ReceivedDamage"
 import { AIBlackboard } from "@root/blackboards/blackboard"
 import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
+import { BTT_TriggerUserAction } from "@root/tasks/useraction/BTT_TriggerUserAction"
+import { Predicate_CanActivateUserAction } from "@predicates/Predicate_CanActivateAction"
+import { Predicate_HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
+import { WrappedTask_Repair } from "@trees/useraction/BT_UserAction"
 
 /**
  * The root of the behavior tree for AI.
@@ -44,11 +48,12 @@ import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBatt
 export const BT_Root = new Selector({
     nodes: [
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
+        WrappedTask_Repair(true, ObserverAborts.LowerPriority),
         Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
         CanActivateAction(Predicate(BTT_Taunt, HasLowShield, false), Action.Taunt),
-        IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.LowerPriority),
+        IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.Both),
         IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),
         BT_Patrol,
         BTT_Wait(1),
