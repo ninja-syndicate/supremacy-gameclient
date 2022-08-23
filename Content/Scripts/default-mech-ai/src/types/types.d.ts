@@ -1,5 +1,17 @@
-import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, MovementResult, Signal, WeaponTag } from "./enums"
-import { Status } from "./enums"
+import {
+    Action,
+    DamageType,
+    EnvironmentQueryStatus,
+    EQSArgument,
+    EQSQueryType,
+    InteractableTag,
+    MovementMode,
+    MovementResult,
+    Signal,
+    UserAction,
+    WeaponTag,
+    Status,
+} from "enums"
 
 /**
  * The AI Controller, containing all the available commands a Mech can be given.
@@ -27,6 +39,14 @@ declare class AIController {
      * Stops the current AI movement. This will cancel {@link MoveTo} and {@link MoveToVector}.
      */
     StopMoveTo(): void
+
+    /**
+     * Sets the current AI movement mode to the specified {@link movementMode}.
+     *
+     * @param movementMode The movement mode to set to. @see {@link MovementMode}
+     * @returns true if the AI movement mode is successfully set to requested {@link movementMode} and false otherwise.
+     */
+    SetMovementMode(movementMode: MovementMode): boolean
 
     /**
      * Checks if the given location is navigable.
@@ -160,7 +180,7 @@ declare class AIController {
      * @param action The action to check activation for
      * @returns true if the {@link action} can be activated and false otherwise
      */
-    CanActivateAction(action: Action): boolean
+    CanActivateAction(action: Action | UserAction): boolean
 
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to.
@@ -230,14 +250,29 @@ declare class AIController {
     IsInsideBattleZone(location: Vector): boolean
 
     /**
+     * Checks whether the battle zone present in the current map.
+     *
+     * @returns true if the battle zone is present in the current map and false otherwise
+     */
+    IsBattleZonePresent(): boolean
+
+    /**
      * Checks if the mech with the given hash is in weapon line of sight.
-     * 
+     *
      * *Note: Will always return false if the mech with the given hash is not in sight.*
-     * 
+     *
      * @param hash The hash of the mech to check for
      * @returns true if the mech is in weapon line of sight and false otherwise
      */
     IsTargetInLOS(hash: string): boolean
+
+    /**
+     * Triggers the given user action.
+     *
+     * @param userAction The user action to trigger. @see {@link UserAction}
+     * @returns true if successfully triggerd the given {@link userAction} and false otherwise
+     */
+    TriggerUserAction(userAction: UserAction): boolean
 }
 
 declare class JavascriptContext {
@@ -267,7 +302,7 @@ export interface ScriptError {
 export interface Weapon {
     /** The unique hash of the weapon. */
     hash: string
-    /** The weapon model. */ 
+    /** The weapon model. */
     model: string
     /** The weapon skin. */
     skin: string
@@ -277,13 +312,13 @@ export interface Weapon {
     damage: number
     /** The distance at which the damage starts decreasing. */
     damageFalloff: number
-    /** How much the damage decreases by per km. */ 
+    /** How much the damage decreases by per km. */
     damageFalloffRate: number
-    /** Enemies within this radius when the projectile hits something is damaged (radial damage). */ 
+    /** Enemies within this radius when the projectile hits something is damaged (radial damage). */
     damageRadius: number
     /** Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect). */
     damageRadiusFalloff: number
-    /** The damage type of the weapon. */ 
+    /** The damage type of the weapon. */
     damageType: DamageType
     /** The spread of the weapon. Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees. */
     spread: number
@@ -321,7 +356,7 @@ export interface WarMachine {
     name: string
     /** The model name of the war machine. */
     model: string
-    /** The last known health of the war machine. */ 
+    /** The last known health of the war machine. */
     health: number
     /** The maximum amount of health this war machine has. */
     healthMax: number
@@ -335,6 +370,8 @@ export interface WarMachine {
     speed: number
     /** All the weapons this war machine has. */
     weapons: Weapon[]
+    /** All the abilities this war machine can perform. */
+    abilities: UserAction[]
 }
 
 /**
@@ -379,7 +416,7 @@ export interface DamageDetails {
 
 // Everything the mech can currently perceive
 export interface Perception {
-    // Everything the war machine can currently see
+    /** Everything the war machine can currently see. */
     sight: WarMachine[]
     // Everything the war machine heard since the last tick
     sound: SoundDetails[]
