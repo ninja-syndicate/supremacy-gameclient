@@ -15,6 +15,7 @@ namespace StaticDataImporter
 		Base();
 		~Base();
 		FString FileName;
+		TArray<FString> FileHeaders;
 
 	private:
 		FString FullPath;

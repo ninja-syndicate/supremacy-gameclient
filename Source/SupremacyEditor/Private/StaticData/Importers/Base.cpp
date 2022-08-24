@@ -12,7 +12,6 @@ StaticDataImporter::Base::Base()
 
 StaticDataImporter::Base::~Base()
 {
-	UE_LOG(LogSupremacyEditor, Log, TEXT("Destroying base importer"));
 	if (Importer != nullptr) delete(Importer);
 }
 
@@ -29,6 +28,12 @@ bool StaticDataImporter::Base::Valid() const
 	TArray<FString> headers;
 	if (!Importer->GetHeader(headers)) return false;
 
+	if (headers.Num() != FileHeaders.Num()) return false;
+
+	for (int index = 0; index < headers.Num(); ++index)
+	{
+		if (headers[index] != FileHeaders[index]) return false;	
+	}
 	
 	return true;
 }
