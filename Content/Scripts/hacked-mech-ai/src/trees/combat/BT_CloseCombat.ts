@@ -51,12 +51,6 @@ export const BT_CloseCombat = new ParallelBackground({
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
-                    BT_Strafe,
-                    (blackboard: AIBlackboard) => IsOutnumbered(blackboard) || TargetHasWayMoreTotalHealthRatio(blackboard),
-                    true,
-                    ObserverAborts.LowerPriority,
-                ),
-                Predicate(
                     BTT_MoveTo("targetLastKnownLocation", true),
                     (blackboard: AIBlackboard) =>
                         !Predicate_TargetInRange(CURRENT_AI_CONFIG.closeCombatKeepRange)(blackboard) && Predicate_IsTargetInsideBattleZone(blackboard),
