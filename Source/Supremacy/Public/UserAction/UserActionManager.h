@@ -6,18 +6,29 @@
 #include "Components/ActorComponent.h"
 #include "Containers/Queue.h"
 #include "UserAction.h"
+#include "Types/AbilityID.h"
 #include "UserActionManager.generated.h"
 
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SUPREMACY_API UUserActionManager : public UActorComponent
+class SUPREMACY_API UUserActionManager final : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UUserActionManager();
+	
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SpawnAbility(const EAbilityID Ability, const FVector2D Location, const FVector2D LocationEnd, const FString& EventID, const FString& TriggeredByUserID, const FString& TriggeredByUsername, const FString& WarMachineHash, const FString& FactionID);
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FUserActionDispatched, AActor*, Actor, const FString&, Tag, const FString&, EventID, const FString&, InstigatorFactionID);
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
+		FUserActionDispatched UserActionDispatched;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -33,11 +44,6 @@ protected:
 	/** Dequeues the user action from the queue. */
 	UFUNCTION(BlueprintCallable, Category = "User Action Queue")
 	virtual bool DequeueUserAction(FUserAction& OutUserAction);
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 private:
 	TQueue<FUserAction> UserActionQueue;
 };
