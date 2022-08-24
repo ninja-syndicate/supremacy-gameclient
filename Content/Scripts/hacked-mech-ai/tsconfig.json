@@ -2,10 +2,20 @@
      "compilerOptions": {
           "target": "ES6",
           "module": "commonjs",
+          "moduleResolution": "node",
           "lib": ["es5", "es6", "dom"],
+          "baseUrl": "src",
           "rootDir": "src",
           "paths": {
-               "*": ["../types/*"]
+               "@root/*": ["*"],
+               "@tasks/*": ["tasks/*"],
+               "@trees/*": ["trees/*"],
+               "@blackboards/*": ["blackboards/*"],
+               "@decorators/*": ["decorators/*"],
+               "@predicates/*": ["predicates/*"],
+               "@branches/*": ["branches/*"],
+               "@utility/*": ["utility/*"],
+               "*": ["types/*"]
           }
      },
 }

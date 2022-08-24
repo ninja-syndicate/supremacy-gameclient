@@ -1,5 +1,17 @@
-import { Action, DamageType, EnvironmentQueryStatus, EQSArgument, EQSQueryType, InteractableTag, MovementResult, Signal, WeaponTag } from "./enums"
-import { Status } from "./enums"
+import {
+    Action,
+    DamageType,
+    EnvironmentQueryStatus,
+    EQSArgument,
+    EQSQueryType,
+    InteractableTag,
+    MovementMode,
+    MovementResult,
+    Signal,
+    UserAction,
+    WeaponTag,
+    Status,
+} from "enums"
 
 /**
  * The AI Controller, containing all the available commands a Mech can be given.
@@ -8,7 +20,7 @@ declare class AIController {
     /**
      * Move to the following location ignoring Z-axis. Will automatically path find.
      *
-     * @param {number} [acceptanceRadius=800] Fixed distance added to threshold between AI and goal location in destination reach test
+     * @param {number} [acceptanceRadius=525] Fixed distance added to threshold between AI and goal location in destination reach test
      * @returns true if MoveTo request succeed and false otherwise
      */
     MoveTo(x: number, y: number, acceptanceRadius?: number): boolean
@@ -29,12 +41,20 @@ declare class AIController {
     StopMoveTo(): void
 
     /**
+     * Sets the current AI movement mode to the specified {@link movementMode}.
+     *
+     * @param movementMode The movement mode to set to. @see {@link MovementMode}
+     * @returns true if the AI movement mode is successfully set to requested {@link movementMode} and false otherwise.
+     */
+    SetMovementMode(movementMode: MovementMode): boolean
+
+    /**
      * Checks if the given location is navigable.
      *
      * @param location the location to check for
      * @returns true if the given location is navigable and false otherwise
      */
-     IsNavigable(location: Vector): boolean
+    IsNavigable(location: Vector): boolean
 
     /**
      * Makes AI look at the specified location. Note that this will change the current focal point as well.
@@ -160,7 +180,7 @@ declare class AIController {
      * @param action The action to check activation for
      * @returns true if the {@link action} can be activated and false otherwise
      */
-    CanActivateAction(action: Action): boolean
+    CanActivateAction(action: Action | UserAction): boolean
 
     /**
      * Run an Environment Query System query to get the optimal position to move the war machine to.
@@ -170,7 +190,7 @@ declare class AIController {
      * @param query The environment query type (@see {@link EQSQueryType})
      * @returns true if the specified EQS query succeeded and false otherwise.
      */
-     EQS_Query(query: EQSQueryType): boolean
+    EQS_Query(query: EQSQueryType): boolean
 
     /**
      * Removes EQS query status from {@link BrainInput.eqs}, essentially marking it as complete so you know you can run it again.
@@ -199,7 +219,7 @@ declare class AIController {
 
     /**
      * Set float argument for an EQS query. Call before {@link EQS_Query}.
-     * 
+     *
      * @param query The environment query type (@see {@link EQSQueryType})
      * @param argument The argument type (@see {@link EQSArgument})
      * @param value The value you want to set the argument to
@@ -220,6 +240,39 @@ declare class AIController {
      * @param signal
      */
     SendSignal(signal: Signal): boolean
+
+    /**
+     * Checks if the given location is inside the battle zone.
+     *
+     * @param location the location to test
+     * @returns true if the given location is inside the battle zone and false otherwise
+     */
+    IsInsideBattleZone(location: Vector): boolean
+
+    /**
+     * Checks whether the battle zone present in the current map.
+     *
+     * @returns true if the battle zone is present in the current map and false otherwise
+     */
+    IsBattleZonePresent(): boolean
+
+    /**
+     * Checks if the mech with the given hash is in weapon line of sight.
+     *
+     * *Note: Will always return false if the mech with the given hash is not in sight.*
+     *
+     * @param hash The hash of the mech to check for
+     * @returns true if the mech is in weapon line of sight and false otherwise
+     */
+    IsTargetInLOS(hash: string): boolean
+
+    /**
+     * Triggers the given user action.
+     *
+     * @param userAction The user action to trigger. @see {@link UserAction}
+     * @returns true if successfully triggerd the given {@link userAction} and false otherwise
+     */
+    TriggerUserAction(userAction: UserAction): boolean
 }
 
 declare class JavascriptContext {
@@ -247,36 +300,38 @@ export interface ScriptError {
  * Weapon details.
  */
 export interface Weapon {
-    // Unique hash of the weapon
+    /** The unique hash of the weapon. */
     hash: string
-    // The weapon model
+    /** The weapon model. */
     model: string
-    // The weapon skin
+    /** The weapon skin. */
     skin: string
-    // The weapon name
+    /** The weapon name. */
     name: string
-    // The amount of damage the weapon deals per shot/projectile
+    /** The amount of damage the weapon deals per shot/projectile. */
     damage: number
-    // Distance at which damage starts decreasing
+    /** The distance at which the damage starts decreasing. */
     damageFalloff: number
-    // How much the damage decreases by per km
+    /** How much the damage decreases by per km. */
     damageFalloffRate: number
-    // Enemies within this radius when the projectile hits something is damaged
+    /** Enemies within this radius when the projectile hits something is damaged (radial damage). */
     damageRadius: number
-    // Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect)
+    /** Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect). */
     damageRadiusFalloff: number
-    // The damage type of the weapon
+    /** The damage type of the weapon. */
     damageType: DamageType
-    // Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees.
+    /** The spread of the weapon. Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees. */
     spread: number
-    // Rounds per minute
+    /** The number of rounds that can be fired per minute. */
     rateOfFire: number
-    // Speed of the weapon's projectiles in cm/s
+    /** The speed of the weapon's projectiles in cm/s. */
     projectileSpeed: number
-    // The max amount of ammo this weapon can hold
+    /** The maximum amount of ammo this weapon can hold. */
     maxAmmo: number
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
     tags: WeaponTag[]
+    /** The maximum range for this weapon to be used to remain effective. */
+    optimalRange: number
 }
 
 /**
@@ -284,37 +339,39 @@ export interface Weapon {
  * -----
  * A War Machine may be a Mech or pure AI controlled machine (eg: Robot Dog).
  *
- * *Note: If war machine is not currently visible; not all details will be up to date.*
+ * *Note: If the war machine is not currently visible; not all details will be up to date (hence the "last known").*
  */
 export interface WarMachine {
-    // Unique hash of the war machine
+    /** The unique hash of the war machine. This can be used to identify a particular mech. */
     hash: string
-    // Last known location of the war machine
+    /** The last known location of the war machine. */
     location: Vector
-    // Last known rotation (roll, pitch, yaw) of the war machine
+    /** The last known rotation (roll, pitch, yaw) of the war machine. */
     rotation: Vector
-    // Last known velocity of the war machine
+    /** The last known velocity of the war machine. */
     velocity: Vector
-    // The ID of faction the mech belongs to
+    /** The ID of the faction the mech belongs to. */
     factionID: string
-    // The name of the war machine
+    /** The name of the war machine. */
     name: string
-    // The model name of the war machine
+    /** The model name of the war machine. */
     model: string
-    // Last known health of the war machine
+    /** The last known health of the war machine. */
     health: number
-    // Max amount of health of the war machine
+    /** The maximum amount of health this war machine has. */
     healthMax: number
-    // Last known shield health of the war machine
+    /** The last known shield of the war machine. */
     shield: number
-    // Max amount of shield health of the war machine
+    /** The maximum amount of shield this war machine has. */
     shieldMax: number
-    // Rate at which the shield is recharged when out of combat (health per second)
+    /** The rate at which the shield is re-charged when out of combat (shield per second). */
     shieldRechargeRate: number
-    // Movement speed (cm/s)
+    /** The maximum movement speed (cm/s) of the war machine. */
     speed: number
-    // All the weapons this war machine has
+    /** All the weapons this war machine has. */
     weapons: Weapon[]
+    /** All the abilities this war machine can perform. */
+    abilities: UserAction[]
 }
 
 /**
@@ -359,7 +416,7 @@ export interface DamageDetails {
 
 // Everything the mech can currently perceive
 export interface Perception {
-    // Everything the war machine can currently see
+    /** Everything the war machine can currently see. */
     sight: WarMachine[]
     // Everything the war machine heard since the last tick
     sound: SoundDetails[]
@@ -389,6 +446,7 @@ export interface EQSResults {
     patrol?: EnvironmentQuery
     strafe?: EnvironmentQuery
     closeStrafe?: EnvironmentQuery
+    battleZone?: EnvironmentQuery
 }
 
 /**

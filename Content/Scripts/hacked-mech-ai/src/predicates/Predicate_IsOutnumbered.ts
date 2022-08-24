@@ -1,5 +1,5 @@
 import { WarMachine } from "types"
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 /**
  * Checks if the number of detected teammates (including itself) is less than the number of detected enemies.

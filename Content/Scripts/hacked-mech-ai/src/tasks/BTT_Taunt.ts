@@ -1,7 +1,7 @@
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
 import { Action, Status } from "enums"
-import { AIBlackboard } from "../blackboard"
-import { AI } from "../index"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { AI } from "@root/index"
 
 /**
  * Makes AI taunt.
