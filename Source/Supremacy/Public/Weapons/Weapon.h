@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	AWeapon();
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated, meta=(ExposeOnSpawn="true"))
 	FWeaponStruct Struct;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
