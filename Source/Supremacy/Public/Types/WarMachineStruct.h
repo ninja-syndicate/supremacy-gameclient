@@ -86,8 +86,8 @@ public:
 	int ShieldMax;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="shield_recharge_rate"))
 	float ShieldRechargeRate;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta =(DisplayName ="sprint_spread_mod"))
-	float SprintSpreadMod;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta =(DisplayName ="sprint_spread_modifier"))
+	float SprintSpreadModifier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="speed"))
 	int Speed;
@@ -100,6 +100,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="stats"))
 	FWarMachineStats Stats;
 
-	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0)
+	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0), SprintSpreadModifier(1.25)
 	{}
 };
