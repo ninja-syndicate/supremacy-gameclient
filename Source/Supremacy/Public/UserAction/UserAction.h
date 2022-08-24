@@ -40,7 +40,7 @@ public:
 		Location = FVector2D();
 	}
 
-	FUserAction(int AbilityId, FVector2D Location)
+	FUserAction(const int AbilityId, const FVector2D Location)
 		: AbilityId(AbilityId), Location(Location)
 	{}
 };
