@@ -7,10 +7,10 @@ struct FStaticDataBaseRecord
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(DisplayName="id"))
+private:
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
 	FGuid id;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(DisplayName="id"))
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
 	FString label;
 };

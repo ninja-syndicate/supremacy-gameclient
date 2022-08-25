@@ -34,6 +34,5 @@ bool StaticDataImporter::Base::Valid() const
 	{
 		if (headers[index] != FileHeaders[index]) return false;	
 	}
-	
 	return true;
 }
