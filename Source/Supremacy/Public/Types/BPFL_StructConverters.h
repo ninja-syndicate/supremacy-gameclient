@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DamageHistory.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Types/WarMachineStruct.h"
 #include "BPFL_StructConverters.generated.h"
@@ -12,14 +13,14 @@ class SUPREMACY_API UBPFL_StructConverters final : public UBlueprintFunctionLibr
 	
 public:
 	
-	UFUNCTION(BlueprintPure, meta=(DisplayName="To FWarMachineStruct (From FWarMachineServerStruct)", CompactNodeTitle = "->", BlueprintAutocast))
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To WarMachineStruct (From WarMachineServerStruct)", CompactNodeTitle = "->", BlueprintAutocast))
 	static FWarMachineStruct Conv_WarMachineServerStructToWarMachineStruct(const FWarMachineServerStruct& WarMachine)
 	{
 		return FWarMachineStruct(WarMachine);
 	}
 
-	UFUNCTION(BlueprintPure, meta=(DisplayName="To FFaction (From FFactionServer)", CompactNodeTitle = "->", BlueprintAutocast))
-	static FFaction Conv_FFactionServerToFFaction(const FFactionServer& FactionServer)
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To Faction (From FactionServer)", CompactNodeTitle = "->", BlueprintAutocast))
+	static FFaction Conv_FactionServerToFaction(const FFactionServer& FactionServer)
 	{
 		return FFaction(FactionServer);
 	}
@@ -28,6 +29,12 @@ public:
 	static ERarity Conv_StringToERarity(const FString& RarityString)
 	{
 		return StringToERarity[RarityString];
+	}
+
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To DamageHistoryResultItem (From DamageHistoryItem)", CompactNodeTitle = "->", BlueprintAutocast))
+	static FDamageHistoryResultItem Conv_DamageHistoryItemToDamageHistoryResultItem(const FDamageHistoryItem& DamageHistoryItem)
+	{
+		return FDamageHistoryResultItem(DamageHistoryItem);
 	}
 
 };

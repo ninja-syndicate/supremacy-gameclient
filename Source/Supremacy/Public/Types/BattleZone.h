@@ -33,5 +33,13 @@ struct FBattleZoneConfigList {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FBattleZoneConfig> Zones;
+	TArray<FBattleZoneConfig> Configs;
+};
+
+USTRUCT(BlueprintType)
+struct FBattleZoneConfigListMap {
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, FBattleZoneConfigList> Battle_Zones;
 };

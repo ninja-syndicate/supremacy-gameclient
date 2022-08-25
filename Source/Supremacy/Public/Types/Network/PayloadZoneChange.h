@@ -11,7 +11,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Zone_Index;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Warn_Time;
+	float Warn_Time;
 
 	FPayloadZoneChange() : Zone_Index(0), Warn_Time(0) {}
 };
