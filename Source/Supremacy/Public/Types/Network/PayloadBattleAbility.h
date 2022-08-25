@@ -7,23 +7,23 @@ USTRUCT(BlueprintType)
 struct FPayloadBattleAbility {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="game_client_ability_id"))
-	EAbilityID GameClientAbilityID;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="event_id"))
-	FString EventID;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="triggered_by_user_id"))
-	FString TriggeredByUserID;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="triggered_by_username"))
-	FString TriggeredByUsername;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="game_location"))
-	FVector2D GameLocation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="game_location_end"))
-	FVector2D GameLocationEnd;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="war_machine_hash"))
-	FString WarMachineHash;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="faction_id"))
-	FString FactionID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EAbilityID Game_Client_Ability_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Event_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Triggered_By_User_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Triggered_By_Username;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector2D Game_Location;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector2D Game_Location_End;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString War_Machine_Hash;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Faction_ID;
 
-	FPayloadBattleAbility(): GameClientAbilityID(EAbilityID::AbilityID_Airstrike)
+	FPayloadBattleAbility(): Game_Client_Ability_ID(EAbilityID::AbilityID_Airstrike), Game_Location(FVector2D(0, 0)), Game_Location_End(FVector2D(0, 0))
 	{}
 };

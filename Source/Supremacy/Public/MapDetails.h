@@ -9,38 +9,38 @@ USTRUCT(BlueprintType)
 struct FMapDetails {
   GENERATED_BODY()
 public:
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="name"))
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
   FString Name;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="image_url"))
-  FString ImageURL;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="width"))
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  FString Image_URL;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
   int Width;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="height"))
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
   int Height;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="cells_x"))
-  int CellsX;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="cells_y"))
-  int CellsY;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="left_pixels"))
-  int PixelLeft;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="top_pixels"))
-  int PixelTop;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="disabled_cells"))
-  TArray<int> DisabledCells;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  int Cells_X;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  int Cells_Y;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  int Pixel_Left;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  int Pixel_Top;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  TArray<int> Disabled_Cells;
 
   FMapDetails()
   {
       Width = 0;
       Height = 0;
-      CellsX = 0;
-      CellsY = 0;
-      PixelLeft = 0;
-      PixelTop = 0;
-      DisabledCells = TArray<int>();
+      Cells_X = 0;
+      Cells_Y = 0;
+      Pixel_Left = 0;
+      Pixel_Top = 0;
+      Disabled_Cells = TArray<int>();
   }
 
   FMapDetails(const FString Name, const FString ImageURL, const int Width, const int Height, const int CellsX, const int CellsY, const int PixelLeft, const int PixelTop, const TArray<int> DisabledCells)
-      : Name(Name), ImageURL(ImageURL), Width(Width), Height(Height), CellsX(CellsX), CellsY(CellsY), PixelLeft(PixelLeft), PixelTop(PixelTop), DisabledCells(DisabledCells)
+      : Name(Name), Image_URL(ImageURL), Width(Width), Height(Height), Cells_X(CellsX), Cells_Y(CellsY), Pixel_Left(PixelLeft), Pixel_Top(PixelTop), Disabled_Cells(DisabledCells)
   {}
 };
 

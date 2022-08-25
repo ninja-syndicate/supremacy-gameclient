@@ -7,14 +7,14 @@ USTRUCT(BlueprintType)
 struct FPayloadBattleInit {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="battle_id"))
-	FString BattleID;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="battle_number"))
-	int BattleNumber;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="map_name"))
-	FString MapName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="war_machines"))
-	TArray<FWarMachineServerStruct> WarMachines;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Battle_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Battle_Number;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Map_Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FWarMachineServerStruct> War_Machines;
 
-	FPayloadBattleInit(): BattleNumber(0) {}
+	FPayloadBattleInit(): Battle_Number(0) {}
 };
