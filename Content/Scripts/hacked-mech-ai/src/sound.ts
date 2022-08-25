@@ -1,16 +1,16 @@
-import { Vector } from "types";
-import { ProvideVectorContext } from "./blackboardkeycontext";
+import { SoundDetails, Vector } from "types"
+import { ProvideVectorContext } from "@blackboards/blackboardkeycontext"
 
 export class Sound implements ProvideVectorContext {
     time: number
-    location: Vector
+    soundDetail: SoundDetails
 
-    constructor(location: Vector, time: number) {
+    constructor(soundDetails: SoundDetails, time: number) {
         this.time = time
-        this.location = location
+        this.soundDetail = soundDetails
     }
 
     getVectorValue(): Vector {
-        return this.location
+        return this.soundDetail.location
     }
 }

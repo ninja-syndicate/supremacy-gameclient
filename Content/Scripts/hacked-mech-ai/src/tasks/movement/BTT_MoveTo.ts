@@ -1,8 +1,9 @@
 import { FAILURE, RUNNING, SUCCESS, Task } from "behaviortree"
 import { MovementResult } from "enums"
-import { AIBlackboard } from "../../blackboard"
-import { AI } from "../../index"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { AI } from "@root/index"
 import { IsVector } from "../../utils"
+import { ENABLE_DEBUGGING } from "@root/aiconfig"
 
 // TODO: test timeout after getting setTimeout done and refactor a bit.
 // TODO: do implementation for timeout and change comments.
@@ -25,9 +26,17 @@ import { IsVector } from "../../utils"
 export const BTT_MoveTo = (blackboardKey: keyof AIBlackboard, observeBlackboardKey: boolean = false, acceptanceRadius: number = 600, timeout: number = 20) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
+            if (ENABLE_DEBUGGING) {
+                console.log("BTT_MoveTo: Move To called.")
+            }
+
             // Check if the blackboard key is a Vector.
             const value = blackboard[blackboardKey]
             if (!value || !IsVector(value)) return FAILURE
+
+            if (ENABLE_DEBUGGING) {
+                console.log("BTT_MoveTo: Move To Location: " + JSON.stringify(value))
+            }
 
             const success: boolean = AI.MoveToVector(value, acceptanceRadius)
             return success ? SUCCESS : FAILURE

@@ -1,11 +1,11 @@
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
+import { CURRENT_AI_CONFIG } from "@root/aiconfig"
 
 export const Predicate_FocusToWeaponNoise = (blackboard: AIBlackboard): boolean => {
     if (!blackboard.lastWeaponNoise) return false
 
-    // TODO: Provide the time-limit as a globally configurable value.
     const timeDiff: number = blackboard.currentTime - blackboard.lastWeaponNoise.time
-    if (timeDiff >= 5) return false
+    if (timeDiff >= CURRENT_AI_CONFIG.weaponNoiseStimulusTimeout) return false
 
     return true
 }

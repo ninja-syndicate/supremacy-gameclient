@@ -1,5 +1,5 @@
 import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 interface IsSetProps {
     blackboardKey: keyof AIBlackboard
