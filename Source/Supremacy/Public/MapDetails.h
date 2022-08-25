@@ -9,23 +9,23 @@ USTRUCT(BlueprintType)
 struct FMapDetails {
   GENERATED_BODY()
 public:
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="name"))
   FString Name;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="image_url"))
   FString ImageURL;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="width"))
   int Width;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="height"))
   int Height;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="cells_x"))
   int CellsX;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="cells_y"))
   int CellsY;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="left_pixels"))
   int PixelLeft;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="top_pixels"))
   int PixelTop;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="disabled_cells"))
   TArray<int> DisabledCells;
 
   FMapDetails()
@@ -39,7 +39,7 @@ public:
       DisabledCells = TArray<int>();
   }
 
-  FMapDetails(FString Name, FString ImageURL, int Width, int Height, int CellsX, int CellsY, int PixelLeft, int PixelTop, TArray<int> DisabledCells)
+  FMapDetails(const FString Name, const FString ImageURL, const int Width, const int Height, const int CellsX, const int CellsY, const int PixelLeft, const int PixelTop, const TArray<int> DisabledCells)
       : Name(Name), ImageURL(ImageURL), Width(Width), Height(Height), CellsX(CellsX), CellsY(CellsY), PixelLeft(PixelLeft), PixelTop(PixelTop), DisabledCells(DisabledCells)
   {}
 };
