@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SUPREMACY_API UStaticData : public UDataAsset
+class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
