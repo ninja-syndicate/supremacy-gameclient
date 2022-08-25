@@ -1,9 +1,9 @@
 import { Sequence } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 import { add, getForwardVector, multiply, rotateZ } from "../helper"
-import { BTT_LookAt } from "../tasks/BTT_LookAt"
-import { BTT_SetValue } from "../tasks/BTT_SetValue"
-import { BTT_Wait } from "../tasks/BTT_Wait"
+import { BTT_LookAt } from "@tasks/BTT_LookAt"
+import { BTT_SetValue } from "@tasks/BTT_SetValue"
+import { BTT_Wait } from "@tasks/BTT_Wait"
 
 // TODO: Use loop decorator.
 /**
