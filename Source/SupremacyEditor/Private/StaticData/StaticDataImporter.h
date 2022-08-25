@@ -7,6 +7,7 @@
 #include "IDesktopPlatform.h"
 #include "EntitySystem/MovieSceneEntityBuilder.h"
 #include "Importers/Faction.h"
+#include "StaticData/StaticData.h"
 #include "StaticDataImporter.generated.h"
 
 /**
@@ -30,10 +31,12 @@ public:
 	bool SetImportDirectory();
 	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Is Ready", meta=(Keywords = "See if importer is ready to execute"))
 	bool IsReady();
+	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Update Asset", meta=(Keywords = "Update specified asset"))
+	bool UpdateAsset(UStaticData *asset);
 	
 	UFUNCTION(BlueprintCallable)
 	FString GetImportPath() { return ImportPath; }
-
+	
 private:
 	FString ImportPath;
 	

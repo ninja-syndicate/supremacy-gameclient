@@ -24,6 +24,7 @@ UStaticDataImporter::~UStaticDataImporter()
 
 bool UStaticDataImporter::SetImportDirectory()
 {
+	Ready = false;
 	if (DesktopPlatform == nullptr)
 	{
 		LogError("Unable to load desktop platform! Can't set import directory");
@@ -47,10 +48,11 @@ bool UStaticDataImporter::SetImportDirectory()
 	if (!FactionImporter->Valid())
 	{
 		LogWarning(FString::Printf(TEXT("Invalid Static Data found at %s"), *outFolder));
+		LogError(FactionImporter->GetErrorReason());
 		return false;
 	}
 
-
+	Ready = true;
 	ImportPath = outFolder;
 	return true;
 }
@@ -58,6 +60,27 @@ bool UStaticDataImporter::SetImportDirectory()
 bool UStaticDataImporter::IsReady()
 {
 	return Ready;
+}
+
+bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
+{
+	if (ImportPath.Len() == 0)
+	{
+		LogError("Import Directory not set");
+		return false;
+	}
+
+	if (!IFileManager::Get().DirectoryExists(*ImportPath))
+	{
+		LogWarning(FString::Printf(TEXT("No Directory found at %s"), *ImportPath));
+		return false;
+	}
+
+	UKismetSystemLibrary::BeginTransaction("StaticDataImporter", FText::FromString("Data Import"), asset);
+	UKismetSystemLibrary::TransactObject(asset);
+	FactionImporter->ImportAndUpdate(asset);
+	UKismetSystemLibrary::EndTransaction();
+	return true;
 }
 
 void UStaticDataImporter::LogError(const FString Text) const

@@ -6,11 +6,10 @@ USTRUCT(BlueprintType)
 struct FStaticDataBaseRecord
 {
 	GENERATED_BODY()
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FGuid ID;
 
-private:
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-	FGuid id;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-	FString label;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FString Label;
 };

@@ -8,7 +8,6 @@ struct FStaticDataFaction : public FStaticDataBaseRecord
 {
 	GENERATED_BODY()
 
-private:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
 	FString Description;
 	

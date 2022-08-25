@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "StaticData/StaticData.h"
 #include "Utils/CSVImporter.h"
 
 namespace StaticDataImporter
@@ -9,17 +10,22 @@ namespace StaticDataImporter
 	{
 	public:
 		void SetDirectory(FString DirectoryPath);
-		bool Valid() const;
+		bool Valid();
+		virtual bool ImportAndUpdate(UStaticData *DataAsset);
+		FString GetErrorReason();
 		
 	protected:
 		Base();
 		~Base();
-		FString FileName;
-		TArray<FString> FileHeaders;
 
-	private:
+		virtual bool HandleRow(UStaticData *DataAsset, TArray<FString> RowCells) = 0;
+
 		FString FullPath;
-		Utils::CSVImporter* Importer = nullptr;
+		FString FileName;
+		FString ErrorReason;
+
+		TArray<FString> FileHeaders;
+		Utils::CSVImporter Importer;
 	};
 	
 }

@@ -9,5 +9,9 @@ namespace StaticDataImporter
 	{
 	public:
 		Faction();
+		virtual ~Faction() = default;
+
+	protected:
+		virtual bool HandleRow(UStaticData* DataAsset, TArray<FString> RowCells) override;
 	};
 }

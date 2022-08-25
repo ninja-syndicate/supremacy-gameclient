@@ -5,17 +5,32 @@
 bool Utils::CSVImporter::SetFileName(FString Filename)
 {
 	if (Filename == CurrentFilename) return true;
+	dataLoaded = false;
 	CurrentFilename = Filename;
 	return true;
 }
 
-bool Utils::CSVImporter::GetHeader(TArray<FString>& Result) const
+bool Utils::CSVImporter::GetHeader(TArray<FString>& Result)
 {
-	TArray<FString> fileData;
-	if (!FFileHelper::LoadFileToStringArray(fileData, *CurrentFilename)) return false;
+	if (!LoadData()) return false;
 
-	if (fileData.Num() == 0) return false;
-	return ParseLine(Result, fileData[0]);
+	if (FileData.Num() == 0) return false;
+	return ParseLine(Result, FileData[0]);
+}
+
+void Utils::CSVImporter::Reset()
+{
+	currentIndex = 1;
+}
+
+bool Utils::CSVImporter::GetNextDataRow(TArray<FString>& Result)
+{
+	if (!LoadData()) return false;
+	if (currentIndex >= FileData.Num()) return false;
+
+	const bool result = ParseLine(Result, FileData[currentIndex]);
+	if (result) currentIndex++;
+	return result;
 }
 
 bool Utils::CSVImporter::ParseLine(TArray<FString>& Result, FString Line)
@@ -77,5 +92,17 @@ bool Utils::CSVImporter::ParseLine(TArray<FString>& Result, FString Line)
 
 	if (currentValue.Len() > 0) Result.Push(currentValue);
 
+	return true;
+}
+
+bool Utils::CSVImporter::LoadData()
+{
+	if (dataLoaded) return true;
+	if (!FFileHelper::LoadFileToStringArray(FileData, *CurrentFilename))
+	{
+		return false;
+	}
+	
+	dataLoaded = true;
 	return true;
 }
