@@ -1,4 +1,5 @@
 import { AIBlackboard } from "@blackboards/blackboard"
+import { CURRENT_AI_CONFIG } from "@root/aiconfig"
 
 export const Predicate_FocusToDamage = (blackboard: AIBlackboard): boolean => {
     // Check undefines.
@@ -16,7 +17,7 @@ export const Predicate_FocusToDamage = (blackboard: AIBlackboard): boolean => {
     if (blackboard.damageStimulusTime <= blackboard.targetLostSightTime) {
         // If the damage stimulus is old, don't focus to it.
         const timeDiff = blackboard.currentTime - blackboard.damageStimulusTime
-        if (timeDiff >= 10) return false
+        if (timeDiff >= CURRENT_AI_CONFIG.damageStimulusTimeout) return false
 
         return blackboard.damageInstigatorHash !== blackboard.target.hash
     } else return true

@@ -10,7 +10,17 @@ module.exports = {
         filename: "mech.js" // <--- Will be compiled to this single file
     },
     resolve: {
-        extensions: [".ts", ".js"]
+        extensions: [".ts", ".js"],
+        alias: {
+            "@root": path.join(__dirname, "src"),
+            "@tasks": path.join(__dirname, "src", "tasks"),
+            "@trees": path.join(__dirname, "src", "trees"),
+            "@blackboards": path.join(__dirname, "src", "blackboards"),
+            "@decorators": path.join(__dirname, "src", "decorators"),
+            "@predicates": path.join(__dirname, "src", "predicates"),
+            "@branches": path.join(__dirname, "src", "branches"),
+            "@utility": path.join(__dirname, "src", "utility"),
+        }
     },
     module: {
         rules: [

@@ -1,5 +1,3 @@
-// NOTE: ForceSuccess decorator is buggy. Don't use it yet.
-
 import { Decorator, Node, NodeOrRegistration, ObserverAborts, RunCallback, RUNNING, RunResult, SUCCESS } from "behaviortree"
 import { AIBlackboard } from "@blackboards/blackboard"
 
@@ -15,8 +13,8 @@ class ForceSuccessDecorator extends Decorator {
         this.observerAborts = config.observerAborts
     }
 
-    decorate(run: RunCallback, blackboard: AIBlackboard, config: ForceSuccessProps) {
-        const result = super.decorate(run, blackboard, config)
+    decorate(run: RunCallback, blackboard: AIBlackboard, config: ForceSuccessProps, rerun?: boolean) {
+        const result = super.decorate(run, blackboard, config, rerun)
         return isRunning(result) ? RUNNING : SUCCESS
     }
 }
@@ -25,7 +23,6 @@ export const ForceSuccess = (node: NodeOrRegistration, observerAborts: ObserverA
     new ForceSuccessDecorator({
         node: node,
         config: {
-            // start: (node as Node).blueprint.start,
             observerAborts,
         },
     })
