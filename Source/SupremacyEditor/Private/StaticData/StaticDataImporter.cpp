@@ -79,7 +79,9 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
 	UKismetSystemLibrary::BeginTransaction("StaticDataImporter", FText::FromString("Data Import"), asset);
 	UKismetSystemLibrary::TransactObject(asset);
 	FactionImporter->ImportAndUpdate(asset);
+	asset->Modify(true);
 	UKismetSystemLibrary::EndTransaction();
+	LogMessage("Import Succeeded!");
 	return true;
 }
 
