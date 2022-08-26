@@ -80,6 +80,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FWeaponStruct> Weapons;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FWarMachineCustomisation Customisation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Health;
@@ -94,11 +96,6 @@ public:
 	int Speed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Sprint_Spread_Modifier;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Intro_Animation_ID;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Outro_Animation_ID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FPowerCoreStruct Power_Core;
@@ -169,7 +166,7 @@ public:
 		Rarity(StringToERarity[WarMachine.Tier]),
 
 		Weapons(WarMachine.Weapons),
-		Customisation(FWarMachineCustomisation(WarMachine.Intro_Animation_ID, WarMachine.Outro_Animation_ID)),
+		Customisation(WarMachine.Customisation),
 	
 		Health(WarMachine.Health),
 		HealthMax(WarMachine.Health_Max),
