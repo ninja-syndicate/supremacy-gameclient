@@ -9,7 +9,7 @@
           "Mech_RedMountain": {
                "HealthMax": 6200,
                "ShieldMax": 1500,
-               "ShieldRechargeRate": 2150,
+               "ShieldRechargeRate": 150,
                "Speed": 2000
           },
           "Mech_Zaibastsu": {
@@ -27,7 +27,7 @@
           "NewMech_RedMountain": {
                "HealthMax": 6200,
                "ShieldMax": 1500,
-               "ShieldRechargeRate": 2150,
+               "ShieldRechargeRate": 150,
                "Speed": 2000
           },
           "NewMech_Zaibatsu": {
