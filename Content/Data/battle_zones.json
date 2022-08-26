@@ -1,9 +1,9 @@
 {
-  "BattleZones": {
+  "Battle_Zones": {
     "AokigaharaForest": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -2730, "Y": -6660, "Z": 260 },
               "Radius": 60000,
@@ -29,7 +29,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -2730, "Y": -6660, "Z": 260 },
               "Radius": 60000,
@@ -55,7 +55,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -2730, "Y": -6660, "Z": 260 },
               "Radius": 60000,
@@ -84,9 +84,9 @@
     },
 
     "ArcticBay": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 16000, "Y": 22060, "Z": 3270 },
               "Radius": 60000,
@@ -112,7 +112,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 16000, "Y": 22060, "Z": 3270 },
               "Radius": 60000,
@@ -138,7 +138,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 16000, "Y": 22060, "Z": 3270 },
               "Radius": 60000,
@@ -167,9 +167,9 @@
     },
 
     "CityBlockArena": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -250, "Y": 250, "Z": 0 },
               "Radius": 40000,
@@ -195,7 +195,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -250, "Y": 250, "Z": 0 },
               "Radius": 40000,
@@ -221,7 +221,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -250, "Y": 250, "Z": 0 },
               "Radius": 40000,
@@ -247,7 +247,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -250, "Y": 250, "Z": 0 },
               "Radius": 40000,
@@ -276,9 +276,9 @@
     },
 
     "CloudKu": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 30, "Y": -370, "Z": 46780 },
               "Radius": 65000,
@@ -298,7 +298,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 30, "Y": -370, "Z": 46780 },
               "Radius": 65000,
@@ -318,7 +318,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 30, "Y": -370, "Z": 46780 },
               "Radius": 65000,
@@ -338,7 +338,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 30, "Y": -370, "Z": 46780 },
               "Radius": 65000,
@@ -358,7 +358,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 30, "Y": -370, "Z": 46780 },
               "Radius": 65000,
@@ -381,9 +381,9 @@
     },
 
     "DesertCity": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 50000,
@@ -409,7 +409,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 50000,
@@ -435,7 +435,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -6002, "Y": -8000, "Z": -2876 },
               "Radius": 50000,
@@ -464,9 +464,9 @@
     },
 
     "NeoTokyo": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 1420, "Y": 1000, "Z": 0 },
               "Radius": 38000,
@@ -492,7 +492,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 1420, "Y": 1000, "Z": 0 },
               "Radius": 38000,
@@ -518,7 +518,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 1420, "Y": 1000, "Z": 0 },
               "Radius": 38000,
@@ -547,9 +547,9 @@
     },
 
     "RedMountainMine": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
               "Radius": 100000,
@@ -575,7 +575,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
               "Radius": 100000,
@@ -601,7 +601,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
               "Radius": 100000,
@@ -627,7 +627,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
               "Radius": 100000,
@@ -656,9 +656,9 @@
     },
 
     "UrbanBuildings": {
-      "configs": [
+      "Configs": [
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -49300, "Y": -90000, "Z": 230 },
               "Radius": 80000,
@@ -684,7 +684,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -49300, "Y": -90000, "Z": 230 },
               "Radius": 80000,
@@ -710,7 +710,7 @@
           ]
         },
         {
-          "zones": [
+          "Zones": [
             {
               "Location": { "X": -49300, "Y": -90000, "Z": 230 },
               "Radius": 80000,
