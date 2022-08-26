@@ -21,6 +21,6 @@ enum EBattleCommand
 	BattleCommand_Ability_Move_Command_Complete UMETA(DisplayName = "BATTLE:ABILITY_MOVE_COMMAND_COMPLETE", ToolTip="Command sent to the game server when a war machine has completed it's move command"),
 	BattleCommand_Ability_Move_Command_Failed UMETA(DisplayName = "BATTLE:ABILITY_MOVE_COMMAND_FAILED", ToolTip="Command sent to the game server when a war machine failed to move to the specified location."),
 	BattleCommand_Zone_Change UMETA(DisplayName = "BATTLE:ZONE_CHANGE", ToolTip="Command sent to the game server when the battle zone is about to change"),
-	BattleCommand_Ability_Complete UMETA(DisplayName = "BATTLE:ABILITY_COMPLETE ", ToolTip="Command sent to the game server when a ability finishes (to update the minimap)"),
+	BattleCommand_Ability_Complete UMETA(DisplayName = "BATTLE:ABILITY_COMPLETE", ToolTip="Command sent to the game server when a ability finishes (to update the minimap)"),
 	BattleCommand_War_Machine_Status UMETA(DisplayName = "BATTLE:WAR_MACHINE_STATUS", ToolTip="Command sent to the game server whenever a war machine status has changed."),
 };
