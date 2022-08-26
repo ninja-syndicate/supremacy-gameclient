@@ -1,7 +1,7 @@
 {
        "Airstrike": {
-          "Damage": 250,
-          "DamageRadius": 2800,
+          "Damage": 150,
+          "DamageRadius": 2500,
           "DamageRadiusFalloff": 600,
           "Count": 60,
           "Spread": 2750,
@@ -150,7 +150,7 @@
      "Landmines": {
           "Amount": 25,
           "HealthMax": 100,
-          "Damage": 400,
+          "Damage": 300,
           "DamageRadius": 1000,
           "DamageRadiusFalloff": 10,
           "FriendlyFire": false,
