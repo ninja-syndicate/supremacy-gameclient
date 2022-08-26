@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Types/AbilityID.h"
-#include "PayloadBattleAbility.generated.h"
+#include "PayloadAbility.generated.h"
 
 USTRUCT(BlueprintType)
-struct FPayloadBattleAbility {
+struct FPayloadAbility {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -24,6 +24,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Faction_ID;
 
-	FPayloadBattleAbility(): Game_Client_Ability_ID(EAbilityID::AbilityID_Airstrike), Game_Location(FVector2D(0, 0)), Game_Location_End(FVector2D(0, 0))
+	FPayloadAbility(): Game_Client_Ability_ID(EAbilityID::AbilityID_Airstrike), Game_Location(FVector2D(0, 0)), Game_Location_End(FVector2D(0, 0))
 	{}
 };
