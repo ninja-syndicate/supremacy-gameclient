@@ -15,5 +15,5 @@ public class SupremacyTarget : TargetRules
         bUseAdaptiveUnityBuild = false;
 
 		ExtraModuleNames.AddRange( new string[] { "Supremacy" } );
-    }
+	}
 }
