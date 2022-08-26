@@ -24,3 +24,23 @@ enum EBattleCommand
 	BattleCommand_Ability_Complete UMETA(DisplayName = "BATTLE:ABILITY_COMPLETE", ToolTip="Command sent to the game server when a ability finishes (to update the minimap)"),
 	BattleCommand_War_Machine_Status UMETA(DisplayName = "BATTLE:WAR_MACHINE_STATUS", ToolTip="Command sent to the game server whenever a war machine status has changed."),
 };
+
+const TMap<EBattleCommand, FString> BattleCommandToString = {
+	{ BattleCommand_Init, "BATTLE:INIT" },
+	{ BattleCommand_Start, "BATTLE:START" },
+	{ BattleCommand_End, "BATTLE:END" },
+	{ BattleCommand_War_Machine_Destroyed, "BATTLE:WAR_MACHINE_DESTROYED" },
+	{ BattleCommand_Ability, "BATTLE:ABILITY" },
+	{ BattleCommand_Ready, "BATTLE:READY" },
+	{ BattleCommand_AI_Spawned, "BATTLE:AI_SPAWNED" },
+	{ BattleCommand_Intro_Finished, "BATTLE:INTRO_FINISHED" },
+	{ BattleCommand_Map_Details, "BATTLE:MAP_DETAILS" },
+	{ BattleCommand_War_Machine_Pickup, "BATTLE:WAR_MACHINE_PICKUP" },
+	{ BattleCommand_Outro_Finished, "BATTLE:OUTRO_FINISHED" },
+	{ BattleCommand_Set_Stats, "BATTLE:SET_STATS" },
+	{ BattleCommand_Ability_Move_Command_Complete, "BATTLE:ABILITY_MOVE_COMMAND_COMPLETE" },
+	{ BattleCommand_Ability_Move_Command_Failed, "BATTLE:ABILITY_MOVE_COMMAND_FAILED" },
+	{ BattleCommand_Zone_Change, "BATTLE:ZONE_CHANGE" },
+	{ BattleCommand_Ability_Complete, "BATTLE:ABILITY_COMPLETE" },
+	{ BattleCommand_War_Machine_Status, "BATTLE:WAR_MACHINE_STATUS" },
+};

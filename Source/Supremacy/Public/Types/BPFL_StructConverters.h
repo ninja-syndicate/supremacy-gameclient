@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "DamageHistory.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Network/BattleCommand.h"
 #include "Types/WarMachineStruct.h"
 #include "BPFL_StructConverters.generated.h"
 
@@ -37,4 +38,10 @@ public:
 		return FDamageHistoryResultItem(DamageHistoryItem);
 	}
 
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To String (From BattleCommand)", CompactNodeTitle = "->", BlueprintAutocast))
+	static FString Conv_BattleCommandToString(const EBattleCommand& BattleCommand)
+	{
+		return BattleCommandToString[BattleCommand];
+	}
+	
 };
