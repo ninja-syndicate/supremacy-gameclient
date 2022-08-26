@@ -26,11 +26,11 @@
     },
     "Sword": {
       "Name": "Sword",
-      "Damage": 80
+      "Damage": 40
     },
     "BostonSword_Whirlwind-R12-Blade-Reaper": {
       "Name": "Sword",
-      "Damage": 80
+      "Damage": 40
     },
     "RedMountainCannon": {
       "Name": "Dual Cannon",
@@ -71,7 +71,7 @@
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
       "Projectile_Speed": 90000,
-      "Rate_Of_Fire": 48
+      "Rate_Of_Fire": 45
     },
     "ZaibatsuGun_Rapid-Extinction-9-Fire-Sniper": {
       "Name": "Sniper Rifle",
@@ -80,16 +80,16 @@
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
       "Projectile_Speed": 90000,
-      "Rate_Of_Fire": 48
+      "Rate_Of_Fire": 45
     },
     "PlasmaSword": {
       "Name": "Plasma Sword",
-      "Damage": 120,
+      "Damage": 80,
       "Damage_Type": 1
     },
     "ZaibatsuSword_Mayhem-5iS-Plasma-Sword-Extended": {
       "Name": "Plasma Sword",
-      "Damage": 120,
+      "Damage": 80,
       "Damage_Type": 1
     },
     "Weapon_AM_BFG": {
