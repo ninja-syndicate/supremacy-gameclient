@@ -17,16 +17,16 @@
           "SpreadOutRangeB": 2200
      },
      "Nuke": {
-          "Damage": 4200,
+          "Damage": 6000,
           "DamageRadius": 2000,
           "DamageRadiusFalloff": 0,
           "DamageOverTime": [
                {
-                    "Damage": 140,
+                    "Damage": 200,
                     "Seconds": 3
                },
                {
-                    "Damage": 40,
+                    "Damage": 80,
                     "Seconds": 5
                }
           ]
