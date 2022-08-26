@@ -7,21 +7,21 @@ USTRUCT(BlueprintType)
 struct FPowerCoreStruct {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="power_capacity"))
-	float PowerCapacity;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="recharge_rate"))
-	float RechargeRate;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="max_draw_rate"))
-	float MaxDrawRate;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="weapon_system_allocation"))
-	float WeaponSystemAllocation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="movement_system_allocation"))
-	float MovementSystemAllocation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="utility_system_allocation"))
-	float UtilitySystemAllocation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Power_Capacity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Recharge_Rate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Max_Draw_Rate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Weapon_System_Allocation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Movement_System_Allocation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Utility_System_Allocation;
 
-	FPowerCoreStruct(): PowerCapacity(0), RechargeRate(0), MaxDrawRate(0), WeaponSystemAllocation(0),
-	                    MovementSystemAllocation(0),
-	                    UtilitySystemAllocation(0)
+	FPowerCoreStruct(): Power_Capacity(0), Recharge_Rate(0), Max_Draw_Rate(0), Weapon_System_Allocation(0),
+	                    Movement_System_Allocation(0),
+	                    Utility_System_Allocation(0)
 	{}
 };
