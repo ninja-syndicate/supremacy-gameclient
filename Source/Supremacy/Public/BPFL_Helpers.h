@@ -93,4 +93,5 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-STOP RESPONDING-", DisplayName = "Stop Responding"))
 	static void StopResponding();
+	
 };
