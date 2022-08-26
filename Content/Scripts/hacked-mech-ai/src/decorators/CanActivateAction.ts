@@ -1,10 +1,10 @@
 import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
-import { AI } from ".."
-import { Action } from "../../../types/enums"
-import { AIBlackboard } from "../blackboard"
+import { AI } from "@root/index"
+import { Action, UserAction } from "enums"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 interface CanActivateActionProps {
-    action: Action
+    action: Action | UserAction
     isMatch: boolean
     observerAborts: ObserverAborts
 }
@@ -38,7 +38,7 @@ class CanActivateActionDecorator extends Decorator {
  */
 export const CanActivateAction = (
     node: NodeOrRegistration,
-    action: Action,
+    action: Action | UserAction,
     isMatch: boolean = true,
     observerAborts: ObserverAborts = ObserverAborts.None,
 ): Node =>

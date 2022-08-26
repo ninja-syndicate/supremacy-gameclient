@@ -14,6 +14,6 @@ public class SupremacyEditorTarget : TargetRules
 		// This works in Perforce, but not for Git.
 		bUseAdaptiveUnityBuild = false;
 
-		ExtraModuleNames.AddRange( new string[] { "Supremacy" } );
+		ExtraModuleNames.AddRange( new string[] { "Supremacy", "SupremacyEditor" } );
     }
 }

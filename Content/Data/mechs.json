@@ -1,40 +1,40 @@
 {
      "Mechs": {
           "Mech_BostonCybernetics": {
-               "HealthMax": 3000,
-               "ShieldMax": 3000,
-               "ShieldRechargeRate": 240,
-               "Speed": 2750
+               "HealthMax": 5500,
+               "ShieldMax": 1500,
+               "ShieldRechargeRate": 150,
+               "Speed": 2500
           },
           "Mech_RedMountain": {
-               "HealthMax": 4500,
-               "ShieldMax": 3000,
-               "ShieldRechargeRate": 240,
-               "Speed": 1750
+               "HealthMax": 6200,
+               "ShieldMax": 1500,
+               "ShieldRechargeRate": 2150,
+               "Speed": 2000
           },
           "Mech_Zaibastsu": {
-               "HealthMax": 3000,
-               "ShieldMax": 3000,
-               "ShieldRechargeRate": 300,
-               "Speed": 2500
+               "HealthMax": 5500,
+               "ShieldMax": 2000,
+               "ShieldRechargeRate": 250,
+               "Speed": 2250
           },
           "NewMech_Boston": {
-               "HealthMax": 3000,
-               "ShieldMax": 3000,
-               "ShieldRechargeRate": 240,
-               "Speed": 2750
+               "HealthMax": 5500,
+               "ShieldMax": 1500,
+               "ShieldRechargeRate": 150,
+               "Speed": 2500
           },
           "NewMech_RedMountain": {
-               "HealthMax": 4500,
-               "ShieldMax": 3000,
-               "ShieldRechargeRate": 240,
-               "Speed": 1750
+               "HealthMax": 6200,
+               "ShieldMax": 1500,
+               "ShieldRechargeRate": 2150,
+               "Speed": 2000
           },
           "NewMech_Zaibatsu": {
-               "HealthMax": 3000,
-               "ShieldMax": 3000,
-               "ShieldRechargeRate": 300,
-               "Speed": 2500
+               "HealthMax": 5500,
+               "ShieldMax": 2000,
+               "ShieldRechargeRate": 250,
+               "Speed": 2250
           }
      }
 }
