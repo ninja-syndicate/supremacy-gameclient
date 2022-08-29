@@ -16,16 +16,10 @@ StaticDataImporter::Brand::Brand(): Base()
 bool StaticDataImporter::Brand::HandleRow(UStaticData* DataAsset, TArray<FString> RowCells)
 {
 	FGuid ID;
-	if (!ParseGuid(RowCells[0], ID)) return false;
+	if (!ParseGuid(RowCells[0], TEXT("id"), ID)) return false;
 
 	UStaticDataBrand* Record = DataAsset->GetOrCreateBrand(ID);
-	if (!ParseGuid(RowCells[1], ID))
-	{
-		ErrorReason = FString::Format(TEXT("{0} - unable to parse faction id on line {1}"), {
-			FileName, Importer.GetCurrentIndex() + 1
-		});
-		return false;
-	}
+	if (!ParseGuid(RowCells[1], TEXT("faction id"), ID)) return false;
 
 	UStaticDataFaction* Faction = DataAsset->GetFaction(ID);
 	if (Faction == nullptr)
@@ -38,7 +32,6 @@ bool StaticDataImporter::Brand::HandleRow(UStaticData* DataAsset, TArray<FString
 	Record->Faction = Faction;
 	Record->Label = RowCells[2];
 
-	const FString AssetName = FString::Format(TEXT("Brand - {0}"), {Record->Label});
-	Record->Rename(*AssetName, DataAsset);
+	SetAssetName(DataAsset, Record, TEXT("Brand"));
 	return true;
 }

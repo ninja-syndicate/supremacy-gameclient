@@ -3,11 +3,18 @@
 #include "StaticDataBaseRecord.h"
 #include "StaticDataFaction.generated.h"
 
+namespace StaticDataImporter
+{
+	class Faction;
+}
+
 UCLASS(BlueprintType)
 class UStaticDataFaction : public UStaticDataBaseRecord
 {
+	friend class StaticDataImporter::Faction;
+	
 	GENERATED_BODY()
-public:
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess))
 	FString Description;
 	

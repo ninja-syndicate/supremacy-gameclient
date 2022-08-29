@@ -26,14 +26,22 @@ StaticDataImporter::Faction::Faction(): Base()
 bool StaticDataImporter::Faction::HandleRow(UStaticData* DataAsset, TArray<FString> RowCells)
 {
 	FGuid ID;
-	if (!ParseGuid(RowCells[0], ID)) return false;
+	if (!ParseGuid(RowCells[0], TEXT("id"), ID)) return false;
 	
 	UStaticDataFaction* Record = DataAsset->GetOrCreateFaction(ID);
 	Record->Label = RowCells[3];
 	Record->Description = RowCells[13];
 
-	const FString AssetName = FString::Format(TEXT("Faction - {0}"), {Record->Label});
-	Record->Rename(*AssetName, DataAsset);
+	Record->LogoURL = RowCells[11];
+	Record->BackgroundURL = RowCells[12];
+
+	FColor tempColor;
+	if (ParseColor(RowCells[8], "primary color", tempColor)) Record->PrimaryColor = tempColor;
+
+	if (ParseColor(RowCells[9], "secondary color", tempColor)) Record->SecondaryColor = tempColor; 
+
+	if (ParseColor(RowCells[10], "background color", tempColor)) Record->BackgroundColor = tempColor;
 	
+	SetAssetName(DataAsset, Record, TEXT("Faction"));
 	return true;
 }

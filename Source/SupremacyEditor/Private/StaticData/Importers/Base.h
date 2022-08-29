@@ -18,7 +18,10 @@ namespace StaticDataImporter
 		Base();
 		~Base();
 
-		bool ParseGuid(FString Field, FGuid& ID);
+		bool ParseGuid(FString Field, FString Name, FGuid& ID);
+		static bool ParseColor(FString Field, FString Name, FColor& Color);
+
+		void SetAssetName(UStaticData* DataAsset, UStaticDataBaseRecord* Record, FString Prefix) const;
 		
 		virtual bool HandleRow(UStaticData *DataAsset, TArray<FString> RowCells) = 0;
 
