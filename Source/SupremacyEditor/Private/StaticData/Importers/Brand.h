@@ -10,7 +10,7 @@ namespace StaticDataImporter
 	{
 	public:
 		Brand();
-		virtual ~Brand() = default;
+		virtual ~Brand() override = default;
 	protected:
 		virtual bool HandleRow(UStaticData* DataAsset, TArray<FString> RowCells) override;
 	};

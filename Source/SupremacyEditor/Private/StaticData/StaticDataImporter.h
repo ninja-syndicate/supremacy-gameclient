@@ -40,9 +40,8 @@ public:
 	
 private:
 	FString ImportPath;
-	
-	StaticDataImporter::Faction *FactionImporter;
-	StaticDataImporter::Brand *BrandImporter;
+
+	TArray<StaticDataImporter::Base*> Importers;
 	
 	bool Ready;
 	IDesktopPlatform *DesktopPlatform;

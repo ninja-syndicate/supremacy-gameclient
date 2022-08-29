@@ -13,10 +13,10 @@ namespace StaticDataImporter
 		bool Valid();
 		virtual bool ImportAndUpdate(UStaticData *DataAsset);
 		FString GetErrorReason();
+		virtual ~Base();
 		
 	protected:
 		Base();
-		~Base();
 
 		bool ParseGuid(FString Field, FString Name, FGuid& ID);
 		static bool ParseColor(FString Field, FString Name, FColor& Color);

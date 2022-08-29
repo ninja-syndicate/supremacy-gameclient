@@ -7,8 +7,8 @@
 
 UStaticDataImporter::UStaticDataImporter()
 {
-	FactionImporter = new StaticDataImporter::Faction();
-	BrandImporter = new StaticDataImporter::Brand();
+	Importers.Add(new StaticDataImporter::Faction());
+	Importers.Add(new StaticDataImporter::Brand());
 
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
@@ -21,8 +21,11 @@ UStaticDataImporter::UStaticDataImporter()
 
 UStaticDataImporter::~UStaticDataImporter()
 {
-	delete(FactionImporter);
-	delete(BrandImporter);
+	for (const auto Importer : Importers)
+	{
+		delete(Importer);
+	}
+	Importers.Reset();
 }
 
 bool UStaticDataImporter::SetImportDirectory()
@@ -47,21 +50,16 @@ bool UStaticDataImporter::SetImportDirectory()
 		return false;
 	}
 
-	FactionImporter->SetDirectory(outFolder);
-	if (!FactionImporter->Valid())
+	for (const auto Importer : Importers)
 	{
-		LogWarning(FString::Printf(TEXT("Invalid Faction Static Data found at %s"), *outFolder));
-		LogError(FactionImporter->GetErrorReason());
-		return false;
-	}
-
-	BrandImporter->SetDirectory(outFolder);
-	if (!BrandImporter->Valid())
-	{
-		LogWarning(FString::Printf(TEXT("Invalid Brand Static Data found at %s"), *outFolder));
-		LogError(BrandImporter->GetErrorReason());
-		return false;
-	}
+		Importer->SetDirectory(outFolder);
+		if (!Importer->Valid())
+		{
+			LogWarning(FString::Printf(TEXT("Invalid Static Data found at %s"), *outFolder));
+			LogError(Importer->GetErrorReason());
+			return false;
+		}
+	}	
 	
 	Ready = true;
 	ImportPath = outFolder;
@@ -89,8 +87,9 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
 
 	UKismetSystemLibrary::BeginTransaction("StaticDataImporter", FText::FromString("Data Import"), asset);
 	UKismetSystemLibrary::TransactObject(asset);
-	FactionImporter->ImportAndUpdate(asset);
-	BrandImporter->ImportAndUpdate(asset);
+
+	for (const auto Importer : Importers) Importer->ImportAndUpdate(asset);
+
 	asset->Modify(true);
 	UKismetSystemLibrary::EndTransaction();
 	LogMessage("Import Succeeded!");
