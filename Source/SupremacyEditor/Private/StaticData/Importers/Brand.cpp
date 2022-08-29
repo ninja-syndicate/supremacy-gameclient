@@ -37,5 +37,8 @@ bool StaticDataImporter::Brand::HandleRow(UStaticData* DataAsset, TArray<FString
 	}
 	Record->Faction = Faction;
 	Record->Label = RowCells[2];
+
+	const FString AssetName = FString::Format(TEXT("Brand - {0}"), {Record->Label});
+	Record->Rename(*AssetName, DataAsset);
 	return true;
 }

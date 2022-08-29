@@ -32,5 +32,8 @@ bool StaticDataImporter::Faction::HandleRow(UStaticData* DataAsset, TArray<FStri
 	Record->Label = RowCells[3];
 	Record->Description = RowCells[13];
 
+	const FString AssetName = FString::Format(TEXT("Faction - {0}"), {Record->Label});
+	Record->Rename(*AssetName, DataAsset);
+	
 	return true;
 }
