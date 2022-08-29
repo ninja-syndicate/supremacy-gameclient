@@ -48,7 +48,7 @@ import { WrappedTask_Repair } from "@trees/useraction/BT_UserAction"
 export const BT_Root = new Selector({
     nodes: [
         IsSet(BT_Combat, "target", true, ObserverAborts.Both),
-        WrappedTask_Repair(true, ObserverAborts.LowerPriority),
+        WrappedTask_Repair(ObserverAborts.LowerPriority),
         Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),

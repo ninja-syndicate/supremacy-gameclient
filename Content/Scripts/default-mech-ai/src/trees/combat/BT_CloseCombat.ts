@@ -1,9 +1,9 @@
 import { ObserverAborts, Selector, Sequence } from "behaviortree"
-import { UserAction, WeaponTag } from "enums"
+import { WeaponTag } from "enums"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
-import { Predicate_HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
+import { Predicate_HasVeryLowTotalHealth, Predicate_TargetHasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
 import { BTT_MeleeAttack } from "@tasks/BTT_MeleeAttack"
 import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_Success } from "@tasks/BTT_Success"
@@ -17,7 +17,7 @@ import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { IsOutnumbered } from "@root/predicates/Predicate_IsOutnumbered"
 import { BT_Strafe } from "@trees/BT_Strafe"
-import { TargetHasWayMoreTotalHealthRatio } from "@predicates/Predicate_TargetHasMoreTotalHealth"
+import { TargetHasMoreTotalHealth } from "@predicates/Predicate_TargetHasMoreTotalHealth"
 import { CURRENT_AI_CONFIG } from "@root/aiconfig"
 import { BT_MovementMode } from "@trees/BT_MovementMode"
 import { ForceSuccess } from "@decorators/ForceSuccess"
@@ -43,7 +43,7 @@ export const BT_CloseCombat = new ParallelBackground({
 
         // Background tasks
         BTT_SetFocalPoint("target"),
-        // BT_MovementMode,
+        ForceSuccess(BT_MovementMode),
         ForceSuccess(BT_UserAction),
         new Selector({
             nodes: [
@@ -52,14 +52,16 @@ export const BT_CloseCombat = new ParallelBackground({
                 Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
                     BT_Strafe,
-                    (blackboard: AIBlackboard) => IsOutnumbered(blackboard) || TargetHasWayMoreTotalHealthRatio(blackboard),
+                    (blackboard: AIBlackboard) => IsOutnumbered(blackboard) || TargetHasMoreTotalHealth(blackboard),
                     true,
                     ObserverAborts.LowerPriority,
                 ),
                 Predicate(
                     BTT_MoveTo("targetLastKnownLocation", true),
                     (blackboard: AIBlackboard) =>
-                        !Predicate_TargetInRange(CURRENT_AI_CONFIG.closeCombatKeepRange)(blackboard) && Predicate_IsTargetInsideBattleZone(blackboard),
+                        !Predicate_TargetInRange(CURRENT_AI_CONFIG.closeCombatKeepRange)(blackboard) &&
+                        Predicate_IsTargetInsideBattleZone(blackboard) &&
+                        Predicate_TargetHasVeryLowTotalHealth(blackboard),
                     true,
                     ObserverAborts.LowerPriority,
                 ),

@@ -24,7 +24,6 @@ export const BT_CloseStrafe = new Sequence({
             (blackboard: AIBlackboard) => blackboard.targetLastKnownLocation,
         ),
         BTT_QuerySetArgumentFloat(EQSQueryType.CloseStrafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => 4000),
-        BTT_QuerySetArgumentFloat(EQSQueryType.CloseStrafe, EQSArgument.SpaceBetween, (blackboard: AIBlackboard) => 1000),
         BTT_RunEQSQuery(EQSQueryType.CloseStrafe, "closeStrafeLocation"),
         BTT_MoveTo("closeStrafeLocation"),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.closeStrafeLocation = undefined)),
