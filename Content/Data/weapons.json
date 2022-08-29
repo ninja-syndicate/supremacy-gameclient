@@ -10,7 +10,8 @@
       "Damage_Type": 1,
       "Spread": 2,
       "Projectile_Speed": 30000,
-      "Rate_Of_Fire": 250
+      "Rate_Of_Fire": 250,
+      "Optimal_Range": 30000
     },
     "BostonGun_P7X7-Plasma-Rifle": {
       "Name": "Plasma Rifle",
@@ -22,7 +23,8 @@
       "Damage_Type": 1,
       "Spread": 2,
       "Projectile_Speed": 30000,
-      "Rate_Of_Fire": 250
+      "Rate_Of_Fire": 250,
+      "Optimal_Range": 30000
     },
     "Sword": {
       "Name": "Sword",
@@ -40,7 +42,8 @@
       "Damage_Radius": 100,
       "Spread": 3,
       "Projectile_Speed": 60000,
-      "Rate_Of_Fire": 270
+      "Rate_Of_Fire": 270,
+      "Optimal_Range": 40000
     },
     "RedMountainCannon_WarMonger-G1-Assault": {
       "Name": "Dual Cannon",
@@ -50,7 +53,8 @@
       "Damage_Radius": 100,
       "Spread": 3,
       "Projectile_Speed": 60000,
-      "Rate_Of_Fire": 270
+      "Rate_Of_Fire": 270,
+      "Optimal_Range": 40000
     },
     "RocketPods": {
       "Name": "Rocket Pods",
@@ -62,7 +66,8 @@
       "Spread": 1500,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 2,
-      "Is_Arced": true
+      "Is_Arced": true,
+      "Optimal_Range": 50000
     },
     "SniperRifle": {
       "Name": "Sniper Rifle",
@@ -71,7 +76,8 @@
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
       "Projectile_Speed": 90000,
-      "Rate_Of_Fire": 45
+      "Rate_Of_Fire": 45,
+      "Optimal_Range": 60000
     },
     "ZaibatsuGun_Rapid-Extinction-9-Fire-Sniper": {
       "Name": "Sniper Rifle",
@@ -80,7 +86,8 @@
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
       "Projectile_Speed": 90000,
-      "Rate_Of_Fire": 45
+      "Rate_Of_Fire": 45,
+      "Optimal_Range": 60000
     },
     "PlasmaSword": {
       "Name": "Plasma Sword",
@@ -297,7 +304,8 @@
       "Damage_Falloff_Rate": 50,
       "Spread": 1,
       "Projectile_Speed": 120000,
-      "Rate_Of_Fire": 60
+      "Rate_Of_Fire": 60,
+      "Optimal_Range": 40000
     }
   }
 }
