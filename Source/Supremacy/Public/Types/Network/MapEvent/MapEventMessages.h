@@ -32,7 +32,7 @@ class SUPREMACY_API UMapEventMessages final : public UObject {
 			&LandmineActivations[0], &LandmineActivations[1], &LandmineActivations[2],
 			&LandmineExplosions,
 		};
-	}
+	}.
 	
 public:
 	UFUNCTION(BlueprintPure)
@@ -49,7 +49,7 @@ public:
 		}
 
 		if (MessageCount == 0) return {};
-		Bytes.Insert(MessageCount, 0);
+		Bytes.Insert(static_cast<uint8>(MessageCount), 0);
 		
 		return Bytes;
 	}
