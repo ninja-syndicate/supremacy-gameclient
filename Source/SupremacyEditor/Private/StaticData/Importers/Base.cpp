@@ -13,6 +13,60 @@ StaticDataImporter::Base::~Base()
 {
 }
 
+bool StaticDataImporter::Base::ParseGuid(FString Field, FString Name, FGuid& ID)
+{
+	if (FGuid::Parse(Field, ID)) return true;
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
+		FileName, Name, Importer.GetCurrentIndex() + 1
+	});
+	return false;
+}
+
+bool StaticDataImporter::Base::ParseColor(FString Field, FString Name, FColor& Color)
+{
+	//Note: this parsing was cribbed from unreal's FColor::FromHex code.
+	int32 StartIndex = (!Field.IsEmpty() && Field[0] == TCHAR('#')) ? 1 : 0;
+
+	if (Field.Len() == 3 + StartIndex)
+	{
+		const int32 R = FParse::HexDigit(Field[StartIndex++]);
+		const int32 G = FParse::HexDigit(Field[StartIndex++]);
+		const int32 B = FParse::HexDigit(Field[StartIndex]);
+
+		Color = FColor((uint8)((R << 4) + R), (uint8)((G << 4) + G), (uint8)((B << 4) + B), 255);
+		
+		return true;
+	}
+
+	if (Field.Len() == 6 + StartIndex)
+	{
+		Color.R = (uint8)((FParse::HexDigit(Field[StartIndex+0]) << 4) + FParse::HexDigit(Field[StartIndex+1]));
+		Color.G = (uint8)((FParse::HexDigit(Field[StartIndex+2]) << 4) + FParse::HexDigit(Field[StartIndex+3]));
+		Color.B = (uint8)((FParse::HexDigit(Field[StartIndex+4]) << 4) + FParse::HexDigit(Field[StartIndex+5]));
+		Color.A = 255;
+
+		return true;
+	}
+
+	if (Field.Len() == 8 + StartIndex)
+	{
+		Color.R = (uint8)((FParse::HexDigit(Field[StartIndex+0]) << 4) + FParse::HexDigit(Field[StartIndex+1]));
+		Color.G = (uint8)((FParse::HexDigit(Field[StartIndex+2]) << 4) + FParse::HexDigit(Field[StartIndex+3]));
+		Color.B = (uint8)((FParse::HexDigit(Field[StartIndex+4]) << 4) + FParse::HexDigit(Field[StartIndex+5]));
+		Color.A = (uint8)((FParse::HexDigit(Field[StartIndex+6]) << 4) + FParse::HexDigit(Field[StartIndex+7]));
+
+		return true;
+	}
+
+	return false;
+}
+
+void StaticDataImporter::Base::SetAssetName(UStaticData* DataAsset, UStaticDataBaseRecord* Record, FString Prefix) const
+{
+	const FString AssetName = FString::Format(TEXT("{0} - {1}"), {Prefix, Record->Label});
+	Record->Rename(*AssetName, DataAsset);
+}
+
 void StaticDataImporter::Base::SetDirectory(FString DirectoryPath)
 {
 	FullPath = FPaths::Combine(DirectoryPath, FileName);
