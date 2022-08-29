@@ -5,11 +5,16 @@
 #include "SupremacyEditorModule.h"
 #include "DesktopPlatformModule.h"
 
+#include "Importers/Faction.h"
+#include "Importers/Brand.h"
+#include "Importers/WarMachineModel.h"
+
 UStaticDataImporter::UStaticDataImporter()
 {
 	Importers.Add(new StaticDataImporter::Faction());
 	Importers.Add(new StaticDataImporter::Brand());
-
+	Importers.Add(new StaticDataImporter::WarMachineModel());
+	
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
 	if (DesktopPlatform == nullptr)

@@ -24,7 +24,7 @@ bool StaticDataImporter::Brand::HandleRow(UStaticData* DataAsset, TArray<FString
 	UStaticDataFaction* Faction = DataAsset->GetFaction(ID);
 	if (Faction == nullptr)
 	{
-		ErrorReason = FString::Format(TEXT("{0} - unable to find faction with {1} on line {1}"), {
+		ErrorReason = FString::Format(TEXT("{0} - unable to find faction with {1} on line {2}"), {
 			FileName, ID.ToString(), Importer.GetCurrentIndex() + 1
 		});
 		return false;

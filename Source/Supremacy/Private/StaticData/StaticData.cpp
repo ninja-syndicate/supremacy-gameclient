@@ -29,6 +29,19 @@ UStaticDataBrand* UStaticData::GetBrand(const FGuid& ID)
 	return nullptr;
 }
 
+UStaticDataWarMachineModel* UStaticData::GetWarMachineModel(const FGuid& ID)
+{
+	for (UStaticDataWarMachineModel *Record : WarMachineModels)
+	{
+		if (Record->ID == ID)
+		{
+			return Record;
+		}
+	}
+
+	return nullptr;
+}
+
 UStaticDataFaction* UStaticData::GetOrCreateFaction(const FGuid& ID)
 {
 	UStaticDataFaction* Record = GetFaction(ID);
@@ -49,6 +62,18 @@ UStaticDataBrand* UStaticData::GetOrCreateBrand(const FGuid& ID)
 	Record = NewObject<UStaticDataBrand>(this);
 	Record->ID = ID;
 	Brands.Push(Record);
+
+	return Record;
+}
+
+UStaticDataWarMachineModel* UStaticData::GetOrCreateWarMachineModel(const FGuid& ID)
+{
+	UStaticDataWarMachineModel* Record = GetWarMachineModel(ID);
+	if (Record != nullptr) return Record;
+
+	Record = NewObject<UStaticDataWarMachineModel>(this);
+	Record->ID = ID;
+	WarMachineModels.Push(Record);
 
 	return Record;
 }

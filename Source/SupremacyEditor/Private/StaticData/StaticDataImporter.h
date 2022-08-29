@@ -6,8 +6,6 @@
 #include "UObject/Object.h"
 #include "IDesktopPlatform.h"
 #include "EntitySystem/MovieSceneEntityBuilder.h"
-#include "Importers/Faction.h"
-#include "Importers/Brand.h"
 #include "StaticData/StaticData.h"
 #include "StaticDataImporter.generated.h"
 
