@@ -7,6 +7,7 @@
 #include "IDesktopPlatform.h"
 #include "EntitySystem/MovieSceneEntityBuilder.h"
 #include "Importers/Faction.h"
+#include "Importers/Brand.h"
 #include "StaticData/StaticData.h"
 #include "StaticDataImporter.generated.h"
 
@@ -41,6 +42,7 @@ private:
 	FString ImportPath;
 	
 	StaticDataImporter::Faction *FactionImporter;
+	StaticDataImporter::Brand *BrandImporter;
 	
 	bool Ready;
 	IDesktopPlatform *DesktopPlatform;

@@ -3,42 +3,52 @@
 
 #include "StaticData/StaticData.h"
 
-FStaticDataFaction UStaticData::GetOrCreateFaction(FGuid& id)
+UStaticDataFaction* UStaticData::GetFaction(const FGuid& ID)
 {
-	for (FStaticDataFaction Faction : Factions)
+	for (UStaticDataFaction *Faction : Factions)
 	{
-		if (Faction.ID == id)
+		if (Faction->ID == ID)
 		{
 			return Faction;
 		}
 	}
 
-	FStaticDataFaction Faction;
-	Faction.ID = id;
-	Factions.Push(Faction);
-	return Faction;
+	return nullptr;
 }
 
-void UStaticData::UpdateFaction(const FStaticDataFaction& Record)
+UStaticDataBrand* UStaticData::GetBrand(const FGuid& ID)
 {
-	int index = -1;
-	bool found = false;
-	for (FStaticDataFaction Faction : Factions)
+	for (UStaticDataBrand *Record : Brands)
 	{
-		index++;
-		if (Faction.ID == Record.ID)
+		if (Record->ID == ID)
 		{
-			found = true;
-			break;
+			return Record;
 		}
 	}
 
-	if (!found)
-	{
-		Factions.Push(Record);
-		return;
-	}
+	return nullptr;
+}
 
-	Factions.RemoveAt(index);
-	Factions.Insert(Record, index);
+UStaticDataFaction* UStaticData::GetOrCreateFaction(const FGuid& ID)
+{
+	UStaticDataFaction* Record = GetFaction(ID);
+	if (Record != nullptr) return Record;
+
+	Record = NewObject<UStaticDataFaction>(this);
+	Record->ID = ID;
+	Factions.Push(Record);
+
+	return Record;
+}
+
+UStaticDataBrand* UStaticData::GetOrCreateBrand(const FGuid& ID)
+{
+	UStaticDataBrand* Record = GetBrand(ID);
+	if (Record != nullptr) return Record;
+
+	Record = NewObject<UStaticDataBrand>(this);
+	Record->ID = ID;
+	Brands.Push(Record);
+
+	return Record;
 }

@@ -13,6 +13,15 @@ StaticDataImporter::Base::~Base()
 {
 }
 
+bool StaticDataImporter::Base::ParseGuid(FString Field, FGuid& ID)
+{
+	if (FGuid::Parse(Field, ID)) return true;
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse id on line {1}"), {
+		FileName, Importer.GetCurrentIndex() + 1
+	});
+	return false;
+}
+
 void StaticDataImporter::Base::SetDirectory(FString DirectoryPath)
 {
 	FullPath = FPaths::Combine(DirectoryPath, FileName);

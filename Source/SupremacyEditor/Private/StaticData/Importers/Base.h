@@ -18,6 +18,8 @@ namespace StaticDataImporter
 		Base();
 		~Base();
 
+		bool ParseGuid(FString Field, FGuid& ID);
+		
 		virtual bool HandleRow(UStaticData *DataAsset, TArray<FString> RowCells) = 0;
 
 		FString FullPath;
