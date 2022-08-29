@@ -5,11 +5,11 @@
 
 namespace StaticDataImporter
 {
-	class Faction : public Base
+	class WarMachineModel : public Base
 	{
 	public:
-		Faction();
-		virtual ~Faction() override = default;
+		WarMachineModel();
+		virtual ~WarMachineModel() override = default;
 
 	protected:
 		virtual bool HandleRow(UStaticData* DataAsset, TArray<FString> RowCells) override;

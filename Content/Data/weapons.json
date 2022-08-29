@@ -71,7 +71,7 @@
     },
     "SniperRifle": {
       "Name": "Sniper Rifle",
-      "Damage": 130,
+      "Damage": 150,
       "Damage_Falloff": 60000,
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
@@ -81,7 +81,7 @@
     },
     "ZaibatsuGun_Rapid-Extinction-9-Fire-Sniper": {
       "Name": "Sniper Rifle",
-      "Damage": 130,
+      "Damage": 150,
       "Damage_Falloff": 60000,
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
