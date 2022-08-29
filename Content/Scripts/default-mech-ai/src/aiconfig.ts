@@ -56,7 +56,7 @@ const DEFAULT_AI_CONFIG: AIConfig = {
     predictionUpdateInterval: 3,
     tauntNoiseStimulusTimeout: 30,
     weaponNoiseStimulusTimeout: 5,
-    sightMaxDistance: 50000,
+    sightMaxDistance: 60000,
 }
 
 /** Aggressive AI configuration. */
@@ -73,7 +73,7 @@ const AGGRESSIVE_AI_CONFIG: AIConfig = {
     predictionUpdateInterval: 3,
     tauntNoiseStimulusTimeout: 30,
     weaponNoiseStimulusTimeout: 5,
-    sightMaxDistance: 50000,
+    sightMaxDistance: 60000,
 }
 
 /** Conservative AI configuration. */
@@ -90,7 +90,7 @@ const CONSERVATIVE_AI_CONFIG: AIConfig = {
     predictionUpdateInterval: 3,
     tauntNoiseStimulusTimeout: 30,
     weaponNoiseStimulusTimeout: 5,
-    sightMaxDistance: 50000,
+    sightMaxDistance: 60000,
 }
 
 /** Current AI configuration. Change this to the desired AI config preset. */
