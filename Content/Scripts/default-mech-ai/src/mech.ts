@@ -32,6 +32,27 @@ export let tree = new BehaviorTree({
     } as AIBlackboard,
 })
 
+const initialize = (input: BrainInput, blackboard: AIBlackboard) => {
+    const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
+
+    if (primaryWeapons.length === 0) {
+        console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no primary weapons. AI will not work properly.`)
+    } else {
+        const primaryGuns = primaryWeapons.filter((w) => !w.tags.find((t) => t === WeaponTag.Melee))
+        const validOptimalRanges = primaryGuns.filter((w) => w.optimalRange > 0)
+        if (validOptimalRanges.length === 0) {
+            console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no valid optimal range setup. Defaulting optimal range to melee range.`)
+            blackboard.idealEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange
+        } else {
+            // Calculate optimal engagement range and ideal range based on that.
+            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.optimalRange))
+            blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = minOptimalRange
+        }
+    }
+}
+
 /**
  * This function gets called when AI begins.
  *
@@ -42,21 +63,7 @@ export let tree = new BehaviorTree({
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    // Calculate optimal engagement range and ideal range based on that.
-    const primaryGuns = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary) && w.tags.find((t) => t !== WeaponTag.Melee))
-    if (primaryGuns.length === 0) {
-        // TODO: Provide `range` value of melee weapon as optimalRange.
-        console.log("onBegin: No primary non-melee weapons detected. Defaulting optimal range value to melee range.")
-        blackboard.idealEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
-        blackboard.optimalEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange
-    } else {
-        const optimalRanges = primaryGuns.filter((w) => w.optimalRange > 0).map((w) => w.optimalRange)
-        const minOptimalRange = Math.min(...optimalRanges)
-        blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
-        blackboard.optimalEngagementRange = minOptimalRange
-    }
-    console.log("Ideal: " + blackboard.idealEngagementRange)
-    console.log("Optimal: " + blackboard.optimalEngagementRange)
+    initialize(input, blackboard)
 
     // Check for secondary weapons and melee weapons and initialize blackboard
     for (let weapon of input.self.weapons) {
