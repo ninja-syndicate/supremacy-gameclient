@@ -1,42 +1,42 @@
 {
        "Airstrike": {
-          "Damage": 250,
+          "Damage": 150,
           "DamageRadius": 2500,
           "DamageRadiusFalloff": 600,
-          "Count": 48,
-          "Spread": 3000,
+          "Count": 60,
+          "Spread": 2750,
           "DelayMin": 0.03,
           "DelayMax": 0.15,
           "JetSpeed": 60000,
           "AngleDistanceOffset": 30000,
           "SpawnDistance": 50000,
           "FriendlyFire": false,
-          "SpreadInRangeA": 3000,
+          "SpreadInRangeA": 2500,
           "SpreadInRangeB": 30000,
-          "SpreadOutRangeA": 4000,
-          "SpreadOutRangeB": 2800
+          "SpreadOutRangeA": 3500,
+          "SpreadOutRangeB": 2200
      },
      "Nuke": {
-          "Damage": 3200,
-          "DamageRadius": 8600,
+          "Damage": 6000,
+          "DamageRadius": 2000,
           "DamageRadiusFalloff": 0,
           "DamageOverTime": [
                {
-                    "Damage": 160,
+                    "Damage": 200,
                     "Seconds": 3
                },
                {
-                    "Damage": 65,
+                    "Damage": 80,
                     "Seconds": 5
                }
           ]
      },
      "HealCrate": {
-          "HealAmount": 2000,
+          "HealAmount": 5000,
           "TriggerRadius": 3000
      },
      "Repair": {
-          "HealAmount": 6000,
+          "HealAmount": 7000,
           "Duration": 40,
           "InitialPercent": 0.5,
           "InitialDuration": 8
@@ -56,7 +56,7 @@
           "Radius": 10000
      },
      "HackerDrone": {
-          "Duration": 18
+          "Duration": 15
      },
      "CameraDrone": {
           "Duration": 20
@@ -138,22 +138,23 @@
           ]
      },
      "Overcharge": {
-          "DamagePercentageOfShield": 3,
-          "DamageMin": 1700,
-          "DamageMax": 6000,
+          "DamagePercentageOfShield": 1,
+          "DamageMin": 600,
+          "DamageMax": 3500,
           "DamageRadius": 10500,
-          "DamageRadiusFalloff": 1250,
+          "DamageRadiusFalloff": 1750,
           "DamageType": 1,
-          "FriendlyFire": false,
-          "SelfShieldDamagePercentage": 0
+          "FriendlyFire": true,
+          "SelfShieldDamagePercentage": 0.5
      },
      "Landmines": {
-          "Amount": 15,
+          "Amount": 25,
           "HealthMax": 100,
-          "Damage": 500,
+          "Damage": 300,
           "DamageRadius": 1000,
           "DamageRadiusFalloff": 10,
           "FriendlyFire": false,
+          "ArmDelay": 3,
           "SpreadInRangeA": 3000,
           "SpreadInRangeB": 30000,
           "SpreadOutRangeA": 2500,
@@ -163,97 +164,104 @@
      },
      "MiniMech": {
           "ZaiStats": {
-               "HealthMax": 900,
-               "ShieldMax": 0,
-               "ShieldRechargeRate": 0,
+               "HealthMax": 1700,
+               "ShieldMax": 2300,
+               "ShieldRechargeRate": 100,
                "Speed": 2500,
                "Weapons": [
                     { 
                          "ID": "SniperRifle",
                          "Name": "Sniper Rifle",
-                         "Damage": 130,
-                         "DamageFalloff": 40000,
-                         "DamageFalloffRate": 50,
-                         "Spread": 3,
-                         "ProjectileSpeed": 80000,
-                         "RateOfFire": 48
+                         "Damage": 85,
+                         "DamageFalloff": 60000,
+                         "DamageFalloffRate": 80,
+                         "Spread": 1,
+                         "ProjectileSpeed": 90000,
+                         "RateOfFire": 45
                     },
                     {
                          "ID": "RocketPods",
                          "Name": "Rocket Pods",
+                         "DamageFalloff": 50000,
+                         "DamageFalloffRate": 125,
                          "Damage": 70,
                          "DamageRadius": 850,
                          "DamageType": 2,
-                         "ProjectileSpeed": 100000,
+                         "ProjectileSpeed": 50000,
                          "RateOfFire": 2
                     },
                     {
                          "ID": "PlasmaSword",
                          "Name": "Plasma Sword",
-                         "Damage": 120,
+                         "Damage": 70,
                          "DamageType": 1
                     }
                ]
           },
           "BCStats": {
-               "HealthMax": 900,
-               "ShieldMax": 0,
-               "ShieldRechargeRate": 0,
+               "HealthMax": 1800,
+               "ShieldMax": 1800,
+               "ShieldRechargeRate": 50,
                "Speed": 2750,
                "Weapons": [
                     { 
                          "ID": "Boston Plasma Rifle",
                          "Name": "Plasma Rifle",
-                         "Damage": 20,
-                         "DamageFalloff": 20000,
+                         "Damage": 13,
+                         "DamageFalloff": 30000,
+                         "DamageFalloffRate": 24,
                          "DamageRadiusFalloff": 20,
                          "DamageRadius": 100,
                          "DamageType": 1,
-                         "Spread": 3,
-                         "ProjectileSpeed": 48000,
+                         "Spread": 2,
+                         "ProjectileSpeed": 30000,
                          "RateOfFire": 250
                     },
                     {
                          "ID": "RocketPods",
                          "Name": "Rocket Pods",
+                         "DamageFalloff": 50000,
+                         "DamageFalloffRate": 125,
                          "Damage": 70,
                          "DamageRadius": 850,
                          "DamageType": 2,
-                         "ProjectileSpeed": 100000,
+                         "ProjectileSpeed": 50000,
                          "RateOfFire": 2
                     },
                     { 
                          "ID": "Boston Sword",
                          "Name": "Sword",
-                         "Damage": 80
+                         "Damage": 30
                     }
                ]
           },
           "RMStats": {
-               "HealthMax": 1400,
-               "ShieldMax": 0,
-               "ShieldRechargeRate": 0,
-               "Speed": 1750,
+               "HealthMax": 2300,
+               "ShieldMax": 1700,
+               "ShieldRechargeRate": 75,
+               "Speed": 2250,
                "Weapons": [
                     {
                          "ID": "RedMountainCannon",
                          "Name": "Dual Cannons",
-                         "Damage": 10,
-                         "DamageFalloff": 20000,
-                         "DamageFalloffRate": 12,
+                         "Damage": 8,
+                         "DamageFalloff": 40000,
+                         "DamageFalloffRate": 24,
                          "DamageRadius": 100,
                          "DamageRadiusFalloff": 0,
-                         "Spread": 4,
-                         "ProjectileSpeed": 36000,
+                         "Spread": 3,
+                         "ProjectileSpeed": 60000,
                          "RateOfFire": 270
                     },
                     {
                          "ID": "RocketPods",
                          "Name": "Rocket Pods",
+                         "DamageFalloff": 50000,
+                         "DamageFalloffRate": 125,
                          "Damage": 70,
                          "DamageRadius": 850,
                          "DamageType": 2,
-                         "ProjectileSpeed": 100000,
+                         "ProjectileSpeed": 50000,
                          "RateOfFire": 2
                     }
                ]

@@ -1,5 +1,5 @@
 import { Decorator, Node, NodeOrRegistration, ObserverAborts } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 interface PredicateProps {
     predicate: (blackboard: AIBlackboard) => boolean
@@ -10,7 +10,7 @@ interface PredicateProps {
 /**
  * A decorator that checks if the result of running predicate function matches {@link PredicateProps.isMatch}.
  */
-class PredicateDecorator extends Decorator {
+export class PredicateDecorator extends Decorator {
     nodeType = "PredicateDecorator"
 
     setConfig(config: PredicateProps) {
@@ -18,6 +18,7 @@ class PredicateDecorator extends Decorator {
         this.observerAborts = config.observerAborts
     }
 
+    // NOTE: Assumes that this condition function and its predicate function does not modify the blackboard state, i.e. pure.
     condition(blackboard: AIBlackboard) {
         return !!this.config.predicate(blackboard) === this.config.isMatch
     }

@@ -1,7 +1,7 @@
 import { FAILURE, SUCCESS, Task } from "behaviortree"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { AI } from "@root/index"
-import { IsVector, IsWarMachine } from "../../utils"
+import { DoesProvideVectorContext, IsVector, IsWarMachine } from "@root/utils"
 
 /**
  * Sets the focal point of AI to the specified war machine/location.
@@ -11,14 +11,20 @@ import { IsVector, IsWarMachine } from "../../utils"
  *
  * @param {WarMachine | Vector} blackboardKey the location to set the focal point to
  */
-export const BTT_SetFocalPoint = (blackboardKey: keyof AIBlackboard) =>
+export const BTT_SetFocalPoint = (focalPoint: keyof AIBlackboard) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
             // Check if the blackboard key is valid.
-            const value = blackboard[blackboardKey]
+            const value = blackboard[focalPoint]
             if (!value) return FAILURE
 
-            // Make an appropriate focal point call depending on the blackboard key type.
+            // If the focalPoint is an object, check whether it provides vector context.
+            if (DoesProvideVectorContext(value)) {
+                const success = AI.SetFocalPointByLocation(value.getVectorValue())
+                return success ? SUCCESS : FAILURE
+            }
+
+            // Otherwise, make an appropriate focal point call depending on the blackboard key type.
             if (IsWarMachine(value)) {
                 const success = AI.SetFocalPointByHash(value.hash)
                 return success ? SUCCESS : FAILURE
