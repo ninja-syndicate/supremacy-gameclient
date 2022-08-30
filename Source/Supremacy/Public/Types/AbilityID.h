@@ -4,7 +4,7 @@
 #include "AbilityID.generated.h"
 
 UENUM(BlueprintType)
-enum EAbilityID
+enum class EAbilityID : uint8
 {
 	AbilityID_Airstrike UMETA(DisplayName = "Airstrike"),
 	AbilityID_Nuke UMETA(DisplayName = "Nuke"),

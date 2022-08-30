@@ -12,6 +12,11 @@
 				"Engine",
 				"AIModule"
 			]
+		},
+		{
+			"Name": "SupremacyEditor",
+			"Type": "Editor",
+			"LoadingPhase":  "PostEngineInit"
 		}
 	],
 	"Plugins": [

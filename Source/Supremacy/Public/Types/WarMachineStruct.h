@@ -12,18 +12,18 @@ struct FWarMachineStats
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_wins"))
-	int TotalWins;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_deaths"))
-	int TotalDeaths;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_kills"))
-	int TotalKills;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="battles_survived"))
-	int BattlesSurvived;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="total_losses"))
-	int TotalLosses;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Total_Wins;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Total_Deaths;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Total_Kills;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Battles_Survived;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Total_Losses;
 
-	FWarMachineStats(): TotalWins(0), TotalDeaths(0), TotalKills(0), BattlesSurvived(0), TotalLosses(0) {}
+	FWarMachineStats(): Total_Wins(0), Total_Deaths(0), Total_Kills(0), Battles_Survived(0), Total_Losses(0) {}
 };
 
 USTRUCT(BlueprintType)
@@ -31,14 +31,14 @@ struct FWarMachinePowerStats
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="idle_drain"))
-	float IdleDrain;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="walk_drain"))
-	float WalkDrain;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="run_drain"))
-	float RunDrain;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Idle_Drain;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Walk_Drain;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Run_Drain;
 
-	FWarMachinePowerStats(): IdleDrain(0), WalkDrain(0), RunDrain(0) {}
+	FWarMachinePowerStats(): Idle_Drain(0), Walk_Drain(0), Run_Drain(0) {}
 };
 
 USTRUCT(BlueprintType)
@@ -46,59 +46,141 @@ struct FWarMachineCustomisation
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="intro_animation_id"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString IntroAnimationID;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="outro_animation_id"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString OutroAnimationID;
 
 	FWarMachineCustomisation() {}
+	FWarMachineCustomisation(FString IntroAnimationID, FString OutroAnimationID)
+	{
+		this->IntroAnimationID = IntroAnimationID;
+		this->OutroAnimationID = OutroAnimationID;
+	}
+};
+
+USTRUCT(BlueprintType, meta=(ToolTip="Same as FWarMachineStruct but for incoming war machines from the server."))
+struct FWarMachineServerStruct {
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Hash;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Owner_Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FFactionServer Faction;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Model;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Skin;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Tier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FWeaponStruct> Weapons;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FWarMachineCustomisation Customisation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Health_Max;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Shield_Max;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Shield_Recharge_Rate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Sprint_Spread_Modifier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FPowerCoreStruct Power_Core;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FWarMachinePowerStats Power_Stats;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FWarMachineStats Stats;
+
+	FWarMachineServerStruct(): Health(3000), Health_Max(3000), Shield_Max(0), Shield_Recharge_Rate(0), Speed(0), Sprint_Spread_Modifier(1.25)
+	{}
 };
 
 USTRUCT(BlueprintType)
 struct FWarMachineStruct {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="hash"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hash;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="name"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="owner_name"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString OwnerName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="faction"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FFaction Faction;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="model"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Model;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="skin"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Skin;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="rarity"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ERarity Rarity;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="weapons"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FWeaponStruct> Weapons;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="customisation"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineCustomisation Customisation;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="health"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Health;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="health_max"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int HealthMax;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="shield_max"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int ShieldMax;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="shield_recharge_rate"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ShieldRechargeRate;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta =(DisplayName ="sprint_spread_modifier"))
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float SprintSpreadModifier;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="speed"))
-	int Speed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="power_core"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FPowerCoreStruct PowerCore;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="power_stats"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachinePowerStats PowerStats;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(DisplayName="stats"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineStats Stats;
+	
+	// Convert From Server Struct
+	explicit FWarMachineStruct(const FWarMachineServerStruct& WarMachine) :
+		Hash(WarMachine.Hash),
+		Name(WarMachine.Name),
+		OwnerName(WarMachine.Owner_Name),
+		Faction(WarMachine.Faction),
+		Model(WarMachine.Model),
+		Skin(WarMachine.Skin),
+		Rarity(StringToERarity[WarMachine.Tier]),
+
+		Weapons(WarMachine.Weapons),
+		Customisation(WarMachine.Customisation),
+	
+		Health(WarMachine.Health),
+		HealthMax(WarMachine.Health_Max),
+		ShieldMax(WarMachine.Shield_Max),
+		ShieldRechargeRate(WarMachine.Shield_Recharge_Rate),
+	
+		Speed(WarMachine.Speed),
+		SprintSpreadModifier(WarMachine.Sprint_Spread_Modifier),
+
+		PowerCore(WarMachine.Power_Core),
+		PowerStats(WarMachine.Power_Stats),
+
+		Stats(WarMachine.Stats)
+	{}
 
 	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0), SprintSpreadModifier(1.25)
 	{}

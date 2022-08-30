@@ -126,16 +126,16 @@ FString UBPFL_Helpers::CopyMapDetailsToClipboard(const FMapDetails MapDetails)
     },
   },)"""";
 	Text = Text.Replace(TEXT("Name"), ToCStr(MapDetails.Name));
-	Text = Text.Replace(TEXT("ImageURL"), ToCStr(MapDetails.ImageURL));
+	Text = Text.Replace(TEXT("ImageURL"), ToCStr(MapDetails.Image_URL));
 	Text = Text.Replace(TEXT("Width"), ToCStr(FString::FromInt(MapDetails.Width)));
 	Text = Text.Replace(TEXT("Height"), ToCStr(FString::FromInt(MapDetails.Height)));
-	Text = Text.Replace(TEXT("CellsX"), ToCStr(FString::FromInt(MapDetails.CellsX)));
-	Text = Text.Replace(TEXT("CellsY"), ToCStr(FString::FromInt(MapDetails.CellsY)));
-	Text = Text.Replace(TEXT("PixelLeft"), ToCStr(FString::FromInt(MapDetails.PixelLeft)));
-	Text = Text.Replace(TEXT("PixelTop"), ToCStr(FString::FromInt(MapDetails.PixelTop)));
+	Text = Text.Replace(TEXT("CellsX"), ToCStr(FString::FromInt(MapDetails.Cells_X)));
+	Text = Text.Replace(TEXT("CellsY"), ToCStr(FString::FromInt(MapDetails.Cells_Y)));
+	Text = Text.Replace(TEXT("PixelLeft"), ToCStr(FString::FromInt(MapDetails.Pixel_Left)));
+	Text = Text.Replace(TEXT("PixelTop"), ToCStr(FString::FromInt(MapDetails.Pixel_Top)));
 
 	FString DisabledCells = "";
-	for (const int DisabledCell : MapDetails.DisabledCells)
+	for (const int DisabledCell : MapDetails.Disabled_Cells)
 	{
 		if (!DisabledCells.IsEmpty()) DisabledCells += ",";
 		DisabledCells += FString::FromInt(DisabledCell);
