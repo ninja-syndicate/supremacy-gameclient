@@ -1,5 +1,5 @@
 import { SUCCESS, Task } from "behaviortree"
-import { AIBlackboard } from "../blackboard"
+import { AIBlackboard } from "@blackboards/blackboard"
 
 /**
  * A task that always returns SUCCESS.

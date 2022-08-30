@@ -35,6 +35,10 @@ export const BTT_Shoot = (tag: WeaponTag) =>
             return hasAmmo ? RUNNING : FAILURE
         },
 
+        end: (blackboard: AIBlackboard) => {
+            AI.WeaponRelease(tag)
+        },
+
         abort: (blackboard: AIBlackboard) => {
             AI.WeaponRelease(tag)
         },

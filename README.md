@@ -91,9 +91,9 @@ know which conflicts are expected and possibly work on something else meanwhile.
 - **X :** Toggle cursor / mouse capture
 - **T :** Set random time of day
 - **-/+ :** Decrease/Increase global time dilation
-- **SHIFT+Q:** Possess Red Mountain Mech
-- **SHIFT+W:** Possess Boston Mech
-- **SHIFT+E:** Possess Zaibatsu Mech
+- **CTRL+Q:** Possess Red Mountain Mech
+- **CTRL+W:** Possess Boston Mech
+- **CTRL+E:** Possess Zaibatsu Mech
 - **SHIFT+H:** Toggle Health Bars
 - **SHIFT+z:** Force Next Battle Zone
 - **CTRL+ALT+SHIFT+BACKSPACE:** Force Crash
@@ -108,6 +108,7 @@ know which conflicts are expected and possibly work on something else meanwhile.
 - **4 :** Robot Dogs
 - **5 :** Red Mountain Reinforcements
 - **SHIFT+5 :** Mini Mech
+- **ALT+5 :** Turret
 - **6 :** Satellite Overload *(on random mech)*
 - **7 :** Landmines *(on random mech)*
 - **8 :** EMP *(on random mech)*
