@@ -5,9 +5,16 @@
 #include "SupremacyEditorModule.h"
 #include "DesktopPlatformModule.h"
 
+#include "Importers/Faction.h"
+#include "Importers/Brand.h"
+#include "Importers/WarMachineModel.h"
+
 UStaticDataImporter::UStaticDataImporter()
 {
-	FactionImporter = new StaticDataImporter::Faction();
+	Importers.Add(new StaticDataImporter::Faction());
+	Importers.Add(new StaticDataImporter::Brand());
+	Importers.Add(new StaticDataImporter::WarMachineModel());
+	
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
 	if (DesktopPlatform == nullptr)
@@ -19,7 +26,11 @@ UStaticDataImporter::UStaticDataImporter()
 
 UStaticDataImporter::~UStaticDataImporter()
 {
-	delete(FactionImporter);
+	for (const auto Importer : Importers)
+	{
+		delete(Importer);
+	}
+	Importers.Reset();
 }
 
 bool UStaticDataImporter::SetImportDirectory()
@@ -44,14 +55,17 @@ bool UStaticDataImporter::SetImportDirectory()
 		return false;
 	}
 
-	FactionImporter->SetDirectory(outFolder);
-	if (!FactionImporter->Valid())
+	for (const auto Importer : Importers)
 	{
-		LogWarning(FString::Printf(TEXT("Invalid Static Data found at %s"), *outFolder));
-		LogError(FactionImporter->GetErrorReason());
-		return false;
-	}
-
+		Importer->SetDirectory(outFolder);
+		if (!Importer->Valid())
+		{
+			LogWarning(FString::Printf(TEXT("Invalid Static Data found at %s"), *outFolder));
+			LogError(Importer->GetErrorReason());
+			return false;
+		}
+	}	
+	
 	Ready = true;
 	ImportPath = outFolder;
 	return true;
@@ -78,7 +92,9 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
 
 	UKismetSystemLibrary::BeginTransaction("StaticDataImporter", FText::FromString("Data Import"), asset);
 	UKismetSystemLibrary::TransactObject(asset);
-	FactionImporter->ImportAndUpdate(asset);
+
+	for (const auto Importer : Importers) Importer->ImportAndUpdate(asset);
+
 	asset->Modify(true);
 	UKismetSystemLibrary::EndTransaction();
 	LogMessage("Import Succeeded!");

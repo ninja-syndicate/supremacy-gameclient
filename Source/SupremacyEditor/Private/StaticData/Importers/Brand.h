@@ -3,14 +3,14 @@
 #include "Base.h"
 #include "CoreMinimal.h"
 
+
 namespace StaticDataImporter
 {
-	class Faction : public Base
+	class Brand : public Base
 	{
 	public:
-		Faction();
-		virtual ~Faction() override = default;
-
+		Brand();
+		virtual ~Brand() override = default;
 	protected:
 		virtual bool HandleRow(UStaticData* DataAsset, TArray<FString> RowCells) override;
 	};
