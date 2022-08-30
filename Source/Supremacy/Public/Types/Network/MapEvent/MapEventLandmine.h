@@ -29,7 +29,7 @@ public:
 	FMapEventLandmineActivations(): Faction(0) {}
 	explicit FMapEventLandmineActivations(const int32 Faction) : Faction(Faction) {}
 	
-	virtual TArray<uint8> Pack() const override
+	virtual TArray<uint8> Pack(const UObject* WorldContextObject) const override
 	{
 		if (Landmines.IsEmpty()) return {};
 		
@@ -38,7 +38,7 @@ public:
 		Bytes.Emplace(static_cast<uint8>(Landmines.Num()));
 		Bytes.Emplace(Faction);
 
-		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) / 1000);
+		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
 		for (const auto [LandmineID, Location, GameTimeInMS] : Landmines) 
 		{
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(LandmineID));
@@ -75,7 +75,7 @@ struct FMapEventLandmineExplosions : public FMapEventMessage  {
 public:
 	TArray<FMapEventLandmineExplosion> Landmines;
 
-	virtual TArray<uint8> Pack() const override
+	virtual TArray<uint8> Pack(const UObject* WorldContextObject) const override
 	{
 		if (Landmines.IsEmpty()) return {};
 		
@@ -83,7 +83,7 @@ public:
 		Bytes.Emplace(static_cast<uint8>(EMapEventType::MapEventType_LandmineExplosions));
 		Bytes.Emplace(static_cast<uint8>(Landmines.Num()));
 
-		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) / 1000);
+		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
 		for (const auto [LandmineID, GameTimeInMS] : Landmines) 
 		{
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(LandmineID));

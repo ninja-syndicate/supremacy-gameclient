@@ -32,17 +32,19 @@ class SUPREMACY_API UMapEventMessages final : public UObject {
 			&LandmineActivations[0], &LandmineActivations[1], &LandmineActivations[2],
 			&LandmineExplosions,
 		};
-	}.
+	}
 	
 public:
-	UFUNCTION(BlueprintPure)
-	TArray<uint8> Pack() const
+	UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject"))
+	TArray<uint8> Pack(const UObject* WorldContextObject) const
 	{
+		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+		
 		TArray<uint8> Bytes = TArray<uint8>();
 		uint8 MessageCount = 0;
 		for (const FMapEventMessage* Message : Messages)
 		{
-			TArray<uint8> MessagedPacked = Message->Pack();
+			TArray<uint8> MessagedPacked = Message->Pack(World);
 			if (MessagedPacked.Num() == 0) continue;
 			Bytes.Append(MessagedPacked);
 			MessageCount++;
@@ -61,10 +63,12 @@ public:
 			Message->Clear();
 	}
 
-	UFUNCTION(BlueprintCallable)
-	void AirstrikeExplosion(const FIntPoint Location)
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
+	void AirstrikeExplosion(const UObject* WorldContextObject, const FIntPoint Location)
 	{
-		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) / 1000);
+		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+			
+		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
 		AirstrikeExplosions.Locations.Add(FMapEventAirstrikeExplosion(Location, TimeInMS));
 	}
 	
@@ -77,7 +81,7 @@ public:
 			return 0;
 		}
 		const int32 LandmineID = NextLandmineID++;
-		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) / 1000);
+		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
 		LandmineActivations[Faction-1].Landmines.Add(FMapEventLandmineActivation(LandmineID, Location, TimeInMS));
 		return LandmineID;
 	}
@@ -85,7 +89,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LandmineExplosion(const int32 LandmineID)
 	{
-		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) / 1000);
+		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
 		LandmineExplosions.Landmines.Add(FMapEventLandmineExplosion(LandmineID, TimeInMS));
 	}
 };

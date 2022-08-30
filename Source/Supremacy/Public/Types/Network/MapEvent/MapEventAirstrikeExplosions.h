@@ -23,7 +23,7 @@ struct SUPREMACY_API FMapEventAirstrikeExplosions : public FMapEventMessage {
 public:
 	TArray<FMapEventAirstrikeExplosion> Locations;
 
-	virtual TArray<uint8> Pack() const override
+	virtual TArray<uint8> Pack(const UObject* WorldContextObject) const override
 	{
 		if (Locations.IsEmpty()) return {};
 		
@@ -31,10 +31,10 @@ public:
 		Bytes.Emplace(static_cast<uint8>(EMapEventType::MapEventType_AirstrikeExplosions));
 		Bytes.Emplace(static_cast<uint8>(Locations.Num()));
 
-		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) / 1000);
+		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(WorldContextObject) * 1000);
 		for (const auto [Location, GameTimeInMS] : Locations) 
 		{
-			const uint16 TimeOffset = static_cast<int16>(CurrentTimeMS - GameTimeInMS);
+			const uint16 TimeOffset = static_cast<uint16>(CurrentTimeMS - GameTimeInMS);
 			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(TimeOffset));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.X));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.Y));
