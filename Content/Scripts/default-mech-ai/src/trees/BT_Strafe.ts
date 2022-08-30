@@ -2,9 +2,9 @@ import { Sequence } from "behaviortree"
 import { EQSArgument, EQSQueryType } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { BTT_QuerySetArgumentFloat, BTT_QuerySetArgumentString } from "@tasks/environment/BTT_QuerySetArgument"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
+import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
 
 /**
  * Strafing behavior.
@@ -17,10 +17,12 @@ import { BTT_SetValue } from "@tasks/BTT_SetValue"
 export const BT_Strafe = new Sequence({
     nodes: [
         BTT_QuerySetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
-        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => Math.max(10000, blackboard.optimalEngagementRange / 2)),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) =>
+            Math.max(10000, blackboard.optimalEngagementRange / 2),
+        ),
         // BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MaxDistanceToTarget, (blackboard: AIBlackboard) => blackboard.optimalEngagementRange),
         BTT_RunEQSQuery(EQSQueryType.Strafe, "strafeLocation"),
-        BTT_MoveTo("strafeLocation"),
+        BT_MoveByDistanceToTarget("strafeLocation"),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.strafeLocation = undefined)),
     ],
 })
