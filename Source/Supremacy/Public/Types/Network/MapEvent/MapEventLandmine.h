@@ -35,13 +35,13 @@ public:
 		
 		TArray<uint8> Bytes = TArray<uint8>();
 		Bytes.Emplace(static_cast<uint8>(EMapEventType::MapEventType_LandmineActivations));
-		Bytes.Emplace(static_cast<uint8>(Landmines.Num()));
+		Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(Landmines.Num()));
 		Bytes.Emplace(Faction);
 
 		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
 		for (const auto [LandmineID, Location, GameTimeInMS] : Landmines) 
 		{
-			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(LandmineID));
+			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(static_cast<uint16>(LandmineID)));
 			const uint16 TimeOffset = static_cast<int16>(CurrentTimeMS - GameTimeInMS);
 			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(TimeOffset));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.X));
@@ -81,12 +81,12 @@ public:
 		
 		TArray<uint8> Bytes = TArray<uint8>();
 		Bytes.Emplace(static_cast<uint8>(EMapEventType::MapEventType_LandmineExplosions));
-		Bytes.Emplace(static_cast<uint8>(Landmines.Num()));
+		Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(Landmines.Num()));
 
 		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
 		for (const auto [LandmineID, GameTimeInMS] : Landmines) 
 		{
-			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(LandmineID));
+			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(static_cast<uint16>(LandmineID)));
 			const uint16 TimeOffset = static_cast<int16>(CurrentTimeMS - GameTimeInMS);
 			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(TimeOffset));
 		}

@@ -28,9 +28,12 @@ class SUPREMACY_API UMapEventMessages final : public UObject {
 		};
 
 		Messages = {
-			&AirstrikeExplosions,
+			// Will be unpacked and saved on server
 			&LandmineActivations[0], &LandmineActivations[1], &LandmineActivations[2],
 			&LandmineExplosions,
+
+			// Only sent straight to frontend clients
+			&AirstrikeExplosions,
 		};
 	}
 	
@@ -72,24 +75,28 @@ public:
 		AirstrikeExplosions.Locations.Add(FMapEventAirstrikeExplosion(Location, TimeInMS));
 	}
 	
-	UFUNCTION(BlueprintCallable)
-	int32 LandmineActivation(const FIntPoint Location, const uint8 Faction)
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
+	int32 LandmineActivation(const UObject* WorldContextObject, const FIntPoint Location, const uint8 Faction)
 	{
+		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+		
 		if (Faction == 0 || Faction > 3)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("LandmineActivation - invalid faction, must be a number between 1-3"));
 			return 0;
 		}
 		const int32 LandmineID = NextLandmineID++;
-		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
+		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
 		LandmineActivations[Faction-1].Landmines.Add(FMapEventLandmineActivation(LandmineID, Location, TimeInMS));
 		return LandmineID;
 	}
 
-	UFUNCTION(BlueprintCallable)
-	void LandmineExplosion(const int32 LandmineID)
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
+	void LandmineExplosion(const UObject* WorldContextObject, const int32 LandmineID)
 	{
-		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(GEngine->GetWorld()) * 1000);
+		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+		
+		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
 		LandmineExplosions.Landmines.Add(FMapEventLandmineExplosion(LandmineID, TimeInMS));
 	}
 };

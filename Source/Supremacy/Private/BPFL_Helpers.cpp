@@ -33,8 +33,8 @@ TArray<uint8> UBPFL_Helpers::ConvertIntToBytes(const int Input)
 TArray<uint8> UBPFL_Helpers::ConvertUInt16ToBytes(const uint16 Input)
 {
 	TArray<uint8> Bytes = TArray<uint8>();
-	Bytes.Emplace((Input >> 8) & 0xFF);
-	Bytes.Emplace((Input >> 0) & 0xFF);
+	Bytes.Emplace(Input >> 8);
+	Bytes.Emplace(Input >> 0);
 	return Bytes;
 }
 
