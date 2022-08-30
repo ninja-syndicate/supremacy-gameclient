@@ -5,23 +5,19 @@ import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
 import { Predicate_HasVeryLowTotalHealth, Predicate_TargetHasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
 import { BTT_MeleeAttack } from "@tasks/BTT_MeleeAttack"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_Success } from "@tasks/BTT_Success"
 import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
-import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
-import { Predicate_TargetInRange } from "@predicates/Predicate_InRange"
-import { Predicate_IsInsideBattleZone, Predicate_IsTargetInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
+import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { IsOutnumbered } from "@root/predicates/Predicate_IsOutnumbered"
 import { BT_Strafe } from "@trees/BT_Strafe"
 import { TargetHasMoreTotalHealth } from "@predicates/Predicate_TargetHasMoreTotalHealth"
-import { CURRENT_AI_CONFIG } from "@root/aiconfig"
-import { BT_MovementMode } from "@trees/BT_MovementMode"
 import { ForceSuccess } from "@decorators/ForceSuccess"
 import { BT_UserAction } from "@trees/useraction/BT_UserAction"
+import { BT_CloseCombatMovement } from "@trees/combat/BT_CloseCombatMovement"
 
 // TODO: provide main and background properties for ParallelBackground
 // TODO: Update code to actually reflect comment
@@ -43,7 +39,6 @@ export const BT_CloseCombat = new ParallelBackground({
 
         // Background tasks
         BTT_SetFocalPoint("target"),
-        ForceSuccess(BT_MovementMode),
         ForceSuccess(BT_UserAction),
         new Selector({
             nodes: [
@@ -51,21 +46,16 @@ export const BT_CloseCombat = new ParallelBackground({
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
                 Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
-                    BT_Strafe,
-                    (blackboard: AIBlackboard) => IsOutnumbered(blackboard) || TargetHasMoreTotalHealth(blackboard),
-                    true,
-                    ObserverAborts.LowerPriority,
-                ),
-                Predicate(
-                    BTT_MoveTo("targetLastKnownLocation", true),
+                    BT_CloseCombatMovement,
                     (blackboard: AIBlackboard) =>
-                        !Predicate_TargetInRange(CURRENT_AI_CONFIG.closeCombatKeepRange)(blackboard) &&
-                        Predicate_IsTargetInsideBattleZone(blackboard) &&
-                        Predicate_TargetHasVeryLowTotalHealth(blackboard),
+                        !IsOutnumbered(blackboard) &&
+                        !TargetHasMoreTotalHealth(blackboard) &&
+                        Predicate_TargetHasVeryLowTotalHealth(blackboard) &&
+                        !Predicate_HasVeryLowTotalHealth(blackboard),
                     true,
                     ObserverAborts.LowerPriority,
                 ),
-                BT_CloseStrafe,
+                BT_Strafe,
                 BTT_Success,
             ],
         }),
