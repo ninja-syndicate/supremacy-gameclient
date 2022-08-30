@@ -1,13 +1,11 @@
 import { ObserverAborts, Sequence } from "behaviortree"
 import { EQSQueryType, MovementMode } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { Predicate_IsLocationInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { Predicate } from "@decorators/Predicate"
-import { ForceSuccess } from "@decorators/ForceSuccess"
-import { BTT_SetMovementMode } from "@tasks/movement/BTT_SetMovementMode"
+import { BT_SprintMoveTo } from "@trees/movement/BT_MovementMode"
 
 /**
  * Move to battle zone behavior.
@@ -22,9 +20,8 @@ import { BTT_SetMovementMode } from "@tasks/movement/BTT_SetMovementMode"
 export const BT_MoveToBattleZone = new Sequence({
     nodes: [
         BTT_RunEQSQuery(EQSQueryType.BattleZone, "battleZoneLocation"),
-        ForceSuccess(BTT_SetMovementMode(MovementMode.Sprint)),
         // TODO: Add a loop to re-try rather than aborting immediately.
-        Predicate(BTT_MoveTo("battleZoneLocation"), Predicate_IsLocationInsideBattleZone("battleZoneLocation"), true, ObserverAborts.Self),
+        Predicate(BT_SprintMoveTo("battleZoneLocation"), Predicate_IsLocationInsideBattleZone("battleZoneLocation"), true, ObserverAborts.Self),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.battleZoneLocation = undefined)),
     ],
 })
