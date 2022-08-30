@@ -16,7 +16,7 @@
 		{
 			"Name": "SupremacyEditor",
 			"Type": "Editor",
-			"LoadingPhase":  "PostEngineInit"
+			"LoadingPhase": "PostEngineInit"
 		}
 	],
 	"Plugins": [
@@ -98,6 +98,11 @@
 		{
 			"Name": "ImagePlate",
 			"Enabled": true
+		},
+		{
+			"Name": "PhysicalBoids",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/7fac9e28df5b4dd08fa02235157598bc"
 		}
 	]
 }
