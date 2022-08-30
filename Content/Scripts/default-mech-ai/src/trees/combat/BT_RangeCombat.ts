@@ -18,10 +18,10 @@ import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
-import { BT_MovementMode } from "@trees/BT_MovementMode"
 import { ForceSuccess } from "@decorators/ForceSuccess"
 import { BT_UserAction } from "@trees/useraction/BT_UserAction"
-import { Predicate_IsTeamInAdvantage } from "@root/predicates/Predicate_IsTeamInAdvantage"
+import { Predicate_IsTeamInAdvantage } from "@predicates/Predicate_IsTeamInAdvantage"
+import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -49,7 +49,6 @@ export const BT_RangeCombat = new ParallelBackground({
 
         // Background tasks:
         BTT_SetFocalPoint("target"),
-        ForceSuccess(BT_MovementMode),
         ForceSuccess(BT_UserAction),
         new Selector({
             nodes: [
@@ -58,7 +57,7 @@ export const BT_RangeCombat = new ParallelBackground({
                 Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
                 Predicate(
                     new Selector({
-                        nodes: [BT_CloseStrafe, BTT_MoveTo("targetLastKnownLocation")],
+                        nodes: [BT_CloseStrafe, BT_MoveByDistanceToTarget("targetLastKnownLocation")],
                     }),
                     (blackboard: AIBlackboard) =>
                         !TargetHasMoreTotalHealth(blackboard) &&
