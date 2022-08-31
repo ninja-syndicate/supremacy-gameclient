@@ -1,7 +1,6 @@
 ﻿#include "Faction.h"
 
 #include "SupremacyEditorModule.h"
-#include "GenericPlatform/GenericPlatformCrashContext.h"
 
 StaticDataImporter::Faction::Faction(): Base()
 {
@@ -27,18 +26,22 @@ StaticDataImporter::Faction::Faction(): Base()
 bool StaticDataImporter::Faction::HandleRow(UStaticData* DataAsset, TArray<FString> RowCells)
 {
 	FGuid ID;
-	if (!FGuid::Parse(RowCells[0], ID))
-	{
-		ErrorReason = FString::Format(TEXT("{0} - unable to parse id on line {1}"), {
-			FileName, Importer.GetCurrentIndex() + 1
-		});
-		return false;
-	}
+	if (!ParseGuid(RowCells[0], TEXT("id"), ID)) return false;
 	
-	FStaticDataFaction record = DataAsset->GetOrCreateFaction(ID);
-	record.Label = RowCells[3];
-	record.Description = RowCells[13];
+	UStaticDataFaction* Record = DataAsset->GetOrCreateFaction(ID);
+	Record->Label = RowCells[3];
+	Record->Description = RowCells[13];
 
-	DataAsset->UpdateFaction(record);
+	Record->LogoURL = RowCells[11];
+	Record->BackgroundURL = RowCells[12];
+
+	FColor tempColor;
+	if (ParseColor(RowCells[8], "primary color", tempColor)) Record->PrimaryColor = tempColor;
+
+	if (ParseColor(RowCells[9], "secondary color", tempColor)) Record->SecondaryColor = tempColor; 
+
+	if (ParseColor(RowCells[10], "background color", tempColor)) Record->BackgroundColor = tempColor;
+	
+	SetAssetName(DataAsset, Record, TEXT("Faction"));
 	return true;
 }

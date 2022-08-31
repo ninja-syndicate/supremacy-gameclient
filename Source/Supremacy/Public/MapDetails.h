@@ -12,35 +12,35 @@ public:
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   FString Name;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
-  FString ImageURL;
+  FString Image_URL;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   int Width;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   int Height;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
-  int CellsX;
+  int Cells_X;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
-  int CellsY;
+  int Cells_Y;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
-  int PixelLeft;
+  int Pixel_Left;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
-  int PixelTop;
+  int Pixel_Top;
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
-  TArray<int> DisabledCells;
+  TArray<int> Disabled_Cells;
 
   FMapDetails()
   {
       Width = 0;
       Height = 0;
-      CellsX = 0;
-      CellsY = 0;
-      PixelLeft = 0;
-      PixelTop = 0;
-      DisabledCells = TArray<int>();
+      Cells_X = 0;
+      Cells_Y = 0;
+      Pixel_Left = 0;
+      Pixel_Top = 0;
+      Disabled_Cells = TArray<int>();
   }
 
-  FMapDetails(FString Name, FString ImageURL, int Width, int Height, int CellsX, int CellsY, int PixelLeft, int PixelTop, TArray<int> DisabledCells)
-      : Name(Name), ImageURL(ImageURL), Width(Width), Height(Height), CellsX(CellsX), CellsY(CellsY), PixelLeft(PixelLeft), PixelTop(PixelTop), DisabledCells(DisabledCells)
+  FMapDetails(const FString Name, const FString ImageURL, const int Width, const int Height, const int CellsX, const int CellsY, const int PixelLeft, const int PixelTop, const TArray<int> DisabledCells)
+      : Name(Name), Image_URL(ImageURL), Width(Width), Height(Height), Cells_X(CellsX), Cells_Y(CellsY), Pixel_Left(PixelLeft), Pixel_Top(PixelTop), Disabled_Cells(DisabledCells)
   {}
 };
 

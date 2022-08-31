@@ -24,7 +24,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void Setup();
-
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Animation")
 	void PlayAnimationIntro();

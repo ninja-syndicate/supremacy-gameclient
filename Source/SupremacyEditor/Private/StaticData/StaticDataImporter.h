@@ -6,7 +6,6 @@
 #include "UObject/Object.h"
 #include "IDesktopPlatform.h"
 #include "EntitySystem/MovieSceneEntityBuilder.h"
-#include "Importers/Faction.h"
 #include "StaticData/StaticData.h"
 #include "StaticDataImporter.generated.h"
 
@@ -39,8 +38,8 @@ public:
 	
 private:
 	FString ImportPath;
-	
-	StaticDataImporter::Faction *FactionImporter;
+
+	TArray<StaticDataImporter::Base*> Importers;
 	
 	bool Ready;
 	IDesktopPlatform *DesktopPlatform;

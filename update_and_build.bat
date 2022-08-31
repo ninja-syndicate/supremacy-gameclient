@@ -32,7 +32,7 @@ if exist "%RunUAT%" (
      Config\inifile %DefaultEngineFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
 
      REM BUILD
-     "%RunUAT%" BuildCookRun -project="%project%" -targetplatform=Win64 -clientconfig=Development -cook -build -stage -pak -archive -archivedirectory="%build_dir%"
+     "%RunUAT%" BuildCookRun -project="%project%" -targetplatform=Win64 -clientconfig=Development -cook -iterate -build -stage -pak -archive -archivedirectory="%build_dir%"
 
      REM Revert default config back to DX12
      Config\inifile %DefaultEngineFile% [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=

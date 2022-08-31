@@ -1,9 +1,9 @@
 {
        "Airstrike": {
           "Damage": 150,
-          "DamageRadius": 2800,
+          "DamageRadius": 2500,
           "DamageRadiusFalloff": 600,
-          "Count": 48,
+          "Count": 60,
           "Spread": 2750,
           "DelayMin": 0.03,
           "DelayMax": 0.15,
@@ -17,26 +17,26 @@
           "SpreadOutRangeB": 2200
      },
      "Nuke": {
-          "Damage": 3200,
+          "Damage": 6000,
           "DamageRadius": 2000,
           "DamageRadiusFalloff": 0,
           "DamageOverTime": [
                {
-                    "Damage": 140,
+                    "Damage": 200,
                     "Seconds": 3
                },
                {
-                    "Damage": 40,
+                    "Damage": 80,
                     "Seconds": 5
                }
           ]
      },
      "HealCrate": {
-          "HealAmount": 2000,
+          "HealAmount": 5000,
           "TriggerRadius": 3000
      },
      "Repair": {
-          "HealAmount": 6000,
+          "HealAmount": 7000,
           "Duration": 40,
           "InitialPercent": 0.5,
           "InitialDuration": 8
@@ -56,7 +56,7 @@
           "Radius": 10000
      },
      "HackerDrone": {
-          "Duration": 18
+          "Duration": 15
      },
      "CameraDrone": {
           "Duration": 20
@@ -139,18 +139,18 @@
      },
      "Overcharge": {
           "DamagePercentageOfShield": 1,
-          "DamageMin": 400,
+          "DamageMin": 600,
           "DamageMax": 3500,
           "DamageRadius": 10500,
           "DamageRadiusFalloff": 1750,
           "DamageType": 1,
           "FriendlyFire": true,
-          "SelfShieldDamagePercentage": 0
+          "SelfShieldDamagePercentage": 0.5
      },
      "Landmines": {
-          "Amount": 15,
+          "Amount": 25,
           "HealthMax": 100,
-          "Damage": 400,
+          "Damage": 300,
           "DamageRadius": 1000,
           "DamageRadiusFalloff": 10,
           "FriendlyFire": false,
@@ -177,7 +177,7 @@
                          "DamageFalloffRate": 80,
                          "Spread": 1,
                          "ProjectileSpeed": 90000,
-                         "RateOfFire": 48
+                         "RateOfFire": 45
                     },
                     {
                          "ID": "RocketPods",
@@ -193,7 +193,7 @@
                     {
                          "ID": "PlasmaSword",
                          "Name": "Plasma Sword",
-                         "Damage": 120,
+                         "Damage": 70,
                          "DamageType": 1
                     }
                ]
@@ -231,7 +231,7 @@
                     { 
                          "ID": "Boston Sword",
                          "Name": "Sword",
-                         "Damage": 80
+                         "Damage": 30
                     }
                ]
           },
@@ -239,7 +239,7 @@
                "HealthMax": 2300,
                "ShieldMax": 1700,
                "ShieldRechargeRate": 75,
-               "Speed": 1750,
+               "Speed": 2250,
                "Weapons": [
                     {
                          "ID": "RedMountainCannon",
