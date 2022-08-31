@@ -34,8 +34,9 @@ public:
 		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(WorldContextObject) * 1000);
 		for (const auto [Location, GameTimeInMS] : Locations) 
 		{
-			const uint16 TimeOffset = static_cast<uint16>(CurrentTimeMS - GameTimeInMS);
-			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(TimeOffset));
+			const int32 Offset = CurrentTimeMS - GameTimeInMS;
+			const uint8 TimeOffset = static_cast<uint8>(Offset > 255 ? 255 : Offset); // since tick is 0.25s time offset should never go past 250
+			Bytes.Emplace(TimeOffset);
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.X));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.Y));
 		}

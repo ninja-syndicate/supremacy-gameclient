@@ -54,7 +54,7 @@ public:
 		}
 
 		if (MessageCount == 0) return {};
-		Bytes.Insert(static_cast<uint8>(MessageCount), 0);
+		Bytes.Insert(MessageCount, 0);
 		
 		return Bytes;
 	}

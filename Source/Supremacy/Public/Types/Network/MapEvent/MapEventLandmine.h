@@ -42,8 +42,11 @@ public:
 		for (const auto [LandmineID, Location, GameTimeInMS] : Landmines) 
 		{
 			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(static_cast<uint16>(LandmineID)));
-			const uint16 TimeOffset = static_cast<int16>(CurrentTimeMS - GameTimeInMS);
-			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(TimeOffset));
+
+			const int32 Offset = CurrentTimeMS - GameTimeInMS;
+			const uint8 TimeOffset = static_cast<uint8>(Offset > 255 ? 255 : Offset); // since tick is 0.25s time offset should never go past 250
+			Bytes.Emplace(TimeOffset);
+			
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.X));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.Y));
 		}
@@ -87,8 +90,10 @@ public:
 		for (const auto [LandmineID, GameTimeInMS] : Landmines) 
 		{
 			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(static_cast<uint16>(LandmineID)));
-			const uint16 TimeOffset = static_cast<int16>(CurrentTimeMS - GameTimeInMS);
-			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(TimeOffset));
+			
+			const int32 Offset = CurrentTimeMS - GameTimeInMS;
+			const uint8 TimeOffset = static_cast<uint8>(Offset > 255 ? 255 : Offset); // since tick is 0.25s time offset should never go past 250
+			Bytes.Emplace(TimeOffset);
 		}
 		
 		return Bytes;
