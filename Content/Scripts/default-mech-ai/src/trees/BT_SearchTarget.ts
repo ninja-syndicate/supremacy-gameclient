@@ -8,6 +8,7 @@ import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
 import { Predicate_IsLocationInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { Predicate } from "@decorators/Predicate"
+import { BT_DefaultMoveTo } from "@trees/movement/BT_MovementMode"
 
 /**
  * Behavior for searching the target.
@@ -28,7 +29,7 @@ export const BT_SearchTarget = new Sequence({
                 new Sequence({
                     nodes: [
                         Predicate(
-                            BTT_MoveTo("targetLastKnownLocation"),
+                            BT_DefaultMoveTo("targetLastKnownLocation"),
                             Predicate_IsLocationInsideBattleZone("targetLastKnownLocation"),
                             true,
                             ObserverAborts.Self,
