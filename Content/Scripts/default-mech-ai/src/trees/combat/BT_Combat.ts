@@ -2,7 +2,7 @@ import { ObserverAborts, Selector } from "behaviortree"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
-import { HasLowShield } from "@predicates/Predicate_HasLowShield"
+import { Predicate_HasLowShield } from "@predicates/Predicate_HasLowShield"
 import { BT_Camp } from "@trees/BT_Camp"
 import { BT_CanSeeTarget } from "@trees/combat/BT_CanSeeTarget"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
@@ -17,7 +17,7 @@ import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveTo
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { Predicate_IsUsingAction } from "@predicates/Predicate_IsUsingAction"
 import { ParallelBackground } from "@branches/ParallelBackground"
-import { BT_UserAction, WrappedTask_Repair } from "@trees/useraction/BT_UserAction"
+import { BT_UserAction, BT_Repair } from "@trees/useraction/BT_UserAction"
 import { ForceSuccess } from "@decorators/ForceSuccess"
 
 /**
@@ -41,10 +41,10 @@ export const BT_Combat = new Selector({
             true,
             ObserverAborts.Both,
         ),
-        WrappedTask_Repair(true, ObserverAborts.LowerPriority),
+        BT_Repair(ObserverAborts.LowerPriority),
         Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-        Predicate(BT_Camp, HasLowShield, true, ObserverAborts.LowerPriority),
+        Predicate(BT_Camp, Predicate_HasLowShield, true, ObserverAborts.LowerPriority),
         // TODO: Need to decide priority between investigating noise and searching target.
         // Predicate(BT_InvestigateNoise, (blackboard: AIBlackboard) => !blackboard.canSeeTarget && blackboard.heardNoise, true, ObserverAborts.LowerPriority),
         // CanActivateAction(Predicate(BTT_Taunt, (blackboard: AIBlackboard) => !blackboard.canSeeTarget && !HasLowShield(blackboard)), Action.Taunt),
