@@ -3,12 +3,11 @@ import { AIBlackboard } from "@blackboards/blackboard"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
 import { BTT_ClearTarget } from "@tasks/BTT_ClearTarget"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
 import { Predicate_IsLocationInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { Predicate } from "@decorators/Predicate"
-import { BT_DefaultMoveTo } from "@trees/movement/BT_MovementMode"
+import { BT_DefaultMoveTo, BT_SprintMoveTo } from "@trees/movement/BT_MovementMode"
 
 /**
  * Behavior for searching the target.
@@ -29,7 +28,7 @@ export const BT_SearchTarget = new Sequence({
                 new Sequence({
                     nodes: [
                         Predicate(
-                            BT_DefaultMoveTo("targetLastKnownLocation"),
+                            BT_SprintMoveTo("targetLastKnownLocation"),
                             Predicate_IsLocationInsideBattleZone("targetLastKnownLocation"),
                             true,
                             ObserverAborts.Self,
