@@ -18,7 +18,7 @@ export const BT_Strafe = new Sequence({
     nodes: [
         BTT_QuerySetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
         BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) =>
-            Math.max(10000, blackboard.optimalEngagementRange / 2),
+            Math.max(10000, blackboard.idealEngagementRange),
         ),
         // BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MaxDistanceToTarget, (blackboard: AIBlackboard) => blackboard.optimalEngagementRange),
         BTT_RunEQSQuery(EQSQueryType.Strafe, "strafeLocation"),
