@@ -12,6 +12,8 @@ export const BTT_SetMovementMode = (movementMode: MovementMode) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
             const success: boolean = AI.SetMovementMode(movementMode)
+            if (success) blackboard.currentMovementMode = movementMode
+
             return success ? SUCCESS : FAILURE
         },
         run: (blackboard: AIBlackboard) => {

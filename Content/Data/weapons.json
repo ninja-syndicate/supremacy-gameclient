@@ -10,7 +10,8 @@
       "Damage_Type": 1,
       "Spread": 2,
       "Projectile_Speed": 30000,
-      "Rate_Of_Fire": 250
+      "Rate_Of_Fire": 250,
+      "Optimal_Range": 30000
     },
     "BostonGun_P7X7-Plasma-Rifle": {
       "Name": "Plasma Rifle",
@@ -22,15 +23,16 @@
       "Damage_Type": 1,
       "Spread": 2,
       "Projectile_Speed": 30000,
-      "Rate_Of_Fire": 250
+      "Rate_Of_Fire": 250,
+      "Optimal_Range": 30000
     },
     "Sword": {
       "Name": "Sword",
-      "Damage": 40
+      "Damage": 70
     },
     "BostonSword_Whirlwind-R12-Blade-Reaper": {
       "Name": "Sword",
-      "Damage": 40
+      "Damage": 70
     },
     "RedMountainCannon": {
       "Name": "Dual Cannon",
@@ -40,7 +42,8 @@
       "Damage_Radius": 100,
       "Spread": 3,
       "Projectile_Speed": 60000,
-      "Rate_Of_Fire": 270
+      "Rate_Of_Fire": 270,
+      "Optimal_Range": 40000
     },
     "RedMountainCannon_WarMonger-G1-Assault": {
       "Name": "Dual Cannon",
@@ -50,7 +53,8 @@
       "Damage_Radius": 100,
       "Spread": 3,
       "Projectile_Speed": 60000,
-      "Rate_Of_Fire": 270
+      "Rate_Of_Fire": 270,
+      "Optimal_Range": 40000
     },
     "RocketPods": {
       "Name": "Rocket Pods",
@@ -62,34 +66,37 @@
       "Spread": 1500,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 2,
-      "Is_Arced": true
+      "Is_Arced": true,
+      "Optimal_Range": 50000
     },
     "SniperRifle": {
       "Name": "Sniper Rifle",
-      "Damage": 130,
+      "Damage": 170,
       "Damage_Falloff": 60000,
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
       "Projectile_Speed": 90000,
-      "Rate_Of_Fire": 45
+      "Rate_Of_Fire": 45,
+      "Optimal_Range": 60000
     },
     "ZaibatsuGun_Rapid-Extinction-9-Fire-Sniper": {
       "Name": "Sniper Rifle",
-      "Damage": 130,
+      "Damage": 170,
       "Damage_Falloff": 60000,
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
       "Projectile_Speed": 90000,
-      "Rate_Of_Fire": 45
+      "Rate_Of_Fire": 45,
+      "Optimal_Range": 60000
     },
     "PlasmaSword": {
       "Name": "Plasma Sword",
-      "Damage": 80,
+      "Damage": 110,
       "Damage_Type": 1
     },
     "ZaibatsuSword_Mayhem-5iS-Plasma-Sword-Extended": {
       "Name": "Plasma Sword",
-      "Damage": 80,
+      "Damage": 110,
       "Damage_Type": 1
     },
     "Weapon_AM_BFG": {
@@ -147,7 +154,7 @@
       "Spread": 800,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 45,
-      "BurstRate_Of_Fire": 900,
+      "Burst_Rate_Of_Fire": 900,
       "Projectile_Amount": 4,
       "Is_Arced": true
     },
@@ -221,7 +228,7 @@
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 60,
       "Projectile_Amount": 4,
-      "BurstRate_Of_Fire": 1000
+      "Burst_Rate_Of_Fire": 1000
     },
     "Weapon_Pyro_Shotgun": {
       "Name": "Pyro Shotgun",
@@ -281,7 +288,7 @@
       "Spread": 3,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 30,
-      "BurstRate_Of_Fire": 1200,
+      "Burst_Rate_Of_Fire": 1200,
       "Projectile_Amount": 8
     },
     "Weapon_Warsui_PlasmaGun": {
@@ -297,7 +304,8 @@
       "Damage_Falloff_Rate": 50,
       "Spread": 1,
       "Projectile_Speed": 120000,
-      "Rate_Of_Fire": 60
+      "Rate_Of_Fire": 60,
+      "Optimal_Range": 40000
     }
   }
 }

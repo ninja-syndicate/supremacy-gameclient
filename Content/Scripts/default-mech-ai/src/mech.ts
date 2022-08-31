@@ -1,5 +1,5 @@
 import { BehaviorTree } from "behaviortree"
-import { Action, EnvironmentQueryStatus, InteractableTag, SoundType, UserAction, WeaponTag } from "enums"
+import { Action, EnvironmentQueryStatus, InteractableTag, MovementMode, SoundType, UserAction, WeaponTag } from "enums"
 import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine } from "types"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
@@ -32,6 +32,27 @@ export let tree = new BehaviorTree({
     } as AIBlackboard,
 })
 
+const initialize = (input: BrainInput, blackboard: AIBlackboard) => {
+    const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
+
+    if (primaryWeapons.length === 0) {
+        console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no primary weapons. AI will not work properly.`)
+    } else {
+        const primaryGuns = primaryWeapons.filter((w) => !w.tags.find((t) => t === WeaponTag.Melee))
+        const validOptimalRanges = primaryGuns.filter((w) => w.optimalRange > 0)
+        if (validOptimalRanges.length === 0) {
+            console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no valid optimal range setup. Defaulting optimal range to melee range.`)
+            blackboard.idealEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange
+        } else {
+            // Calculate optimal engagement range and ideal range based on that.
+            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.optimalRange))
+            blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = minOptimalRange
+        }
+    }
+}
+
 /**
  * This function gets called when AI begins.
  *
@@ -42,16 +63,7 @@ export let tree = new BehaviorTree({
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    /*
-    const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
-    const minOptimalRange = Math.min(...primaryWeapons.map((w) => w.optimalRange))
-    blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
-    blackboard.optimalEngagementRange = minOptimalRange
-    */
-
-    // NOTE: For testing
-    blackboard.idealEngagementRange = 12500
-    blackboard.optimalEngagementRange = -1
+    initialize(input, blackboard)
 
     // Check for secondary weapons and melee weapons and initialize blackboard
     for (let weapon of input.self.weapons) {
@@ -68,6 +80,7 @@ export const onBegin = (input: BrainInput) => {
         }
     }
     blackboard.currentTime = 0
+    blackboard.currentMovementMode = MovementMode.Walk
     blackboard.isBattleZonePresent = AI.IsBattleZonePresent()
     console.log(`${input.self.hash}: ${input.self.name} AI Started`)
 }
@@ -400,11 +413,10 @@ function filter(mech: WarMachine, inverse: boolean = false): boolean {
 function score(mech: WarMachine): number {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const MaxDamage: number = 2000
-    const MaxDistanceToConsider: number = 50000
 
     // Score functions.
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
-    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
+    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / CURRENT_AI_CONFIG.sightMaxDistance)
     const scoreByDamageWindow = (m: WarMachine) => Math.min(1, blackboard.damageTracker.getTotalDamageByTime(blackboard.currentTime, 10, m.hash) / MaxDamage)
     const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.hash === m.hash ? 1 : 0)
     const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByDamageWindow, scoreByCurrentTarget]

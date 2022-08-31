@@ -1,13 +1,13 @@
 import { Sequence } from "behaviortree"
 import { EQSArgument, EQSQueryType } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { BTT_QuerySetArgumentFloat, BTT_QuerySetArgumentVector } from "@tasks/environment/BTT_QuerySetArgument"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
+import { BT_DefaultMoveTo } from "@trees/movement/BT_MovementMode"
 
 /**
  * Patrol behavior.
@@ -23,7 +23,7 @@ export const BT_Patrol = new ParallelBackground({
                 BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.GridSize, (blackboard: AIBlackboard) => 25000),
                 BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),
                 BTT_SetFocalPoint("patrolLocation"),
-                BTT_MoveTo("patrolLocation"),
+                BT_DefaultMoveTo("patrolLocation"),
                 BTT_SetValue((blackboard: AIBlackboard) => (blackboard.patrolLocation = undefined)),
             ],
         }),
