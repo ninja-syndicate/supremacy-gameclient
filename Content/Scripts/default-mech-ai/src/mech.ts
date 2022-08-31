@@ -1,6 +1,6 @@
 import { BehaviorTree } from "behaviortree"
 import { Action, EnvironmentQueryStatus, InteractableTag, MovementMode, SoundType, UserAction, WeaponTag } from "enums"
-import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine } from "types"
+import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine, Weapon } from "types"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "@root/index"
@@ -32,7 +32,7 @@ export let tree = new BehaviorTree({
     } as AIBlackboard,
 })
 
-const initialize = (input: BrainInput, blackboard: AIBlackboard) => {
+const init_engagement_range = (input: BrainInput, blackboard: AIBlackboard) => {
     const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
 
     if (primaryWeapons.length === 0) {
@@ -53,6 +53,19 @@ const initialize = (input: BrainInput, blackboard: AIBlackboard) => {
     }
 }
 
+const init_weapon = (input: BrainInput, blackboard: AIBlackboard) => {
+    init_engagement_range(input, blackboard)
+
+    const secondaryWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Secondary))
+
+    // For now, only one secondary weapon can be equipped.
+    blackboard.secondaryWeapon = secondaryWeapons.length !== 0 ? secondaryWeapons[0] : null
+    blackboard.canUseSpecialAttack = secondaryWeapons.length !== 0
+
+    const meleeWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Melee))
+    blackboard.canMelee = meleeWeapons.length !== 0
+}
+
 /**
  * This function gets called when AI begins.
  *
@@ -63,22 +76,8 @@ const initialize = (input: BrainInput, blackboard: AIBlackboard) => {
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    initialize(input, blackboard)
+    init_weapon(input, blackboard)
 
-    // Check for secondary weapons and melee weapons and initialize blackboard
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
-            blackboard.secondaryWeapon = weapon
-            blackboard.canUseSpecialAttack = true
-            break
-        }
-    }
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Melee) !== undefined) {
-            blackboard.canMelee = true
-            break
-        }
-    }
     blackboard.currentTime = 0
     blackboard.currentMovementMode = MovementMode.Walk
     blackboard.isBattleZonePresent = AI.IsBattleZonePresent()
