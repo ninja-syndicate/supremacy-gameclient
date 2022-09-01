@@ -1,6 +1,6 @@
-import { ParallelBackground } from "@root/branches/ParallelBackground"
+import { ParallelBackground } from "@branches/ParallelBackground"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
-import { BT_MoveToBattleZone } from "@root/trees/battlezone/BT_MoveToBattleZone"
+import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 
 /**
  * Parallel behavior for setting the focal point while moving to the main battle zone.

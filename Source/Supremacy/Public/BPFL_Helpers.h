@@ -21,6 +21,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Parse Net Message", meta=(Keywords = "Parse Net Message Bytes Byte Array"))
 	static void ParseNetMessage(const TArray<uint8> Bytes, uint8 &Type, FString &Message);
 
+	static TArray<uint8> ConvertIntToBytes(const int Input);
+	static TArray<uint8> ConvertUInt16ToBytes(const uint16 Input);
+	
 	/** Pack WarMachine Update  */
 	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Update", meta=(Keywords = "Net Message Bytes Byte Array Binary"))
 	static void PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, const TArray<bool> DiffArray, TArray<uint8> &Bytes);

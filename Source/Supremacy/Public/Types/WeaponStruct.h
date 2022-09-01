@@ -46,14 +46,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="Time before weapon starts firing (eg: minigun spin-up.)"))
 	float Charge_Time;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="Arcs projectiles towards their target location. Spread becomes radius offset."))
-	bool bIs_Arced;
+	bool Is_Arced;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="For AI reference."))
 	int Optimal_Range;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Power_Cost;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bPower_Instance_Drain;
+	bool Power_Instance_Drain;
 	
 	FWeaponStruct(): Damage(0), Damage_Falloff(0), Damage_Falloff_Rate(0), Damage_Radius(0), Damage_Radius_Falloff(0),
 	                 Damage_Type(0),
@@ -63,8 +63,8 @@ public:
 	                 Projectile_Speed(0), Max_Ammo(0),
 	                 Projectile_Amount(0),
 	                 Charge_Time(0),
-	                 bIs_Arced(false), Optimal_Range(0),
-	                 Power_Cost(0), bPower_Instance_Drain(false)
+	                 Is_Arced(false), Optimal_Range(0),
+	                 Power_Cost(0), Power_Instance_Drain(false)
 	{
 	}
 };
