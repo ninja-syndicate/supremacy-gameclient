@@ -5,10 +5,10 @@
 #include "MapEventLandmine.h"
 #include "MapEventMessage.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "MapEventMessages.generated.h"
+#include "MapEventManager.generated.h"
 
 UCLASS(BlueprintType) 
-class SUPREMACY_API UMapEventMessages final : public UObject {
+class SUPREMACY_API UMapEventManager final : public UObject {
 	GENERATED_BODY()
 
 	TArray<FMapEventMessage*> Messages;
@@ -19,7 +19,7 @@ class SUPREMACY_API UMapEventMessages final : public UObject {
 	FMapEventLandmineExplosions LandmineExplosions;
 	int32 NextLandmineID = 0;
 
-	UMapEventMessages()
+	UMapEventManager()
 	{
 		LandmineActivations = {
 			FMapEventLandmineActivations(1),
