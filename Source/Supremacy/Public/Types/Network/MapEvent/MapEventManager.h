@@ -4,6 +4,7 @@
 #include "MapEventAirstrikeExplosions.h"
 #include "MapEventLandmine.h"
 #include "MapEventMessage.h"
+#include "MapEventTheHive.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "MapEventManager.generated.h"
 
@@ -19,6 +20,8 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 	FMapEventLandmineExplosions LandmineExplosions;
 	int32 NextLandmineID = 0;
 
+	FMapEventHiveChanges HiveChanges;
+
 	UMapEventManager()
 	{
 		LandmineActivations = {
@@ -31,6 +34,7 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 			// Will be unpacked and saved on server
 			&LandmineActivations[0], &LandmineActivations[1], &LandmineActivations[2],
 			&LandmineExplosions,
+			&HiveChanges,
 
 			// Only sent straight to frontend clients
 			&AirstrikeExplosions,
@@ -98,5 +102,14 @@ public:
 		
 		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
 		LandmineExplosions.Landmines.Add(FMapEventLandmineExplosion(LandmineID, TimeInMS));
+	}
+
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
+	void HiveMapChange(const UObject* WorldContextObject, const int32 HexID, const bool Raised)
+	{
+		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+		
+		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
+		HiveChanges.Changes.Add(FMapEventHiveChange(HexID, TimeInMS));
 	}
 };
