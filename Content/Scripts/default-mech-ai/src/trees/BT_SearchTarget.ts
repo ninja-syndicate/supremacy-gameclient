@@ -1,4 +1,4 @@
-import { ObserverAborts, Sequence } from "behaviortree"
+import { ObserverAborts, Selector, Sequence } from "behaviortree"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
@@ -8,6 +8,7 @@ import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
 import { Predicate_IsLocationInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { Predicate } from "@decorators/Predicate"
 import { BT_DefaultMoveTo, BT_SprintMoveTo } from "@trees/movement/BT_MovementMode"
+import { Predicate_RecentlyLostTarget } from "@predicates/combat/Predicate_RecentlyLostTarget"
 
 /**
  * Behavior for searching the target.
@@ -28,7 +29,12 @@ export const BT_SearchTarget = new Sequence({
                 new Sequence({
                     nodes: [
                         Predicate(
-                            BT_SprintMoveTo("targetLastKnownLocation"),
+                            new Selector({
+                                nodes: [
+                                    Predicate(BT_SprintMoveTo("targetLastKnownLocation"), Predicate_RecentlyLostTarget),
+                                    BT_DefaultMoveTo("targetLastKnownLocation"),
+                                ],
+                            }),
                             Predicate_IsLocationInsideBattleZone("targetLastKnownLocation"),
                             true,
                             ObserverAborts.Self,
