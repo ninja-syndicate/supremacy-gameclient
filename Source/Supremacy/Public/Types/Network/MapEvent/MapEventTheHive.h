@@ -3,8 +3,10 @@
 #include "BPFL_Helpers.h"
 #include "MapEventMessage.h"
 #include "MapEventType.h"
+#include "Containers/Queue.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "MapEventTheHive.generated.h"
+
 
 USTRUCT() 
 struct SUPREMACY_API FMapEventHiveChange {
@@ -22,50 +24,50 @@ struct SUPREMACY_API FMapEventHiveChanges : public FMapEventMessage {
 	GENERATED_BODY()
 public:
 	EMapEventType MapEventType;
-	TArray<FMapEventHiveChange> Changes;
+	TQueue<FMapEventHiveChange> Changes;
 
 	FMapEventHiveChanges(): MapEventType(EMapEventType::MapEventType_HiveHexRaised) {}
 	explicit FMapEventHiveChanges(const EMapEventType MapEventType) : MapEventType(MapEventType) {}
 
-	virtual TArray<uint8> Pack(const UObject* WorldContextObject) const override
+	virtual TArray<uint8> Pack(const UObject* WorldContextObject) override
 	{
 		if (Changes.IsEmpty()) return {};
+
+		uint16 Count = 0;
 		
 		TArray<uint8> Bytes = TArray<uint8>();
 		Bytes.Emplace(static_cast<uint8>(MapEventType));
-		Bytes.Emplace(static_cast<uint8>(Changes.Num()));
 
 		const int32 CurrentTimeMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(WorldContextObject) * 1000);
-		for (const auto [HexID, GameTimeInMS] : Changes) 
+
+		FMapEventHiveChange Change;
+		TArray<uint8> ChangesBytes = TArray<uint8>();
+		while (Changes.Dequeue(Change))
 		{
-			Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(HexID));
+			ChangesBytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(Change.HexID));
 			
-			const int32 Offset = CurrentTimeMS - GameTimeInMS;
+			const int32 Offset = CurrentTimeMS - Change.GameTimeInMS;
 			const uint8 TimeOffset = static_cast<uint8>(Offset > 255 ? 255 : Offset); // since tick is 0.25s time offset should never go past 250
-			Bytes.Emplace(TimeOffset);
+			ChangesBytes.Emplace(TimeOffset);
+
+			Count++;
 		}
+
+		Bytes.Append(UBPFL_Helpers::ConvertUInt16ToBytes(Count));
+		Bytes.Append(ChangesBytes);
 		
 		return Bytes;
 	}
 
 	virtual void Clear() override
 	{
-		Changes.Empty();
 	}
 };
-
-USTRUCT() 
-struct SUPREMACY_API FMapEventHiveChangesRaised : public FMapEventHiveChanges
+template<>
+struct TStructOpsTypeTraits< FMapEventHiveChanges > : public TStructOpsTypeTraitsBase2< FMapEventHiveChanges >
 {
-	GENERATED_BODY()
-
-	FMapEventHiveChangesRaised() : FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexRaised) {}
-};
-
-USTRUCT() 
-struct SUPREMACY_API FMapEventHiveChangesLowered: public FMapEventHiveChanges
-{
-	GENERATED_BODY()
-
-	FMapEventHiveChangesLowered() : FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexLowered) {}
+	enum
+	{
+		WithCopy = false
+	 };
 };

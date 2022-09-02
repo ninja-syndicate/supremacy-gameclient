@@ -23,7 +23,7 @@ struct SUPREMACY_API FMapEventAirstrikeExplosions : public FMapEventMessage {
 public:
 	TArray<FMapEventAirstrikeExplosion> Locations;
 
-	virtual TArray<uint8> Pack(const UObject* WorldContextObject) const override
+	virtual TArray<uint8> Pack(const UObject* WorldContextObject) override
 	{
 		if (Locations.IsEmpty()) return {};
 		

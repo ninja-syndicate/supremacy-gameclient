@@ -20,8 +20,8 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 	FMapEventLandmineExplosions LandmineExplosions;
 	int32 NextLandmineID = 0;
 
-	FMapEventHiveChangesLowered HiveChangesLowered;
-	FMapEventHiveChangesRaised HiveChangesRaised;
+	FMapEventHiveChanges HiveChangesLowered = FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexLowered);
+	FMapEventHiveChanges HiveChangesRaised = FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexRaised);
 
 	UMapEventManager()
 	{
@@ -35,9 +35,9 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 			// Will be unpacked and saved on server
 			&LandmineActivations[0], &LandmineActivations[1], &LandmineActivations[2],
 			&LandmineExplosions,
-			
-			&HiveChangesLowered,
+
 			&HiveChangesRaised,
+			&HiveChangesLowered,
 
 			// Only sent straight to frontend clients
 			&AirstrikeExplosions,
@@ -52,7 +52,7 @@ public:
 		
 		TArray<uint8> Bytes = TArray<uint8>();
 		uint8 MessageCount = 0;
-		for (const FMapEventMessage* Message : Messages)
+		for (FMapEventMessage* Message : Messages)
 		{
 			TArray<uint8> MessagedPacked = Message->Pack(World);
 			if (MessagedPacked.Num() == 0) continue;
@@ -113,10 +113,10 @@ public:
 		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 		
 		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
-		const FMapEventHiveChange Change = FMapEventHiveChange(HexID, TimeInMS);
+		const FMapEventHiveChange Change = FMapEventHiveChange(static_cast<uint16>(HexID), TimeInMS);
 		if (Raised)
-			HiveChangesRaised.Changes.Add(Change);
+			HiveChangesRaised.Changes.Enqueue(Change);
 		else
-			HiveChangesLowered.Changes.Add(Change);
+			HiveChangesLowered.Changes.Enqueue(Change);
 	}
 };
