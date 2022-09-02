@@ -40,11 +40,14 @@ export const enum EQSQueryType {
  */
 export const enum EQSArgument {
     Origin = "Origin",
+    /** The half-grid size of the query.  */
     GridSize = "GridSize",
+    /** DEPRECATED: Won't do anything. */
     SpaceBetween = "SpaceBetween",
     TargetHash = "TargetHash",
     TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
+    MinDistanceToSelf = "MinDistanceToSelf",
     MinDistanceToTarget = "MinDistanceToTarget",
     MaxDistanceToTarget = "MaxDistanceToTarget",
     LastHitLocation = "LastHitLocation",

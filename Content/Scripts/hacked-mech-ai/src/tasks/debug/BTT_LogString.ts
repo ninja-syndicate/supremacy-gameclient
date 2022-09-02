@@ -8,11 +8,15 @@ import { AIBlackboard } from "@blackboards/blackboard"
  *
  * @param message The message to log
  */
-export const BTT_LogString = (startMessage: (blackboard: AIBlackboard) => string, runMessage?: (blackboard: AIBlackboard) => string) =>
+export const BTT_LogString = (startMessage: string | ((blackboard: AIBlackboard) => string), runMessage?: (blackboard: AIBlackboard) => string) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
-            const message: string = startMessage(blackboard)
-            console.log(message)
+            if (typeof startMessage === "string") {
+                console.log(startMessage)
+            } else {
+                const message: string = startMessage(blackboard)
+                console.log(message)
+            }
             return SUCCESS
         },
 
