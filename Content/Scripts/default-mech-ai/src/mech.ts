@@ -64,6 +64,8 @@ const init_weapon = (input: BrainInput, blackboard: AIBlackboard) => {
 
     const meleeWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Melee))
     blackboard.canMelee = meleeWeapons.length !== 0
+
+    blackboard.weapons = input.self.weapons
 }
 
 /**
@@ -119,6 +121,12 @@ export const onTick = (input: BrainInput) => {
  */
 function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const currentWeapons: Weapon[] = blackboard.weapons
+
+    // Re-init weapons if equipped a new weapon. TODO: Handle weapon change.
+    if (currentWeapons.length !== input.self.weapons.length) {
+        init_weapon(input, blackboard)
+    }
 
     // Copy over the new input for easy access.
     blackboard.input = input
