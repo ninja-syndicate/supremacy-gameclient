@@ -20,7 +20,8 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 	FMapEventLandmineExplosions LandmineExplosions;
 	int32 NextLandmineID = 0;
 
-	FMapEventHiveChanges HiveChanges;
+	FMapEventHiveChangesLowered HiveChangesLowered;
+	FMapEventHiveChangesRaised HiveChangesRaised;
 
 	UMapEventManager()
 	{
@@ -34,7 +35,9 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 			// Will be unpacked and saved on server
 			&LandmineActivations[0], &LandmineActivations[1], &LandmineActivations[2],
 			&LandmineExplosions,
-			&HiveChanges,
+			
+			&HiveChangesLowered,
+			&HiveChangesRaised,
 
 			// Only sent straight to frontend clients
 			&AirstrikeExplosions,
@@ -110,6 +113,10 @@ public:
 		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 		
 		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
-		HiveChanges.Changes.Add(FMapEventHiveChange(HexID, TimeInMS));
+		const FMapEventHiveChange Change = FMapEventHiveChange(HexID, TimeInMS);
+		if (Raised)
+			HiveChangesRaised.Changes.Add(Change);
+		else
+			HiveChangesLowered.Changes.Add(Change);
 	}
 };

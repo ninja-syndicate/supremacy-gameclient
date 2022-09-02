@@ -55,17 +55,17 @@ public:
 };
 
 USTRUCT() 
-struct SUPREMACY_API FMapEventHiveRaised : public FMapEventHiveChanges
+struct SUPREMACY_API FMapEventHiveChangesRaised : public FMapEventHiveChanges
 {
 	GENERATED_BODY()
 
-	FMapEventHiveRaised() : FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexRaised) {}
+	FMapEventHiveChangesRaised() : FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexRaised) {}
 };
 
 USTRUCT() 
-struct SUPREMACY_API FMapEventHiveLowered: public FMapEventHiveChanges
+struct SUPREMACY_API FMapEventHiveChangesLowered: public FMapEventHiveChanges
 {
 	GENERATED_BODY()
 
-	FMapEventHiveLowered() : FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexLowered) {}
+	FMapEventHiveChangesLowered() : FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexLowered) {}
 };
