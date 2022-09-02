@@ -38,6 +38,8 @@ interface AIConfig {
     tauntNoiseStimulusTimeout: number
     /** The number of seconds a new weapon noise will be remembered. NOTE: May end up keeping an array, so this may be removed in the future. */
     weaponNoiseStimulusTimeout: number
+    /** The number of seconds AI will sprint to the possible target location when AI loses sight to the current target. */
+    sprintOnLostTargetTimeout: number
     /**
      * The maximum distance to consider by sight. This is used for filtering out far-away targets.
      * Note that {@link Perception.sight} is filtered by maximum vision range before it gets passed to the {@link BrainInput}.
@@ -61,6 +63,7 @@ const DEFAULT_AI_CONFIG: AIConfig = {
     predictionUpdateInterval: 3,
     tauntNoiseStimulusTimeout: 30,
     weaponNoiseStimulusTimeout: 5,
+    sprintOnLostTargetTimeout: 5,
     sightMaxDistance: 60000,
     defaultMovementMode: MovementMode.Walk,
 }
@@ -79,6 +82,7 @@ const AGGRESSIVE_AI_CONFIG: AIConfig = {
     predictionUpdateInterval: 3,
     tauntNoiseStimulusTimeout: 30,
     weaponNoiseStimulusTimeout: 5,
+    sprintOnLostTargetTimeout: 5,
     sightMaxDistance: 60000,
     defaultMovementMode: MovementMode.Walk,
 }
@@ -97,6 +101,7 @@ const CONSERVATIVE_AI_CONFIG: AIConfig = {
     predictionUpdateInterval: 3,
     tauntNoiseStimulusTimeout: 30,
     weaponNoiseStimulusTimeout: 5,
+    sprintOnLostTargetTimeout: 5,
     sightMaxDistance: 60000,
     defaultMovementMode: MovementMode.Walk,
 }
