@@ -1,4 +1,4 @@
-import { ObserverAborts, Parallel, Selector, Sequence } from "behaviortree"
+import { ObserverAborts, ParallelSelector, Selector, Sequence } from "behaviortree"
 import { WeaponTag } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { ParallelBackground } from "@branches/ParallelBackground"
@@ -18,7 +18,7 @@ import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
-import { ForceSuccess } from "@decorators/ForceSuccess"
+import { ForceSuccess } from "@trees/helper/BT_Helper"
 import { BT_UserAction } from "@trees/useraction/BT_UserAction"
 import { Predicate_IsTeamInAdvantage } from "@predicates/Predicate_IsTeamInAdvantage"
 import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
@@ -42,8 +42,8 @@ import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
  */
 export const BT_RangeCombat = new ParallelBackground({
     nodes: [
-        // TODO: Maybe make it ParallelSelector when ammo support is needed
-        new Parallel({
+        // Main task
+        new ParallelSelector({
             nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
         }),
 

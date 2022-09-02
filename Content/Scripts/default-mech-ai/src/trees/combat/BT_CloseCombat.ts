@@ -15,7 +15,7 @@ import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { IsOutnumbered } from "@root/predicates/Predicate_IsOutnumbered"
 import { BT_Strafe } from "@trees/BT_Strafe"
 import { TargetHasMoreTotalHealth } from "@predicates/Predicate_TargetHasMoreTotalHealth"
-import { ForceSuccess } from "@decorators/ForceSuccess"
+import { ForceSuccess } from "@trees/helper/BT_Helper"
 import { BT_UserAction } from "@trees/useraction/BT_UserAction"
 import { BT_CloseCombatMovement } from "@trees/combat/BT_CloseCombatMovement"
 
