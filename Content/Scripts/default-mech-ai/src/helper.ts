@@ -31,6 +31,7 @@ export const rotateZ = (v1: Vector, degrees: number): Vector => {
 
     return { X: X * Math.cos(radians) - Y * Math.sin(radians), Y: X * Math.sin(radians) + Y * Math.cos(radians), Z: Z }
 }
+export const size = (v: Vector): number => Math.sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z)
 export const fmod = (x: number, y: number): number => {
     // for tolerance testing, probably not needed in typescript
     const absY: number = Math.abs(y)

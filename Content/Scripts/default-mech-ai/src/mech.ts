@@ -60,7 +60,6 @@ const init_weapon = (input: BrainInput, blackboard: AIBlackboard) => {
 
     // For now, only one secondary weapon can be equipped.
     blackboard.secondaryWeapon = secondaryWeapons.length !== 0 ? secondaryWeapons[0] : null
-    blackboard.canUseSpecialAttack = secondaryWeapons.length !== 0
 
     const meleeWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Melee))
     blackboard.canMelee = meleeWeapons.length !== 0
