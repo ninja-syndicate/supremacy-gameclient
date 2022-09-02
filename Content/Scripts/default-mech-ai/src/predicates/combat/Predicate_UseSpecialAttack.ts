@@ -7,7 +7,7 @@ export const Predicate_UseSpecialAttack = (blackboard: AIBlackboard): boolean =>
     if (!blackboard.secondaryWeapon) return false
     if (!blackboard.target) return false
     if (!blackboard.canSeeTarget) return false
-    if (!Predicate_CanActivateAction(Action.SpecialAttack)) return false
+    if (!Predicate_CanActivateAction(Action.SpecialAttack)(blackboard)) return false
 
     const distToTarget: number = distanceTo(blackboard.input.self, blackboard.target)
     const currentSpeed: number = size(blackboard.target.velocity)

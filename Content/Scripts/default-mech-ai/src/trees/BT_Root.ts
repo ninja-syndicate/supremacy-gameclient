@@ -1,6 +1,4 @@
 import { ObserverAborts, Selector } from "behaviortree"
-import { Action } from "enums"
-import { CanActivateAction } from "@decorators/CanActivateAction"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
 import { Predicate_HasLowShield } from "@predicates/Predicate_HasLowShield"
@@ -16,6 +14,7 @@ import { AIBlackboard } from "@root/blackboards/blackboard"
 import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { BT_Repair } from "@trees/useraction/BT_UserAction"
+import { Predicate_UseTaunt } from "@root/predicates/Predicate_UseTaunt"
 
 /**
  * The root of the behavior tree for AI.
@@ -49,7 +48,7 @@ export const BT_Root = new Selector({
         Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
         IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
         Predicate(BT_Camp, Predicate_HasLowShield, true, ObserverAborts.LowerPriority),
-        CanActivateAction(Predicate(BTT_Taunt, Predicate_HasLowShield, false), Action.Taunt),
+        Predicate(BTT_Taunt, Predicate_UseTaunt),
         IsSet(BT_ReceivedDamage, "damageStimulusFocalPoint", true, ObserverAborts.Both),
         IsSet(BT_InvestigateNoise, "heardNoise", true, ObserverAborts.LowerPriority),
         BT_Patrol,
