@@ -17,7 +17,7 @@ import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
 export const BT_Strafe = new Sequence({
     nodes: [
         BTT_QuerySetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
-        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => Math.max(10000, blackboard.idealEngagementRange)),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => Math.max(20000, blackboard.idealEngagementRange)),
         BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MinDistanceToSelf, (blackboard: AIBlackboard) => 3000),
         BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MinDistanceToTarget, (blackboard: AIBlackboard) => 0),
         BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MaxDistanceToTarget, (blackboard: AIBlackboard) => blackboard.idealEngagementRange),
