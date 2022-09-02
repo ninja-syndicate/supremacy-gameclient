@@ -18,6 +18,7 @@ import { TargetHasMoreTotalHealth } from "@predicates/Predicate_TargetHasMoreTot
 import { ForceSuccess } from "@trees/helper/BT_Helper"
 import { BT_UserAction } from "@trees/useraction/BT_UserAction"
 import { BT_CloseCombatMovement } from "@trees/combat/BT_CloseCombatMovement"
+import { Predicate_HasLowShield } from "@predicates/Predicate_HasLowShield"
 
 // TODO: provide main and background properties for ParallelBackground
 // TODO: Update code to actually reflect comment
@@ -44,7 +45,12 @@ export const BT_CloseCombat = new ParallelBackground({
             nodes: [
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                Predicate(
+                    BT_GetCover,
+                    (blackboard: AIBlackboard) => Predicate_HasLowShield(blackboard) || Predicate_HasVeryLowTotalHealth(blackboard),
+                    true,
+                    ObserverAborts.LowerPriority,
+                ),
                 Predicate(
                     BT_CloseCombatMovement,
                     (blackboard: AIBlackboard) =>
