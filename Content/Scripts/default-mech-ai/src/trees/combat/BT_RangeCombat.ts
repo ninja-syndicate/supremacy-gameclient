@@ -22,6 +22,7 @@ import { ForceSuccess } from "@trees/helper/BT_Helper"
 import { BT_UserAction } from "@trees/useraction/BT_UserAction"
 import { Predicate_IsTeamInAdvantage } from "@predicates/Predicate_IsTeamInAdvantage"
 import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
+import { Predicate_HasLowShield } from "@predicates/Predicate_HasLowShield"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -54,7 +55,12 @@ export const BT_RangeCombat = new ParallelBackground({
             nodes: [
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                Predicate(
+                    BT_GetCover,
+                    (blackboard: AIBlackboard) => Predicate_HasLowShield(blackboard) || Predicate_HasVeryLowTotalHealth(blackboard),
+                    true,
+                    ObserverAborts.LowerPriority,
+                ),
                 Predicate(
                     new Selector({
                         nodes: [BT_CloseStrafe, BT_MoveByDistanceToTarget("targetLastKnownLocation")],
