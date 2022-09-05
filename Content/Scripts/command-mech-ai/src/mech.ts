@@ -1,12 +1,18 @@
 import { BehaviorTree } from "behaviortree"
-import { EnvironmentQueryStatus, InteractableTag, SoundType, WeaponTag } from "enums"
-import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, WarMachine } from "types"
+import { Action, EnvironmentQueryStatus, InteractableTag, MovementMode, SoundType, UserAction, WeaponTag } from "enums"
+import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine, Weapon } from "types"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "@root/index"
 import { BT_Root } from "@trees/BT_Root"
 import { StringToEQSQueryType } from "./utils"
 import { Sound } from "@root/Sound"
+import { Evaluator } from "@utility/evaluator"
+import { Test } from "@utility/test"
+import { scoreByDistance } from "@utility/helper"
+import { CURRENT_AI_CONFIG } from "@root/aiconfig"
+import { Damage } from "@root/damage"
+import { DamageTracker } from "@root/damagetracker"
 
 // TODO: some clean up
 // TODO: handle signaling.
@@ -21,8 +27,45 @@ export let tree = new BehaviorTree({
     blackboard: {
         target: null,
         eqsResults: {},
+        damageTracker: new DamageTracker(),
+        actionStatus: new Map<Action, boolean>(),
     } as AIBlackboard,
 })
+
+const init_engagement_range = (input: BrainInput, blackboard: AIBlackboard) => {
+    const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
+
+    if (primaryWeapons.length === 0) {
+        console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no primary weapons. AI will not work properly.`)
+    } else {
+        const primaryGuns = primaryWeapons.filter((w) => !w.tags.find((t) => t === WeaponTag.Melee))
+        const validOptimalRanges = primaryGuns.filter((w) => w.optimalRange > 0)
+        if (validOptimalRanges.length === 0) {
+            console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no valid optimal range setup. Defaulting optimal range to melee range.`)
+            blackboard.idealEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange
+        } else {
+            // Calculate optimal engagement range and ideal range based on that.
+            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.optimalRange))
+            blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = minOptimalRange
+        }
+    }
+}
+
+const init_weapon = (input: BrainInput, blackboard: AIBlackboard) => {
+    init_engagement_range(input, blackboard)
+
+    const secondaryWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Secondary))
+
+    // For now, only one secondary weapon can be equipped.
+    blackboard.secondaryWeapon = secondaryWeapons.length !== 0 ? secondaryWeapons[0] : null
+
+    const meleeWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Melee))
+    blackboard.canMelee = meleeWeapons.length !== 0
+
+    blackboard.weapons = input.self.weapons
+}
 
 /**
  * This function gets called when AI begins.
@@ -34,22 +77,12 @@ export let tree = new BehaviorTree({
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    // Check for secondary weapons and melee weapons and initialize blackboard
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
-            blackboard.secondaryWeapon = weapon
-            blackboard.canUseSpecialAttack = true
-            break
-        }
-    }
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Melee) !== undefined) {
-            blackboard.canMelee = true
-            break
-        }
-    }
+    init_weapon(input, blackboard)
+
     blackboard.currentTime = 0
-    console.log(`${input.self.name} AI Started`)
+    blackboard.currentMovementMode = MovementMode.Walk
+    blackboard.isBattleZonePresent = AI.IsBattleZonePresent()
+    console.log(`${input.self.hash}: ${input.self.name} AI Started`)
 }
 
 /**
@@ -69,10 +102,8 @@ export const onTick = (input: BrainInput) => {
     updateBlackboard(input)
 
     blackboard.isCommanded = AI.IsMoveCommanded()
-    if (AI.HasMoveCommandLocation()) {
-        blackboard.moveCommandLocation = AI.GetMoveCommandLocation()
-    }
-
+    blackboard.moveCommandLocation = AI.GetMoveCommandLocation()
+    
     // Run behavior tree.
     tree.step()
 
@@ -92,6 +123,12 @@ export const onTick = (input: BrainInput) => {
  */
 function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const currentWeapons: Weapon[] = blackboard.weapons
+
+    // Re-init weapons if equipped a new weapon. TODO: Handle weapon change.
+    if (currentWeapons.length !== input.self.weapons.length) {
+        init_weapon(input, blackboard)
+    }
 
     // Copy over the new input for easy access.
     blackboard.input = input
@@ -109,7 +146,20 @@ function updateBlackboard(input: BrainInput): void {
     updateBlackboardDamage()
     updateBlackboardSound()
     updateBlackboardInteractable()
+    // updateTargetLOS()
 }
+
+/*
+function updateTargetLOS() {
+    // TODO: Add LOS to target selection.
+    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    if (blackboard.target) {
+        blackboard.isTargetInWeaponLOS = AI.IsTargetInLOS(blackboard.target.hash)
+    } else {
+        blackboard.isTargetInWeaponLOS = false
+    }
+}
+*/
 
 /**
  * Updates the sight related information in the blackboard.
@@ -151,12 +201,19 @@ function updateBlackboardSight(): void {
             blackboard.targetLastKnownLocation = blackboard.target.location
             blackboard.targetPredictedLocation = blackboard.target.location
             blackboard.targetLastKnownVelocity = blackboard.target.velocity
+            blackboard.lastTargetUpdateTime = blackboard.currentTime
         }
     }
-    // Calculate a new target predicted location based on its last known velocity and the time elapsed since last tick.
-    if (typeof blackboard.targetLastKnownLocation !== "undefined") {
+    if (typeof blackboard.targetLostSightTime === "undefined") return
+    if (typeof blackboard.targetLastKnownLocation === "undefined") return
+    if (typeof blackboard.targetLastKnownVelocity === "undefined") return
+
+    // Calculate a new target predicted location based on its last known velocity and the time elapsed since prediction update.
+    const elapsedTime: number = blackboard.currentTime - blackboard.lastTargetUpdateTime
+    if (elapsedTime >= CURRENT_AI_CONFIG.predictionUpdateInterval) {
         // TODO: Project to navigation and clear if not valid when navigating.
-        blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, blackboard.input.deltaTime))
+        blackboard.targetPredictedLocation = add(blackboard.targetPredictedLocation, multiply(blackboard.targetLastKnownVelocity, elapsedTime))
+        blackboard.lastTargetUpdateTime = blackboard.currentTime
     }
 }
 
@@ -172,7 +229,7 @@ function updateBlackboardDamage(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const damageDetails: DamageDetails[] = blackboard.input.perception.damage
 
-    // Fail-fast if nothing to update.
+    // Return if nothing to update.
     if (damageDetails.length === 0) return
 
     // Get the enemy damage details. Feel free to modify this logic to do something about friendly damage
@@ -187,19 +244,21 @@ function updateBlackboardDamage(): void {
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))
     blackboard.lastHitLocation = blackboard.input.self.location
     blackboard.isLastDamageFromTarget = blackboard.target && blackboard.target.hash === enemyDamageDetails[lastIdx].instigatorHash
+
+    blackboard.damageTracker.addDamage(...enemyDamageDetails.map((d) => new Damage(blackboard.currentTime, d)))
 }
 
 /**
  * Updates the sound related information in the blackboard.
  *
- * Currently, it only considers last taunt sound generated by the enemy AI. You may modify this implementation to also consider noise generated by the friendly
- * AIs, gun sound, and evaluate the score of new sounds based on the distance and type.
+ * You may modify this implementation to also consider noise generated by the friendly AIs.
  *
  * @see {@link SoundDetails} for sound details.
  */
 function updateBlackboardSound(): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const soundDetails: SoundDetails[] = blackboard.input.perception.sound
+    const selfLocation: Vector = blackboard.input.self.location
 
     if (soundDetails.length === 0) return
 
@@ -208,15 +267,24 @@ function updateBlackboardSound(): void {
     const enemyTauntSounds = enemySounds.filter((s) => s.tag === SoundType.Taunt && AI.IsNavigable(s.location))
     const enemyWeaponSounds = enemySounds.filter((s) => s.tag === SoundType.Weapon && AI.IsNavigable(s.location))
 
-    const lastWeaponIdx: number = enemyWeaponSounds.length - 1
-    const lastTauntIdx: number = enemyTauntSounds.length - 1
-    if (lastWeaponIdx >= 0) {
-        blackboard.lastWeaponNoise = new Sound(enemyWeaponSounds[lastWeaponIdx].location, blackboard.currentTime)
+    /*
+    if (blackboard.noiseLocation !== undefined) {
+        // enemyTauntSounds.push(blackboard.noiseLocation))
     }
-    if (lastTauntIdx >= 0) {
+    if (blackboard.lastWeaponNoise !== undefined) {
+        enemyWeaponSounds.push(blackboard.lastWeaponNoise.soundDetail)
+    }
+    */
+    const bestWeaponSound: SoundDetails = new Evaluator(enemyWeaponSounds).addTest(new Test((s) => scoreByDistance(selfLocation, s.location))).getBestItem()
+    const bestTauntSound: SoundDetails = new Evaluator(enemyTauntSounds).addTest(new Test((s) => scoreByDistance(selfLocation, s.location))).getBestItem()
+
+    if (bestWeaponSound !== undefined) {
+        blackboard.lastWeaponNoise = new Sound(bestWeaponSound, blackboard.currentTime)
+    }
+    if (bestTauntSound !== undefined) {
         // Update the last noise location to the last enemy taunt noise location.
         blackboard.heardNoise = true
-        blackboard.noiseLocation = enemyTauntSounds[lastTauntIdx].location
+        blackboard.noiseLocation = bestTauntSound.location
     }
 }
 
@@ -239,7 +307,10 @@ function updateBlackboardInteractable(): void {
     // Otherwise find the best pickup and update desired pickup location.
     const bestPickup = findBestPickup()
     if (bestPickup !== undefined) {
-        blackboard.desiredPickupLocation = bestPickup.location
+        const isNavigable: boolean = AI.IsNavigable(bestPickup.location)
+        if (isNavigable) {
+            blackboard.desiredPickupLocation = bestPickup.location
+        }
     }
 }
 
@@ -306,8 +377,6 @@ function findBestTarget(): WarMachine {
     const mechsBySight: WarMachine[] = blackboard.input.perception.sight
     const damageDetails: DamageDetails[] = blackboard.input.perception.damage
 
-    // TODO: Also consider damage
-
     // Filter the mechs and maintain the same target if there are no suitable mechs.
     const targetVisIndex: number = blackboard.target ? mechsBySight.findIndex((m) => m.hash === blackboard.target.hash) : -1
     const filteredMechs = mechsBySight.filter((m) => filter(m))
@@ -331,12 +400,11 @@ function findBestTarget(): WarMachine {
 // TODO: Support inverse option maybe
 function filter(mech: WarMachine, inverse: boolean = false): boolean {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
-    const MaxDistanceToConsider: number = 50000
 
     // Filter functions. Add more filter functions as you deem appropriate.
     const filterByAlive = () => mech.health > 0
     const filterByFaction = () => blackboard.input.self.factionID !== mech.factionID
-    const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= MaxDistanceToConsider
+    const filterByDistance = () => distanceTo(blackboard.input.self, mech) <= CURRENT_AI_CONFIG.sightMaxDistance
     const filterFuncs = [filterByAlive, filterByFaction, filterByDistance]
 
     return filterFuncs.map((func) => func()).reduce((a, b) => a && b)
@@ -351,15 +419,16 @@ function filter(mech: WarMachine, inverse: boolean = false): boolean {
  *
  * @returns score of the mech between [0, 1]
  */
- function score(mech: WarMachine): number {
+function score(mech: WarMachine): number {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
-    const MaxDistanceToConsider: number = 50000
+    const MaxDamage: number = 2000
 
-    // Score functions. Add more scoring functions as you desire.
+    // Score functions.
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
-    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
+    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / CURRENT_AI_CONFIG.sightMaxDistance)
+    const scoreByDamageWindow = (m: WarMachine) => Math.min(1, blackboard.damageTracker.getTotalDamageByTime(blackboard.currentTime, 10, m.hash) / MaxDamage)
     const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.hash === m.hash ? 1 : 0)
-    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByCurrentTarget]
+    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByDamageWindow, scoreByCurrentTarget]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
 
@@ -375,6 +444,7 @@ export function clearBlackboardTarget(): void {
 
     blackboard.target = null
     blackboard.canSeeTarget = false
+    blackboard.isTargetInWeaponLOS = false
     if (typeof blackboard.targetLostSightTime !== "undefined") {
         delete blackboard.targetLostSightTime
     }

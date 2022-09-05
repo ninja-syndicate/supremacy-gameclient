@@ -4,7 +4,6 @@ import { AIBlackboard } from "@blackboards/blackboard"
 import { AI } from "@root/index"
 import { IsVector } from "../utils"
 
-// TODO: Make LookAt return boolean and handle that in task?
 /**
  * Makes AI look at a location.
  *
