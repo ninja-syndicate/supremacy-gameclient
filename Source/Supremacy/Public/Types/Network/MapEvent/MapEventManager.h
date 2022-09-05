@@ -45,7 +45,7 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 	}
 	
 public:
-	UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject", ToolTip="Packs all current map events to byte array, clearing them at the same time."))
 	TArray<uint8> Pack(const UObject* WorldContextObject) const
 	{
 		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
@@ -59,18 +59,10 @@ public:
 			Bytes.Append(MessagedPacked);
 			MessageCount++;
 		}
-
-		if (MessageCount == 0) return {};
+		
 		Bytes.Insert(MessageCount, 0);
 		
 		return Bytes;
-	}
-
-	UFUNCTION(BlueprintCallable)
-	void Clear() const
-	{
-		for (FMapEventMessage* Message : Messages)
-			Message->Clear();
 	}
 
 	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))

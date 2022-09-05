@@ -9,5 +9,4 @@ struct SUPREMACY_API FMapEventMessage {
 public:
 	virtual ~FMapEventMessage() = default;
 	virtual TArray<uint8> Pack(const UObject* WorldContextObject) { return {}; }
-	virtual void Clear() {}
 };

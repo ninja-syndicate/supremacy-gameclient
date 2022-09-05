@@ -40,12 +40,9 @@ public:
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.X));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.Y));
 		}
+
+		Locations.Empty();
 		
 		return Bytes;
-	}
-
-	virtual void Clear() override
-	{
-		Locations.Empty();
 	}
 };

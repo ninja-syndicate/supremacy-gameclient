@@ -50,13 +50,10 @@ public:
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.X));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.Y));
 		}
+
+		Landmines.Empty();
 		
 		return Bytes;
-	}
-
-	virtual void Clear() override
-	{
-		Landmines.Empty();
 	}
 	
 };
@@ -95,12 +92,10 @@ public:
 			const uint8 TimeOffset = static_cast<uint8>(Offset > 255 ? 255 : Offset); // since tick is 0.25s time offset should never go past 250
 			Bytes.Emplace(TimeOffset);
 		}
+
+		Landmines.Empty();
 		
 		return Bytes;
 	}
-
-	virtual void Clear() override
-	{
-		Landmines.Empty();
-	}
+	
 };

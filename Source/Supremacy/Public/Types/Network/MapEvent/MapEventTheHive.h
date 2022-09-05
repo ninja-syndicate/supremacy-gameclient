@@ -58,13 +58,9 @@ public:
 		
 		return Bytes;
 	}
-
-	virtual void Clear() override
-	{
-	}
 };
 template<>
-struct TStructOpsTypeTraits< FMapEventHiveChanges > : public TStructOpsTypeTraitsBase2< FMapEventHiveChanges >
+struct TStructOpsTypeTraits< FMapEventHiveChanges > : TStructOpsTypeTraitsBase2< FMapEventHiveChanges >
 {
 	enum
 	{
