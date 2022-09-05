@@ -16,7 +16,7 @@
 		{
 			"Name": "SupremacyEditor",
 			"Type": "Editor",
-			"LoadingPhase":  "PostEngineInit"
+			"LoadingPhase": "PostEngineInit"
 		}
 	],
 	"Plugins": [
@@ -97,6 +97,10 @@
 		},
 		{
 			"Name": "ImagePlate",
+			"Enabled": true
+		},
+		{
+			"Name": "CommonUI",
 			"Enabled": true
 		}
 	]
