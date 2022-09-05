@@ -94,11 +94,39 @@ uint8 UBPFL_Helpers::PackBooleansIntoByte(const TArray<bool> Booleans)
 
 TArray<bool> UBPFL_Helpers::UnpackBooleansFromByte(const uint8 Byte)
 {
-	TArray<bool> booleans = TArray<bool>();
-	booleans.Init(false, 8);
+	TArray<bool> Booleans = TArray<bool>();
+	Booleans.Init(false, 8);
 	for (int i = 0; i < 8; ++i)
-		booleans[i] = (Byte & (1 << i)) != 0;
-	return booleans;
+		Booleans[i] = (Byte & (1 << i)) != 0;
+	return Booleans;
+}
+
+TArray<uint8> UBPFL_Helpers::PackBooleansIntoBytes(const TArray<bool> Booleans)
+{
+	TArray<uint8> Bytes = TArray<uint8>();
+	int Count = -1;
+	for (int i = 0; i < Booleans.Num(); ++i)
+	{
+		if (i % 8 == 0)
+		{
+			Count++;
+			Bytes.Emplace(0);
+		}
+		if (Booleans[i])
+			Bytes[Count] |= 1 << i;
+	}
+	return Bytes;
+}
+
+TArray<bool> UBPFL_Helpers::UnpackBooleansFromBytes(const TArray<uint8> Bytes)
+{
+	TArray<bool> Booleans = TArray<bool>();
+	for (const uint8 Byte : Bytes)
+	{
+		for (int i = 0; i < 8; ++i)
+			Booleans.Emplace((Byte & (1 << i)) != 0);
+	}
+	return Booleans;
 }
 
 FColor UBPFL_Helpers::HexToColor(const FString HexString)

@@ -43,6 +43,14 @@ public:
 	/** Unpacks an array of booleans from a single byte */
 	UFUNCTION(BlueprintPure, Category = "Helpers")
 	static TArray<bool> UnpackBooleansFromByte(const uint8 Byte);
+
+	/** Packs an array of booleans into multiple bytes */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static TArray<uint8> PackBooleansIntoBytes(const TArray<bool> Booleans);
+
+	/** Unpacks an array of booleans from an array of bytes */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static TArray<bool> UnpackBooleansFromBytes(const TArray<uint8> Bytes);
 	
 	/** Converts hex string to color. Supports formats RGB, RRGGBB, RRGGBBAA, RGB, #RRGGBB, #RRGGBBAA */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")

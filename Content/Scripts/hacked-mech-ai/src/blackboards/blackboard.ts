@@ -1,6 +1,6 @@
 import { DamageTracker } from "@root/damagetracker"
 import { Sound } from "@root/Sound"
-import { Action, EQSQueryType } from "enums"
+import { Action, EQSQueryType, MovementMode } from "enums"
 import { BrainInput, EnvironmentQuery, Vector, WarMachine, Weapon } from "types"
 
 /**
@@ -23,6 +23,7 @@ export interface AIBlackboard {
 
     eqsResults: Map<EQSQueryType, EnvironmentQuery>
     actionStatus: Map<Action, boolean>
+    currentMovementMode: MovementMode
     weapons: Weapon[]
     patrolLocation?: Vector
 
@@ -77,6 +78,4 @@ export interface AIBlackboard {
     optimalEngagementRange: number
     /** Whether AI has any melee weapons. */
     canMelee: boolean
-    /** Whether AI has rocket pod. */
-    canUseSpecialAttack: boolean
 }

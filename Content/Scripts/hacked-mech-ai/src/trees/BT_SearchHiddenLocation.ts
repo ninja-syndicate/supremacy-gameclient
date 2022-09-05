@@ -7,6 +7,8 @@ import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
+import { BT_DefaultMoveTo } from "@trees/movement/BT_MovementMode"
+
 
 /**
  * Behavior for searching possible hidden location based on the provided search location.
@@ -26,7 +28,7 @@ export const BT_SearchHiddenLocation = (searchLocation: keyof AIBlackboard) =>
             ),
             BTT_RunEQSQuery(EQSQueryType.Hidden, "hiddenLocation"),
             BTT_SetFocalPoint("hiddenLocation"),
-            BTT_MoveTo("hiddenLocation"),
+            BT_DefaultMoveTo("hiddenLocation"),
             BTT_SetValue((blackboard: AIBlackboard) => (blackboard.hiddenLocation = undefined)),
         ],
     })

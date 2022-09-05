@@ -47,6 +47,7 @@ export const enum EQSArgument {
     TargetHash = "TargetHash",
     TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
+    MinDistanceToSelf = "MinDistanceToSelf",
     MinDistanceToTarget = "MinDistanceToTarget",
     MaxDistanceToTarget = "MaxDistanceToTarget",
     LastHitLocation = "LastHitLocation",

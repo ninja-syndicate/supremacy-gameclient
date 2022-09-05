@@ -4,6 +4,7 @@
 #include "MapEventAirstrikeExplosions.h"
 #include "MapEventLandmine.h"
 #include "MapEventMessage.h"
+#include "MapEventTheHive.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "MapEventManager.generated.h"
 
@@ -19,6 +20,9 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 	FMapEventLandmineExplosions LandmineExplosions;
 	int32 NextLandmineID = 0;
 
+	FMapEventHiveChanges HiveChangesLowered = FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexLowered);
+	FMapEventHiveChanges HiveChangesRaised = FMapEventHiveChanges(EMapEventType::MapEventType_HiveHexRaised);
+
 	UMapEventManager()
 	{
 		LandmineActivations = {
@@ -32,38 +36,33 @@ class SUPREMACY_API UMapEventManager final : public UObject {
 			&LandmineActivations[0], &LandmineActivations[1], &LandmineActivations[2],
 			&LandmineExplosions,
 
+			&HiveChangesRaised,
+			&HiveChangesLowered,
+
 			// Only sent straight to frontend clients
 			&AirstrikeExplosions,
 		};
 	}
 	
 public:
-	UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject", ToolTip="Packs all current map events to byte array, clearing them at the same time."))
 	TArray<uint8> Pack(const UObject* WorldContextObject) const
 	{
 		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 		
 		TArray<uint8> Bytes = TArray<uint8>();
 		uint8 MessageCount = 0;
-		for (const FMapEventMessage* Message : Messages)
+		for (FMapEventMessage* Message : Messages)
 		{
 			TArray<uint8> MessagedPacked = Message->Pack(World);
 			if (MessagedPacked.Num() == 0) continue;
 			Bytes.Append(MessagedPacked);
 			MessageCount++;
 		}
-
-		if (MessageCount == 0) return {};
+		
 		Bytes.Insert(MessageCount, 0);
 		
 		return Bytes;
-	}
-
-	UFUNCTION(BlueprintCallable)
-	void Clear() const
-	{
-		for (FMapEventMessage* Message : Messages)
-			Message->Clear();
 	}
 
 	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
@@ -98,5 +97,18 @@ public:
 		
 		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
 		LandmineExplosions.Landmines.Add(FMapEventLandmineExplosion(LandmineID, TimeInMS));
+	}
+
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
+	void HiveMapChange(const UObject* WorldContextObject, const int32 HexID, const bool Raised)
+	{
+		const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+		
+		const int32 TimeInMS = FMath::FloorToInt(UKismetSystemLibrary::GetGameTimeInSeconds(World) * 1000);
+		const FMapEventHiveChange Change = FMapEventHiveChange(static_cast<uint16>(HexID), TimeInMS);
+		if (Raised)
+			HiveChangesRaised.Changes.Enqueue(Change);
+		else
+			HiveChangesLowered.Changes.Enqueue(Change);
 	}
 };

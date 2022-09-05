@@ -5,10 +5,10 @@ import { IsSet } from "@decorators/IsSet"
 import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_LookAround } from "@trees/BT_LookAround"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { Predicate_IsLocationInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { Predicate } from "@decorators/Predicate"
+import { BT_SprintMoveTo } from "@trees/movement/BT_MovementMode"
 
 /**
  * Camping behavior.
@@ -32,7 +32,7 @@ export const BT_Camp = new Sequence({
                         new Selector({
                             nodes: [
                                 IsSet(BT_GetCover, "coverLocation", false),
-                                Predicate(BTT_MoveTo("coverLocation"), Predicate_IsLocationInsideBattleZone("coverLocation"), true, ObserverAborts.Self),
+                                Predicate(BT_SprintMoveTo("coverLocation"), Predicate_IsLocationInsideBattleZone("coverLocation"), true, ObserverAborts.Self),
                                 BT_GetCover,
                             ],
                         }),

@@ -11,9 +11,9 @@ export const TargetHasMoreTotalHealth = (blackboard: AIBlackboard) => {
     const target = blackboard.target
     if (target === null) return false
 
-    const selfTotalHealth = self.health + self.shield
-    const targetTotalHealth = target.health + target.shield
-    return targetTotalHealth > selfTotalHealth
+    const selfTotalHealthRatio = (self.health + self.shield) / (self.healthMax + self.shieldMax)
+    const targetTotalHealthRatio = (target.health + target.shield) / (target.healthMax + target.shieldMax)
+    return targetTotalHealthRatio > selfTotalHealthRatio
 }
 
 // NOTE: To be removed in the future by scoring function.

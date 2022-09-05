@@ -1,6 +1,6 @@
 import { BehaviorTree } from "behaviortree"
 import { Action, EnvironmentQueryStatus, InteractableTag, MovementMode, SoundType, UserAction, WeaponTag } from "enums"
-import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine } from "types"
+import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine, Weapon } from "types"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "@root/index"
@@ -32,25 +32,39 @@ export let tree = new BehaviorTree({
     } as AIBlackboard,
 })
 
-const initialize = (input: BrainInput, blackboard: AIBlackboard) => {
+const init_engagement_range = (input: BrainInput, blackboard: AIBlackboard) => {
     const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
 
     if (primaryWeapons.length === 0) {
         console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no primary weapons. AI will not work properly.`)
     } else {
         const primaryGuns = primaryWeapons.filter((w) => !w.tags.find((t) => t === WeaponTag.Melee))
-        const validOptimalRanges = primaryGuns.filter((w) => w.optimalRange > 0)
+        const validOptimalRanges = primaryGuns.filter((w) => w.damageFalloff > 0)
         if (validOptimalRanges.length === 0) {
             console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no valid optimal range setup. Defaulting optimal range to melee range.`)
             blackboard.idealEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
             blackboard.optimalEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange
         } else {
             // Calculate optimal engagement range and ideal range based on that.
-            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.optimalRange))
+            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.damageFalloff))
             blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
             blackboard.optimalEngagementRange = minOptimalRange
         }
     }
+}
+
+const init_weapon = (input: BrainInput, blackboard: AIBlackboard) => {
+    init_engagement_range(input, blackboard)
+
+    const secondaryWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Secondary))
+
+    // For now, only one secondary weapon can be equipped.
+    blackboard.secondaryWeapon = secondaryWeapons.length !== 0 ? secondaryWeapons[0] : null
+
+    const meleeWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Melee))
+    blackboard.canMelee = meleeWeapons.length !== 0
+
+    blackboard.weapons = input.self.weapons
 }
 
 /**
@@ -63,22 +77,8 @@ const initialize = (input: BrainInput, blackboard: AIBlackboard) => {
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    initialize(input, blackboard)
+    init_weapon(input, blackboard)
 
-    // Check for secondary weapons and melee weapons and initialize blackboard
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
-            blackboard.secondaryWeapon = weapon
-            blackboard.canUseSpecialAttack = true
-            break
-        }
-    }
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Melee) !== undefined) {
-            blackboard.canMelee = true
-            break
-        }
-    }
     blackboard.currentTime = 0
     blackboard.currentMovementMode = MovementMode.Walk
     blackboard.isBattleZonePresent = AI.IsBattleZonePresent()
@@ -120,6 +120,12 @@ export const onTick = (input: BrainInput) => {
  */
 function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const currentWeapons: Weapon[] = blackboard.weapons
+
+    // Re-init weapons if equipped a new weapon. TODO: Handle weapon change.
+    if (currentWeapons.length !== input.self.weapons.length) {
+        init_weapon(input, blackboard)
+    }
 
     // Copy over the new input for easy access.
     blackboard.input = input
