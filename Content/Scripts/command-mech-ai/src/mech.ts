@@ -39,18 +39,20 @@ const init_engagement_range = (input: BrainInput, blackboard: AIBlackboard) => {
         console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no primary weapons. AI will not work properly.`)
     } else {
         const primaryGuns = primaryWeapons.filter((w) => !w.tags.find((t) => t === WeaponTag.Melee))
-        const validOptimalRanges = primaryGuns.filter((w) => w.optimalRange > 0)
+        const validOptimalRanges = primaryGuns.filter((w) => w.damageFalloff > 0)
         if (validOptimalRanges.length === 0) {
             console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no valid optimal range setup. Defaulting optimal range to melee range.`)
             blackboard.idealEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
             blackboard.optimalEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange
         } else {
             // Calculate optimal engagement range and ideal range based on that.
-            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.optimalRange))
+            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.damageFalloff))
             blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
             blackboard.optimalEngagementRange = minOptimalRange
         }
     }
+
+    
 }
 
 const init_weapon = (input: BrainInput, blackboard: AIBlackboard) => {
