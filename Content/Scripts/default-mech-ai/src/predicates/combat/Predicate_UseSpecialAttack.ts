@@ -16,5 +16,5 @@ export const Predicate_UseSpecialAttack = (blackboard: AIBlackboard): boolean =>
 
     if (speedRatio < 0.5) return true
 
-    return distToTarget <= blackboard.secondaryWeapon.optimalRange
+    return distToTarget <= blackboard.secondaryWeapon.damageFalloff
 }
