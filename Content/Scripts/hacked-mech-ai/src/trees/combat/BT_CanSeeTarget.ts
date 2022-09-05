@@ -1,11 +1,10 @@
 import { ObserverAborts, Selector } from "behaviortree"
-import { Action } from "enums"
-import { CanActivateAction } from "@decorators/CanActivateAction"
 import { Predicate } from "@decorators/Predicate"
 import { BTT_SpecialAttack } from "@tasks/BTT_SpecialAttack"
 import { BT_CloseCombat } from "@trees/combat/BT_CloseCombat"
 import { BT_RangeCombat } from "@trees/combat/BT_RangeCombat"
 import { Predicate_CloseCombat } from "@predicates/Predicate_CloseCombat"
+import { Predicate_UseSpecialAttack } from "@root/predicates/combat/Predicate_UseSpecialAttack"
 
 /**
  * Behavior when AI can see the current target.
@@ -20,7 +19,7 @@ import { Predicate_CloseCombat } from "@predicates/Predicate_CloseCombat"
  */
 export const BT_CanSeeTarget = new Selector({
     nodes: [
-        CanActivateAction(BTT_SpecialAttack("targetLastKnownLocation"), Action.SpecialAttack, true, ObserverAborts.LowerPriority),
+        Predicate(BTT_SpecialAttack("targetLastKnownLocation"), Predicate_UseSpecialAttack, true, ObserverAborts.LowerPriority),
         Predicate(BT_CloseCombat, Predicate_CloseCombat, true, ObserverAborts.Both),
         BT_RangeCombat,
     ],
