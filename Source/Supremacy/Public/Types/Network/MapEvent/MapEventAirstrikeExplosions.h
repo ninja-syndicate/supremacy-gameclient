@@ -23,7 +23,7 @@ struct SUPREMACY_API FMapEventAirstrikeExplosions : public FMapEventMessage {
 public:
 	TArray<FMapEventAirstrikeExplosion> Locations;
 
-	virtual TArray<uint8> Pack(const UObject* WorldContextObject) const override
+	virtual TArray<uint8> Pack(const UObject* WorldContextObject) override
 	{
 		if (Locations.IsEmpty()) return {};
 		
@@ -40,12 +40,9 @@ public:
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.X));
 			Bytes.Append(UBPFL_Helpers::ConvertIntToBytes(Location.Y));
 		}
+
+		Locations.Empty();
 		
 		return Bytes;
-	}
-
-	virtual void Clear() override
-	{
-		Locations.Empty();
 	}
 };
