@@ -270,7 +270,7 @@ declare class AIController {
      * Triggers the given user action.
      *
      * @param userAction The user action to trigger. @see {@link UserAction}
-     * @returns true if successfully triggerd the given {@link userAction} and false otherwise
+     * @returns true if successfully triggered the given {@link userAction} and false otherwise
      */
     TriggerUserAction(userAction: UserAction): boolean
 }
@@ -330,8 +330,6 @@ export interface Weapon {
     maxAmmo: number
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
     tags: WeaponTag[]
-    /** The maximum range for this weapon to be used to remain effective. */
-    optimalRange: number
 }
 
 /**

@@ -16,7 +16,7 @@ import { BTT_SetValue } from "@tasks/BTT_SetValue"
  * Currently, the priority for setting the focal point is defined as follows:
  *
  *  - {@link AIBlackboard.target} if AI can see the current target
- *  - {@link AIblackboard.damageStimulusFocalPoint} if the predicate {@link Predicate_FocusToDamage} is satisfied
+ *  - {@link AIBlackboard.damageStimulusFocalPoint} if the predicate {@link Predicate_FocusToDamage} is satisfied
  *  - {@link AIBlackboard.targetPredictedLocation} if the predicate {@link Predicate_FocusToPredictedLocation} is satisfied
  *  - {@link AIBlackboard.targetLastKnownLocation} if AI has the target's last known location
  *  - {@link AIBlackboard.lastWeaponNoise.location} if the predicate {@link Predicate_FocusToWeaponNoise} is satisfied

@@ -330,8 +330,6 @@ export interface Weapon {
     maxAmmo: number
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
     tags: WeaponTag[]
-    /** The maximum range for this weapon to be used to remain effective. */
-    optimalRange: number
 }
 
 /**

@@ -1,10 +1,10 @@
-import { ObserverAborts, Parallel, Selector, Sequence } from "behaviortree"
-import { UserAction, WeaponTag } from "enums"
+import { ObserverAborts, ParallelSelector, Selector, Sequence } from "behaviortree"
+import { WeaponTag } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { ParallelBackground } from "@branches/ParallelBackground"
 import { IsSet } from "@decorators/IsSet"
 import { Predicate } from "@decorators/Predicate"
-import { Predicate_HasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
+import { Predicate_HasVeryLowTotalHealth, Predicate_TargetHasVeryLowTotalHealth } from "@predicates/Predicate_HasVeryLowTotalHealth"
 import { IsOutnumbered } from "@predicates/Predicate_IsOutnumbered"
 import { IsOutnumberingEnemies } from "@predicates/Predicate_IsOutnumberingEnemies"
 import { TargetHasMoreTotalHealth } from "@predicates/Predicate_TargetHasMoreTotalHealth"
@@ -13,15 +13,16 @@ import { BTT_Shoot } from "@tasks/BTT_Shoot"
 import { BTT_Success } from "@tasks/BTT_Success"
 import { BT_GetCover } from "@trees/BT_GetCover"
 import { BT_GetPickup } from "@trees/BT_GetPickup"
-import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { BT_Strafe } from "@trees/BT_Strafe"
 import { BT_CloseStrafe } from "@trees/BT_CloseStrafe"
 import { BT_MoveToBattleZone } from "@trees/battlezone/BT_MoveToBattleZone"
 import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
-import { BT_MovementMode } from "@trees/BT_MovementMode"
-import { ForceSuccess } from "@decorators/ForceSuccess"
+import { ForceSuccess } from "@trees/helper/BT_Helper"
 import { BT_UserAction } from "@trees/useraction/BT_UserAction"
+import { Predicate_IsTeamInAdvantage } from "@predicates/Predicate_IsTeamInAdvantage"
+import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
+import { Predicate_HasLowShield } from "@predicates/Predicate_HasLowShield"
 
 // TODO: Separate ParallelBackground into main and background tasks properties.
 // TODO: Replace with ForceSuccess decorator? and replace comments
@@ -42,23 +43,33 @@ import { BT_UserAction } from "@trees/useraction/BT_UserAction"
  */
 export const BT_RangeCombat = new ParallelBackground({
     nodes: [
-        // TODO: Maybe make it ParallelSelector when ammo support is needed
-        new Parallel({
+        // Main task
+        new ParallelSelector({
             nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
         }),
+
+        // Background tasks:
         BTT_SetFocalPoint("target"),
-        // BT_MovementMode,
         ForceSuccess(BT_UserAction),
         new Selector({
             nodes: [
                 Predicate(BT_MoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
                 IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-                Predicate(BT_GetCover, Predicate_HasVeryLowTotalHealth, true, ObserverAborts.LowerPriority),
+                Predicate(
+                    BT_GetCover,
+                    (blackboard: AIBlackboard) => Predicate_HasLowShield(blackboard) || Predicate_HasVeryLowTotalHealth(blackboard),
+                    true,
+                    ObserverAborts.LowerPriority,
+                ),
                 Predicate(
                     new Selector({
-                        nodes: [BT_CloseStrafe, BTT_MoveTo("targetLastKnownLocation")],
+                        nodes: [BT_CloseStrafe, BT_MoveByDistanceToTarget("targetLastKnownLocation")],
                     }),
-                    (blackboard: AIBlackboard) => !TargetHasMoreTotalHealth(blackboard),
+                    (blackboard: AIBlackboard) =>
+                        !TargetHasMoreTotalHealth(blackboard) &&
+                        !IsOutnumbered(blackboard) &&
+                        IsOutnumberingEnemies(blackboard) &&
+                        Predicate_IsTeamInAdvantage(blackboard),
                     true,
                     ObserverAborts.Both,
                 ),

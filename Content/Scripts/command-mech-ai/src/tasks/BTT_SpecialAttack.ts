@@ -23,6 +23,8 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
             if (!hasSecondaryWeapon) return FAILURE
 
             const success: boolean = AI.TrySpecialAttack(location)
+            if (success) blackboard.actionStatus.set(Action.SpecialAttack, true)
+
             return success ? SUCCESS : FAILURE
         },
 
@@ -38,5 +40,11 @@ export const BTT_SpecialAttack = (blackboardKey: keyof AIBlackboard) =>
                 default:
                     return FAILURE
             }
+        },
+        end: (blackboard: AIBlackboard) => {
+            blackboard.actionStatus.set(Action.SpecialAttack, false)
+        },
+        abort: (blackboard: AIBlackboard) => {
+            blackboard.actionStatus.set(Action.SpecialAttack, false)
         },
     })

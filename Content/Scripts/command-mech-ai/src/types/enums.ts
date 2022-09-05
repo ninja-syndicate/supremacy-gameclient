@@ -17,7 +17,7 @@ export const enum WeaponTag {
  *
  * {@link EQSQueryType.Cover} - Generates a cover location. This requires {@link Origin} and {@link LastHitLocation} arguments to be set.
  * {@link EQSQueryType.Hidden} - Generates a possible target hidden location. This requires {@link EQSArgument.TargetPredictedLocation} argument to be set.
- * {@link EQSQueryType.Patrol} - Generates a patrol location. This requires {@link Origin} argument to be set. And optionally {@link EQSArgument.GridSize} and 
+ * {@link EQSQueryType.Patrol} - Generates a patrol location. This requires {@link Origin} argument to be set. And optionally {@link EQSArgument.GridSize} and
  * {@link EQSArgument.SpaceBetween}.
  * {@link EQSQueryType.Strafe} - Generates a strafe location. Useful when AI is in combat state. This environment query requires {@link EQSArgument.TargetHash}
  * argument to be set. And optionally {@link EQSArgument.GridSize} and {@link EQSArgument.SpaceBetween}.
@@ -28,6 +28,8 @@ export const enum EQSQueryType {
     Hidden = "hidden",
     Patrol = "patrol",
     Strafe = "strafe",
+    CloseStrafe = "closeStrafe",
+    BattleZone = "battleZone",
 }
 
 /**
@@ -38,11 +40,16 @@ export const enum EQSQueryType {
  */
 export const enum EQSArgument {
     Origin = "Origin",
+    /** The half-grid size of the query.  */
     GridSize = "GridSize",
+    /** DEPRECATED: Won't do anything. */
     SpaceBetween = "SpaceBetween",
     TargetHash = "TargetHash",
     TargetLastKnownLocation = "TargetLastKnownLocation",
     TargetPredictedLocation = "TargetPredictedLocation",
+    MinDistanceToSelf = "MinDistanceToSelf",
+    MinDistanceToTarget = "MinDistanceToTarget",
+    MaxDistanceToTarget = "MaxDistanceToTarget",
     LastHitLocation = "LastHitLocation",
 }
 
@@ -70,6 +77,13 @@ export const enum DamageType {
     Explosive,
 }
 
+export const enum MovementMode {
+    /** Walking movement mode. */
+    Walk = "Walk",
+    /** Sprint movement mode. */
+    Sprint = "Sprint",
+}
+
 /**
  * Possible movement result.
  */
@@ -94,8 +108,17 @@ export const enum MovementResult {
 export const enum Action {
     LookAt = "Action.LookAt",
     Wait = "Action.Wait",
+    MeleeAttack = "Action.MeleeAttack", // NOTE: Not currently supported in Unreal-side. Internal script usage only.
     SpecialAttack = "Action.SpecialAttack",
     Taunt = "Action.Taunt",
+}
+
+/**
+ * All the user actions that may be available to the AI.
+ */
+export const enum UserAction {
+    Overcharge = "UserAction.Overcharge",
+    Repair = "UserAction.Repair",
 }
 
 /**

@@ -78,6 +78,4 @@ export interface AIBlackboard {
     optimalEngagementRange: number
     /** Whether AI has any melee weapons. */
     canMelee: boolean
-    /** Whether AI has rocket pod. */
-    canUseSpecialAttack: boolean
 }
