@@ -7,12 +7,13 @@ import { BTT_Success } from "@tasks/BTT_Success"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { BT_MoveToCommand } from "@trees/BT_MoveToCommand"
 import { BT_PatrolNonParallel } from "@trees/BT_Patrol"
+import { ForceSuccess } from "@trees/helper/BT_Helper"
 
 export const BT_RangeCombat = new ParallelBackground({
     nodes: [
         // Main task
         new ParallelSelector({
-            nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
+            nodes: [ForceSuccess(BTT_Shoot(WeaponTag.PrimaryLeftArm)), ForceSuccess(BTT_Shoot(WeaponTag.PrimaryRightArm))],
         }),
 
         // Background tasks:

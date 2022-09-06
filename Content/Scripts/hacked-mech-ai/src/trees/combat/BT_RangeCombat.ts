@@ -45,7 +45,7 @@ export const BT_RangeCombat = new ParallelBackground({
     nodes: [
         // Main task
         new ParallelSelector({
-            nodes: [BTT_Shoot(WeaponTag.PrimaryLeftArm), BTT_Shoot(WeaponTag.PrimaryRightArm)],
+            nodes: [ForceSuccess(BTT_Shoot(WeaponTag.PrimaryLeftArm)), ForceSuccess(BTT_Shoot(WeaponTag.PrimaryRightArm))],
         }),
 
         // Background tasks:
