@@ -132,10 +132,6 @@ declare class AIController {
      */
     WeaponGetAmmoByTag(tag: WeaponTag): number
 
-    // TODO: Remove this as it probably won't be needed anymore
-    /** Returns true if location is within {@link range} of the war machine */
-    InRange(location: Vector, range: number): boolean
-
     /**
      * Shoot up a flare and trigger a loud horn, attracting enemies towards you.
      *
