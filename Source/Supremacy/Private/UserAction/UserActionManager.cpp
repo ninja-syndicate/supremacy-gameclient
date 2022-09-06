@@ -18,9 +18,6 @@ UUserActionManager::UUserActionManager()
 void UUserActionManager::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
