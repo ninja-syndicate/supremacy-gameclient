@@ -21,7 +21,7 @@ export const BTT_Shoot = (tag: WeaponTag) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
             // Check if AI has any weapons with the given tag.
-            const idx: number = blackboard.input.self.weapons.findIndex((w) => w.tags.findIndex((t) => t === tag))
+            const idx: number = blackboard.input.self.weapons.findIndex((w) => w.tags.find((t) => t === tag))
             if (idx === -1) return FAILURE
 
             // Currently, you can't shoot with melee weapons.
