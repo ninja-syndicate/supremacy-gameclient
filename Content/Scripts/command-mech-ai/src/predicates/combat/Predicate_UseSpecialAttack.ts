@@ -11,7 +11,7 @@ export const Predicate_UseSpecialAttack = (blackboard: AIBlackboard): boolean =>
 
     const distToTarget: number = distanceTo(blackboard.input.self, blackboard.target)
     const currentSpeed: number = size(blackboard.target.velocity)
-    const maxSpeed: number = blackboard.target.speed
+    const maxSpeed: number = blackboard.target.maxSpeed
     const speedRatio: number = currentSpeed / maxSpeed
 
     if (speedRatio < 0.5) return true
