@@ -1,6 +1,6 @@
 import { BehaviorTree } from "behaviortree"
-import { Action, EnvironmentQueryStatus, InteractableTag, SoundType, UserAction, WeaponTag } from "enums"
-import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine } from "types"
+import { Action, EnvironmentQueryStatus, InteractableTag, MovementMode, SoundType, UserAction, WeaponTag } from "enums"
+import { BrainInput, DamageDetails, InteractableDetails, SoundDetails, Vector, WarMachine, Weapon } from "types"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { add, distanceTo, distanceToVec, multiply } from "./helper"
 import { AI } from "@root/index"
@@ -32,6 +32,41 @@ export let tree = new BehaviorTree({
     } as AIBlackboard,
 })
 
+const init_engagement_range = (input: BrainInput, blackboard: AIBlackboard) => {
+    const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
+
+    if (primaryWeapons.length === 0) {
+        console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no primary weapons. AI will not work properly.`)
+    } else {
+        const primaryGuns = primaryWeapons.filter((w) => !w.tags.find((t) => t === WeaponTag.Melee))
+        const validOptimalRanges = primaryGuns.filter((w) => w.damageFalloff > 0)
+        if (validOptimalRanges.length === 0) {
+            console.log(`Hash: ${input.self.hash}, Name: ${input.self.name} AI has no valid optimal range setup. Defaulting optimal range to melee range.`)
+            blackboard.idealEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = CURRENT_AI_CONFIG.closeCombatEnterRange
+        } else {
+            // Calculate optimal engagement range and ideal range based on that.
+            const minOptimalRange = Math.min(...validOptimalRanges.map((w) => w.damageFalloff))
+            blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
+            blackboard.optimalEngagementRange = minOptimalRange
+        }
+    }
+}
+
+const init_weapon = (input: BrainInput, blackboard: AIBlackboard) => {
+    init_engagement_range(input, blackboard)
+
+    const secondaryWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Secondary))
+
+    // For now, only one secondary weapon can be equipped.
+    blackboard.secondaryWeapon = secondaryWeapons.length !== 0 ? secondaryWeapons[0] : null
+
+    const meleeWeapons: Weapon[] = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Melee))
+    blackboard.canMelee = meleeWeapons.length !== 0
+
+    blackboard.weapons = input.self.weapons
+}
+
 /**
  * This function gets called when AI begins.
  *
@@ -42,32 +77,10 @@ export let tree = new BehaviorTree({
 export const onBegin = (input: BrainInput) => {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
 
-    /*
-    const primaryWeapons = input.self.weapons.filter((w) => w.tags.find((t) => t === WeaponTag.Primary))
-    const minOptimalRange = Math.min(...primaryWeapons.map((w) => w.optimalRange))
-    blackboard.idealEngagementRange = minOptimalRange * CURRENT_AI_CONFIG.optimalRangeMultiplier
-    blackboard.optimalEngagementRange = minOptimalRange
-    */
+    init_weapon(input, blackboard)
 
-    // NOTE: For testing
-    blackboard.idealEngagementRange = 12500
-    blackboard.optimalEngagementRange = -1
-
-    // Check for secondary weapons and melee weapons and initialize blackboard
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Secondary) !== undefined) {
-            blackboard.secondaryWeapon = weapon
-            blackboard.canUseSpecialAttack = true
-            break
-        }
-    }
-    for (let weapon of input.self.weapons) {
-        if (weapon.tags.find((t) => t === WeaponTag.Melee) !== undefined) {
-            blackboard.canMelee = true
-            break
-        }
-    }
     blackboard.currentTime = 0
+    blackboard.currentMovementMode = MovementMode.Walk
     blackboard.isBattleZonePresent = AI.IsBattleZonePresent()
     console.log(`${input.self.hash}: ${input.self.name} AI Started`)
 }
@@ -107,6 +120,12 @@ export const onTick = (input: BrainInput) => {
  */
 function updateBlackboard(input: BrainInput): void {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
+    const currentWeapons: Weapon[] = blackboard.weapons
+
+    // Re-init weapons if equipped a new weapon. TODO: Handle weapon change.
+    if (currentWeapons.length !== input.self.weapons.length) {
+        init_weapon(input, blackboard)
+    }
 
     // Copy over the new input for easy access.
     blackboard.input = input
@@ -211,14 +230,14 @@ function updateBlackboardDamage(): void {
     if (damageDetails.length === 0) return
 
     // Get the enemy damage details. Feel free to modify this logic to do something about friendly damage
-    const enemyDamageDetails: DamageDetails[] = damageDetails.filter((d) => !d.friendly)
+    const enemyDamageDetails: DamageDetails[] = damageDetails.filter((d) => !d.isFriendly)
     if (enemyDamageDetails.length === 0) return
 
     // Update damage info using the last enemy damage details.
     const lastIdx: number = enemyDamageDetails.length - 1
     blackboard.damageStimulusTime = blackboard.currentTime
     blackboard.damageInstigatorHash = enemyDamageDetails[lastIdx].instigatorHash
-    blackboard.damageStimulusDirection = enemyDamageDetails[lastIdx].damageDirection
+    blackboard.damageStimulusDirection = enemyDamageDetails[lastIdx].direction
     blackboard.damageStimulusFocalPoint = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))
     blackboard.lastHitLocation = blackboard.input.self.location
     blackboard.isLastDamageFromTarget = blackboard.target && blackboard.target.hash === enemyDamageDetails[lastIdx].instigatorHash
@@ -241,8 +260,8 @@ function updateBlackboardSound(): void {
     if (soundDetails.length === 0) return
 
     const enemySounds = soundDetails
-    const enemyTauntSounds = enemySounds.filter((s) => s.tag === SoundType.Taunt && AI.IsNavigable(s.location))
-    const enemyWeaponSounds = enemySounds.filter((s) => s.tag === SoundType.Weapon && AI.IsNavigable(s.location))
+    const enemyTauntSounds = enemySounds.filter((s) => s.type === SoundType.Taunt && AI.IsNavigable(s.location))
+    const enemyWeaponSounds = enemySounds.filter((s) => s.type === SoundType.Weapon && AI.IsNavigable(s.location))
 
     /*
     if (blackboard.noiseLocation !== undefined) {
@@ -399,15 +418,14 @@ function filter(mech: WarMachine, inverse: boolean = false): boolean {
 function score(mech: WarMachine): number {
     const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
     const MaxDamage: number = 2000
-    const MaxDistanceToConsider: number = 50000
 
     // Score functions.
     const scoreByHealth = (m: WarMachine) => 1 - (m.health + m.shield) / (m.healthMax + m.shieldMax)
-    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / MaxDistanceToConsider)
+    const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.self, m) / CURRENT_AI_CONFIG.sightMaxDistance)
     const scoreByDamageWindow = (m: WarMachine) => Math.min(1, blackboard.damageTracker.getTotalDamageByTime(blackboard.currentTime, 10, m.hash) / MaxDamage)
     const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.hash === m.hash ? 1 : 0)
-    const scoreByFaction = (m: WarMachine) => (m.factionID === blackboard.input.self.factionID ? 4 : 0)
-    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByDamageWindow, scoreByCurrentTarget, scoreByFaction]
+    const scoreByFaction = (m: WarMachine) => (m.factionID === blackboard.input.self.factionID ? 5 : 0)
+    const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByFaction, scoreByDamageWindow, scoreByCurrentTarget]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
 

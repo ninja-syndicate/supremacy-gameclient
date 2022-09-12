@@ -11,3 +11,10 @@ export const Predicate_HasVeryLowTotalHealth = (blackboard: AIBlackboard) => {
     let self = blackboard.input.self
     return (self.health + self.shield) / (self.healthMax + self.shieldMax) <= CURRENT_AI_CONFIG.veryLowTotalHealthThreshold
 }
+
+export const Predicate_TargetHasVeryLowTotalHealth = (blackboard: AIBlackboard) => {
+    const target = blackboard.target
+    if (target === null) return false
+
+    return (target.health + target.shield) / (target.healthMax + target.shieldMax) <= CURRENT_AI_CONFIG.veryLowTotalHealthThreshold
+}

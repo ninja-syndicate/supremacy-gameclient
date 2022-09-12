@@ -7,7 +7,10 @@ import { AIBlackboard } from "@blackboards/blackboard"
 export const BTT_SendMessage = (message: Message) =>
     new Task({
         run: (blackboard: AIBlackboard) => {
-            AI.SendMessage(message)
+            const success: boolean = AI.SendMessage(message)
+            if (!success) {
+                console.log("Failed to send a message.")
+            }
             return SUCCESS
         },
     })

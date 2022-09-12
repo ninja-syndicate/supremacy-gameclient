@@ -43,7 +43,6 @@ export const Predicate = (
 ): Node =>
     new PredicateDecorator({
         node: node,
-        // start: (node as Node).blueprint.start,
         config: {
             predicate,
             isMatch,

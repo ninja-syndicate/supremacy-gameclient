@@ -26,11 +26,11 @@
     },
     "Sword": {
       "Name": "Sword",
-      "Damage": 40
+      "Damage": 70
     },
     "BostonSword_Whirlwind-R12-Blade-Reaper": {
       "Name": "Sword",
-      "Damage": 40
+      "Damage": 70
     },
     "RedMountainCannon": {
       "Name": "Dual Cannon",
@@ -66,7 +66,7 @@
     },
     "SniperRifle": {
       "Name": "Sniper Rifle",
-      "Damage": 150,
+      "Damage": 170,
       "Damage_Falloff": 60000,
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
@@ -75,7 +75,7 @@
     },
     "ZaibatsuGun_Rapid-Extinction-9-Fire-Sniper": {
       "Name": "Sniper Rifle",
-      "Damage": 150,
+      "Damage": 170,
       "Damage_Falloff": 60000,
       "Damage_Falloff_Rate": 125,
       "Spread": 1,
@@ -84,12 +84,12 @@
     },
     "PlasmaSword": {
       "Name": "Plasma Sword",
-      "Damage": 80,
+      "Damage": 110,
       "Damage_Type": 1
     },
     "ZaibatsuSword_Mayhem-5iS-Plasma-Sword-Extended": {
       "Name": "Plasma Sword",
-      "Damage": 80,
+      "Damage": 110,
       "Damage_Type": 1
     },
     "Weapon_AM_BFG": {
@@ -147,7 +147,7 @@
       "Spread": 800,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 45,
-      "BurstRate_Of_Fire": 900,
+      "Burst_Rate_Of_Fire": 900,
       "Projectile_Amount": 4,
       "Is_Arced": true
     },
@@ -221,7 +221,7 @@
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 60,
       "Projectile_Amount": 4,
-      "BurstRate_Of_Fire": 1000
+      "Burst_Rate_Of_Fire": 1000
     },
     "Weapon_Pyro_Shotgun": {
       "Name": "Pyro Shotgun",
@@ -281,7 +281,7 @@
       "Spread": 3,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 30,
-      "BurstRate_Of_Fire": 1200,
+      "Burst_Rate_Of_Fire": 1200,
       "Projectile_Amount": 8
     },
     "Weapon_Warsui_PlasmaGun": {

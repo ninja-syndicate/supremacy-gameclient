@@ -16,7 +16,7 @@
 		{
 			"Name": "SupremacyEditor",
 			"Type": "Editor",
-			"LoadingPhase":  "PostEngineInit"
+			"LoadingPhase": "PostEngineInit"
 		}
 	],
 	"Plugins": [
@@ -100,7 +100,7 @@
 			"Enabled": true
 		},
 		{
-			"Name": "NiagaraFluids",
+			"Name": "CommonUI",
 			"Enabled": true
 		}
 	]

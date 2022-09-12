@@ -1,4 +1,4 @@
-import { SUCCESS, Task } from "behaviortree"
+import { RUNNING, SUCCESS, Task } from "behaviortree"
 import { AIBlackboard } from "@blackboards/blackboard"
 
 /**
@@ -8,14 +8,23 @@ import { AIBlackboard } from "@blackboards/blackboard"
  *
  * @param message The message to log
  */
-export const BTT_LogString = (message: string) =>
+export const BTT_LogString = (startMessage: string | ((blackboard: AIBlackboard) => string), runMessage?: (blackboard: AIBlackboard) => string) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
-            console.log(message)
+            if (typeof startMessage === "string") {
+                console.log(startMessage)
+            } else {
+                const message: string = startMessage(blackboard)
+                console.log(message)
+            }
             return SUCCESS
         },
 
         run: (blackboard: AIBlackboard) => {
+            if (typeof runMessage !== "undefined") {
+                const message: string = runMessage(blackboard)
+                console.log(message)
+            }
             return SUCCESS
         },
     })
