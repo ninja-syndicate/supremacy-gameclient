@@ -38,13 +38,13 @@ public:
 	virtual void GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const override;
 
 	// TEMP: Need to refactor.
-	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "WarMachineInfo, DeltaTime, PerceptionInfo, Errors, Eqs"))
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "WarMachineInfo, DeltaTime, PerceptionInfo, Errors, EnvQueryStatus"))
 	FAIBrainInput GetBrainInput(
 		FAIWarMachineInfo WarMachineInfo,
 		float DeltaTime,
 		FAIPerceptionInfo PerceptionInfo,
 		TArray<FAIScriptLog> Errors,
-		TMap<FString, FAIEnvironmentQueryResult> Eqs);
+		TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus);
 
 	// NOTE: These cooldown functions will be removed later.
 	UFUNCTION(BlueprintCallable)

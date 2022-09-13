@@ -34,7 +34,7 @@ public:
 
 	/** Environment Query Results. */
 	UPROPERTY(Category = "AI Brain Input", EditAnywhere, BlueprintReadWrite)
-	TMap<FString, FAIEnvironmentQueryResult> Eqs;
+	TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus;
 
 	FAIBrainInput() {}
 };
