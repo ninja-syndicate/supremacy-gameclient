@@ -1,12 +1,12 @@
 import { Vector, WarMachine } from "types"
 
 export function isDead(mech: WarMachine): boolean {
-    return mech.health <= 0.0
+    return mech.Health <= 0.0
 }
 
 // NOTE:
 // For testing, to be removed when we get vector library.
-export const distanceTo = (thisMech: WarMachine, otherMech: WarMachine): number => distanceToVec(thisMech.location, otherMech.location)
+export const distanceTo = (thisMech: WarMachine, otherMech: WarMachine): number => distanceToVec(thisMech.Location, otherMech.Location)
 export const distanceToVec = (v1: Vector, v2: Vector): number => {
     const { X: x1, Y: y1, Z: z1 }: Vector = v1
     const { X: x2, Y: y2, Z: z2 }: Vector = v2

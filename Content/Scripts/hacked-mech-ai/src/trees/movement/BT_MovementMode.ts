@@ -47,7 +47,7 @@ export const BT_MoveByDistanceToTarget = (blackboardKey: keyof AIBlackboard, obs
         nodes: [
             Predicate(
                 BT_SprintMoveTo(blackboardKey, observeBlackboardKey),
-                (blackboard: AIBlackboard) => blackboard.target && Predicate_SprintToEngagementByDistance(blackboard.target.location)(blackboard),
+                (blackboard: AIBlackboard) => blackboard.target && Predicate_SprintToEngagementByDistance(blackboard.target.Location)(blackboard),
                 true,
                 ObserverAborts.LowerPriority, // Can be set to ObserverAborts.Both if we want to immediately switch movement mode.
             ),
