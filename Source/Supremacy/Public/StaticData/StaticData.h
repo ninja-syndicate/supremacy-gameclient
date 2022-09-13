@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "StaticDataFaction.h"
 #include "StaticDataBrand.h"
+#include "StaticDataSkin.h"
 #include "StaticDataWarMachineModel.h"
 #include "StaticData.generated.h"
 
@@ -14,6 +15,7 @@ namespace StaticDataImporter
 	class Faction;
 	class Brand;
 	class WarMachineModel;
+	class Skin;
 }
 
 /**
@@ -26,6 +28,7 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 	friend StaticDataImporter::Faction;
 	friend StaticDataImporter::Brand;
 	friend StaticDataImporter::WarMachineModel;
+	friend StaticDataImporter::Skin;
 	
 	GENERATED_BODY()
 
@@ -38,11 +41,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UStaticDataWarMachineModel* GetWarMachineModel(const FGuid& ID);
-	
+
+	UFUNCTION(BlueprintCallable)
+	UStaticDataSkin* GetSkin(const FGuid& ID);
 private:
 	UStaticDataFaction* GetOrCreateFaction(const FGuid &ID);
 	UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);
 	UStaticDataWarMachineModel* GetOrCreateWarMachineModel(const FGuid& ID);
+	UStaticDataSkin* GetOrCreateSkin(const FGuid& ID);
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
 	TArray<UStaticDataFaction*> Factions;
@@ -52,4 +58,7 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, EditFixedSize, meta=(AllowPrivateAccess))
 	TArray<UStaticDataWarMachineModel*> WarMachineModels;
+
+	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, EditFixedSize, meta=(AllowPrivateAccess))
+	TArray<UStaticDataSkin*> Skins;
 };

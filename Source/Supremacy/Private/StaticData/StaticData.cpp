@@ -42,6 +42,20 @@ UStaticDataWarMachineModel* UStaticData::GetWarMachineModel(const FGuid& ID)
 	return nullptr;
 }
 
+UStaticDataSkin* UStaticData::GetSkin(const FGuid& ID)
+{
+	for (UStaticDataSkin *Record : Skins)
+	{
+		if (Record->ID == ID)
+		{
+			return Record;
+		}
+	}
+
+	return nullptr;
+}
+
+
 UStaticDataFaction* UStaticData::GetOrCreateFaction(const FGuid& ID)
 {
 	UStaticDataFaction* Record = GetFaction(ID);
@@ -74,6 +88,18 @@ UStaticDataWarMachineModel* UStaticData::GetOrCreateWarMachineModel(const FGuid&
 	Record = NewObject<UStaticDataWarMachineModel>(this);
 	Record->ID = ID;
 	WarMachineModels.Push(Record);
+
+	return Record;
+}
+
+UStaticDataSkin* UStaticData::GetOrCreateSkin(const FGuid& ID)
+{
+	UStaticDataSkin* Record = GetSkin(ID);
+	if(Record) return Record;
+
+	Record = NewObject<UStaticDataSkin>(this);
+	Record->ID = ID;
+	Skins.Push(Record);
 
 	return Record;
 }

@@ -1,5 +1,6 @@
 ﻿#include "Base.h"
 #include "SupremacyEditorModule.h"
+#include "Misc/DefaultValueHelper.h"
 
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
@@ -58,6 +59,15 @@ bool StaticDataImporter::Base::ParseColor(FString Field, FString Name, FColor& C
 		return true;
 	}
 
+	return false;
+}
+
+bool StaticDataImporter::Base::ParseInt(FString Field, FString Name, int32& Value)
+{
+	if(FDefaultValueHelper::ParseInt(Field, Value)) return true;
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
+		FileName, Name, Importer.GetCurrentIndex() + 1
+	});
 	return false;
 }
 

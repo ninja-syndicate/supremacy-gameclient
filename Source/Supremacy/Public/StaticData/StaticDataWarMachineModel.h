@@ -6,7 +6,9 @@
 #include "StaticDataBaseRecord.h"
 #include "StaticDataBrand.h"
 #include "Mechs/Mech.h"
+#include "Types/WarMachineBoostStat.h"
 #include "Types/WarMachineType.h"
+#include "Types/WarMachinePowerCoreSize.h"
 #include "UObject/Object.h"
 #include "StaticDataWarMachineModel.generated.h"
 
@@ -24,6 +26,33 @@ class SUPREMACY_API UStaticDataWarMachineModel : public UStaticDataBaseRecord
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	EWarMachineModelType Type;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	EWarMachineBoostStat BoostStat;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 WeaponHardpointCount;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 UtilitySlotCount;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 MaxHitpoints;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 Speed;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	EWarMachinePowerCoreSize PowerCoreSize;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	FString Collection;
+
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+    FString CreatedAt;
+	
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	UStaticDataSkin *DefaultSkin;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataBrand *Brand;

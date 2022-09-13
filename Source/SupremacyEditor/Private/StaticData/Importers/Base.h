@@ -4,6 +4,8 @@
 #include "StaticData/StaticData.h"
 #include "Utils/CSVImporter.h"
 
+class UStaticData;
+
 namespace StaticDataImporter
 {
 	class Base
@@ -14,11 +16,15 @@ namespace StaticDataImporter
 		virtual bool ImportAndUpdate(UStaticData *DataAsset);
 		FString GetErrorReason();
 		virtual ~Base();
-		
+
+		FString FileName;
 	protected:
 		Base();
 
 		bool ParseGuid(FString Field, FString Name, FGuid& ID);
+		bool ParseInt(FString Field, FString Name, int32& Value);
+		bool ParseFloat(FString Field, FString Name, float& Value);
+		
 		static bool ParseColor(FString Field, FString Name, FColor& Color);
 
 		void SetAssetName(UStaticData* DataAsset, UStaticDataBaseRecord* Record, FString Prefix) const;
@@ -26,7 +32,6 @@ namespace StaticDataImporter
 		virtual bool HandleRow(UStaticData *DataAsset, TArray<FString> RowCells) = 0;
 
 		FString FullPath;
-		FString FileName;
 		FString ErrorReason;
 
 		TArray<FString> FileHeaders;

@@ -8,12 +8,14 @@
 #include "Importers/Faction.h"
 #include "Importers/Brand.h"
 #include "Importers/WarMachineModel.h"
+#include "Importers/Skin.h"
 
 UStaticDataImporter::UStaticDataImporter()
 {
 	Importers.Add(new StaticDataImporter::Faction());
 	Importers.Add(new StaticDataImporter::Brand());
 	Importers.Add(new StaticDataImporter::WarMachineModel());
+	Importers.Add(new StaticDataImporter::Skin());
 	
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
@@ -93,7 +95,13 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
 	UKismetSystemLibrary::BeginTransaction("StaticDataImporter", FText::FromString("Data Import"), asset);
 	UKismetSystemLibrary::TransactObject(asset);
 
-	for (const auto Importer : Importers) Importer->ImportAndUpdate(asset);
+	for (const auto DataImporter : Importers)
+	{
+		if(!DataImporter->ImportAndUpdate(asset))
+		{
+			LogMessage(FString::Printf(TEXT("Importer %s failed because: %s"), *DataImporter->FileName, *DataImporter->GetErrorReason()));
+		}
+	}
 
 	asset->Modify(true);
 	UKismetSystemLibrary::EndTransaction();
