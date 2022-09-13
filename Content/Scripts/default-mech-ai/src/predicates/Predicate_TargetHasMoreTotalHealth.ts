@@ -7,12 +7,12 @@ import { AIBlackboard } from "@blackboards/blackboard"
  * @returns true if the target has more total health and false otherwise
  */
 export const TargetHasMoreTotalHealth = (blackboard: AIBlackboard) => {
-    const self = blackboard.input.self
+    const self = blackboard.input.Self
     const target = blackboard.target
     if (target === null) return false
 
-    const selfTotalHealthRatio = (self.health + self.shield) / (self.healthMax + self.shieldMax)
-    const targetTotalHealthRatio = (target.health + target.shield) / (target.healthMax + target.shieldMax)
+    const selfTotalHealthRatio = (self.Health + self.Shield) / (self.HealthMax + self.ShieldMax)
+    const targetTotalHealthRatio = (target.Health + target.Shield) / (target.HealthMax + target.ShieldMax)
     return targetTotalHealthRatio > selfTotalHealthRatio
 }
 
@@ -24,12 +24,12 @@ export const TargetHasMoreTotalHealth = (blackboard: AIBlackboard) => {
  * @returns true if the target has way more total health ratio and false otherwise
  */
 export const TargetHasWayMoreTotalHealthRatio = (blackboard: AIBlackboard) => {
-    const self = blackboard.input.self
+    const self = blackboard.input.Self
     const target = blackboard.target
     if (target === null) return false
 
-    const selfTotalHealthRatio = (self.health + self.shield) / (self.healthMax + self.shieldMax)
-    const targetTotalHealthRatio = (target.health + target.shield) / (target.healthMax + target.shieldMax)
+    const selfTotalHealthRatio = (self.Health + self.Shield) / (self.HealthMax + self.ShieldMax)
+    const targetTotalHealthRatio = (target.Health + target.Shield) / (target.HealthMax + target.ShieldMax)
     const ratioDiff: number = selfTotalHealthRatio - targetTotalHealthRatio
     if (ratioDiff >= 0) return false
 

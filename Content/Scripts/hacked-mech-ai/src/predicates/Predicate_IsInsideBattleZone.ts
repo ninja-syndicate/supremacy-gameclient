@@ -28,7 +28,7 @@ export const Predicate_IsLocationInsideBattleZone =
 export const Predicate_IsTargetInsideBattleZone = (blackboard: AIBlackboard): boolean => {
     if (!blackboard.target) return false
 
-    const targetLocation: Vector = blackboard.target.location
+    const targetLocation: Vector = blackboard.target.Location
     return AI.IsInsideBattleZone(targetLocation)
 }
 
@@ -39,6 +39,6 @@ export const Predicate_IsTargetInsideBattleZone = (blackboard: AIBlackboard): bo
  * @returns true if the AI is inside the battle zone and false otherwise
  */
 export const Predicate_IsInsideBattleZone = (blackboard: AIBlackboard): boolean => {
-    const location: Vector = blackboard.input.self.location
+    const location: Vector = blackboard.input.Self.Location
     return AI.IsInsideBattleZone(location)
 }

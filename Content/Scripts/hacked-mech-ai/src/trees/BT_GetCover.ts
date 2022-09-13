@@ -20,10 +20,10 @@ import { BT_SprintMoveTo } from "@trees/movement/BT_MovementMode"
 export const BT_GetCover = new Sequence({
     nodes: [
         BTT_QuerySetArgumentVector(EQSQueryType.Cover, EQSArgument.TargetLastKnownLocation, (blackboard: AIBlackboard) =>
-            typeof blackboard.targetLastKnownLocation !== "undefined" ? blackboard.targetLastKnownLocation : blackboard.input.self.location,
+            typeof blackboard.targetLastKnownLocation !== "undefined" ? blackboard.targetLastKnownLocation : blackboard.input.Self.Location,
         ),
         BTT_QuerySetArgumentVector(EQSQueryType.Cover, EQSArgument.LastHitLocation, (blackboard: AIBlackboard) =>
-            typeof blackboard.lastHitLocation !== "undefined" ? blackboard.lastHitLocation : blackboard.input.self.location,
+            typeof blackboard.lastHitLocation !== "undefined" ? blackboard.lastHitLocation : blackboard.input.Self.Location,
         ),
         BTT_QuerySetArgumentFloat(EQSQueryType.Cover, EQSArgument.GridSize, (blackboard: AIBlackboard) => 20000),
         BTT_RunEQSQuery(EQSQueryType.Cover, "coverLocation"),
