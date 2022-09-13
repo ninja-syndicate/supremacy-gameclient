@@ -5,6 +5,11 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "GameplayTagContainer.h"
+#include "Types/AI/AIBrainInput.h"
+#include "Types/AI/AIWarMachineInfo.h"
+#include "Types/AI/AIEnvironmentQueryResult.h"
+#include "Types/AI/AIPerceptionInfo.h"
+#include "Types/AI/AIScriptLog.h"
 #include "CrowdAIController.generated.h"
 
 UENUM(BlueprintType)
@@ -31,6 +36,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const override;
+
+	// TEMP: Need to refactor.
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "WarMachineInfo, DeltaTime, PerceptionInfo, Errors, Eqs"))
+	FAIBrainInput GetBrainInput(
+		FAIWarMachineInfo WarMachineInfo,
+		float DeltaTime,
+		FAIPerceptionInfo PerceptionInfo,
+		TArray<FAIScriptLog> Errors,
+		TMap<FString, FAIEnvironmentQueryResult> Eqs);
 
 	// NOTE: These cooldown functions will be removed later.
 	UFUNCTION(BlueprintCallable)

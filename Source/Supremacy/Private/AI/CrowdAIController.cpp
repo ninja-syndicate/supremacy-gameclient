@@ -111,3 +111,20 @@ void ACrowdAIController::SetCooldown(const FGameplayTag& ActionTag, float Cooldo
 void ACrowdAIController::OnCooldownEnd_Implementation(const FGameplayTag ActionTag)
 {
 }
+
+FAIBrainInput ACrowdAIController::GetBrainInput(
+	FAIWarMachineInfo WarMachineInfo,
+	float DeltaTime,
+	FAIPerceptionInfo PerceptionInfo,
+	TArray<FAIScriptLog> Errors,
+	TMap<FString, FAIEnvironmentQueryResult> Eqs)
+{
+	FAIBrainInput BrainInput;
+	BrainInput.Self = WarMachineInfo;
+	BrainInput.DeltaTime = DeltaTime;
+	BrainInput.Perception = PerceptionInfo;
+	BrainInput.Errors = Errors;
+	BrainInput.Eqs = Eqs;
+
+	return BrainInput;
+}
