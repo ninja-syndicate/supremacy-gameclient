@@ -56,6 +56,7 @@ The following Unreal Engine Plugins need to be installed. Find them in the Libra
 *( Note: You'll need to be signed in with the company's Epic Account to have access to paid assets/plugins. )*
 
 - Quixel Bridge
+- [LE Extended Standard Library](https://www.unrealengine.com/marketplace/en-US/product/low-entry-extended-standard-library)
 - [BlueprintWebSocket](https://www.unrealengine.com/marketplace/en-US/product/blueprintwebsocket)
 - [JSONParser](https://www.unrealengine.com/marketplace/en-US/product/jsonparser)
 - [EasyBallistics Plugin](https://www.unrealengine.com/marketplace/en-US/product/easyballistics-plugin)
