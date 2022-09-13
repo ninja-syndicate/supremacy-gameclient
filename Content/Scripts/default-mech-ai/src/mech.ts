@@ -105,7 +105,7 @@ export const onTick = (input: BrainInput) => {
     tree.step()
 
     // EQS - Run callbacks when they succeed.
-    for (let [key, value] of Object.entries(input.Eqs)) {
+    for (let [key, value] of Object.entries(input.EnvQueryStatus)) {
         blackboard.eqsResults[key] = value
         if (value.Status === EnvironmentQueryStatus.Success) {
             AI.EQS_Complete(StringToEQSQueryType(key))
