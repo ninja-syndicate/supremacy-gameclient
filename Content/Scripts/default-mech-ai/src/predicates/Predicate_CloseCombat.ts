@@ -16,7 +16,7 @@ export const Predicate_CloseCombat = (blackboard: AIBlackboard): boolean => {
     if (!blackboard.canMelee) return false
     if (typeof blackboard.targetLastKnownLocation === "undefined") return false
 
-    const selfLocation: Vector = blackboard.input.self.location
+    const selfLocation: Vector = blackboard.input.Self.Location
     const distToTarget: number = distanceToVec(selfLocation, blackboard.targetLastKnownLocation)
     const meleeStatus = blackboard.actionStatus.get(Action.MeleeAttack)
     if (meleeStatus !== undefined && meleeStatus) {
