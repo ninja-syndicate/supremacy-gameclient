@@ -17,7 +17,7 @@ import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
  */
 export const BT_CloseStrafe = new Sequence({
     nodes: [
-        BTT_QuerySetArgumentString(EQSQueryType.CloseStrafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
+        BTT_QuerySetArgumentString(EQSQueryType.CloseStrafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.Hash),
         BTT_QuerySetArgumentVector(
             EQSQueryType.CloseStrafe,
             EQSArgument.TargetLastKnownLocation,

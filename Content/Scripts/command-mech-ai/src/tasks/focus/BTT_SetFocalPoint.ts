@@ -35,7 +35,7 @@ export const BTT_SetFocalPoint = (focalPoint: keyof AIBlackboard) =>
 
             // Otherwise, make an appropriate focal point call depending on the blackboard key type.
             if (IsWarMachine(value)) {
-                const success = AI.SetFocalPointByHash(value.hash)
+                const success = AI.SetFocalPointByHash(value.Hash)
                 return success ? SUCCESS : FAILURE
             } else if (IsVector(value)) {
                 const success = AI.SetFocalPointByLocation(value)

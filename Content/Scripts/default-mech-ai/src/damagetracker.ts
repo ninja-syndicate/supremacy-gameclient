@@ -28,10 +28,10 @@ export class DamageTracker {
 
     addDamage(...damages: Damage[]) {
         for (const damage of damages) {
-            const trackedDamage = this.damageTracker.get(damage.damageDetails.instigatorHash)
+            const trackedDamage = this.damageTracker.get(damage.damageDetails.InstigatorHash)
 
             if (trackedDamage === undefined) {
-                this.damageTracker.set(damage.damageDetails.instigatorHash, new TrackedDamageDetails(damage))
+                this.damageTracker.set(damage.damageDetails.InstigatorHash, new TrackedDamageDetails(damage))
             } else {
                 trackedDamage.add(damage)
             }
@@ -44,7 +44,7 @@ export class DamageTracker {
 
         return [...trackedDamage.damageDetailHistory]
             .filter((d) => d.time >= currentTime - queryDuration)
-            .map((d) => d.damageDetails.amount)
+            .map((d) => d.damageDetails.Amount)
             .reduce((a, b) => a + b, 0)
     }
 }

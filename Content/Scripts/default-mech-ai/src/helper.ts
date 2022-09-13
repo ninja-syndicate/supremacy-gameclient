@@ -1,12 +1,12 @@
 import { Vector, WarMachine } from "types"
 
 export function isDead(mech: WarMachine): boolean {
-    return mech.health <= 0.0
+    return mech.Health <= 0.0
 }
 
 // NOTE:
 // For testing, to be removed when we get vector library.
-export const distanceTo = (thisMech: WarMachine, otherMech: WarMachine): number => distanceToVec(thisMech.location, otherMech.location)
+export const distanceTo = (thisMech: WarMachine, otherMech: WarMachine): number => distanceToVec(thisMech.Location, otherMech.Location)
 export const distanceToVec = (v1: Vector, v2: Vector): number => {
     const { X: x1, Y: y1, Z: z1 }: Vector = v1
     const { X: x2, Y: y2, Z: z2 }: Vector = v2
@@ -27,7 +27,7 @@ export const multiply = (v1: Vector, scalar: number): Vector => {
 }
 export const rotateZ = (v1: Vector, degrees: number): Vector => {
     const radians: number = degrees * (Math.PI / 180.0)
-    const { X, Y, Z } = v1
+    const { X: X, Y: Y, Z: Z } = v1
 
     return { X: X * Math.cos(radians) - Y * Math.sin(radians), Y: X * Math.sin(radians) + Y * Math.cos(radians), Z: Z }
 }

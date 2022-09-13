@@ -19,7 +19,7 @@ export const BT_Patrol = new ParallelBackground({
     nodes: [
         new Sequence({
             nodes: [
-                BTT_QuerySetArgumentVector(EQSQueryType.Patrol, EQSArgument.Origin, (blackboard: AIBlackboard) => blackboard.input.self.location),
+                BTT_QuerySetArgumentVector(EQSQueryType.Patrol, EQSArgument.Origin, (blackboard: AIBlackboard) => blackboard.input.Self.Location),
                 BTT_QuerySetArgumentFloat(EQSQueryType.Patrol, EQSArgument.GridSize, (blackboard: AIBlackboard) => 30000),
                 BTT_RunEQSQuery(EQSQueryType.Patrol, "patrolLocation"),
                 BTT_SetFocalPoint("patrolLocation"),

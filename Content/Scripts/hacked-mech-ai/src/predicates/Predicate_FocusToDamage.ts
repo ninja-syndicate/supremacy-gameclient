@@ -19,6 +19,6 @@ export const Predicate_FocusToDamage = (blackboard: AIBlackboard): boolean => {
         const timeDiff = blackboard.currentTime - blackboard.damageStimulusTime
         if (timeDiff >= CURRENT_AI_CONFIG.damageStimulusTimeout) return false
 
-        return blackboard.damageInstigatorHash !== blackboard.target.hash
+        return blackboard.damageInstigatorHash !== blackboard.target.Hash
     } else return true
 }
