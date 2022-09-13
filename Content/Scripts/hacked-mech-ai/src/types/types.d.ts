@@ -141,12 +141,6 @@ declare class AIController {
      */
     Taunt(): boolean
 
-    // TODO: This probably isn't needed anymore. Might be removed.
-    /**
-     *
-     */
-    TryMeleeAttack(): boolean
-
     /**
      * Launch missiles from the rocket pod (secondary weapon) to the specified location.
      *
@@ -298,12 +292,12 @@ export interface ScriptError {
 export interface Weapon {
     /** The unique hash of the weapon. */
     hash: string
+    /** The weapon name. */
+    name: string
     /** The weapon model. */
     model: string
     /** The weapon skin. */
     skin: string
-    /** The weapon name. */
-    name: string
     /** The amount of damage the weapon deals per shot/projectile. */
     damage: number
     /** The distance at which the damage starts decreasing. */
@@ -311,21 +305,31 @@ export interface Weapon {
     /** How much the damage decreases by per km. */
     damageFalloffRate: number
     /** Enemies within this radius when the projectile hits something is damaged (radial damage). */
-    damageRadius: number
+    radialDamageRadius: number
     /** Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect). */
-    damageRadiusFalloff: number
+    radialDamageFalloff: number
     /** The damage type of the weapon. */
     damageType: DamageType
     /** The spread of the weapon. Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees. */
     spread: number
     /** The number of rounds that can be fired per minute. */
     rateOfFire: number
+    /** The number of rounds per min within the burst of fire (rate of fire is used for the time between bursts). */
+    burstRateOfFire: number
     /** The speed of the weapon's projectiles in cm/s. */
     projectileSpeed: number
+    /** The number of projectiles fired per shot/burst. */
+    projectileAmount: number
+    /** The number of seconds it takes to start firing (e.g. mini-guns). */
+    chargeTime: number
+    /** The current weapon ammo. */
+    currentAmmo: number
     /** The maximum amount of ammo this weapon can hold. */
     maxAmmo: number
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
     tags: WeaponTag[]
+    /** The slot at which this weapon is attached to. */
+    slot: number
 }
 
 /**
@@ -361,7 +365,7 @@ export interface WarMachine {
     /** The rate at which the shield is re-charged when out of combat (shield per second). */
     shieldRechargeRate: number
     /** The maximum movement speed (cm/s) of the war machine. */
-    speed: number
+    maxSpeed: number
     /** All the weapons this war machine has. */
     weapons: Weapon[]
     /** All the abilities this war machine can perform. */
@@ -374,38 +378,34 @@ export interface WarMachine {
  * Could be a taunt, gunshot, sword swing, explosion, footstep or even an ability drop
  */
 export interface SoundDetails {
-    // The location of the sound
+    /** The location of the sound. */
     location: Vector
-    /**
-     * Tag describing the sound
-     *
-     * Examples: *Weapon, Taunt, Nuke, Pickup.Heal, Pickup.ShieldBuff, Pickup.Ammo*
-     */
-    tag: string
-    // The sound came from a friendly source (ally), check this if you want to ignore friendly gunshots
-    friendly: boolean
+    /** Tag describing the sound (Examples: *Weapon, Taunt, Nuke, Pickup.Heal, Pickup.ShieldBuff, Pickup.Ammo*). */
+    type: string
+    /** The sound came from a friendly source (ally), check this if you want to ignore friendly gunshots. */
+    isFriendly: boolean
 }
 
 /**
  * Details of a received damage.
  */
 export interface DamageDetails {
-    // The amount of damage
+    /** The amount of damage */
     amount: number
-    // Whether the damage was down to your shield
-    shieldDamage: boolean
-    // Whether the damage was friendly fire (caused by an ally)
-    friendly?: boolean
-    // The type of damage
-    damageType: DamageType
-    // The direction of the damage. This is normalized.
-    damageDirection: Vector
-    // The unique hash of the war machine that caused the damage
+    /** The type of damage */
+    type: DamageType
+    /** The normalized direction of the damage. */
+    direction: Vector
+    /** Whether the damage was friendly fire (caused by an ally). */
+    isFriendly?: boolean
+    /** Whether the damage was down to your shield. */
+    isShieldDamage: boolean
+    /** The unique hash of the war machine that caused the damage. */
     instigatorHash: string
-    // The unique hash of the weapon that caused the damage
-    sourceHash: string
-    /** The name of what caused the damage (for damage with no {@link sourceHash} such as abilities) */
-    sourceName: string
+    /** The unique hash of the weapon that caused the damage. */
+    weaponHash: string
+    /** The name of what caused the damage (for damage with no {@link sourceHash} such as abilities). */
+    weaponName: string
 }
 
 // Everything the mech can currently perceive
