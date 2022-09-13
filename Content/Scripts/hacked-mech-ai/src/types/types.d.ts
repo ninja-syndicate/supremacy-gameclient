@@ -183,7 +183,7 @@ declare class AIController {
     EQS_Query(query: EQSQueryType): boolean
 
     /**
-     * Removes EQS query status from {@link BrainInput.Eqs}, essentially marking it as complete so you know you can run it again.
+     * Removes EQS query status from {@link BrainInput.EnvQueryStatus}, essentially marking it as complete so you know you can run it again.
      *
      * @param query The environment query type (@see {@link EQSQueryType})
      */
@@ -467,5 +467,5 @@ export interface BrainInput {
     /** List of detected runtime warnings/errors in the script (@see {@link ScriptError}). */
     Errors: ScriptError[]
     /** Result of executed environment queries (@see {@link EQSResults}). */
-    Eqs: EQSResults
+    EnvQueryStatus: EQSResults
 }
