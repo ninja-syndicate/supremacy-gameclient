@@ -349,7 +349,7 @@ export interface WarMachine {
     /** The last known velocity of the war machine. */
     Velocity: Vector
     /** The ID of the faction the mech belongs to. */
-    FactionID: string
+    FactionId: string
     /** The name of the war machine. */
     Name: string
     /** The model name of the war machine. */
@@ -449,10 +449,10 @@ export interface EQSResults {
  */
 export interface InteractableDetails {
     Tag: InteractableTag
-    EventID: string
+    EventId: string
     Location: Vector
     /** If this interactable is spawned via user action, this will be set to the faction ID that instigated it. Empty string otherwise. */
-    InstigatorFactionID: string
+    InstigatorFactionId: string
 }
 
 /**
