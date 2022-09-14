@@ -1,5 +1,6 @@
 ﻿#include "CSVImporter.h"
 
+#include "AnimGraphRuntime/Public/AnimNodes/AnimNode_RandomPlayer.h"
 #include "Misc/FileHelper.h"
 
 bool Utils::CSVImporter::SetFileName(FString Filename)
@@ -103,6 +104,7 @@ bool Utils::CSVImporter::ParseLine(TArray<FString>& Result, FString Line)
 bool Utils::CSVImporter::LoadData()
 {
 	if (dataLoaded) return true;
+	
 	if (!FFileHelper::LoadFileToStringArray(FileData, *CurrentFilename))
 	{
 		return false;

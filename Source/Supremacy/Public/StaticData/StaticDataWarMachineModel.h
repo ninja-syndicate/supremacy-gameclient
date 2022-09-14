@@ -17,6 +17,8 @@ namespace StaticDataImporter
 	class WarMachineModel;
 }
 
+class UStaticDataSkin;
+
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataWarMachineModel : public UStaticDataBaseRecord
 {

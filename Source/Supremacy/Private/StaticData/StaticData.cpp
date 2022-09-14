@@ -103,3 +103,28 @@ UStaticDataSkin* UStaticData::GetOrCreateSkin(const FGuid& ID)
 
 	return Record;
 }
+
+UStaticDataWeapon *UStaticData::GetWeapon(const FGuid& ID)
+{
+	for (UStaticDataWeapon *Record : Weapons)
+	{
+		if (Record->ID == ID)
+		{
+			return Record;
+		}
+	}
+
+	return nullptr;
+}
+
+UStaticDataWeapon* UStaticData::GetOrCreateWeapon(const FGuid& ID)
+{
+	UStaticDataWeapon* Record = GetWeapon(ID);
+	if(Record) return Record;
+
+	Record = NewObject<UStaticDataWeapon>(this);
+	Record->ID = ID;
+	Weapons.Push(Record);
+	
+	return Record;
+}

@@ -71,6 +71,36 @@ bool StaticDataImporter::Base::ParseInt(FString Field, FString Name, int32& Valu
 	return false;
 }
 
+bool StaticDataImporter::Base::ParseFloat(FString Field, FString Name, float& Value)
+{
+	if(FDefaultValueHelper::ParseFloat(Field, Value)) return true;
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
+		FileName, Name, Importer.GetCurrentIndex() + 1
+	});
+	return false;
+}
+
+bool StaticDataImporter::Base::ParseBool(FString Field, FString Name, bool& Value)
+{
+	if(Name.ToLower() == "true")
+	{
+		Value = true;
+		return true;
+	}
+	
+	if(Name.ToLower() == "false")
+	{
+		Value = false;
+		return true;
+	}
+	
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
+			FileName, Name, Importer.GetCurrentIndex() + 1
+	});
+	
+	return false;
+}
+
 void StaticDataImporter::Base::SetAssetName(UStaticData* DataAsset, UStaticDataBaseRecord* Record, FString Prefix) const
 {
 	const FString AssetName = FString::Format(TEXT("{0} - {1}"), {Prefix, Record->Label});

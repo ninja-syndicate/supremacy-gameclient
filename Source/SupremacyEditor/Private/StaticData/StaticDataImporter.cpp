@@ -9,13 +9,15 @@
 #include "Importers/Brand.h"
 #include "Importers/WarMachineModel.h"
 #include "Importers/Skin.h"
+#include "Importers/Weapon.h"
 
 UStaticDataImporter::UStaticDataImporter()
 {
 	Importers.Add(new StaticDataImporter::Faction());
 	Importers.Add(new StaticDataImporter::Brand());
-	Importers.Add(new StaticDataImporter::WarMachineModel());
 	Importers.Add(new StaticDataImporter::Skin());
+	Importers.Add(new StaticDataImporter::Weapon());
+	Importers.Add(new StaticDataImporter::WarMachineModel());
 	
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
