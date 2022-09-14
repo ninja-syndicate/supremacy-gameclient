@@ -5,6 +5,11 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "GameplayTagContainer.h"
+#include "Types/AI/AIBrainInput.h"
+#include "Types/AI/AIWarMachineInfo.h"
+#include "Types/AI/AIEnvironmentQueryResult.h"
+#include "Types/AI/AIPerceptionInfo.h"
+#include "Types/AI/AIScriptLog.h"
 #include "CrowdAIController.generated.h"
 
 UENUM(BlueprintType)
@@ -32,6 +37,15 @@ public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const override;
 
+	// TEMP: Need to refactor.
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "WarMachineInfo, DeltaTime, PerceptionInfo, Errors, EnvQueryStatus"))
+	FAIBrainInput GetBrainInput(
+		FAIWarMachineInfo WarMachineInfo,
+		float DeltaTime,
+		FAIPerceptionInfo PerceptionInfo,
+		TArray<FAIScriptLog> Errors,
+		TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus);
+
 	// NOTE: These cooldown functions will be removed later.
 	UFUNCTION(BlueprintCallable)
 	virtual void SetCooldown(const FGameplayTag& ActionTag, float Cooldown);
@@ -41,6 +55,9 @@ public:
 	void OnCooldownEnd_Implementation(const FGameplayTag ActionTag);
 
 protected:
+	UFUNCTION(BlueprintCallable, Category = "AI Utils")
+	FString ToJson(const FAIBrainInput& BrainInput);
+
 	/** Whether to enable crowd separation or not. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
 	bool bEnableSeparation;

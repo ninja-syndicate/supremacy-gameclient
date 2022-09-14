@@ -26,7 +26,7 @@ export const IsVector = (object: any): object is Vector => {
 }
 
 export const IsWarMachine = (object: any): object is WarMachine => {
-    return "hash" in object
+    return "Hash" in object
 }
 
 export const DoesProvideVectorContext = (object: any): object is ProvideVectorContext => {

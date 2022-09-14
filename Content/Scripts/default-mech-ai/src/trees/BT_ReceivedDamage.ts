@@ -24,7 +24,7 @@ export const BT_ReceivedDamage = new Sequence({
                     nodes: [
                         BTT_SetValue(
                             (blackboard: AIBlackboard) =>
-                                (blackboard.damageHiddenLocation = add(blackboard.input.self.location, multiply(blackboard.damageStimulusDirection, 10000))),
+                                (blackboard.damageHiddenLocation = add(blackboard.input.Self.Location, multiply(blackboard.damageStimulusDirection, 10000))),
                         ),
                         BT_SearchHiddenLocation("damageHiddenLocation"),
                         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.damageHiddenLocation = undefined)),

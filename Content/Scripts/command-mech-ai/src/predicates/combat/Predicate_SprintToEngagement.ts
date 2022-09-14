@@ -8,5 +8,5 @@ export const Predicate_SprintToEngagementByDistance =
     (blackboard: AIBlackboard): boolean => {
         if (blackboard.currentMovementMode === MovementMode.Sprint) return false
 
-        return !Predicate_InRange(blackboard.input.self.location, location, blackboard.optimalEngagementRange)(blackboard)
+        return !Predicate_InRange(blackboard.input.Self.Location, location, blackboard.optimalEngagementRange)(blackboard)
     }
