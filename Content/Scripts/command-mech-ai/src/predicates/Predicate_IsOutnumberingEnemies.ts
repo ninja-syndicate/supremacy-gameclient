@@ -8,11 +8,11 @@ import { AIBlackboard } from "@blackboards/blackboard"
  * @returns true if outnumbering and false otherwise.
  */
 export const IsOutnumberingEnemies = (blackboard: AIBlackboard) => {
-    const factionID: string = blackboard.input.Self.FactionID
+    const factionID: string = blackboard.input.Self.FactionId
 
     // TODO: maintain a list of friendly mechs in some radius and factor that into account.
-    const teammates: WarMachine[] = blackboard.input.Perception.Sight.filter((w) => w.FactionID === factionID && w.Health > 0)
-    const enemies: WarMachine[] = blackboard.input.Perception.Sight.filter((w) => w.FactionID !== factionID && w.Health > 0)
+    const teammates: WarMachine[] = blackboard.input.Perception.Sight.filter((w) => w.FactionId === factionID && w.Health > 0)
+    const enemies: WarMachine[] = blackboard.input.Perception.Sight.filter((w) => w.FactionId !== factionID && w.Health > 0)
 
     return teammates.length + 1 > enemies.length
 }

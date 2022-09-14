@@ -400,7 +400,7 @@ function filter(mech: WarMachine, inverse: boolean = false): boolean {
 
     // Filter functions. Add more filter functions as you deem appropriate.
     const filterByAlive = () => mech.Health > 0
-    const filterByFaction = () => blackboard.input.Self.FactionID !== mech.FactionID
+    const filterByFaction = () => blackboard.input.Self.FactionId !== mech.FactionId
     const filterByDistance = () => distanceTo(blackboard.input.Self, mech) <= CURRENT_AI_CONFIG.sightMaxDistance
     const filterFuncs = [filterByAlive, filterByFaction, filterByDistance]
 

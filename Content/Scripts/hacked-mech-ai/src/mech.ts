@@ -424,7 +424,7 @@ function score(mech: WarMachine): number {
     const scoreByDistance = (m: WarMachine) => 1 - Math.min(1, distanceTo(blackboard.input.Self, m) / CURRENT_AI_CONFIG.sightMaxDistance)
     const scoreByDamageWindow = (m: WarMachine) => Math.min(1, blackboard.damageTracker.getTotalDamageByTime(blackboard.currentTime, 10, m.Hash) / MaxDamage)
     const scoreByCurrentTarget = (m: WarMachine) => 0.2 * (blackboard.target && blackboard.target.Hash === m.Hash ? 1 : 0)
-    const scoreByFaction = (m: WarMachine) => (m.FactionID === blackboard.input.Self.FactionID ? 5 : 0)
+    const scoreByFaction = (m: WarMachine) => (m.FactionId === blackboard.input.Self.FactionId ? 5 : 0)
     const scoreFuncs = [scoreByHealth, scoreByDistance, scoreByFaction, scoreByDamageWindow, scoreByCurrentTarget]
 
     const totalScore = scoreFuncs.map((func) => func(mech)).reduce((a, b) => a + b)
