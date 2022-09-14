@@ -55,6 +55,9 @@ public:
 	void OnCooldownEnd_Implementation(const FGameplayTag ActionTag);
 
 protected:
+	UFUNCTION(BlueprintCallable, Category = "AI Utils")
+	FString ToJson(const FAIBrainInput& BrainInput);
+
 	/** Whether to enable crowd separation or not. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
 	bool bEnableSeparation;
