@@ -16,7 +16,7 @@ FString FPascalCaseJsonObjectConverter::StandardizeCase(const FString& StringIn)
 {
 	FString FixedString = StringIn;
 	FixedString[0] = FChar::ToUpper(FixedString[0]);
-	// FixedString.ReplaceInline(TEXT("ID"), TEXT("Id"), ESearchCase::CaseSensitive); // Id is standard instead of ID, some of our fnames use ID
+	FixedString.ReplaceInline(TEXT("ID"), TEXT("Id"), ESearchCase::CaseSensitive); // Id is standard instead of ID, some of our fnames use ID
 	return FixedString;
 }
 

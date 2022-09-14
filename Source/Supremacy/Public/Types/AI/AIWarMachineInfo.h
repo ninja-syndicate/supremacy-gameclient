@@ -34,7 +34,7 @@ public:
 	// TODO: Make an enum of faction for much faster access?
 	/** The faction ID of the war machine. */
 	UPROPERTY(Category = "AI War Machine Info", EditAnywhere, BlueprintReadWrite)
-	FString FactionID;
+	FString FactionId;
 
 	/** The name of the war machine. */
 	UPROPERTY(Category = "AI War Machine Info", EditAnywhere, BlueprintReadWrite)

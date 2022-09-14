@@ -13,13 +13,13 @@ public:
 	FString Tag;
 
 	UPROPERTY(Category = "AI Interactable Info", EditAnywhere, BlueprintReadWrite)
-	FString EventID;
+	FString EventId;
 
 	UPROPERTY(Category = "AI Interactable Info", EditAnywhere, BlueprintReadWrite)
 	FVector3f Location = FVector3f::ZeroVector;
 
 	UPROPERTY(Category = "AI Interactable Info", EditAnywhere, BlueprintReadWrite)
-	FString InstigatorFactionID;
+	FString InstigatorFactionId;
 
 	FAIInteractableInfo() {}
 };
