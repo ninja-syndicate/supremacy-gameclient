@@ -25,7 +25,7 @@
       "Rate_Of_Fire": 250,
       "Max_Ammo": 50,
       "Power_Cost": 10,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Sword": {
       "Name": "Sword",
@@ -56,7 +56,7 @@
       "Rate_Of_Fire": 270,
       "Max_Ammo": 50,
       "Power_Cost": 10,
-	  "Recoil_Force": 10
+	    "Recoil_Force": 10
     },
     "RocketPods": {
       "Name": "Rocket Pods",
@@ -89,7 +89,7 @@
       "Rate_Of_Fire": 45,
       "Max_Ammo": 50,
       "Power_Cost": 10,
-	  "Recoil_Force": 40
+	    "Recoil_Force": 40
     },
     "PlasmaSword": {
       "Name": "Plasma Sword",
@@ -110,7 +110,7 @@
       "Projectile_Speed": 10000,
       "Rate_Of_Fire": 20,
       "Charge_Time": 3,
-	  "Recoil_Force": 60
+	    "Recoil_Force": 60
     },
     "Weapon_AM_Cannon": {
       "Name": "Archon Militech Cannon",
@@ -118,7 +118,7 @@
       "Damage_Radius": 500,
       "Damage_Type": 2,
       "Rate_Of_Fire": 160,
-	  "Recoil_Force": 40
+	    "Recoil_Force": 40
     },
     "Weapon_AM_FlameThrower": {
       "Name": "Archon Militech Flamethrower",
@@ -131,7 +131,7 @@
       "Damage": 200,
       "Rate_Of_Fire": 120,
       "Is_Arced": true,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_AM_LaserBeam": {
       "Name": "Archon Militech Laser Beam",
@@ -143,7 +143,7 @@
       "Damage": 9,
       "Spread": 3,
       "Rate_Of_Fire": 750,
-	  "Recoil_Force": 10
+	    "Recoil_Force": 10
     },
     "Weapon_AM_Minigun": {
       "Name": "Archon Militech Minigun",
@@ -151,7 +151,7 @@
       "Spread": 5,
       "Rate_Of_Fire": 4000,
       "Charge_Time": 3,
-	  "Recoil_Force": 5
+	    "Recoil_Force": 5
     },
     "Weapon_AM_MissileLauncher": {
       "Name": "Archon Militech Missile Launcher",
@@ -164,14 +164,14 @@
       "Burst_Rate_Of_Fire": 900,
       "Projectile_Amount": 4,
       "Is_Arced": true,
-	  "Recoil_Force": 20
+	    "Recoil_Force": 20
     },
     "Weapon_AM_PlasmaRifle": {
       "Name": "Archon Militech Plasma Rifle",
       "Damage": 20,
       "Spread": 3,
       "Rate_Of_Fire": 100,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_AM_Shotgun": {
       "Name": "Archon Militech Shotgun",
@@ -179,7 +179,7 @@
       "Spread": 8,
       "Rate_Of_Fire": 100,
       "Projectile_Amount": 12,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_Pyro_Cannon": {
       "Name": "Pyro Cannon",
@@ -187,7 +187,7 @@
       "Damage_Radius": 500,
       "Damage_Type": 2,
       "Rate_Of_Fire": 160,
-	  "Recoil_Force": 40
+	    "Recoil_Force": 40
     },
     "Weapon_Pyro_FlameThrower": {
       "Name": "Pyro Flamethrower",
@@ -200,7 +200,7 @@
       "Damage": 200,
       "Rate_Of_Fire": 60,
       "Is_Arced": true,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_Pyro_LaserBeam": {
       "Name": "Pyro Laser Beam",
@@ -217,7 +217,7 @@
       "Damage": 9,
       "Spread": 3,
       "Rate_Of_Fire": 750,
-	  "Recoil_Force": 10
+	    "Recoil_Force": 10
     },
     "Weapon_Pyro_Minigun": {
       "Name": "Pyro Minigun",
@@ -225,14 +225,14 @@
       "Spread": 5,
       "Rate_Of_Fire": 6000,
       "Charge_Time": 2,
-	  "Recoil_Force": 5
+	    "Recoil_Force": 5
     },
     "Weapon_Pyro_PlasmaGun": {
       "Name": "Pyro Plasma Gun",
       "Damage": 20,
       "Spread": 3,
       "Rate_Of_Fire": 100,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_Pyro_MissileLauncher": {
       "Name": "Pyro Missile Launcher",
@@ -244,7 +244,7 @@
       "Rate_Of_Fire": 60,
       "Projectile_Amount": 4,
       "Burst_Rate_Of_Fire": 1000,
-	  "Recoil_Force": 10
+	    "Recoil_Force": 10
     },
     "Weapon_Pyro_Shotgun": {
       "Name": "Pyro Shotgun",
@@ -252,7 +252,7 @@
       "Spread": 8,
       "Rate_Of_Fire": 80,
       "Projectile_Amount": 12,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_Warsui_Cannon": {
       "Name": "Warsui Cannon",
@@ -260,7 +260,7 @@
       "Damage_Radius": 500,
       "Damage_Type": 2,
       "Rate_Of_Fire": 160,
-	  "Recoil_Force": 40
+	    "Recoil_Force": 40
     },
     "Weapon_Warsui_Flakgun": {
       "Name": "Warsui Flakgun",
@@ -268,14 +268,14 @@
       "Spread": 8,
       "Rate_Of_Fire": 100,
       "Projectile_Amount": 20,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_Warsui_GrenadeLauncher": {
       "Name": "Warsui Grenade Launcher",
       "Damage": 200,
       "Rate_Of_Fire": 60,
       "Is_Arced": true,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_Warsui_LaserBeam": {
       "Name": "Warsui Laser Beam",
@@ -292,7 +292,7 @@
       "Damage": 9,
       "Spread": 3,
       "Rate_Of_Fire": 750,
-	  "Recoil_Force": 10
+	    "Recoil_Force": 10
     },
     "Weapon_Warsui_Minigun": {
       "Name": "Warsui Minigun",
@@ -300,7 +300,7 @@
       "Spread": 5,
       "Rate_Of_Fire": 6000,
       "Charge_Time": 2,
-	  "Recoil_Force": 5
+	    "Recoil_Force": 5
     },
     "Weapon_Warsui_MissileLauncher": {
       "Name": "Warsui Missile Launcher",
@@ -312,14 +312,14 @@
       "Rate_Of_Fire": 30,
       "Burst_Rate_Of_Fire": 1200,
       "Projectile_Amount": 8,
-	  "Recoil_Force": 20
+	    "Recoil_Force": 20
     },
     "Weapon_Warsui_PlasmaGun": {
       "Name": "Warsui Plasma Gun",
       "Damage": 20,
       "Spread": 3,
       "Rate_Of_Fire": 100,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     },
     "Weapon_Warsui_RailGun": {
       "Name": "Warsui Railgun",
@@ -329,7 +329,7 @@
       "Spread": 1,
       "Projectile_Speed": 120000,
       "Rate_Of_Fire": 60,
-	  "Recoil_Force": 30
+	    "Recoil_Force": 30
     }
   }
 }
