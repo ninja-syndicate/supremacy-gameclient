@@ -183,7 +183,7 @@ declare class AIController {
     EQS_Query(query: EQSQueryType): boolean
 
     /**
-     * Removes EQS query status from {@link BrainInput.eqs}, essentially marking it as complete so you know you can run it again.
+     * Removes EQS query status from {@link BrainInput.EnvQueryStatus}, essentially marking it as complete so you know you can run it again.
      *
      * @param query The environment query type (@see {@link EQSQueryType})
      */
@@ -281,9 +281,9 @@ export interface Vector {
  */
 export interface ScriptError {
     // Which function from {@link AIController} the error/warning is from
-    command: string
-    severity: "error" | "warning"
-    message: string
+    Command: string
+    Severity: "error" | "warning"
+    Message: string
 }
 
 /**
@@ -291,45 +291,45 @@ export interface ScriptError {
  */
 export interface Weapon {
     /** The unique hash of the weapon. */
-    hash: string
+    Hash: string
     /** The weapon name. */
-    name: string
+    Name: string
     /** The weapon model. */
-    model: string
+    Model: string
     /** The weapon skin. */
-    skin: string
+    Skin: string
     /** The amount of damage the weapon deals per shot/projectile. */
-    damage: number
+    Damage: number
     /** The distance at which the damage starts decreasing. */
-    damageFalloff: number
+    DamageFalloff: number
     /** How much the damage decreases by per km. */
-    damageFalloffRate: number
+    DamageFalloffRate: number
     /** Enemies within this radius when the projectile hits something is damaged (radial damage). */
-    radialDamageRadius: number
+    RadialDamageRadius: number
     /** Distance at which damage starts decreasing (must be greater than 0 and less than damageRadius to have any affect). */
-    radialDamageFalloff: number
+    RadialDamageFalloff: number
     /** The damage type of the weapon. */
-    damageType: DamageType
+    DamageType: DamageType
     /** The spread of the weapon. Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees. */
-    spread: number
+    Spread: number
     /** The number of rounds that can be fired per minute. */
-    rateOfFire: number
+    RateOfFire: number
     /** The number of rounds per min within the burst of fire (rate of fire is used for the time between bursts). */
-    burstRateOfFire: number
+    BurstRateOfFire: number
     /** The speed of the weapon's projectiles in cm/s. */
-    projectileSpeed: number
+    ProjectileSpeed: number
     /** The number of projectiles fired per shot/burst. */
-    projectileAmount: number
+    ProjectileAmount: number
     /** The number of seconds it takes to start firing (e.g. mini-guns). */
-    chargeTime: number
+    ChargeTime: number
     /** The current weapon ammo. */
-    currentAmmo: number
+    CurrentAmmo: number
     /** The maximum amount of ammo this weapon can hold. */
-    maxAmmo: number
+    MaxAmmo: number
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
-    tags: WeaponTag[]
+    Tags: WeaponTag[]
     /** The slot at which this weapon is attached to. */
-    slot: number
+    Slot: number
 }
 
 /**
@@ -341,35 +341,35 @@ export interface Weapon {
  */
 export interface WarMachine {
     /** The unique hash of the war machine. This can be used to identify a particular mech. */
-    hash: string
+    Hash: string
     /** The last known location of the war machine. */
-    location: Vector
+    Location: Vector
     /** The last known rotation (roll, pitch, yaw) of the war machine. */
-    rotation: Vector
+    Rotation: Vector
     /** The last known velocity of the war machine. */
-    velocity: Vector
+    Velocity: Vector
     /** The ID of the faction the mech belongs to. */
-    factionID: string
+    FactionId: string
     /** The name of the war machine. */
-    name: string
+    Name: string
     /** The model name of the war machine. */
-    model: string
+    Model: string
     /** The last known health of the war machine. */
-    health: number
+    Health: number
     /** The maximum amount of health this war machine has. */
-    healthMax: number
+    HealthMax: number
     /** The last known shield of the war machine. */
-    shield: number
+    Shield: number
     /** The maximum amount of shield this war machine has. */
-    shieldMax: number
+    ShieldMax: number
     /** The rate at which the shield is re-charged when out of combat (shield per second). */
-    shieldRechargeRate: number
+    ShieldRechargeRate: number
     /** The maximum movement speed (cm/s) of the war machine. */
-    maxSpeed: number
+    MaxSpeed: number
     /** All the weapons this war machine has. */
-    weapons: Weapon[]
+    Weapons: Weapon[]
     /** All the abilities this war machine can perform. */
-    abilities: UserAction[]
+    Abilities: UserAction[]
 }
 
 /**
@@ -379,11 +379,11 @@ export interface WarMachine {
  */
 export interface SoundDetails {
     /** The location of the sound. */
-    location: Vector
+    Location: Vector
     /** Tag describing the sound (Examples: *Weapon, Taunt, Nuke, Pickup.Heal, Pickup.ShieldBuff, Pickup.Ammo*). */
-    type: string
+    Type: string
     /** The sound came from a friendly source (ally), check this if you want to ignore friendly gunshots. */
-    isFriendly: boolean
+    IsFriendly: boolean
 }
 
 /**
@@ -391,33 +391,33 @@ export interface SoundDetails {
  */
 export interface DamageDetails {
     /** The amount of damage */
-    amount: number
+    Amount: number
     /** The type of damage */
-    type: DamageType
+    Type: DamageType
     /** The normalized direction of the damage. */
-    direction: Vector
+    Direction: Vector
     /** Whether the damage was friendly fire (caused by an ally). */
-    isFriendly?: boolean
+    IsFriendly?: boolean
     /** Whether the damage was down to your shield. */
-    isShieldDamage: boolean
+    IsShieldDamage: boolean
     /** The unique hash of the war machine that caused the damage. */
-    instigatorHash: string
+    InstigatorHash: string
     /** The unique hash of the weapon that caused the damage. */
-    weaponHash: string
+    WeaponHash: string
     /** The name of what caused the damage (for damage with no {@link sourceHash} such as abilities). */
-    weaponName: string
+    WeaponName: string
 }
 
 // Everything the mech can currently perceive
 export interface Perception {
     /** Everything the war machine can currently see. */
-    sight: WarMachine[]
+    Sight: WarMachine[]
     // Everything the war machine heard since the last tick
-    sound: SoundDetails[]
+    Sound: SoundDetails[]
     // Details on damage the war machine has taken since the last tick
-    damage: DamageDetails[]
+    Damage: DamageDetails[]
     // Everything the war machine can interact with
-    interactable: InteractableDetails[]
+    Interactable: InteractableDetails[]
 }
 
 /**
@@ -425,9 +425,9 @@ export interface Perception {
  */
 export interface EnvironmentQuery {
     /** The current status of environment query (@see {@link EnvironmentQueryStatus}). */
-    status: EnvironmentQueryStatus
+    Status: EnvironmentQueryStatus
     /** The resulting location of environment query. Only valid if the environment query succeeded. */
-    location: Vector
+    Location: Vector
 }
 
 /**
@@ -447,11 +447,11 @@ export interface EQSResults {
  * Details of an interactable such as heal crate.
  */
 export interface InteractableDetails {
-    tag: InteractableTag
-    eventID: string
-    location: Vector
+    Tag: InteractableTag
+    EventId: string
+    Location: Vector
     /** If this interactable is spawned via user action, this will be set to the faction ID that instigated it. Empty string otherwise. */
-    instigatorFactionID: string
+    InstigatorFactionId: string
 }
 
 /**
@@ -459,13 +459,13 @@ export interface InteractableDetails {
  */
 export interface BrainInput {
     /** Information about itself (@see {@link WarMachine}). */
-    self: WarMachine
+    Self: WarMachine
     /** Time elapsed since last tick. 0 on {@link onBegin}. */
-    deltaTime: number
+    DeltaTime: number
     /** Things that AI can currently perceive (@see {@link Perception}). */
-    perception: Perception
+    Perception: Perception
     /** List of detected runtime warnings/errors in the script (@see {@link ScriptError}). */
-    errors: ScriptError[]
+    Errors: ScriptError[]
     /** Result of executed environment queries (@see {@link EQSResults}). */
-    eqs: EQSResults
+    EnvQueryStatus: EQSResults
 }

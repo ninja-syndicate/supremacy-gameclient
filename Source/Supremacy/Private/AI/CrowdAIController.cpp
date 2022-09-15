@@ -5,6 +5,7 @@
 
 #include "AI/WarMachineFollowingComponent.h"
 #include "Navigation/CrowdFollowingComponent.h"
+#include "Parsers/PascalCaseJsonObjectConverter.h"
 
 ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UWarMachineFollowingComponent>(TEXT("PathFollowingComponent")))
@@ -110,4 +111,28 @@ void ACrowdAIController::SetCooldown(const FGameplayTag& ActionTag, float Cooldo
 
 void ACrowdAIController::OnCooldownEnd_Implementation(const FGameplayTag ActionTag)
 {
+}
+
+FAIBrainInput ACrowdAIController::GetBrainInput(
+	FAIWarMachineInfo WarMachineInfo,
+	float DeltaTime,
+	FAIPerceptionInfo PerceptionInfo,
+	TArray<FAIScriptLog> Errors,
+	TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus)
+{
+	FAIBrainInput BrainInput;
+	BrainInput.Self = WarMachineInfo;
+	BrainInput.DeltaTime = DeltaTime;
+	BrainInput.Perception = PerceptionInfo;
+	BrainInput.Errors = Errors;
+	BrainInput.EnvQueryStatus = EnvQueryStatus;
+
+	return BrainInput;
+}
+
+FString ACrowdAIController::ToJson(const FAIBrainInput& BrainInput)
+{
+	FString JsonString;
+	FPascalCaseJsonObjectConverter::UStructToJsonObjectString(BrainInput, JsonString);
+	return JsonString;
 }

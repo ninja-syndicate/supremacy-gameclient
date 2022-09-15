@@ -18,7 +18,9 @@ import { AI } from "@root/index"
 export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlackboard) =>
     new Task({
         start: (blackboard: AIBlackboard) => {
-            blackboard.eqsResults[query] = { status: EnvironmentQueryStatus.Processing }
+            const queryResult: EnvironmentQuery = { Status: EnvironmentQueryStatus.Processing, Location: {X: 0, Y: 0, Z: 0} }
+
+            blackboard.eqsResults[query] = queryResult
             const success: boolean = AI.EQS_Query(query)
             return success ? SUCCESS : FAILURE
         },
@@ -27,13 +29,13 @@ export const BTT_RunEQSQuery = (query: EQSQueryType, blackboardKey: keyof AIBlac
             const result: EnvironmentQuery = blackboard.eqsResults[query]
             if (!result) return FAILURE
 
-            switch (result.status) {
+            switch (result.Status) {
                 case EnvironmentQueryStatus.Processing:
                     return RUNNING
                 case EnvironmentQueryStatus.Failed:
                     return FAILURE
                 case EnvironmentQueryStatus.Success:
-                    blackboard[blackboardKey as string] = blackboard.eqsResults[query].location
+                    blackboard[blackboardKey as string] = blackboard.eqsResults[query].Location
                     return SUCCESS
                 default:
                     return FAILURE

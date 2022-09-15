@@ -11,6 +11,6 @@ export class Sound implements ProvideVectorContext {
     }
 
     getVectorValue(): Vector {
-        return this.soundDetail.location
+        return this.soundDetail.Location
     }
 }

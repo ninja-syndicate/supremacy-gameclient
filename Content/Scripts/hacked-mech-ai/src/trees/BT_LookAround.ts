@@ -17,8 +17,8 @@ export const BT_LookAround = new Sequence({
         BTT_SetValue(
             (blackboard: AIBlackboard) =>
                 (blackboard.lookAtLocation = add(
-                    blackboard.input.self.location,
-                    multiply(rotateZ(getForwardVector(blackboard.input.self.rotation), 90), 1000),
+                    blackboard.input.Self.Location,
+                    multiply(rotateZ(getForwardVector(blackboard.input.Self.Rotation), 90), 1000),
                 )),
         ),
         BTT_LookAt("lookAtLocation"),
@@ -26,8 +26,8 @@ export const BT_LookAround = new Sequence({
         BTT_SetValue(
             (blackboard: AIBlackboard) =>
                 (blackboard.lookAtLocation = add(
-                    blackboard.input.self.location,
-                    multiply(rotateZ(getForwardVector(blackboard.input.self.rotation), 90), 1000),
+                    blackboard.input.Self.Location,
+                    multiply(rotateZ(getForwardVector(blackboard.input.Self.Rotation), 90), 1000),
                 )),
         ),
         BTT_LookAt("lookAtLocation"),

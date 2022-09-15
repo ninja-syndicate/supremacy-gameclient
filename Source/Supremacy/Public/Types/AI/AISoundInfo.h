@@ -3,6 +3,9 @@
 #include "CoreMinimal.h"
 #include "AISoundInfo.generated.h"
 
+/**
+ * Note that the names have to match up with the script interface properties naming convention.
+ */
 USTRUCT(BlueprintType)
 struct FAISoundInfo {
 	GENERATED_BODY()
@@ -10,14 +13,14 @@ struct FAISoundInfo {
 public:
 	/** The location of the sound. */
 	UPROPERTY(Category = "AI Sound Info", EditAnywhere, BlueprintReadWrite)
-	FVector3f location = FVector3f::ZeroVector;
+	FVector3f Location = FVector3f::ZeroVector;
 
 	/** The type of the sound. */
 	UPROPERTY(Category = "AI Sound Info", EditAnywhere, BlueprintReadWrite)
-	FString type;
+	FString Type;
 
 	UPROPERTY(Category = "AI Sound Info", EditAnywhere, BlueprintReadWrite)
-	bool isFriendly = false;
+	bool IsFriendly = false;
 
 	FAISoundInfo() {}
 };

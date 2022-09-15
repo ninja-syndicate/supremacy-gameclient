@@ -22,5 +22,5 @@ export const Predicate_TargetInRange = (range: number) => (blackboard: AIBlackbo
     if (blackboard.target === null) return false
     if (!blackboard.canSeeTarget) return false
 
-    return Predicate_InRange(blackboard.input.self.location, blackboard.target.location, range)(blackboard)
+    return Predicate_InRange(blackboard.input.Self.Location, blackboard.target.Location, range)(blackboard)
 }
