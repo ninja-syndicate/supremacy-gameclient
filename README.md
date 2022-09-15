@@ -83,7 +83,7 @@ know which conflicts are expected and possibly work on something else meanwhile.
 
 ## Keybinds
 
-- **SHIFT+ENTER :** Start test match *(for testing without a server)*
+- **SHIFT+ENTER :** Show Main Menu / Start test match if on specific map  *(for testing without a server)*
 - **CTRL+SHIFT+ENTER :** Start test match and skip the intro animations
 - **CTRL+SHIFT+R:** Load battle from clipboard (text w/ battle commands on each line)
 - **ENTER :** Toggle free camera
