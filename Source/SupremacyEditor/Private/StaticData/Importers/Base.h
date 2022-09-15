@@ -25,6 +25,8 @@ namespace StaticDataImporter
 		bool ParseInt(FString Field, FString Name, int32& Value);
 		bool ParseFloat(FString Field, FString Name, float& Value);
 		bool ParseBool(FString Field, FString Name, bool& Value);
+
+		bool CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid &out);
 		
 		static bool ParseColor(FString Field, FString Name, FColor& Color);
 

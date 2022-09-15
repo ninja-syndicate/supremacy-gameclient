@@ -7,17 +7,23 @@
 
 #include "Importers/Faction.h"
 #include "Importers/Brand.h"
+#include "Importers/MechSkinCompatibility.h"
+#include "Importers/WeaponSkinCompatibility.h"
 #include "Importers/WarMachineModel.h"
 #include "Importers/Skin.h"
 #include "Importers/Weapon.h"
+#include "Importers/WeaponSkin.h"
 
 UStaticDataImporter::UStaticDataImporter()
 {
 	Importers.Add(new StaticDataImporter::Faction());
 	Importers.Add(new StaticDataImporter::Brand());
 	Importers.Add(new StaticDataImporter::Skin());
+	Importers.Add(new StaticDataImporter::WeaponSkin());
 	Importers.Add(new StaticDataImporter::Weapon());
 	Importers.Add(new StaticDataImporter::WarMachineModel());
+	Importers.Add(new StaticDataImporter::MechSkinCompatibility());
+	Importers.Add(new StaticDataImporter::WeaponSkinCompatibility());
 	
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();

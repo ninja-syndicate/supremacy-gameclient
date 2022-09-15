@@ -5,17 +5,17 @@
 #include "CoreMinimal.h"
 #include "StaticDataBaseRecord.h"
 #include "UObject/Object.h"
-#include "StaticDataSkin.generated.h"
+#include "StaticDataWeaponSkin.generated.h"
 
 namespace StaticDataImporter
 {
-	class Skin;
+	class WeaponSkin;
 }
 
 UCLASS(BlueprintType)
-class SUPREMACY_API UStaticDataSkin : public UStaticDataBaseRecord
+class SUPREMACY_API UStaticDataWeaponSkin : public UStaticDataBaseRecord
 {
-	friend class StaticDataImporter::Skin;
+	friend class StaticDataImporter::WeaponSkin;
 	
 	GENERATED_BODY()
 	
@@ -30,7 +30,4 @@ class SUPREMACY_API UStaticDataSkin : public UStaticDataBaseRecord
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	int32 StatModifier;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
-	TArray<TSoftObjectPtr<UMaterial>> Materials;
 };

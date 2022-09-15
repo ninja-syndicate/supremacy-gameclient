@@ -82,20 +82,20 @@ bool StaticDataImporter::Base::ParseFloat(FString Field, FString Name, float& Va
 
 bool StaticDataImporter::Base::ParseBool(FString Field, FString Name, bool& Value)
 {
-	if(Name.ToLower() == "true")
+	if(Field.ToLower() == "true")
 	{
 		Value = true;
 		return true;
 	}
 	
-	if(Name.ToLower() == "false")
+	if(Field.ToLower() == "false")
 	{
 		Value = false;
 		return true;
 	}
 	
-	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
-			FileName, Name, Importer.GetCurrentIndex() + 1
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2} (got value: {3})"), {
+			FileName, Name, Importer.GetCurrentIndex() + 1, Field
 	});
 	
 	return false;
@@ -103,8 +103,33 @@ bool StaticDataImporter::Base::ParseBool(FString Field, FString Name, bool& Valu
 
 void StaticDataImporter::Base::SetAssetName(UStaticData* DataAsset, UStaticDataBaseRecord* Record, FString Prefix) const
 {
-	const FString AssetName = FString::Format(TEXT("{0} - {1}"), {Prefix, Record->Label});
-	Record->Rename(*AssetName, DataAsset);
+	const FString AssetName = FString::Format(TEXT("{0} - {1}"), { Prefix, Record->Label });
+
+	// use the REN_Test flag to test if the renaming will succeed, otherwise, if a record with the
+	// same name already exists, a breakpoint (or crash) will occur
+	if(Record->Rename(*AssetName, DataAsset, REN_Test))
+	{
+		Record->Rename(*AssetName, DataAsset);
+	}
+	else
+	{
+		// We likely have a name conflict. Try adding a number to the end.
+		int32 i = 1;
+		while(true)
+		{
+			FString Name = AssetName + FString::FromInt(i);
+			if(Record->Rename(*Name, DataAsset, REN_Test))
+			{
+				Record->Rename(*Name, DataAsset);
+				break;
+			}
+
+			i += 1;
+
+			// Ensure we don't infinite loop if we can't find a name that will succeed.
+			if(i >= 16) break;
+		}
+	}
 }
 
 void StaticDataImporter::Base::SetDirectory(FString DirectoryPath)
@@ -178,4 +203,30 @@ bool StaticDataImporter::Base::ImportAndUpdate(UStaticData* DataAsset)
 FString StaticDataImporter::Base::GetErrorReason()
 {
 	return ErrorReason;
+}
+
+bool StaticDataImporter::Base::CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid &Out)
+{
+	uint8 *Buffer = new uint8[16];
+	FString AString = A.ToString();
+	FString BString = B.ToString();
+
+	for(int32 i = 0; i < 16;)
+	{
+		if(AString[i] == '-')
+		{
+			continue;
+		}
+		
+		Buffer[i] = (unsigned char)AString[i] ^ (unsigned char)BString[i];
+		i++;
+	}
+
+	int32 i0 = Buffer[0] + (Buffer[1] << 8) + (Buffer[2] << 16) + (Buffer[3] << 24);
+	int32 i1 = Buffer[4] + (Buffer[5] << 8) + (Buffer[6] << 16) + (Buffer[7] << 24);
+	int32 i2 = Buffer[8] + (Buffer[9] << 8) + (Buffer[10] << 16) + (Buffer[11] << 24);
+	int32 i3 = Buffer[12] + (Buffer[13] << 8) + (Buffer[14] << 16) + (Buffer[15] << 24);
+	
+	Out = FGuid(i0, i1, i2, i3);
+	return true;
 }

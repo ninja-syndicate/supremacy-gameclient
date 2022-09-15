@@ -15,7 +15,7 @@ namespace StaticDataImporter
 	class Weapon;
 }
 
-class UStaticDataSkin;
+class UStaticDataWeaponSkin;
 class UStaticDataBrand;
 
 UCLASS(BlueprintType)
@@ -89,10 +89,10 @@ class SUPREMACY_API UStaticDataWeapon : public UStaticDataBaseRecord
 	float BurstRateOfFire;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
-	float PowerInstantDrain;
+	bool PowerInstantDrain;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
-	UStaticDataSkin* DefaultSkin;
+	UStaticDataWeaponSkin* DefaultSkin;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataBrand* Brand;

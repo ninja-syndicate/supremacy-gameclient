@@ -24,7 +24,11 @@ StaticDataImporter::WarMachineModel::WarMachineModel(): Base()
 		"max_hitpoints",
 		"power_core_size",
 		"collection",
-		"availability_id"
+		"availability_id",
+		"max_shield",
+		"shield_recharge_rate",
+		"shield_recharge_power_cost",
+		"shield_type_id"
 	};
 }
 
@@ -89,6 +93,10 @@ bool StaticDataImporter::WarMachineModel::HandleRow(UStaticData* DataAsset, TArr
 	if(!ParseInt(RowCells[10], "max hitpoints", Record->MaxHitpoints)) return false;
 
 	Record->CreatedAt = RowCells[2];
+
+	if(!ParseFloat(RowCells[14], "max shield", Record->MaxShield)) return false;
+	if(!ParseFloat(RowCells[15], "shield recharge rate", Record->ShieldRechargeRate)) return false;
+	if(!ParseFloat(RowCells[16], "shield recharge power cost", Record->ShieldRechargePowerCost)) return false;
 	
 	if (!ParseGuid(RowCells[4], TEXT("brand id"), ID)) return false;
 	UStaticDataBrand* Brand = DataAsset->GetBrand(ID);

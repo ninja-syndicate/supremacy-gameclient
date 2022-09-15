@@ -69,18 +69,21 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 	
 	Record->Type = StringToEWeaponType[RowCells[3]];
 
-	if (!ParseGuid(RowCells[0], TEXT("default skin id"), ID)) return false;
-	UStaticDataSkin *Skin = DataAsset->GetSkin(ID);
+	if (!ParseGuid(RowCells[4], TEXT("default skin id"), ID)) return false;
+	UStaticDataWeaponSkin *Skin = DataAsset->GetWeaponSkin(ID);
 	
 	if(!Skin)
 	{
-		ErrorReason = FString::Format(TEXT("{0} - unable to find skin {1} on line {2}"), {
+		ErrorReason = FString::Format(TEXT("{0} - unable to find weapon skin {1} on line {2}"), {
 			FileName, ID.ToString(), Importer.GetCurrentIndex() + 1
 		});
-		return false;
+		UE_LOG(LogTemp, Error, TEXT("%s"), *ErrorReason);
+		//return false;
 	}
-
-	Record->DefaultSkin = Skin;
+	else
+	{
+		Record->DefaultSkin = Skin;
+	}
 
 	if(!ParseFloat(RowCells[5], "damage", Record->Damage)) return false;
 	if(!ParseFloat(RowCells[6], "damage falloff", Record->DamageFalloff)) return false;
@@ -112,7 +115,7 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 	if(!ParseBool(RowCells[22], "is arced", Record->IsArced)) return false;
 	if(!ParseFloat(RowCells[23], "charge time seconds", Record->ChargeTimeSeconds)) return false;
 	if(!ParseFloat(RowCells[24], "burst rate of fire", Record->BurstRateOfFire)) return false;
-	if(!ParseFloat(RowCells[25], "power instant drain", Record->PowerInstantDrain)) return false;
+	if(!ParseBool(RowCells[25], "power instant drain", Record->PowerInstantDrain)) return false;
 
 	SetAssetName(DataAsset, Record, TEXT("Weapon"));
 	return true;

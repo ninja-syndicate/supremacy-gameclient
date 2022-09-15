@@ -42,9 +42,35 @@ UStaticDataWarMachineModel* UStaticData::GetWarMachineModel(const FGuid& ID)
 	return nullptr;
 }
 
+UStaticDataWeapon *UStaticData::GetWeapon(const FGuid& ID)
+{
+	for (UStaticDataWeapon *Record : Weapons)
+	{
+		if (Record->ID == ID)
+		{
+			return Record;
+		}
+	}
+
+	return nullptr;
+}
+
 UStaticDataSkin* UStaticData::GetSkin(const FGuid& ID)
 {
 	for (UStaticDataSkin *Record : Skins)
+	{
+		if (Record->ID == ID)
+		{
+			return Record;
+		}
+	}
+
+	return nullptr;
+}
+
+UStaticDataWeaponSkin* UStaticData::GetWeaponSkin(const FGuid& ID)
+{
+	for (UStaticDataWeaponSkin *Record : WeaponSkins)
 	{
 		if (Record->ID == ID)
 		{
@@ -104,17 +130,16 @@ UStaticDataSkin* UStaticData::GetOrCreateSkin(const FGuid& ID)
 	return Record;
 }
 
-UStaticDataWeapon *UStaticData::GetWeapon(const FGuid& ID)
+UStaticDataWeaponSkin* UStaticData::GetOrCreateWeaponSkin(const FGuid& ID)
 {
-	for (UStaticDataWeapon *Record : Weapons)
-	{
-		if (Record->ID == ID)
-		{
-			return Record;
-		}
-	}
+	UStaticDataWeaponSkin* Record = GetWeaponSkin(ID);
+	if(Record) return Record;
 
-	return nullptr;
+	Record = NewObject<UStaticDataWeaponSkin>(this);
+	Record->ID = ID;
+	WeaponSkins.Push(Record);
+
+	return Record;
 }
 
 UStaticDataWeapon* UStaticData::GetOrCreateWeapon(const FGuid& ID)
@@ -127,4 +152,54 @@ UStaticDataWeapon* UStaticData::GetOrCreateWeapon(const FGuid& ID)
 	Weapons.Push(Record);
 	
 	return Record;
+}
+
+UStaticDataMechSkinCompatibility *UStaticData::GetOrCreateMechSkinCompatibility(const FGuid& ID)
+{
+	UStaticDataMechSkinCompatibility* Record = GetMechSkinCompatibility(ID);
+	if(Record) return Record;
+
+	Record = NewObject<UStaticDataMechSkinCompatibility>(this);
+	Record->ID = ID;
+	MechSkinCompatibilities.Push(Record);
+	
+	return Record;
+}
+
+UStaticDataWeaponSkinCompatibility *UStaticData::GetOrCreateWeaponSkinCompatibility(const FGuid& ID)
+{
+	UStaticDataWeaponSkinCompatibility* Record = GetWeaponSkinCompatibility(ID);
+	if(Record) return Record;
+
+	Record = NewObject<UStaticDataWeaponSkinCompatibility>(this);
+	Record->ID = ID;
+	WeaponSkinCompatibilities.Push(Record);
+	
+	return Record;
+}
+
+UStaticDataMechSkinCompatibility* UStaticData::GetMechSkinCompatibility(const FGuid& ID)
+{
+	for (UStaticDataMechSkinCompatibility *Record : MechSkinCompatibilities)
+	{
+		if (Record->ID == ID)
+		{
+			return Record;
+		}
+	}
+
+	return nullptr;
+}
+
+UStaticDataWeaponSkinCompatibility* UStaticData::GetWeaponSkinCompatibility(const FGuid& ID)
+{
+	for (UStaticDataWeaponSkinCompatibility *Record : WeaponSkinCompatibilities)
+	{
+		if (Record->ID == ID)
+		{
+			return Record;
+		}
+	}
+
+	return nullptr;
 }
