@@ -56,6 +56,7 @@ The following Unreal Engine Plugins need to be installed. Find them in the Libra
 *( Note: You'll need to be signed in with the company's Epic Account to have access to paid assets/plugins. )*
 
 - Quixel Bridge
+- [LE Extended Standard Library](https://www.unrealengine.com/marketplace/en-US/product/low-entry-extended-standard-library)
 - [BlueprintWebSocket](https://www.unrealengine.com/marketplace/en-US/product/blueprintwebsocket)
 - [JSONParser](https://www.unrealengine.com/marketplace/en-US/product/jsonparser)
 - [EasyBallistics Plugin](https://www.unrealengine.com/marketplace/en-US/product/easyballistics-plugin)
@@ -82,7 +83,7 @@ know which conflicts are expected and possibly work on something else meanwhile.
 
 ## Keybinds
 
-- **SHIFT+ENTER :** Start test match *(for testing without a server)*
+- **SHIFT+ENTER :** Show Main Menu / Start test match if on specific map  *(for testing without a server)*
 - **CTRL+SHIFT+ENTER :** Start test match and skip the intro animations
 - **CTRL+SHIFT+R:** Load battle from clipboard (text w/ battle commands on each line)
 - **ENTER :** Toggle free camera
