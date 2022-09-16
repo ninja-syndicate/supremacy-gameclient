@@ -72,6 +72,9 @@ export interface AIBlackboard {
     rightArmWeapon: Weapon
     secondaryWeapon?: Weapon
 
+    arcLaunchLocation?: Vector
+    hasPrimaryAmmo: boolean
+
     /** Tolerable ideal range at which shootable weapons are still effective. This value is based on the {@link optimalEngagmentRange}. */
     idealEngagementRange: number
     /** Optimal range at which shootable weapons do full damage. */

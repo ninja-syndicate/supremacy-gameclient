@@ -4,6 +4,7 @@ import { Predicate_CanActivateAction } from "@predicates/Predicate_CanActivateAc
 import { distanceTo, size } from "@root/helper"
 
 export const Predicate_UseSpecialAttack = (blackboard: AIBlackboard): boolean => {
+    // Eventually move to functional-style
     if (!blackboard.secondaryWeapon) return false
     if (!blackboard.target) return false
     if (!blackboard.canSeeTarget) return false
@@ -14,7 +15,9 @@ export const Predicate_UseSpecialAttack = (blackboard: AIBlackboard): boolean =>
     const maxSpeed: number = blackboard.target.MaxSpeed
     const speedRatio: number = currentSpeed / maxSpeed
 
-    if (speedRatio < 0.5) return true
-
-    return distToTarget <= blackboard.secondaryWeapon.DamageFalloff
+    if (speedRatio < 0.5) {
+        return distToTarget <= blackboard.secondaryWeapon.DamageFalloff
+    }
+    // Fail
+    return false
 }

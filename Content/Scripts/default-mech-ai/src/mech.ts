@@ -13,6 +13,8 @@ import { scoreByDistance } from "@utility/helper"
 import { CURRENT_AI_CONFIG } from "@root/aiconfig"
 import { Damage } from "@root/damage"
 import { DamageTracker } from "@root/damagetracker"
+import { Predicate_HasAmmoByTag } from "@predicates/combat/Predicate_HasAmmo"
+import { disjunct } from "@predicates/Functional"
 
 // TODO: some clean up
 // TODO: handle signaling.
@@ -143,20 +145,14 @@ function updateBlackboard(input: BrainInput): void {
     updateBlackboardDamage()
     updateBlackboardSound()
     updateBlackboardInteractable()
-    // updateTargetLOS()
+    updateBlackboardAmmo(blackboard)
 }
 
-/*
-function updateTargetLOS() {
-    // TODO: Add LOS to target selection.
-    const blackboard: AIBlackboard = tree.blackboard as AIBlackboard
-    if (blackboard.target) {
-        blackboard.isTargetInWeaponLOS = AI.IsTargetInLOS(blackboard.target.hash)
-    } else {
-        blackboard.isTargetInWeaponLOS = false
-    }
+export const updateBlackboardAmmo = (blackboard: AIBlackboard) => {
+    blackboard.hasPrimaryAmmo = disjunct(Predicate_HasAmmoByTag(WeaponTag.Primary, WeaponTag.Shootable))(blackboard)
+    console.log("has primary ammo" + blackboard.hasPrimaryAmmo)
+    console.log("can melee" + blackboard.canMelee)
 }
-*/
 
 /**
  * Updates the sight related information in the blackboard.

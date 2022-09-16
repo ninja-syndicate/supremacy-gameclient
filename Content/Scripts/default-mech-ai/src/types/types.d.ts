@@ -112,27 +112,6 @@ declare class AIController {
     WeaponRelease(tag?: WeaponTag): void
 
     /**
-     * Get the current ammo count of a weapon.
-     *
-     * Always returns 1 if weapon has infinite ammo.
-     *
-     * *Note: Can only get the ammo count of your own weapons.*
-     *
-     * @param hash The hash of the weapon you want to get ammo count of
-     * @returns The ammo count of the weapon
-     */
-    WeaponGetAmmo(hash: string): number
-
-    /**
-     * Get the current ammo count of a weapon by tag. Note that if AI has more than one weapon of the specified tag, the sum of ammo count for all those weapons
-     * is returned.
-     *
-     * @param tag The weapon tag to get ammo count of
-     * @returns the sum of ammo count for all weapons that match the {@link tag}
-     */
-    WeaponGetAmmoByTag(tag: WeaponTag): number
-
-    /**
      * Shoot up a flare and trigger a loud horn, attracting enemies towards you.
      *
      * Useful if the AI is having trouble finding any enemies to fight.
@@ -322,9 +301,9 @@ export interface Weapon {
     ProjectileAmount: number
     /** The number of seconds it takes to start firing (e.g. mini-guns). */
     ChargeTime: number
-    /** The current weapon ammo. */
+    /** The current weapon ammo count. This will be 999 if infinite ammo. */
     CurrentAmmo: number
-    /** The maximum amount of ammo this weapon can hold. */
+    /** The maximum amount of ammo this weapon can hold. This will be 999 if infinite ammo. */
     MaxAmmo: number
     /** The weapon's tags. For use with {@link WeaponTrigger} and {@link WeaponRelease} */
     Tags: WeaponTag[]

@@ -8,8 +8,7 @@ import { AI } from "@root/index"
  * Makes AI shoot the specified weapon(s) by tag.
  *
  * The main difference between {@link BTT_TriggerWeapon} and this task is that this task will return RUNNING status instead of SUCCESS after triggering the
- * shootable weapon(s) by tag. If the given weapon(s) by tag does not have any ammo, the triggered weapon(s) will be released. And if there are multiple weapons
- * with the given tag, the total ammo of all those weapons will be used (@see {@link AI.WeaponGetAmmoByTag}).
+ * shootable weapon(s) by tag. If the given weapon(s) by tag does not have any ammo, the triggered weapon(s) will be released.
  *
  * Releases triggered shootable weapon(s) when aborted.
  *
@@ -30,8 +29,11 @@ export const BTT_Shoot = (tag: WeaponTag) =>
             return SUCCESS
         },
         run: (blackboard: AIBlackboard) => {
-            const hasAmmo: boolean = AI.WeaponGetAmmoByTag(tag) > 0
+            const idx: number = blackboard.input.Self.Weapons.findIndex((w) => w.Tags.find((t) => t === tag))
+            if (idx === -1) return FAILURE
 
+            const hasAmmo: boolean = blackboard.input.Self.Weapons[idx].CurrentAmmo > 0
+            
             if (hasAmmo) {
                 AI.WeaponTrigger(tag, blackboard.targetLastKnownLocation)
             } else {

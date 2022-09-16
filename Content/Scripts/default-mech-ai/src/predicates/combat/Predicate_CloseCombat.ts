@@ -14,7 +14,9 @@ import { Action } from "enums"
  */
 export const Predicate_CloseCombat = (blackboard: AIBlackboard): boolean => {
     if (!blackboard.canMelee) return false
+    if (!blackboard.canSeeTarget) return false
     if (typeof blackboard.targetLastKnownLocation === "undefined") return false
+    if (typeof blackboard.targetLastKnownVelocity === "undefined") return false
 
     const selfLocation: Vector = blackboard.input.Self.Location
     const distToTarget: number = distanceToVec(selfLocation, blackboard.targetLastKnownLocation)

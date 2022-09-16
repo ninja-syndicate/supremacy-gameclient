@@ -109,3 +109,6 @@ const CONSERVATIVE_AI_CONFIG: AIConfig = {
 /** Current AI configuration. Change this to the desired AI config preset. */
 export const CURRENT_AI_CONFIG: AIConfig = DEFAULT_AI_CONFIG
 export const ENABLE_DEBUGGING: boolean = false
+export const ZAIBATSU_SWORD_ACTIVATION_TIME: number = 2
+export const BOSTON_SWORD_ACTIVATION_TIME: number = 1
+export const ROCKET_POD_ACTIVATION_TIME: number = 1

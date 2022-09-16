@@ -1,53 +1,48 @@
 import { ObserverAborts, Selector } from "behaviortree"
-import { AIBlackboard } from "@blackboards/blackboard"
-import { IsSet } from "@decorators/IsSet"
-import { Predicate } from "@decorators/Predicate"
-import { Predicate_HasLowShield } from "@predicates/Predicate_HasLowShield"
-import { BT_Camp } from "@trees/BT_Camp"
-import { BT_CanSeeTarget } from "@trees/combat/BT_CanSeeTarget"
-import { BT_GetPickup } from "@trees/BT_GetPickup"
-import { BT_SearchTarget } from "@trees/BT_SearchTarget"
-import { BTT_Success } from "@tasks/BTT_Success"
-import { BT_Patrol } from "@trees/BT_Patrol"
-import { BT_InvestigateNoise } from "../BT_InvestigateNoise"
-import { BTT_Taunt } from "@root/tasks/BTT_Taunt"
-import { Action, UserAction } from "enums"
-import { BT_ParallelMoveToBattleZone } from "@trees/battlezone/BT_ParallelMoveToBattleZone"
-import { Predicate_IsInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
-import { Predicate_IsUsingAction } from "@predicates/Predicate_IsUsingAction"
+import { WeaponTag } from "enums"
 import { ParallelBackground } from "@branches/ParallelBackground"
-import { BT_UserAction, BT_Repair } from "@trees/useraction/BT_UserAction"
+import { Predicate } from "@decorators/Predicate"
+import { BTT_Shoot } from "@root/tasks/weapon/BTT_Shoot"
+import { BTT_Success } from "@tasks/BTT_Success"
+import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
+import { ForceSuccess } from "@trees/helper/BT_Helper"
+import { BT_UserAction } from "@trees/useraction/BT_UserAction"
+import { BT_CombatMovement } from "@trees/combat/BT_CombatMovement"
+import { Predicate_HasAmmoByTag } from "@predicates/combat/Predicate_HasAmmo"
+import { conjunct } from "@predicates/Functional"
+import { Predicate_UseSpecialAttack } from "@predicates/combat/Predicate_UseSpecialAttack"
+import { BT_PrimaryAttack } from "@trees/attack/BT_PrimaryAttack"
+import { BT_FireRocketPod } from "@trees/attack/BT_SecondaryAttack"
 
+// TODO: Separate ParallelBackground into main and background tasks properties.
+// TODO: Update code to actually reflect comment
 /**
- * The main combat behavior tree.
+ * Behavior when AI is in range combat.
  *
- * This behavior represents what AI can do when it is in combat state. It is composed of the following sub-behavior trees:
+ * The range combat behavior is a parallel task that executes the main and background tasks and keep running background tasks until the main task completes
+ * (@see {@link ParallelBackground}). Currently, the main task is the Parallel node which causes the weapons attached to the left and right arm to shoot. The
+ * background tasks are the {@link BTT_SetFocalPoint("target")} and the selector beneath it. {@link BTT_SetFocalPoint("target")} sets the focal point to the
+ * target. The selector selects most appropriate move to location based on the current state. You can customize these behaviors as you wish.
  *
- * {@link BT_CanSeeTarget} if AI can see the current target and isn't using any latent actions. This behavior is where the actual fighting logic is placed
- * {@link BT_GetPickup} otherwise get to the pickup location if AI has any
- * {@link BT_Camp} - otherwise get to the cover location and camp if its shield is low
- * {@link BT_SearchTarget} - otherwise searches for the current target based on the target's last known location
- * {@link BT_Patrol} otherwise fallback to patrol if {@link BT_SearchTarget} fails.
+ * The {@link BTT_Success} at the end forces the selector to succeed when the other behaviors fail (e.g. movement/env query fail) which will keep
+ * {@link BT_Combat} running.
  *
- * You can change this behavior to prioritize certain behaviors or anything you deem appropriate.
+ * Note that {@link BTT_Shoot} will never complete or fail unless there are no ammo or the weapon is not shootable, so this behavior will continue running until
+ * it is aborted by {@link ObserverAborts}.
  */
 export const BT_Combat = new Selector({
     nodes: [
-        Predicate(
-            BT_CanSeeTarget,
-            (blackboard: AIBlackboard) => blackboard.canSeeTarget || Predicate_IsUsingAction(Action.SpecialAttack)(blackboard),
-            true,
-            ObserverAborts.Both,
-        ),
-        BT_Repair(ObserverAborts.LowerPriority),
-        Predicate(BT_ParallelMoveToBattleZone, Predicate_IsInsideBattleZone, false, ObserverAborts.LowerPriority),
-        IsSet(BT_GetPickup, "desiredPickupLocation", true, ObserverAborts.Both),
-        Predicate(BT_Camp, Predicate_HasLowShield, true, ObserverAborts.LowerPriority),
-        // TODO: Need to decide priority between investigating noise and searching target.
-        // Predicate(BT_InvestigateNoise, (blackboard: AIBlackboard) => !blackboard.canSeeTarget && blackboard.heardNoise, true, ObserverAborts.LowerPriority),
-        // CanActivateAction(Predicate(BTT_Taunt, (blackboard: AIBlackboard) => !blackboard.canSeeTarget && !HasLowShield(blackboard)), Action.Taunt),
-        Predicate(BT_SearchTarget, (blackboard: AIBlackboard) => !blackboard.canSeeTarget),
-        BT_Patrol,
-        BTT_Success,
+        Predicate(BT_FireRocketPod, conjunct(Predicate_UseSpecialAttack, Predicate_HasAmmoByTag(WeaponTag.Secondary)), true, ObserverAborts.LowerPriority),
+        new ParallelBackground({
+            nodes: [
+                // Main task
+                BT_PrimaryAttack,
+
+                // Background tasks
+                BTT_SetFocalPoint("target"),
+                ForceSuccess(BT_UserAction),
+                ForceSuccess(BT_CombatMovement),
+            ],
+        }),
     ],
 })

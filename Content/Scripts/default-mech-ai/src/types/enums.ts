@@ -10,6 +10,7 @@ export const enum WeaponTag {
     Melee = "Weapon.Melee",
     Flamethrower = "Weapon.Flamethrower",
     Arced = "Weapon.Arced",
+    Shootable = "Weapon.Shootable"
 }
 
 /**
