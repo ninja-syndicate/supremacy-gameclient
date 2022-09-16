@@ -33,9 +33,10 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 	
 	UStaticDataMechSkinCompatibility *Record = DataAsset->GetOrCreateMechSkinCompatibility(Id);
 	
-	Record->Label = Id.ToString();
 	Record->Skin = DataAsset->GetSkin(SkinId);
 	Record->WarMachineModel = DataAsset->GetWarMachineModel(MechId);
+
+	Record->Label = Record->WarMachineModel->Label + " -> " + Record->Skin->Label;
 	
 	SetAssetName(DataAsset, Record, TEXT("Mech Skin Compatibility"));
 	return true;

@@ -8,6 +8,7 @@
 #include "Importers/Faction.h"
 #include "Importers/Brand.h"
 #include "Importers/MechSkinCompatibility.h"
+#include "Importers/PowerCore.h"
 #include "Importers/WeaponSkinCompatibility.h"
 #include "Importers/WarMachineModel.h"
 #include "Importers/Skin.h"
@@ -24,6 +25,7 @@ UStaticDataImporter::UStaticDataImporter()
 	Importers.Add(new StaticDataImporter::WarMachineModel());
 	Importers.Add(new StaticDataImporter::MechSkinCompatibility());
 	Importers.Add(new StaticDataImporter::WeaponSkinCompatibility());
+	Importers.Add(new StaticDataImporter::PowerCore());
 	
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
@@ -113,6 +115,7 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
 
 	asset->Modify(true);
 	UKismetSystemLibrary::EndTransaction();
+	
 	LogMessage("Import Succeeded!");
 	return true;
 }

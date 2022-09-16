@@ -32,9 +32,10 @@ bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAss
 	
 	UStaticDataWeaponSkinCompatibility *Record = DataAsset->GetOrCreateWeaponSkinCompatibility(Id);
 	
-	Record->Label = Id.ToString();
 	Record->WeaponSkin = DataAsset->GetWeaponSkin(SkinId);
 	Record->Weapon = DataAsset->GetWeapon(WeaponId);
+
+	Record->Label = Record->Weapon->Label + " -> " + Record->WeaponSkin->Label;
 	
 	SetAssetName(DataAsset, Record, TEXT("Weapon Skin Compatibility"));
 	return true;
