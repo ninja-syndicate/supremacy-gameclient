@@ -50,7 +50,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="For AI reference."))
 	int Optimal_Range;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "For recoil on the Mech's arms."))
-    float Recoil_Force;
+	float Recoil_Force;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Power_Cost;
@@ -66,7 +66,7 @@ public:
 	                 Projectile_Amount(0),
 	                 Charge_Time(0),
 	                 Is_Arced(false), Optimal_Range(0),
-					 Recoil_Force(0),
+	                 Recoil_Force(0),
 	                 Power_Cost(0), Power_Instance_Drain(false)
 	{
 	}
