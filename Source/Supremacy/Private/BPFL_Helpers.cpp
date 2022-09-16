@@ -20,7 +20,7 @@ void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FStr
 	}
 }
 
-TArray<uint8> ConvertIntToBytes(const int Input)
+TArray<uint8> UBPFL_Helpers::ConvertIntToBytes(const int Input)
 {
 	TArray<uint8> Bytes = TArray<uint8>();
 	Bytes.Emplace((Input >> 24) & 0xFF);
@@ -30,8 +30,16 @@ TArray<uint8> ConvertIntToBytes(const int Input)
 	return Bytes;
 }
 
+TArray<uint8> UBPFL_Helpers::ConvertUInt16ToBytes(const uint16 Input)
+{
+	TArray<uint8> Bytes = TArray<uint8>();
+	Bytes.Emplace(Input >> 8);
+	Bytes.Emplace(Input >> 0);
+	return Bytes;
+}
+
 void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, 
-	const TArray<bool> DiffArray, TArray<uint8>& Bytes)
+                                         const TArray<bool> DiffArray, TArray<uint8>& Bytes)
 {
 	Bytes = TArray<uint8>();
 	Bytes.Emplace(Number);
@@ -86,11 +94,39 @@ uint8 UBPFL_Helpers::PackBooleansIntoByte(const TArray<bool> Booleans)
 
 TArray<bool> UBPFL_Helpers::UnpackBooleansFromByte(const uint8 Byte)
 {
-	TArray<bool> booleans = TArray<bool>();
-	booleans.Init(false, 8);
+	TArray<bool> Booleans = TArray<bool>();
+	Booleans.Init(false, 8);
 	for (int i = 0; i < 8; ++i)
-		booleans[i] = (Byte & (1 << i)) != 0;
-	return booleans;
+		Booleans[i] = (Byte & (1 << i)) != 0;
+	return Booleans;
+}
+
+TArray<uint8> UBPFL_Helpers::PackBooleansIntoBytes(const TArray<bool> Booleans)
+{
+	TArray<uint8> Bytes = TArray<uint8>();
+	int Count = -1;
+	for (int i = 0; i < Booleans.Num(); ++i)
+	{
+		if (i % 8 == 0)
+		{
+			Count++;
+			Bytes.Emplace(0);
+		}
+		if (Booleans[i])
+			Bytes[Count] |= 1 << i;
+	}
+	return Bytes;
+}
+
+TArray<bool> UBPFL_Helpers::UnpackBooleansFromBytes(const TArray<uint8> Bytes)
+{
+	TArray<bool> Booleans = TArray<bool>();
+	for (const uint8 Byte : Bytes)
+	{
+		for (int i = 0; i < 8; ++i)
+			Booleans.Emplace((Byte & (1 << i)) != 0);
+	}
+	return Booleans;
 }
 
 FColor UBPFL_Helpers::HexToColor(const FString HexString)

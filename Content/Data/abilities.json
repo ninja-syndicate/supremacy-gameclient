@@ -18,8 +18,8 @@
      },
      "Nuke": {
           "Damage": 6000,
-          "DamageRadius": 2000,
-          "DamageRadiusFalloff": 0,
+          "DamageRadius": 5000,
+          "DamageRadiusFalloff": 2500,
           "DamageOverTime": [
                {
                     "Damage": 200,

@@ -2,11 +2,10 @@ import { Sequence } from "behaviortree"
 import { EQSArgument, EQSQueryType } from "enums"
 import { AIBlackboard } from "@blackboards/blackboard"
 import { BTT_QuerySetArgumentFloat, BTT_QuerySetArgumentString } from "@tasks/environment/BTT_QuerySetArgument"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_RunEQSQuery } from "@tasks/environment/BTT_RunEQSQuery"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
+import { BT_MoveByDistanceToTarget } from "@trees/movement/BT_MovementMode"
 
-// TODO: Change Strafe EQS argument to target last known location, not the target hash.
 /**
  * Strafing behavior.
  *
@@ -17,11 +16,13 @@ import { BTT_SetValue } from "@tasks/BTT_SetValue"
  */
 export const BT_Strafe = new Sequence({
     nodes: [
-        BTT_QuerySetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.hash),
-        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => 8000),
-        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.SpaceBetween, (blackboard: AIBlackboard) => 1000),
+        BTT_QuerySetArgumentString(EQSQueryType.Strafe, EQSArgument.TargetHash, (blackboard: AIBlackboard) => blackboard.target.Hash),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.GridSize, (blackboard: AIBlackboard) => Math.max(20000, blackboard.idealEngagementRange)),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MinDistanceToSelf, (blackboard: AIBlackboard) => 3000),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MinDistanceToTarget, (blackboard: AIBlackboard) => 0),
+        BTT_QuerySetArgumentFloat(EQSQueryType.Strafe, EQSArgument.MaxDistanceToTarget, (blackboard: AIBlackboard) => blackboard.idealEngagementRange),
         BTT_RunEQSQuery(EQSQueryType.Strafe, "strafeLocation"),
-        BTT_MoveTo("strafeLocation"),
+        BT_MoveByDistanceToTarget("strafeLocation"),
         BTT_SetValue((blackboard: AIBlackboard) => (blackboard.strafeLocation = undefined)),
     ],
 })

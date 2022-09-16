@@ -1,7 +1,5 @@
 import { ObserverAborts, Sequence } from "behaviortree"
 import { AIBlackboard } from "@blackboards/blackboard"
-import { ForceSuccess } from "@decorators/ForceSuccess"
-import { BTT_MoveTo } from "@tasks/movement/BTT_MoveTo"
 import { BTT_SetValue } from "@tasks/BTT_SetValue"
 import { BTT_SetFocalPoint } from "@tasks/focus/BTT_SetFocalPoint"
 import { BT_SearchHiddenLocation } from "@trees/BT_SearchHiddenLocation"
@@ -9,6 +7,7 @@ import { ParallelBackground } from "@branches/ParallelBackground"
 import { BT_SetFocal } from "@trees/BT_SetFocal"
 import { Predicate } from "@decorators/Predicate"
 import { Predicate_IsLocationInsideBattleZone } from "@predicates/Predicate_IsInsideBattleZone"
+import { BT_DefaultMoveTo } from "@trees/movement/BT_MovementMode"
 
 /**
  * Behavior when AI heard a noise.
@@ -23,7 +22,7 @@ export const BT_InvestigateNoise = new ParallelBackground({
         new Sequence({
             nodes: [
                 BTT_SetFocalPoint("noiseLocation"),
-                Predicate(BTT_MoveTo("noiseLocation"), Predicate_IsLocationInsideBattleZone("noiseLocation"), true, ObserverAborts.Self),
+                Predicate(BT_DefaultMoveTo("noiseLocation"), Predicate_IsLocationInsideBattleZone("noiseLocation"), true, ObserverAborts.Self),
                 BT_SearchHiddenLocation("noiseLocation"),
                 BTT_SetValue((blackboard: AIBlackboard) => (blackboard.noiseLocation = undefined)),
                 BTT_SetValue((blackboard: AIBlackboard) => (blackboard.heardNoise = false)),
