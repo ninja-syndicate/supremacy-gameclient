@@ -19,5 +19,12 @@ class SUPREMACY_API UStaticDataBattleAbility : public UStaticDataBaseRecord
 	
 	GENERATED_BODY()
 
-	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 Cooldown;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	FString Description;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	FString KillingPowerLevel;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 MaximumCommanderCount;
 };

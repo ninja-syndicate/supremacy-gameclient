@@ -4,6 +4,7 @@
 #include "StaticDataImporter.h"
 #include "SupremacyEditorModule.h"
 #include "DesktopPlatformModule.h"
+#include "Importers/BattleAbility.h"
 
 #include "Importers/Faction.h"
 #include "Importers/Brand.h"
@@ -14,6 +15,9 @@
 #include "Importers/Skin.h"
 #include "Importers/Weapon.h"
 #include "Importers/WeaponSkin.h"
+#include "Importers/BattleAbility.h"
+#include "Importers/GameAbility.h"
+#include "Importers/PlayerAbility.h"
 
 UStaticDataImporter::UStaticDataImporter()
 {
@@ -26,6 +30,9 @@ UStaticDataImporter::UStaticDataImporter()
 	Importers.Add(new StaticDataImporter::MechSkinCompatibility());
 	Importers.Add(new StaticDataImporter::WeaponSkinCompatibility());
 	Importers.Add(new StaticDataImporter::PowerCore());
+	Importers.Add(new StaticDataImporter::BattleAbility());
+	Importers.Add(new StaticDataImporter::PlayerAbility());
+	Importers.Add(new StaticDataImporter::GameAbility());
 	
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
