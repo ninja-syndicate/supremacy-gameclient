@@ -12021,10 +12021,10 @@ declare class PlayerController extends Controller {
 	AddPitchInput(Val: number): void;
 	ActivateTouchInterface(NewTouchInterface: TouchInterface): void;
 	static C(Other: UObject | any): PlayerController;
+	PlayerControllerGetLocalPlayer(Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	GetCameraCachePOV(): MinimalViewInfo;
 	GetLastFrameCameraCachePOV(): MinimalViewInfo;
 	GetPostProcessBlendCache(PPIndex: number,OutPPSettings?: PostProcessSettings,OutPPBlendWeight?: number): {OutPPSettings: PostProcessSettings, OutPPBlendWeight: number, $: boolean};
-	PlayerControllerGetLocalPlayer(Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	WriteLeaderboardInteger(StatName: string,StatValue: number): boolean;
 	GetLocalPlayerSubSystemFromPlayerController(Class: UnrealEngineClass): LocalPlayerSubsystem;
 	IsLoggedIn(): boolean;
@@ -12040,10 +12040,10 @@ declare class PlayerController extends Controller {
 	SetInputMode_GameAndUIEx(InWidgetToFocus: Widget,InMouseLockMode: EMouseLockMode,bHideCursorDuringCapture: boolean): void;
 	SetInputMode_GameOnly(): void;
 	SetInputMode_UIOnlyEx(InWidgetToFocus: Widget,InMouseLockMode: EMouseLockMode): void;
+	static PlayerControllerGetLocalPlayer(PlayerController: PlayerController,Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	static GetCameraCachePOV(PlayerController: PlayerController): MinimalViewInfo;
 	static GetLastFrameCameraCachePOV(PlayerController: PlayerController): MinimalViewInfo;
 	static GetPostProcessBlendCache(PlayerController: PlayerController,PPIndex: number,OutPPSettings?: PostProcessSettings,OutPPBlendWeight?: number): {OutPPSettings: PostProcessSettings, OutPPBlendWeight: number, $: boolean};
-	static PlayerControllerGetLocalPlayer(PlayerController: PlayerController,Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	static WriteLeaderboardInteger(PlayerController: PlayerController,StatName: string,StatValue: number): boolean;
 	static GetLocalPlayerSubSystemFromPlayerController(PlayerController: PlayerController,Class: UnrealEngineClass): LocalPlayerSubsystem;
 	static IsLoggedIn(SpecificPlayer: PlayerController): boolean;
@@ -14623,12 +14623,6 @@ declare class AudioInputDeviceInfo {
 	static Conv_AudioInputDeviceInfoToString(Info: AudioInputDeviceInfo): string;
 }
 
-declare class ActorLayer { 
-	Name: string;
-	clone() : ActorLayer;
-	static C(Other: UObject | any): ActorLayer;
-}
-
 declare class AnimSeqExportOption extends UObject { 
 	bExportTransforms: boolean;
 	bExportMorphTargets: boolean;
@@ -14763,6 +14757,12 @@ declare class MovieSceneUserImportFBXSettings extends UObject {
 	static GetDefaultObject(): MovieSceneUserImportFBXSettings;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MovieSceneUserImportFBXSettings;
 	static C(Other: UObject | any): MovieSceneUserImportFBXSettings;
+}
+
+declare class ActorLayer { 
+	Name: string;
+	clone() : ActorLayer;
+	static C(Other: UObject | any): ActorLayer;
 }
 
 declare type ENavPathEvent = 'Cleared' | 'NewPath' | 'UpdatedDueToGoalMoved' | 'UpdatedDueToNavigationChanged' | 'Invalidated' | 'RePathFailed' | 'MetaPathUpdate' | 'Custom' | 'ENavPathEvent_MAX';
@@ -18492,13 +18492,13 @@ declare class World extends UObject {
 	InvalidateModelGeometry(InLevel: Level): void;
 	RemoveLevelInstance(): void;
 	GetAvailableAudioInputDevices(OnObtainDevicesEvent: UnrealEngineDelegate<(AvailableDevices: AudioInputDeviceInfo[]) => void>): void;
-	GetActors(ActorLayer: ActorLayer): Actor[];
 	ExportAnimSequence(Sequence: LevelSequence,AnimSequence: AnimSequence,ExportOption: AnimSeqExportOption,Binding: SequencerBindingProxy): boolean;
 	ExportLevelSequenceFBX(InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InMasterTracks: MovieSceneTrack[],OverrideOptions: FbxExportOption,InFBXFileName: string): boolean;
 	GetBoundObjects(InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	GetObjectBindings(InSequence: LevelSequence,InObject: UObject[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	ImportFBXToControlRig(InSequence: LevelSequence,ActorWithControlRigTrack: string,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	ImportLevelSequenceFBX(InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InImportFBXSettings: MovieSceneUserImportFBXSettings,InImportFilename: string): boolean;
+	GetActors(ActorLayer: ActorLayer): Actor[];
 	DrawNavPath(NavPath: NavigationPath,PathColor: LinearColor,PathOffset: Vector,bPersistent: boolean): void;
 	FindPathToActorAsynchronously(LatentInfo: LatentActionInfo,PathStart: Vector,GoalActor: Actor,TetherDistance: number,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
 	FindPathToLocationAsynchronously(LatentInfo: LatentActionInfo,PathStart: Vector,PathEnd: Vector,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
@@ -18815,13 +18815,13 @@ declare class World extends UObject {
 	static InvalidateModelGeometry(World: World,InLevel: Level): void;
 	static RemoveLevelInstance(World: World): void;
 	static GetAvailableAudioInputDevices(WorldContextObject: UObject,OnObtainDevicesEvent: UnrealEngineDelegate<(AvailableDevices: AudioInputDeviceInfo[]) => void>): void;
-	static GetActors(WorldContextObject: UObject,ActorLayer: ActorLayer): Actor[];
 	static ExportAnimSequence(World: World,Sequence: LevelSequence,AnimSequence: AnimSequence,ExportOption: AnimSeqExportOption,Binding: SequencerBindingProxy): boolean;
 	static ExportLevelSequenceFBX(InWorld: World,InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InMasterTracks: MovieSceneTrack[],OverrideOptions: FbxExportOption,InFBXFileName: string): boolean;
 	static GetBoundObjects(InWorld: World,InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	static GetObjectBindings(InWorld: World,InSequence: LevelSequence,InObject: UObject[],InRange: SequencerScriptingRange): SequencerBoundObjects[];
 	static ImportFBXToControlRig(World: World,InSequence: LevelSequence,ActorWithControlRigTrack: string,SelectedControlRigNames: string[],ImportFBXControlRigSettings: MovieSceneUserImportFBXControlRigSettings,ImportFilename: string): boolean;
 	static ImportLevelSequenceFBX(InWorld: World,InSequence: LevelSequence,InBindings: SequencerBindingProxy[],InImportFBXSettings: MovieSceneUserImportFBXSettings,InImportFilename: string): boolean;
+	static GetActors(WorldContextObject: UObject,ActorLayer: ActorLayer): Actor[];
 	static DrawNavPath(WorldContextObject: UObject,NavPath: NavigationPath,PathColor: LinearColor,PathOffset: Vector,bPersistent: boolean): void;
 	static FindPathToActorAsynchronously(WorldContextObject: UObject,LatentInfo: LatentActionInfo,PathStart: Vector,GoalActor: Actor,TetherDistance: number,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
 	static FindPathToLocationAsynchronously(WorldContextObject: UObject,LatentInfo: LatentActionInfo,PathStart: Vector,PathEnd: Vector,PathfindingContext: Actor,FilterClass: UnrealEngineClass): NavigationPath;
