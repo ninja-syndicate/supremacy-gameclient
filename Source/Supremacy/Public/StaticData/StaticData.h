@@ -15,6 +15,7 @@
 #include "StaticDataBattleAbility.h"
 #include "StaticDataPlayerAbility.h"
 #include "StaticDataGameAbility.h"
+#include "StaticDataShieldType.h"
 #include "StaticData.generated.h"
 
 namespace StaticDataImporter
@@ -32,6 +33,7 @@ namespace StaticDataImporter
 	class BattleAbility;
 	class PlayerAbility;
 	class GameAbility;
+    class ShieldType;
 }
 
 /**
@@ -44,7 +46,7 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 	
 	GENERATED_BODY()
 
-    friend StaticDataImporter::Faction;
+        friend StaticDataImporter::Faction;
     friend StaticDataImporter::Brand;
     friend StaticDataImporter::WarMachineModel;
     friend StaticDataImporter::Skin;
@@ -56,43 +58,47 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
     friend StaticDataImporter::BattleAbility;
     friend StaticDataImporter::PlayerAbility;
     friend StaticDataImporter::GameAbility;
+    friend StaticDataImporter::ShieldType;
 
 public:
     UFUNCTION(BlueprintCallable)
-    UStaticDataFaction* GetFaction(const FGuid& ID);
+        UStaticDataFaction* GetFaction(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataBrand* GetBrand(const FGuid& ID);
+        UStaticDataBrand* GetBrand(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataWarMachineModel* GetWarMachineModel(const FGuid& ID);
+        UStaticDataWarMachineModel* GetWarMachineModel(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataSkin* GetSkin(const FGuid& ID);
+        UStaticDataSkin* GetSkin(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataWeaponSkin* GetWeaponSkin(const FGuid& ID);
+        UStaticDataWeaponSkin* GetWeaponSkin(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataWeapon* GetWeapon(const FGuid& ID);
+        UStaticDataWeapon* GetWeapon(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataMechSkinCompatibility* GetMechSkinCompatibility(const FGuid& ID);
+        UStaticDataMechSkinCompatibility* GetMechSkinCompatibility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataWeaponSkinCompatibility* GetWeaponSkinCompatibility(const FGuid& ID);
+        UStaticDataWeaponSkinCompatibility* GetWeaponSkinCompatibility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataPowerCore* GetPowerCore(const FGuid& ID);
+        UStaticDataPowerCore* GetPowerCore(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataBattleAbility* GetBattleAbility(const FGuid& ID);
+        UStaticDataBattleAbility* GetBattleAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataPlayerAbility* GetPlayerAbility(const FGuid& ID);
+        UStaticDataPlayerAbility* GetPlayerAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    UStaticDataGameAbility* GetGameAbility(const FGuid& ID);
+        UStaticDataGameAbility* GetGameAbility(const FGuid& ID);
+
+    UFUNCTION(BlueprintCallable)
+        UStaticDataShieldType* GetShieldType(const FGuid& ID);
 
 private:
     UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
@@ -107,40 +113,44 @@ private:
     UStaticDataBattleAbility* GetOrCreateBattleAbility(const FGuid& ID);
     UStaticDataPlayerAbility* GetOrCreatePlayerAbility(const FGuid& ID);
     UStaticDataGameAbility* GetOrCreateGameAbility(const FGuid& ID);
+    UStaticDataShieldType* GetOrCreateShieldType(const FGuid& ID);
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataFaction*> FactionArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataFaction*> FactionArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataBrand*> BrandArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataBrand*> BrandArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataWarMachineModel*> WarMachineModelArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataWarMachineModel*> WarMachineModelArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataSkin*> SkinArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataSkin*> SkinArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataWeaponSkin*> WeaponSkinArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataWeaponSkin*> WeaponSkinArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataWeapon*> WeaponArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataWeapon*> WeaponArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataMechSkinCompatibility*> MechSkinCompatibilityArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataMechSkinCompatibility*> MechSkinCompatibilityArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataWeaponSkinCompatibility*> WeaponSkinCompatibilityArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataWeaponSkinCompatibility*> WeaponSkinCompatibilityArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataPowerCore*> PowerCoreArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataPowerCore*> PowerCoreArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataBattleAbility*> BattleAbilityArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataBattleAbility*> BattleAbilityArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataPlayerAbility*> PlayerAbilityArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataPlayerAbility*> PlayerAbilityArray;
 
-    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta=(AllowPrivateAccess))
-    TArray<UStaticDataGameAbility*> GameAbilityArray;
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataGameAbility*> GameAbilityArray;
+
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataShieldType*> ShieldTypeArray;
 };

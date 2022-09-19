@@ -18,6 +18,7 @@
 #include "Importers/BattleAbility.h"
 #include "Importers/GameAbility.h"
 #include "Importers/PlayerAbility.h"
+#include "Importers/ShieldType.h"
 
 UStaticDataImporter::UStaticDataImporter()
 {
@@ -33,7 +34,7 @@ UStaticDataImporter::UStaticDataImporter()
 	Importers.Add(new StaticDataImporter::BattleAbility());
 	Importers.Add(new StaticDataImporter::PlayerAbility());
 	Importers.Add(new StaticDataImporter::GameAbility());
-	
+	Importers.Add(new StaticDataImporter::ShieldType());
 	ImportPath = TEXT("");
 	DesktopPlatform = FDesktopPlatformModule::Get();
 	if (DesktopPlatform == nullptr)
