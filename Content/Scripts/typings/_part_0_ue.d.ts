@@ -12021,10 +12021,10 @@ declare class PlayerController extends Controller {
 	AddPitchInput(Val: number): void;
 	ActivateTouchInterface(NewTouchInterface: TouchInterface): void;
 	static C(Other: UObject | any): PlayerController;
-	PlayerControllerGetLocalPlayer(Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	GetCameraCachePOV(): MinimalViewInfo;
 	GetLastFrameCameraCachePOV(): MinimalViewInfo;
 	GetPostProcessBlendCache(PPIndex: number,OutPPSettings?: PostProcessSettings,OutPPBlendWeight?: number): {OutPPSettings: PostProcessSettings, OutPPBlendWeight: number, $: boolean};
+	PlayerControllerGetLocalPlayer(Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	WriteLeaderboardInteger(StatName: string,StatValue: number): boolean;
 	GetLocalPlayerSubSystemFromPlayerController(Class: UnrealEngineClass): LocalPlayerSubsystem;
 	IsLoggedIn(): boolean;
@@ -12040,10 +12040,10 @@ declare class PlayerController extends Controller {
 	SetInputMode_GameAndUIEx(InWidgetToFocus: Widget,InMouseLockMode: EMouseLockMode,bHideCursorDuringCapture: boolean): void;
 	SetInputMode_GameOnly(): void;
 	SetInputMode_UIOnlyEx(InWidgetToFocus: Widget,InMouseLockMode: EMouseLockMode): void;
-	static PlayerControllerGetLocalPlayer(PlayerController: PlayerController,Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	static GetCameraCachePOV(PlayerController: PlayerController): MinimalViewInfo;
 	static GetLastFrameCameraCachePOV(PlayerController: PlayerController): MinimalViewInfo;
 	static GetPostProcessBlendCache(PlayerController: PlayerController,PPIndex: number,OutPPSettings?: PostProcessSettings,OutPPBlendWeight?: number): {OutPPSettings: PostProcessSettings, OutPPBlendWeight: number, $: boolean};
+	static PlayerControllerGetLocalPlayer(PlayerController: PlayerController,Success?: boolean,LocalPlayer?: LocalPlayer): {Success: boolean, LocalPlayer: LocalPlayer};
 	static WriteLeaderboardInteger(PlayerController: PlayerController,StatName: string,StatValue: number): boolean;
 	static GetLocalPlayerSubSystemFromPlayerController(PlayerController: PlayerController,Class: UnrealEngineClass): LocalPlayerSubsystem;
 	static IsLoggedIn(SpecificPlayer: PlayerController): boolean;

@@ -107,7 +107,6 @@ declare class SVOQuerySettings {
 	bUseUnitCost: boolean;
 	bUseNodeCompensation: boolean;
 	bUsePawnCentreForPathFollowing: boolean;
-	bSmoothPath: boolean;
 	DebugPathColor: LinearColor;
 	clone() : SVOQuerySettings;
 	static C(Other: UObject | any): SVOQuerySettings;

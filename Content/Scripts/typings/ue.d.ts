@@ -3,490 +3,6 @@
 /// <reference path="_part_2_ue.d.ts">/>
 /// <reference path="_part_3_ue.d.ts">/>
 /// <reference path="_part_4_ue.d.ts">/>
-declare class AndroidPermissionFunctionLibrary extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): AndroidPermissionFunctionLibrary;
-	static Find(Outer: UObject, ResourceName: string): AndroidPermissionFunctionLibrary;
-	static GetDefaultObject(): AndroidPermissionFunctionLibrary;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AndroidPermissionFunctionLibrary;
-	static CheckPermission(permission: string): boolean;
-	static AcquirePermissions(Permissions: string[]): AndroidPermissionCallbackProxy;
-	static C(Other: UObject | any): AndroidPermissionFunctionLibrary;
-}
-
-declare class AndroidPermissionDynamicDelegate__PythonCallable extends PythonCallableForDelegate { 
-	static Load(ResourceName: string): AndroidPermissionDynamicDelegate__PythonCallable;
-	static Find(Outer: UObject, ResourceName: string): AndroidPermissionDynamicDelegate__PythonCallable;
-	static GetDefaultObject(): AndroidPermissionDynamicDelegate__PythonCallable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AndroidPermissionDynamicDelegate__PythonCallable;
-	static C(Other: UObject | any): AndroidPermissionDynamicDelegate__PythonCallable;
-}
-
-declare class ArchVisCharacter extends Character { 
-	LookUpAxisName: string;
-	LookUpAtRateAxisName: string;
-	TurnAxisName: string;
-	TurnAtRateAxisName: string;
-	MoveForwardAxisName: string;
-	MoveRightAxisName: string;
-	MouseSensitivityScale_Pitch: number;
-	MouseSensitivityScale_Yaw: number;
-	static GetDefaultObject(): ArchVisCharacter;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ArchVisCharacter;
-	static C(Other: UObject | any): ArchVisCharacter;
-}
-
-declare class ArchVisCharMovementComponent extends CharacterMovementComponent { 
-	RotationalAcceleration: Rotator;
-	RotationalDeceleration: Rotator;
-	MaxRotationalVelocity: Rotator;
-	MinPitch: number;
-	MaxPitch: number;
-	WalkingFriction: number;
-	WalkingSpeed: number;
-	WalkingAcceleration: number;
-	static Load(ResourceName: string): ArchVisCharMovementComponent;
-	static Find(Outer: UObject, ResourceName: string): ArchVisCharMovementComponent;
-	static GetDefaultObject(): ArchVisCharMovementComponent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ArchVisCharMovementComponent;
-	static C(Other: UObject | any): ArchVisCharMovementComponent;
-}
-
-declare type ECollectionScriptingShareType = 'Local' | 'Private' | 'Shared' | 'ECollectionScriptingShareType_MAX';
-declare var ECollectionScriptingShareType : { Local:'Local',Private:'Private',Shared:'Shared',ECollectionScriptingShareType_MAX:'ECollectionScriptingShareType_MAX', };
-declare class AssetTagsSubsystem extends EngineSubsystem { 
-	static Load(ResourceName: string): AssetTagsSubsystem;
-	static Find(Outer: UObject, ResourceName: string): AssetTagsSubsystem;
-	static GetDefaultObject(): AssetTagsSubsystem;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AssetTagsSubsystem;
-	ReparentCollection(Name: string,NewParentName: string): boolean;
-	RenameCollection(Name: string,NewName: string): boolean;
-	RemoveAssetsFromCollection(Name: string,AssetPathNames: string[]): boolean;
-	RemoveAssetPtrsFromCollection(Name: string,AssetPtrs: UObject[]): boolean;
-	RemoveAssetPtrFromCollection(Name: string,AssetPtr: UObject): boolean;
-	RemoveAssetFromCollection(Name: string,AssetPathName: string): boolean;
-	RemoveAssetDatasFromCollection(Name: string,AssetDatas: AssetData[]): boolean;
-	RemoveAssetDataFromCollection(Name: string,AssetData: AssetData): boolean;
-	GetCollectionsContainingAssetPtr(AssetPtr: UObject): string[];
-	GetCollectionsContainingAssetData(AssetData: AssetData): string[];
-	GetCollectionsContainingAsset(AssetPathName: string): string[];
-	GetCollections(): string[];
-	GetAssetsInCollection(Name: string): AssetData[];
-	EmptyCollection(Name: string): boolean;
-	DestroyCollection(Name: string): boolean;
-	CreateCollection(Name: string,ShareType: ECollectionScriptingShareType): boolean;
-	CollectionExists(Name: string): boolean;
-	AddAssetToCollection(Name: string,AssetPathName: string): boolean;
-	AddAssetsToCollection(Name: string,AssetPathNames: string[]): boolean;
-	AddAssetPtrToCollection(Name: string,AssetPtr: UObject): boolean;
-	AddAssetPtrsToCollection(Name: string,AssetPtrs: UObject[]): boolean;
-	AddAssetDataToCollection(Name: string,AssetData: AssetData): boolean;
-	AddAssetDatasToCollection(Name: string,AssetDatas: AssetData[]): boolean;
-	static C(Other: UObject | any): AssetTagsSubsystem;
-}
-
-declare class CustomMeshTriangle { 
-	Vertex0: Vector;
-	Vertex1: Vector;
-	Vertex2: Vector;
-	clone() : CustomMeshTriangle;
-	static C(Other: UObject | any): CustomMeshTriangle;
-}
-
-declare class CustomMeshComponent extends MeshComponent { 
-	static Load(ResourceName: string): CustomMeshComponent;
-	static Find(Outer: UObject, ResourceName: string): CustomMeshComponent;
-	static GetDefaultObject(): CustomMeshComponent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): CustomMeshComponent;
-	SetCustomMeshTriangles(Triangles: CustomMeshTriangle[]): boolean;
-	ClearCustomMeshTriangles(): void;
-	AddCustomMeshTriangles(Triangles: CustomMeshTriangle[]): void;
-	static C(Other: UObject | any): CustomMeshComponent;
-}
-
-declare class AudioCaptureDeviceInfo { 
-	DeviceName: string;
-	NumInputChannels: number;
-	SampleRate: number;
-	clone() : AudioCaptureDeviceInfo;
-	static C(Other: UObject | any): AudioCaptureDeviceInfo;
-}
-
-declare class AudioCapture extends AudioGenerator { 
-	static Load(ResourceName: string): AudioCapture;
-	static Find(Outer: UObject, ResourceName: string): AudioCapture;
-	static GetDefaultObject(): AudioCapture;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AudioCapture;
-	StopCapturingAudio(): void;
-	StartCapturingAudio(): void;
-	IsCapturingAudio(): boolean;
-	GetAudioCaptureDeviceInfo(OutInfo?: AudioCaptureDeviceInfo): {OutInfo: AudioCaptureDeviceInfo, $: boolean};
-	static C(Other: UObject | any): AudioCapture;
-}
-
-declare class AudioCaptureFunctionLibrary extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): AudioCaptureFunctionLibrary;
-	static Find(Outer: UObject, ResourceName: string): AudioCaptureFunctionLibrary;
-	static GetDefaultObject(): AudioCaptureFunctionLibrary;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AudioCaptureFunctionLibrary;
-	static CreateAudioCapture(): AudioCapture;
-	static C(Other: UObject | any): AudioCaptureFunctionLibrary;
-}
-
-declare class AudioCaptureBlueprintLibrary extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): AudioCaptureBlueprintLibrary;
-	static Find(Outer: UObject, ResourceName: string): AudioCaptureBlueprintLibrary;
-	static GetDefaultObject(): AudioCaptureBlueprintLibrary;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AudioCaptureBlueprintLibrary;
-	static Conv_AudioInputDeviceInfoToString(Info: AudioInputDeviceInfo): string;
-	static C(Other: UObject | any): AudioCaptureBlueprintLibrary;
-}
-
-declare class AudioCaptureComponent extends SynthComponent { 
-	JitterLatencyFrames: number;
-	static Load(ResourceName: string): AudioCaptureComponent;
-	static Find(Outer: UObject, ResourceName: string): AudioCaptureComponent;
-	static GetDefaultObject(): AudioCaptureComponent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AudioCaptureComponent;
-	static C(Other: UObject | any): AudioCaptureComponent;
-}
-
-declare class OnAudioInputDevicesObtained__PythonCallable extends PythonCallableForDelegate { 
-	static Load(ResourceName: string): OnAudioInputDevicesObtained__PythonCallable;
-	static Find(Outer: UObject, ResourceName: string): OnAudioInputDevicesObtained__PythonCallable;
-	static GetDefaultObject(): OnAudioInputDevicesObtained__PythonCallable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): OnAudioInputDevicesObtained__PythonCallable;
-	static C(Other: UObject | any): OnAudioInputDevicesObtained__PythonCallable;
-}
-
-declare class CableComponent extends MeshComponent { 
-	bAttachStart: boolean;
-	bAttachEnd: boolean;
-	AttachEndTo: ComponentReference;
-	AttachEndToSocketName: string;
-	EndLocation: Vector;
-	CableLength: number;
-	NumSegments: number;
-	SubstepTime: number;
-	SolverIterations: number;
-	bEnableStiffness: boolean;
-	bUseSubstepping: boolean;
-	bSkipCableUpdateWhenNotVisible: boolean;
-	bSkipCableUpdateWhenNotOwnerRecentlyRendered: boolean;
-	bEnableCollision: boolean;
-	CollisionFriction: number;
-	CableForce: Vector;
-	CableGravityScale: number;
-	CableWidth: number;
-	NumSides: number;
-	TileMaterial: number;
-	static Load(ResourceName: string): CableComponent;
-	static Find(Outer: UObject, ResourceName: string): CableComponent;
-	static GetDefaultObject(): CableComponent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): CableComponent;
-	SetAttachEndToComponent(Component: SceneComponent,SocketName: string): void;
-	SetAttachEndTo(Actor: Actor,ComponentProperty: string,SocketName: string): void;
-	GetCableParticleLocations(Locations?: Vector[]): {Locations: Vector[]};
-	GetAttachedComponent(): SceneComponent;
-	GetAttachedActor(): Actor;
-	static C(Other: UObject | any): CableComponent;
-}
-
-declare class CableActor extends Actor { 
-	CableComponent: CableComponent;
-	static GetDefaultObject(): CableActor;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): CableActor;
-	static C(Other: UObject | any): CableActor;
-}
-
-declare class GroomActorFactory extends ActorFactory { 
-	static Load(ResourceName: string): GroomActorFactory;
-	static Find(Outer: UObject, ResourceName: string): GroomActorFactory;
-	static GetDefaultObject(): GroomActorFactory;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GroomActorFactory;
-	static C(Other: UObject | any): GroomActorFactory;
-}
-
-declare class GroomBindingFactory extends Factory { 
-	static Load(ResourceName: string): GroomBindingFactory;
-	static Find(Outer: UObject, ResourceName: string): GroomBindingFactory;
-	static GetDefaultObject(): GroomBindingFactory;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GroomBindingFactory;
-	static C(Other: UObject | any): GroomBindingFactory;
-}
-
-declare class GroomEditorMode extends BaseLegacyWidgetEdMode { 
-	static Load(ResourceName: string): GroomEditorMode;
-	static Find(Outer: UObject, ResourceName: string): GroomEditorMode;
-	static GetDefaultObject(): GroomEditorMode;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GroomEditorMode;
-	static C(Other: UObject | any): GroomEditorMode;
-}
-
-declare class GroomFactory extends Factory { 
-	static Load(ResourceName: string): GroomFactory;
-	static Find(Outer: UObject, ResourceName: string): GroomFactory;
-	static GetDefaultObject(): GroomFactory;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GroomFactory;
-	static C(Other: UObject | any): GroomFactory;
-}
-
-declare class HairStrandsFactory extends Factory { 
-	static Load(ResourceName: string): HairStrandsFactory;
-	static Find(Outer: UObject, ResourceName: string): HairStrandsFactory;
-	static GetDefaultObject(): HairStrandsFactory;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): HairStrandsFactory;
-	static C(Other: UObject | any): HairStrandsFactory;
-}
-
-declare class ReimportGroomCacheFactory extends HairStrandsFactory { 
-	static Load(ResourceName: string): ReimportGroomCacheFactory;
-	static Find(Outer: UObject, ResourceName: string): ReimportGroomCacheFactory;
-	static GetDefaultObject(): ReimportGroomCacheFactory;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ReimportGroomCacheFactory;
-	static C(Other: UObject | any): ReimportGroomCacheFactory;
-}
-
-declare class ReimportHairStrandsFactory extends HairStrandsFactory { 
-	static Load(ResourceName: string): ReimportHairStrandsFactory;
-	static Find(Outer: UObject, ResourceName: string): ReimportHairStrandsFactory;
-	static GetDefaultObject(): ReimportHairStrandsFactory;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ReimportHairStrandsFactory;
-	static C(Other: UObject | any): ReimportHairStrandsFactory;
-}
-
-declare class MovieSceneGeometryCacheParams { 
-	GeometryCacheAsset: GeometryCache;
-	FirstLoopStartFrameOffset: FrameNumber;
-	StartFrameOffset: FrameNumber;
-	EndFrameOffset: FrameNumber;
-	PlayRate: number;
-	bReverse: boolean;
-	StartOffset: number;
-	EndOffset: number;
-	GeometryCache: SoftObjectPath;
-	clone() : MovieSceneGeometryCacheParams;
-	static C(Other: UObject | any): MovieSceneGeometryCacheParams;
-}
-
-declare class MovieSceneGeometryCacheSection extends MovieSceneSection { 
-	Params: MovieSceneGeometryCacheParams;
-	static Load(ResourceName: string): MovieSceneGeometryCacheSection;
-	static Find(Outer: UObject, ResourceName: string): MovieSceneGeometryCacheSection;
-	static GetDefaultObject(): MovieSceneGeometryCacheSection;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MovieSceneGeometryCacheSection;
-	static C(Other: UObject | any): MovieSceneGeometryCacheSection;
-}
-
-declare class MovieSceneGeometryCacheTrack extends MovieSceneNameableTrack { 
-	AnimationSections: MovieSceneSection[];
-	static Load(ResourceName: string): MovieSceneGeometryCacheTrack;
-	static Find(Outer: UObject, ResourceName: string): MovieSceneGeometryCacheTrack;
-	static GetDefaultObject(): MovieSceneGeometryCacheTrack;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MovieSceneGeometryCacheTrack;
-	static C(Other: UObject | any): MovieSceneGeometryCacheTrack;
-}
-
-declare class GeometryCacheStreamerSettings extends DeveloperSettings { 
-	LookAheadBuffer: number;
-	MaxMemoryAllowed: number;
-	static Load(ResourceName: string): GeometryCacheStreamerSettings;
-	static Find(Outer: UObject, ResourceName: string): GeometryCacheStreamerSettings;
-	static GetDefaultObject(): GeometryCacheStreamerSettings;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GeometryCacheStreamerSettings;
-	static C(Other: UObject | any): GeometryCacheStreamerSettings;
-}
-
-declare type EGooglePADErrorCode = 'AssetPack_NO_ERROR' | 'AssetPack_APP_UNAVAILABLE' | 'AssetPack_UNAVAILABLE' | 'AssetPack_INVALID_REQUEST' | 'AssetPack_DOWNLOAD_NOT_FOUND' | 'AssetPack_API_NOT_AVAILABLE' | 'AssetPack_NETWORK_ERROR' | 'AssetPack_ACCESS_DENIED' | 'AssetPack_INSUFFICIENT_STORAGE' | 'AssetPack_PLAY_STORE_NOT_FOUND' | 'AssetPack_NETWORK_UNRESTRICTED' | 'AssetPack_INTERNAL_ERROR' | 'AssetPack_INITIALIZATION_NEEDED' | 'AssetPack_INITIALIZATION_FAILED' | 'AssetPack_MAX';
-declare var EGooglePADErrorCode : { AssetPack_NO_ERROR:'AssetPack_NO_ERROR',AssetPack_APP_UNAVAILABLE:'AssetPack_APP_UNAVAILABLE',AssetPack_UNAVAILABLE:'AssetPack_UNAVAILABLE',AssetPack_INVALID_REQUEST:'AssetPack_INVALID_REQUEST',AssetPack_DOWNLOAD_NOT_FOUND:'AssetPack_DOWNLOAD_NOT_FOUND',AssetPack_API_NOT_AVAILABLE:'AssetPack_API_NOT_AVAILABLE',AssetPack_NETWORK_ERROR:'AssetPack_NETWORK_ERROR',AssetPack_ACCESS_DENIED:'AssetPack_ACCESS_DENIED',AssetPack_INSUFFICIENT_STORAGE:'AssetPack_INSUFFICIENT_STORAGE',AssetPack_PLAY_STORE_NOT_FOUND:'AssetPack_PLAY_STORE_NOT_FOUND',AssetPack_NETWORK_UNRESTRICTED:'AssetPack_NETWORK_UNRESTRICTED',AssetPack_INTERNAL_ERROR:'AssetPack_INTERNAL_ERROR',AssetPack_INITIALIZATION_NEEDED:'AssetPack_INITIALIZATION_NEEDED',AssetPack_INITIALIZATION_FAILED:'AssetPack_INITIALIZATION_FAILED',AssetPack_MAX:'AssetPack_MAX', };
-declare type EGooglePADStorageMethod = 'AssetPack_STORAGE_FILES' | 'AssetPack_STORAGE_APK' | 'AssetPack_STORAGE_UNKNOWN' | 'AssetPack_STORAGE_NOT_INSTALLED' | 'AssetPack_STORAGE_MAX';
-declare var EGooglePADStorageMethod : { AssetPack_STORAGE_FILES:'AssetPack_STORAGE_FILES',AssetPack_STORAGE_APK:'AssetPack_STORAGE_APK',AssetPack_STORAGE_UNKNOWN:'AssetPack_STORAGE_UNKNOWN',AssetPack_STORAGE_NOT_INSTALLED:'AssetPack_STORAGE_NOT_INSTALLED',AssetPack_STORAGE_MAX:'AssetPack_STORAGE_MAX', };
-declare type EGooglePADCellularDataConfirmStatus = 'AssetPack_CONFIRM_UNKNOWN' | 'AssetPack_CONFIRM_PENDING' | 'AssetPack_CONFIRM_USER_APPROVED' | 'AssetPack_CONFIRM_USER_CANCELED' | 'AssetPack_CONFIRM_MAX';
-declare var EGooglePADCellularDataConfirmStatus : { AssetPack_CONFIRM_UNKNOWN:'AssetPack_CONFIRM_UNKNOWN',AssetPack_CONFIRM_PENDING:'AssetPack_CONFIRM_PENDING',AssetPack_CONFIRM_USER_APPROVED:'AssetPack_CONFIRM_USER_APPROVED',AssetPack_CONFIRM_USER_CANCELED:'AssetPack_CONFIRM_USER_CANCELED',AssetPack_CONFIRM_MAX:'AssetPack_CONFIRM_MAX', };
-declare type EGooglePADDownloadStatus = 'AssetPack_UNKNOWN' | 'AssetPack_DOWNLOAD_PENDING' | 'AssetPack_DOWNLOADING' | 'AssetPack_TRANSFERRING' | 'AssetPack_DOWNLOAD_COMPLETED' | 'AssetPack_DOWNLOAD_FAILED' | 'AssetPack_DOWNLOAD_CANCELED' | 'AssetPack_WAITING_FOR_WIFI' | 'AssetPack_NOT_INSTALLED' | 'AssetPack_INFO_PENDING' | 'AssetPack_INFO_FAILED' | 'AssetPack_REMOVAL_PENDING' | 'AssetPack_REMOVAL_FAILED' | 'AssetPack_MAX';
-declare var EGooglePADDownloadStatus : { AssetPack_UNKNOWN:'AssetPack_UNKNOWN',AssetPack_DOWNLOAD_PENDING:'AssetPack_DOWNLOAD_PENDING',AssetPack_DOWNLOADING:'AssetPack_DOWNLOADING',AssetPack_TRANSFERRING:'AssetPack_TRANSFERRING',AssetPack_DOWNLOAD_COMPLETED:'AssetPack_DOWNLOAD_COMPLETED',AssetPack_DOWNLOAD_FAILED:'AssetPack_DOWNLOAD_FAILED',AssetPack_DOWNLOAD_CANCELED:'AssetPack_DOWNLOAD_CANCELED',AssetPack_WAITING_FOR_WIFI:'AssetPack_WAITING_FOR_WIFI',AssetPack_NOT_INSTALLED:'AssetPack_NOT_INSTALLED',AssetPack_INFO_PENDING:'AssetPack_INFO_PENDING',AssetPack_INFO_FAILED:'AssetPack_INFO_FAILED',AssetPack_REMOVAL_PENDING:'AssetPack_REMOVAL_PENDING',AssetPack_REMOVAL_FAILED:'AssetPack_REMOVAL_FAILED',AssetPack_MAX:'AssetPack_MAX', };
-declare class GooglePADFunctionLibrary extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): GooglePADFunctionLibrary;
-	static Find(Outer: UObject, ResourceName: string): GooglePADFunctionLibrary;
-	static GetDefaultObject(): GooglePADFunctionLibrary;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GooglePADFunctionLibrary;
-	static ShowCellularDataConfirmation(): EGooglePADErrorCode;
-	static RequestRemoval(Name: string): EGooglePADErrorCode;
-	static RequestInfo(AssetPacks: string[]): EGooglePADErrorCode;
-	static RequestDownload(AssetPacks: string[]): EGooglePADErrorCode;
-	static ReleaseDownloadState(State: number): void;
-	static ReleaseAssetPackLocation(Location: number): void;
-	static GetTotalBytesToDownload(State: number): number;
-	static GetStorageMethod(Location: number): EGooglePADStorageMethod;
-	static GetShowCellularDataConfirmationStatus(Status?: EGooglePADCellularDataConfirmStatus): {Status: EGooglePADCellularDataConfirmStatus, $: EGooglePADErrorCode};
-	static GetDownloadStatus(State: number): EGooglePADDownloadStatus;
-	static GetDownloadState(Name: string,State?: number): {State: number, $: EGooglePADErrorCode};
-	static GetBytesDownloaded(State: number): number;
-	static GetAssetsPath(Location: number): string;
-	static GetAssetPackLocation(Name: string,Location?: number): {Location: number, $: EGooglePADErrorCode};
-	static CancelDownload(AssetPacks: string[]): EGooglePADErrorCode;
-	static C(Other: UObject | any): GooglePADFunctionLibrary;
-}
-
-declare class OnDynamicMeshModifiedBP__PythonCallable extends PythonCallableForDelegate { 
-	static Load(ResourceName: string): OnDynamicMeshModifiedBP__PythonCallable;
-	static Find(Outer: UObject, ResourceName: string): OnDynamicMeshModifiedBP__PythonCallable;
-	static GetDefaultObject(): OnDynamicMeshModifiedBP__PythonCallable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): OnDynamicMeshModifiedBP__PythonCallable;
-	static C(Other: UObject | any): OnDynamicMeshModifiedBP__PythonCallable;
-}
-
-declare class MobileInstalledContent extends UObject { 
-	static Load(ResourceName: string): MobileInstalledContent;
-	static Find(Outer: UObject, ResourceName: string): MobileInstalledContent;
-	static GetDefaultObject(): MobileInstalledContent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MobileInstalledContent;
-	Mount(PakOrder: number,MountPoint: string): boolean;
-	GetInstalledContentSize(): number;
-	GetDiskFreeSpace(): number;
-	static C(Other: UObject | any): MobileInstalledContent;
-}
-
-declare class MobilePendingContent extends MobileInstalledContent { 
-	static Load(ResourceName: string): MobilePendingContent;
-	static Find(Outer: UObject, ResourceName: string): MobilePendingContent;
-	static GetDefaultObject(): MobilePendingContent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MobilePendingContent;
-	GetTotalDownloadedSize(): number;
-	GetRequiredDiskSpace(): number;
-	GetInstallProgress(): number;
-	GetDownloadStatusText(): string;
-	GetDownloadSpeed(): number;
-	GetDownloadSize(): number;
-	static C(Other: UObject | any): MobilePendingContent;
-}
-
-declare class MobilePatchingLibrary extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): MobilePatchingLibrary;
-	static Find(Outer: UObject, ResourceName: string): MobilePatchingLibrary;
-	static GetDefaultObject(): MobilePatchingLibrary;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MobilePatchingLibrary;
-	static HasActiveWiFiConnection(): boolean;
-	static GetSupportedPlatformNames(): string[];
-	static GetInstalledContent(InstallDirectory: string): MobileInstalledContent;
-	static GetActiveDeviceProfileName(): string;
-	static C(Other: UObject | any): MobilePatchingLibrary;
-}
-
-declare class OnContentInstallFailed__PythonCallable extends PythonCallableForDelegate { 
-	static Load(ResourceName: string): OnContentInstallFailed__PythonCallable;
-	static Find(Outer: UObject, ResourceName: string): OnContentInstallFailed__PythonCallable;
-	static GetDefaultObject(): OnContentInstallFailed__PythonCallable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): OnContentInstallFailed__PythonCallable;
-	static C(Other: UObject | any): OnContentInstallFailed__PythonCallable;
-}
-
-declare class OnContentInstallSucceeded__PythonCallable extends PythonCallableForDelegate { 
-	static Load(ResourceName: string): OnContentInstallSucceeded__PythonCallable;
-	static Find(Outer: UObject, ResourceName: string): OnContentInstallSucceeded__PythonCallable;
-	static GetDefaultObject(): OnContentInstallSucceeded__PythonCallable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): OnContentInstallSucceeded__PythonCallable;
-	static C(Other: UObject | any): OnContentInstallSucceeded__PythonCallable;
-}
-
-declare class OnRequestContentFailed__PythonCallable extends PythonCallableForDelegate { 
-	static Load(ResourceName: string): OnRequestContentFailed__PythonCallable;
-	static Find(Outer: UObject, ResourceName: string): OnRequestContentFailed__PythonCallable;
-	static GetDefaultObject(): OnRequestContentFailed__PythonCallable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): OnRequestContentFailed__PythonCallable;
-	static C(Other: UObject | any): OnRequestContentFailed__PythonCallable;
-}
-
-declare class OnRequestContentSucceeded__PythonCallable extends PythonCallableForDelegate { 
-	static Load(ResourceName: string): OnRequestContentSucceeded__PythonCallable;
-	static Find(Outer: UObject, ResourceName: string): OnRequestContentSucceeded__PythonCallable;
-	static GetDefaultObject(): OnRequestContentSucceeded__PythonCallable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): OnRequestContentSucceeded__PythonCallable;
-	static C(Other: UObject | any): OnRequestContentSucceeded__PythonCallable;
-}
-
-declare class KismetProceduralMeshLibrary extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): KismetProceduralMeshLibrary;
-	static Find(Outer: UObject, ResourceName: string): KismetProceduralMeshLibrary;
-	static GetDefaultObject(): KismetProceduralMeshLibrary;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): KismetProceduralMeshLibrary;
-	static SliceProceduralMesh(InProcMesh: ProceduralMeshComponent,PlanePosition: Vector,PlaneNormal: Vector,bCreateOtherHalf: boolean,OutOtherHalfProcMesh?: ProceduralMeshComponent,CapOption?: EProcMeshSliceCapOption,CapMaterial?: MaterialInterface): {OutOtherHalfProcMesh: ProceduralMeshComponent};
-	static GetSectionFromStaticMesh(InMesh: StaticMesh,LODIndex: number,SectionIndex: number,Vertices?: Vector[],Triangles?: number[],Normals?: Vector[],UVs?: Vector2D[],Tangents?: ProcMeshTangent[]): {Vertices: Vector[], Triangles: number[], Normals: Vector[], UVs: Vector2D[], Tangents: ProcMeshTangent[]};
-	static GetSectionFromProceduralMesh(InProcMesh: ProceduralMeshComponent,SectionIndex: number,Vertices?: Vector[],Triangles?: number[],Normals?: Vector[],UVs?: Vector2D[],Tangents?: ProcMeshTangent[]): {Vertices: Vector[], Triangles: number[], Normals: Vector[], UVs: Vector2D[], Tangents: ProcMeshTangent[]};
-	static GenerateBoxMesh(BoxRadius: Vector,Vertices?: Vector[],Triangles?: number[],Normals?: Vector[],UVs?: Vector2D[],Tangents?: ProcMeshTangent[]): {Vertices: Vector[], Triangles: number[], Normals: Vector[], UVs: Vector2D[], Tangents: ProcMeshTangent[]};
-	static CreateGridMeshWelded(NumX: number,NumY: number,Triangles?: number[],Vertices?: Vector[],UVs?: Vector2D[],GridSpacing?: number): {Triangles: number[], Vertices: Vector[], UVs: Vector2D[]};
-	static CreateGridMeshTriangles(NumX: number,NumY: number,bWinding: boolean,Triangles?: number[]): {Triangles: number[]};
-	static CreateGridMeshSplit(NumX: number,NumY: number,Triangles?: number[],Vertices?: Vector[],UVs?: Vector2D[],UV1s?: Vector2D[],GridSpacing?: number): {Triangles: number[], Vertices: Vector[], UVs: Vector2D[], UV1s: Vector2D[]};
-	static CopyProceduralMeshFromStaticMeshComponent(StaticMeshComponent: StaticMeshComponent,LODIndex: number,ProcMeshComponent: ProceduralMeshComponent,bCreateCollision: boolean): void;
-	static ConvertQuadToTriangles(Triangles?: number[],Vert0?: number,Vert1?: number,Vert2?: number,Vert3?: number): {Triangles: number[]};
-	static CalculateTangentsForMesh(Vertices: Vector[],Triangles: number[],UVs: Vector2D[],Normals?: Vector[],Tangents?: ProcMeshTangent[]): {Normals: Vector[], Tangents: ProcMeshTangent[]};
-	static C(Other: UObject | any): KismetProceduralMeshLibrary;
-}
-
-declare type EResonanceRenderMode = 'StereoPanning' | 'BinauralLowQuality' | 'BinauralMediumQuality' | 'BinauralHighQuality' | 'RoomEffectsOnly' | 'EResonanceRenderMode_MAX';
-declare var EResonanceRenderMode : { StereoPanning:'StereoPanning',BinauralLowQuality:'BinauralLowQuality',BinauralMediumQuality:'BinauralMediumQuality',BinauralHighQuality:'BinauralHighQuality',RoomEffectsOnly:'RoomEffectsOnly',EResonanceRenderMode_MAX:'EResonanceRenderMode_MAX', };
-declare class ResonanceAudioSoundfieldSettings extends SoundfieldEncodingSettingsBase { 
-	RenderMode: EResonanceRenderMode;
-	static Load(ResourceName: string): ResonanceAudioSoundfieldSettings;
-	static Find(Outer: UObject, ResourceName: string): ResonanceAudioSoundfieldSettings;
-	static GetDefaultObject(): ResonanceAudioSoundfieldSettings;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ResonanceAudioSoundfieldSettings;
-	static C(Other: UObject | any): ResonanceAudioSoundfieldSettings;
-}
-
-declare type ERaMaterialName = 'TRANSPARENT' | 'ACOUSTIC_CEILING_TILES' | 'BRICK_BARE' | 'BRICK_PAINTED' | 'CONCRETE_BLOCK_COARSE' | 'CONCRETE_BLOCK_PAINTED' | 'CURTAIN_HEAVY' | 'FIBER_GLASS_INSULATION' | 'GLASS_THIN' | 'GLASS_THICK' | 'GRASS' | 'LINOLEUM_ON_CONCRETE' | 'MARBLE' | 'METAL' | 'PARQUET_ONCONCRETE' | 'PLASTER_ROUGH' | 'PLASTER_SMOOTH' | 'PLYWOOD_PANEL' | 'POLISHED_CONCRETE_OR_TILE' | 'SHEETROCK' | 'WATER_OR_ICE_SURFACE' | 'WOOD_CEILING' | 'WOOD_PANEL' | 'UNIFORM' | 'ERaMaterialName_MAX';
-declare var ERaMaterialName : { TRANSPARENT:'TRANSPARENT',ACOUSTIC_CEILING_TILES:'ACOUSTIC_CEILING_TILES',BRICK_BARE:'BRICK_BARE',BRICK_PAINTED:'BRICK_PAINTED',CONCRETE_BLOCK_COARSE:'CONCRETE_BLOCK_COARSE',CONCRETE_BLOCK_PAINTED:'CONCRETE_BLOCK_PAINTED',CURTAIN_HEAVY:'CURTAIN_HEAVY',FIBER_GLASS_INSULATION:'FIBER_GLASS_INSULATION',GLASS_THIN:'GLASS_THIN',GLASS_THICK:'GLASS_THICK',GRASS:'GRASS',LINOLEUM_ON_CONCRETE:'LINOLEUM_ON_CONCRETE',MARBLE:'MARBLE',METAL:'METAL',PARQUET_ONCONCRETE:'PARQUET_ONCONCRETE',PLASTER_ROUGH:'PLASTER_ROUGH',PLASTER_SMOOTH:'PLASTER_SMOOTH',PLYWOOD_PANEL:'PLYWOOD_PANEL',POLISHED_CONCRETE_OR_TILE:'POLISHED_CONCRETE_OR_TILE',SHEETROCK:'SHEETROCK',WATER_OR_ICE_SURFACE:'WATER_OR_ICE_SURFACE',WOOD_CEILING:'WOOD_CEILING',WOOD_PANEL:'WOOD_PANEL',UNIFORM:'UNIFORM',ERaMaterialName_MAX:'ERaMaterialName_MAX', };
-declare class ResonanceAudioReverbPluginSettings { 
-	bEnableRoomEffects: boolean;
-	bGetTransformFromAudioVolume: boolean;
-	RoomPosition: Vector;
-	RoomRotation: Quat;
-	RoomDimensions: Vector;
-	LeftWallMaterial: ERaMaterialName;
-	RightWallMaterial: ERaMaterialName;
-	FloorMaterial: ERaMaterialName;
-	CeilingMaterial: ERaMaterialName;
-	FrontWallMaterial: ERaMaterialName;
-	BackWallMaterial: ERaMaterialName;
-	ReflectionScalar: number;
-	ReverbGain: number;
-	ReverbTimeModifier: number;
-	ReverbBrightness: number;
-	clone() : ResonanceAudioReverbPluginSettings;
-	static C(Other: UObject | any): ResonanceAudioReverbPluginSettings;
-}
-
-declare class ResonanceAudioReverbPluginPreset extends SoundEffectSubmixPreset { 
-	Settings: ResonanceAudioReverbPluginSettings;
-	static Load(ResourceName: string): ResonanceAudioReverbPluginPreset;
-	static Find(Outer: UObject, ResourceName: string): ResonanceAudioReverbPluginPreset;
-	static GetDefaultObject(): ResonanceAudioReverbPluginPreset;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ResonanceAudioReverbPluginPreset;
-	SetRoomRotation(InRotation: Quat): void;
-	SetRoomPosition(InPosition: Vector): void;
-	SetRoomMaterials(InMaterials: ERaMaterialName[]): void;
-	SetRoomDimensions(InDimensions: Vector): void;
-	SetReverbTimeModifier(InReverbTimeModifier: number): void;
-	SetReverbGain(InReverbGain: number): void;
-	SetReverbBrightness(InReverbBrightness: number): void;
-	SetReflectionScalar(InReflectionScalar: number): void;
-	SetEnableRoomEffects(bInEnableRoomEffects: boolean): void;
-	static C(Other: UObject | any): ResonanceAudioReverbPluginPreset;
-	SetGlobalReverbPreset(): void;
-	static SetGlobalReverbPreset(InPreset: ResonanceAudioReverbPluginPreset): void;
-}
-
-declare class ResonanceAudioBlueprintFunctionLibrary extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): ResonanceAudioBlueprintFunctionLibrary;
-	static Find(Outer: UObject, ResourceName: string): ResonanceAudioBlueprintFunctionLibrary;
-	static GetDefaultObject(): ResonanceAudioBlueprintFunctionLibrary;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ResonanceAudioBlueprintFunctionLibrary;
-	static SetGlobalReverbPreset(InPreset: ResonanceAudioReverbPluginPreset): void;
-	static GetGlobalReverbPreset(): ResonanceAudioReverbPluginPreset;
-	static C(Other: UObject | any): ResonanceAudioBlueprintFunctionLibrary;
-}
-
-declare type ERaSpatializationMethod = 'STEREO_PANNING' | 'HRTF' | 'ERaSpatializationMethod_MAX';
-declare var ERaSpatializationMethod : { STEREO_PANNING:'STEREO_PANNING',HRTF:'HRTF',ERaSpatializationMethod_MAX:'ERaSpatializationMethod_MAX', };
 declare type ERaDistanceRolloffModel = 'LOGARITHMIC' | 'LINEAR' | 'NONE' | 'ERaDistanceRolloffModel_MAX';
 declare var ERaDistanceRolloffModel : { LOGARITHMIC:'LOGARITHMIC',LINEAR:'LINEAR',NONE:'NONE',ERaDistanceRolloffModel_MAX:'ERaDistanceRolloffModel_MAX', };
 declare class ResonanceAudioSpatializationSourceSettings extends SpatializationPluginSourceSettingsBase { 
@@ -1745,12 +1261,69 @@ declare class SynthesisEditorSettings extends DeveloperSettings {
 	static C(Other: UObject | any): SynthesisEditorSettings;
 }
 
-declare class ContentBrowserAssetDataSource extends ContentBrowserDataSource { 
-	static Load(ResourceName: string): ContentBrowserAssetDataSource;
-	static Find(Outer: UObject, ResourceName: string): ContentBrowserAssetDataSource;
-	static GetDefaultObject(): ContentBrowserAssetDataSource;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ContentBrowserAssetDataSource;
-	static C(Other: UObject | any): ContentBrowserAssetDataSource;
+declare type EMotionExtractor_MotionType = 'Translation' | 'Rotation' | 'Scale' | 'TranslationSpeed' | 'RotationSpeed' | 'EMotionExtractor_MAX';
+declare var EMotionExtractor_MotionType : { Translation:'Translation',Rotation:'Rotation',Scale:'Scale',TranslationSpeed:'TranslationSpeed',RotationSpeed:'RotationSpeed',EMotionExtractor_MAX:'EMotionExtractor_MAX', };
+declare type EMotionExtractor_Axis = 'X' | 'Y' | 'Z' | 'XY' | 'XZ' | 'YZ' | 'XYZ' | 'EMotionExtractor_MAX';
+declare var EMotionExtractor_Axis : { X:'X',Y:'Y',Z:'Z',XY:'XY',XZ:'XZ',YZ:'YZ',XYZ:'XYZ',EMotionExtractor_MAX:'EMotionExtractor_MAX', };
+declare type EMotionExtractor_MathOperation = 'None' | 'Addition' | 'Subtraction' | 'Division' | 'Multiplication' | 'EMotionExtractor_MAX';
+declare var EMotionExtractor_MathOperation : { None:'None',Addition:'Addition',Subtraction:'Subtraction',Division:'Division',Multiplication:'Multiplication',EMotionExtractor_MAX:'EMotionExtractor_MAX', };
+declare class MotionExtractorModifier extends AnimationModifier { 
+	BoneName: string;
+	MotionType: EMotionExtractor_MotionType;
+	Axis: EMotionExtractor_Axis;
+	bComponentSpace: boolean;
+	bAbsoluteValue: boolean;
+	MathOperation: EMotionExtractor_MathOperation;
+	Modifier: number;
+	SampleRate: number;
+	bUseCustomCurveName: boolean;
+	CustomCurveName: string;
+	static Load(ResourceName: string): MotionExtractorModifier;
+	static Find(Outer: UObject, ResourceName: string): MotionExtractorModifier;
+	static GetDefaultObject(): MotionExtractorModifier;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MotionExtractorModifier;
+	static C(Other: UObject | any): MotionExtractorModifier;
+}
+
+declare class CachedMotionAnalysisProperties extends CachedAnalysisProperties { 
+	static Load(ResourceName: string): CachedMotionAnalysisProperties;
+	static Find(Outer: UObject, ResourceName: string): CachedMotionAnalysisProperties;
+	static GetDefaultObject(): CachedMotionAnalysisProperties;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): CachedMotionAnalysisProperties;
+	static C(Other: UObject | any): CachedMotionAnalysisProperties;
+}
+
+declare type EAnalysisLocomotionAxis = 'Speed' | 'Direction' | 'ForwardSpeed' | 'RightwardSpeed' | 'UpwardSpeed' | 'ForwardSlope' | 'RightwardSlope' | 'EAnalysisLocomotionAxis_MAX';
+declare var EAnalysisLocomotionAxis : { Speed:'Speed',Direction:'Direction',ForwardSpeed:'ForwardSpeed',RightwardSpeed:'RightwardSpeed',UpwardSpeed:'UpwardSpeed',ForwardSlope:'ForwardSlope',RightwardSlope:'RightwardSlope',EAnalysisLocomotionAxis_MAX:'EAnalysisLocomotionAxis_MAX', };
+declare class LocomotionAnalysisProperties extends AnalysisProperties { 
+	FunctionAxis: EAnalysisLocomotionAxis;
+	PrimaryBoneSocket: BoneSocketTarget;
+	SecondaryBoneSocket: BoneSocketTarget;
+	CharacterFacingAxis: EAnalysisLinearAxis;
+	CharacterUpAxis: EAnalysisLinearAxis;
+	static Load(ResourceName: string): LocomotionAnalysisProperties;
+	static Find(Outer: UObject, ResourceName: string): LocomotionAnalysisProperties;
+	static GetDefaultObject(): LocomotionAnalysisProperties;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): LocomotionAnalysisProperties;
+	static C(Other: UObject | any): LocomotionAnalysisProperties;
+}
+
+declare type EAnalysisRootMotionAxis = 'Speed' | 'Direction' | 'ForwardSpeed' | 'RightwardSpeed' | 'UpwardSpeed' | 'ForwardSlope' | 'RightwardSlope' | 'EAnalysisRootMotionAxis_MAX';
+declare var EAnalysisRootMotionAxis : { Speed:'Speed',Direction:'Direction',ForwardSpeed:'ForwardSpeed',RightwardSpeed:'RightwardSpeed',UpwardSpeed:'UpwardSpeed',ForwardSlope:'ForwardSlope',RightwardSlope:'RightwardSlope',EAnalysisRootMotionAxis_MAX:'EAnalysisRootMotionAxis_MAX', };
+declare class RootMotionAnalysisProperties extends AnalysisProperties { 
+	FunctionAxis: EAnalysisRootMotionAxis;
+	BoneSocket: BoneSocketTarget;
+	Space: EAnalysisSpace;
+	SpaceBoneSocket: BoneSocketTarget;
+	CharacterFacingAxis: EAnalysisLinearAxis;
+	CharacterUpAxis: EAnalysisLinearAxis;
+	StartTimeFraction: number;
+	EndTimeFraction: number;
+	static Load(ResourceName: string): RootMotionAnalysisProperties;
+	static Find(Outer: UObject, ResourceName: string): RootMotionAnalysisProperties;
+	static GetDefaultObject(): RootMotionAnalysisProperties;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): RootMotionAnalysisProperties;
+	static C(Other: UObject | any): RootMotionAnalysisProperties;
 }
 
 declare class ContentBrowserClassDataSource extends ContentBrowserDataSource { 
@@ -1759,6 +1332,30 @@ declare class ContentBrowserClassDataSource extends ContentBrowserDataSource {
 	static GetDefaultObject(): ContentBrowserClassDataSource;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ContentBrowserClassDataSource;
 	static C(Other: UObject | any): ContentBrowserClassDataSource;
+}
+
+declare class ContentBrowserAssetDataSource extends ContentBrowserDataSource { 
+	static Load(ResourceName: string): ContentBrowserAssetDataSource;
+	static Find(Outer: UObject, ResourceName: string): ContentBrowserAssetDataSource;
+	static GetDefaultObject(): ContentBrowserAssetDataSource;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ContentBrowserAssetDataSource;
+	static C(Other: UObject | any): ContentBrowserAssetDataSource;
+}
+
+declare class InterchangeGraphInspectorPipeline extends InterchangePipelineBase { 
+	static Load(ResourceName: string): InterchangeGraphInspectorPipeline;
+	static Find(Outer: UObject, ResourceName: string): InterchangeGraphInspectorPipeline;
+	static GetDefaultObject(): InterchangeGraphInspectorPipeline;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): InterchangeGraphInspectorPipeline;
+	static C(Other: UObject | any): InterchangeGraphInspectorPipeline;
+}
+
+declare class InterchangePipelineConfigurationGeneric extends InterchangePipelineConfigurationBase { 
+	static Load(ResourceName: string): InterchangePipelineConfigurationGeneric;
+	static Find(Outer: UObject, ResourceName: string): InterchangePipelineConfigurationGeneric;
+	static GetDefaultObject(): InterchangePipelineConfigurationGeneric;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): InterchangePipelineConfigurationGeneric;
+	static C(Other: UObject | any): InterchangePipelineConfigurationGeneric;
 }
 
 declare class InterchangeActorFactoryNode extends InterchangeBaseNode { 
@@ -2516,22 +2113,6 @@ declare class InterchangePipelineMeshesUtilities extends UObject {
 	GetAllMeshGeometry(MeshGeometryUids?: string[]): {MeshGeometryUids: string[]};
 	static CreateInterchangePipelineMeshesUtilities(BaseNodeContainer: InterchangeBaseNodeContainer): InterchangePipelineMeshesUtilities;
 	static C(Other: UObject | any): InterchangePipelineMeshesUtilities;
-}
-
-declare class InterchangeGraphInspectorPipeline extends InterchangePipelineBase { 
-	static Load(ResourceName: string): InterchangeGraphInspectorPipeline;
-	static Find(Outer: UObject, ResourceName: string): InterchangeGraphInspectorPipeline;
-	static GetDefaultObject(): InterchangeGraphInspectorPipeline;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): InterchangeGraphInspectorPipeline;
-	static C(Other: UObject | any): InterchangeGraphInspectorPipeline;
-}
-
-declare class InterchangePipelineConfigurationGeneric extends InterchangePipelineConfigurationBase { 
-	static Load(ResourceName: string): InterchangePipelineConfigurationGeneric;
-	static Find(Outer: UObject, ResourceName: string): InterchangePipelineConfigurationGeneric;
-	static GetDefaultObject(): InterchangePipelineConfigurationGeneric;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): InterchangePipelineConfigurationGeneric;
-	static C(Other: UObject | any): InterchangePipelineConfigurationGeneric;
 }
 
 declare class SubsystemBrowserConfigItem { 
