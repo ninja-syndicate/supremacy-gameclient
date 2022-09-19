@@ -99,11 +99,11 @@ bool UNavigationSubsystem::GetBaseGroundLocation(const FVector& Location, FVecto
 	return false;
 }
 
-bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVector& OutLocation)
+bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVector& OutLocation, bool bSearchUnbound)
 {
 	if (!NavSys) return false;
 
-	const int SearchIterationCount = 5;
+	const int SearchIterationCount = bSearchUnbound ? 100 : 5;
 	const float SearchRadiusDelta = 2500;
 
 	// Test the given location to see if it's navigable.
