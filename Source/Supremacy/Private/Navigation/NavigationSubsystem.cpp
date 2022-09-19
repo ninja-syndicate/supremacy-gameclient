@@ -62,6 +62,15 @@ void UNavigationSubsystem::OnBeginPlay()
 	}
 }
 
+bool UNavigationSubsystem::IsNavigable(const FVector& Location)
+{
+	if (!NavSys) return false;
+
+	FNavLocation ResultLocation;
+	bool bProjectSuccess = NavSys->ProjectPointToNavigation(Location, ResultLocation, GetQueryExtent());
+	return bProjectSuccess;
+}
+
 bool UNavigationSubsystem::GetBaseGroundLocation(const FVector& Location, FVector& OutLocation)
 {
 	// Perform trace by profile to Ground to find the base ground location along the `location`.
