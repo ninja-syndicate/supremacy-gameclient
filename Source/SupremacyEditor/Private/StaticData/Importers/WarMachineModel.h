@@ -3,6 +3,8 @@
 #include "Base.h"
 #include "CoreMinimal.h"
 
+class UStaticData;
+
 namespace StaticDataImporter
 {
 	class WarMachineModel : public Base
