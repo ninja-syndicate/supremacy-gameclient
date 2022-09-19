@@ -32,7 +32,7 @@
           ]
      },
      "HealCrate": {
-          "HealAmount": 5000,
+          "HealAmount": 4000,
           "TriggerRadius": 3000
      },
      "Repair": {
