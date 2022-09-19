@@ -17,8 +17,8 @@ StaticDataImporter::Base::~Base()
 bool StaticDataImporter::Base::ParseGuid(FString Field, FString Name, FGuid& ID)
 {
 	if (FGuid::Parse(Field, ID)) return true;
-	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
-		FileName, Name, Importer.GetCurrentIndex() + 1
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2} (got {3})"), {
+		FileName, Name, Importer.GetCurrentIndex() + 1, Field
 	});
 	return false;
 }
@@ -59,14 +59,18 @@ bool StaticDataImporter::Base::ParseColor(FString Field, FString Name, FColor& C
 		return true;
 	}
 
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2} (got {3})"), {
+		FileName, Name, Importer.GetCurrentIndex() + 1, Field
+	});
+
 	return false;
 }
 
 bool StaticDataImporter::Base::ParseInt(FString Field, FString Name, int32& Value)
 {
 	if(FDefaultValueHelper::ParseInt(Field, Value)) return true;
-	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
-		FileName, Name, Importer.GetCurrentIndex() + 1
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2} (got {3})"), {
+		FileName, Name, Importer.GetCurrentIndex() + 1, Field
 	});
 	return false;
 }
@@ -74,8 +78,8 @@ bool StaticDataImporter::Base::ParseInt(FString Field, FString Name, int32& Valu
 bool StaticDataImporter::Base::ParseFloat(FString Field, FString Name, float& Value)
 {
 	if(FDefaultValueHelper::ParseFloat(Field, Value)) return true;
-	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2}"), {
-		FileName, Name, Importer.GetCurrentIndex() + 1
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2} (got {3})"), {
+		FileName, Name, Importer.GetCurrentIndex() + 1, Field
 	});
 	return false;
 }
@@ -94,7 +98,7 @@ bool StaticDataImporter::Base::ParseBool(FString Field, FString Name, bool& Valu
 		return true;
 	}
 	
-	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2} (got value: {3})"), {
+	ErrorReason = FString::Format(TEXT("{0} - unable to parse {1} on line {2} (got {3})"), {
 			FileName, Name, Importer.GetCurrentIndex() + 1, Field
 	});
 	

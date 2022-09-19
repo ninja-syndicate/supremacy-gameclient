@@ -31,8 +31,23 @@ bool StaticDataImporter::PlayerAbility::HandleRow(UStaticData* DataAsset, TArray
 
 	UStaticDataPlayerAbility* Record = DataAsset->GetOrCreatePlayerAbility(ID);
 
+	if (!ParseInt(RowCells[1], "game client ability id", Record->GameClientAbilityID)) return false;
 	Record->Label = RowCells[2];
-	
+	if (!ParseColor(RowCells[3], "colour", Record->Colour)) return false;
+	Record->ImageURL = RowCells[4];
+	Record->Description = RowCells[5];
+	if (!ParseColor(RowCells[6], "text colour", Record->TextColour)) return false;
+	Record->LocationSelectType = RowCells[7];
+	Record->CreatedAt = RowCells[8];
+	Record->RarityWeight = RowCells[9];
+	if (!ParseInt(RowCells[10], "inventory limit", Record->InventoryLimit)) return false;
+	if (!ParseInt(RowCells[11], "cooldown seconds", Record->CooldownSeconds)) return false;
+	if (!ParseBool(RowCells[12], "display on minimap", Record->DisplayOnMinimap)) return false;
+	if (!ParseInt(RowCells[13], "launching delay seconds", Record->LaunchingDelaySeconds)) return false;
+	Record->MinimapDisplayEffectType = RowCells[14];
+	Record->MechDisplayEffectType = RowCells[15];
+	if (!ParseInt(RowCells[16], "animation duration seconds", Record->AnimationDurationSeconds)) return false;
+		
 	SetAssetName(DataAsset, Record, TEXT("Player Ability"));
 	return true;
 }

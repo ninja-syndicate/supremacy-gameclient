@@ -28,7 +28,7 @@ namespace StaticDataImporter
 
 		bool CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid &out);
 		
-		static bool ParseColor(FString Field, FString Name, FColor& Color);
+		bool ParseColor(FString Field, FString Name, FColor& Color);
 
 		void SetAssetName(UStaticData* DataAsset, UStaticDataBaseRecord* Record, FString Prefix) const;
 		
