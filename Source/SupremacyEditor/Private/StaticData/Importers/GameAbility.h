@@ -3,16 +3,13 @@
 #include "Base.h"
 #include "CoreMinimal.h"
 
-class UStaticData;
-
 namespace StaticDataImporter
 {
-	class WarMachineModel : public Base
+	class GameAbility : public Base
 	{
 	public:
-		WarMachineModel();
-		virtual ~WarMachineModel() override = default;
-
+		GameAbility();
+		virtual ~GameAbility() override = default;
 	protected:
 		virtual bool HandleRow(UStaticData* DataAsset, TArray<FString> RowCells) override;
 	};

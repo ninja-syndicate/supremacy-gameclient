@@ -7,11 +7,11 @@ class UStaticData;
 
 namespace StaticDataImporter
 {
-	class WarMachineModel : public Base
+	class Skin : public Base
 	{
 	public:
-		WarMachineModel();
-		virtual ~WarMachineModel() override = default;
+		Skin();
+		virtual ~Skin() override = default;
 
 	protected:
 		virtual bool HandleRow(UStaticData* DataAsset, TArray<FString> RowCells) override;
