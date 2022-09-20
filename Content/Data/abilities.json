@@ -266,5 +266,23 @@
                     }
                ]
           }
+     },
+     "K9PatrolPack": {
+          "PatrolRadius": 5000,
+          "Amount": 5,
+          "Stats": {
+               "HealthMax": 1100,
+               "Speed": 3000,
+               "Weapon": {
+                    "Name": "Robot Dog Laser",
+                    "Damage": 9,
+                    "DamageRadius": 40,
+                    "DamageType": 1,
+                    "Spread": 2,
+                    "ProjectileSpeed": 48000,
+                    "RateOfFire": 140
+               },
+               "Name": "Robot Dog"
+          }
      }
 }
