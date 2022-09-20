@@ -235,3 +235,67 @@ UStaticDataShieldType* UStaticData::GetOrCreateShieldType(const FGuid& ID)
 
     return Record;
 }
+
+FFaction UStaticData::FactionFromStaticDataFaction(const FGuid& ID)
+{
+    UStaticDataFaction* Faction = GetFaction(ID);
+
+    FFaction Out;
+
+    Out.ID = Faction->ID.ToString();
+    Out.Name = Faction->Label;
+    Out.Color = Faction->PrimaryColor;
+
+    return Out;
+}
+
+FWarMachineStruct UStaticData::WarMachineStructFromStaticDataWarMachine(const FGuid& WarMachineID, const FGuid& PowerCoreID) 
+{
+    UStaticDataWarMachineModel* WarMachine = GetWarMachineModel(WarMachineID);
+    UStaticDataPowerCore* PowerCore = GetPowerCore(PowerCoreID);
+
+    FWarMachineStruct Out;
+    if (!WarMachine) 
+    {
+        UE_LOG(LogTemp, Error, TEXT("WarMachineStructFromStaticDataWarMachine: bad war machine ID (%s)"), *(WarMachineID.ToString()));
+        return Out;
+    }
+    if (!PowerCore)
+    {
+        UE_LOG(LogTemp, Error, TEXT("WarMachineStructFromStaticDataWarMachine: bad power core ID (%s)"), *(PowerCoreID.ToString()));
+        return Out;
+    }
+
+    Out.Name = WarMachine->Label;
+    Out.Faction = FactionFromStaticDataFaction(WarMachine->Brand->Faction->ID);
+
+    //FString Model;
+    //FString Skin;
+    //ERarity Rarity;
+    //TArray<FWeaponStruct> Weapons;
+
+    Out.Health = WarMachine->MaxHitpoints;
+    Out.HealthMax = WarMachine->MaxHitpoints;
+    Out.ShieldMax = WarMachine->MaxShield;
+    Out.ShieldRechargeRate = WarMachine->ShieldRechargeRate;
+    Out.Speed = WarMachine->Speed;
+
+    Out.PowerCore.Power_Capacity = PowerCore->Capacity;
+    Out.PowerCore.Recharge_Rate = PowerCore->RechargeRate;
+    Out.PowerCore.Max_Draw_Rate = PowerCore->MaxDrawRate;
+
+    return Out;
+}
+
+TSoftClassPtr<AMech> UStaticData::WarMachineBlueprintFromStaticDataWarMachine(const FGuid& ID)
+{
+    UStaticDataWarMachineModel* WarMachine = GetWarMachineModel(ID);
+
+    if (!WarMachine)
+    {
+        UE_LOG(LogTemp, Error, TEXT("WarMachineBlueprintFromStaticDataWarMachine: bad ID (%s)"), *(ID.ToString()));
+        return TSoftClassPtr<AMech>();
+    }
+
+    return WarMachine->UnrealWarMachine;
+}

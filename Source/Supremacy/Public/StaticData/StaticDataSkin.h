@@ -30,7 +30,4 @@ class SUPREMACY_API UStaticDataSkin : public UStaticDataBaseRecord
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	int32 StatModifier;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
-	TArray<TSoftObjectPtr<UMaterial>> Materials;
 };

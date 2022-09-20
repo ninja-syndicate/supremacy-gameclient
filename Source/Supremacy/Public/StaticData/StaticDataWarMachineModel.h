@@ -22,6 +22,7 @@ class UStaticDataSkin;
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataWarMachineModel : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::WarMachineModel;
 	
 	GENERATED_BODY()
