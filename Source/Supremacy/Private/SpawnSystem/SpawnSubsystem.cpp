@@ -23,9 +23,6 @@ USpawnSubsystem::USpawnSubsystem()
 void USpawnSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	// Bind the Setup method to the World BeginPlay event so that it gets called on BeginPlay.
-	GetWorld()->OnWorldBeginPlay.AddUObject(this, &USpawnSubsystem::Setup);
 }
 
 void USpawnSubsystem::Deinitialize()
@@ -33,7 +30,14 @@ void USpawnSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
-void USpawnSubsystem::Setup()
+void USpawnSubsystem::OnWorldBeginPlay(UWorld& InWorld)
+{
+	Super::OnWorldBeginPlay(InWorld);
+
+	OnPreBeginPlay();
+}
+
+void USpawnSubsystem::OnPreBeginPlay()
 {
 	// Get the landscapes in the current map.
 	TArray<AActor*> Landscapes;

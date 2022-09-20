@@ -19,6 +19,7 @@ public:
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
+	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 
 	// NOTE: Create a proxy actor that does replication if required.
 
@@ -43,7 +44,7 @@ public:
 	FVector GetQueryExtent() const;
 
 private:
-	void OnBeginPlay();
+	void OnPreBeginPlay();
 	bool TraceByProfile(const FVector& StartLocation, const FVector& EndLocation, const FName& ProfileName, FVector& OutLocation);
 
 	UPROPERTY(Category = "Navigation", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

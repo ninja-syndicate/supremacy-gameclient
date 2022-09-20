@@ -17,9 +17,6 @@ UNavigationSubsystem::UNavigationSubsystem() : Super()
 void UNavigationSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	// Bind the OnBeginPlay method to the World BeginPlay event so that it gets called on BeginPlay.
-	GetWorld()->OnWorldBeginPlay.AddUObject(this, &UNavigationSubsystem::OnBeginPlay);
 }
 
 void UNavigationSubsystem::Deinitialize()
@@ -27,7 +24,14 @@ void UNavigationSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UNavigationSubsystem::OnBeginPlay()
+void UNavigationSubsystem::OnWorldBeginPlay(UWorld& InWorld)
+{
+	Super::OnWorldBeginPlay(InWorld);
+
+	OnPreBeginPlay();
+}
+
+void UNavigationSubsystem::OnPreBeginPlay()
 {
 	TArray<AActor*> Landscapes;
 	TArray<AActor*> AIPlayerStarts;
