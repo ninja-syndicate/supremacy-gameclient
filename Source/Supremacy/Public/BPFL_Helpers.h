@@ -72,6 +72,13 @@ public:
 		IsValid = true;
 		return *SupremacyMapDetails.Find(MapName);
 	}
+
+	/** Returns all map details */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
+	static TMap<FString, FMapDetails> GetAllSupremacyMapDetails()
+	{
+		return SupremacyMapDetails;
+	}
 	
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
     static FString CopyMapDetailsToClipboard(const FMapDetails MapDetails);
