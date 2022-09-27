@@ -1,5 +1,5 @@
 ﻿#include "MechSkinCompatibility.h"
-
+#include "AssetRegistry/AssetRegistryModule.h"
 #include "SupremacyEditorModule.h"
 #include "Misc/DefaultValueHelper.h"
 #include "StaticData/StaticDataMechSkinCompatibility.h"
@@ -26,8 +26,8 @@ FString MaterialsPathFromMech(FString ID, FString SkinName, bool IsGenesis)
 	FString BasePath;
 
 	if (ID == FString("5d3a973b-c62b-4438-b746-d3de2699d42a").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/BostonCybernetics_MechAssets/Materials";
-	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
-	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
+	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
+	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
 	if (ID == FString("02ba91b7-55dc-450a-9fbd-e7337ae97a2b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/WarEnforcer_Humanoid_MechAssets/Materials";
 	if (ID == FString("7068ab3e-89dc-4ac1-bcbb-1089096a5eda").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/Annihilator_Platform_MechAssets/Materials";
 	if (ID == FString("3dc5888b-f5ff-4d08-a520-26fd3681707f").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Kenji_HumanoidMechAssets/Materials";
@@ -35,15 +35,30 @@ FString MaterialsPathFromMech(FString ID, FString SkinName, bool IsGenesis)
 	if (ID == FString("fc9546d0-9682-468e-af1f-24eb1735315b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Aries_HumanoidMechAssets/Materials";
 	if (ID == FString("df1ac803-0a90-4631-b9e0-b62a44bdadff").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Viking_Platform_MechAssets/Materials";
 
-	return FString::Printf(TEXT("%s/%s%s/"), *BasePath, *SkinName, IsGenesis ? "_Materials" : "");
+	FString Out;
+	Out.Append(BasePath);
+	Out.Append("/");
+	Out.Append(SkinName.Replace(TEXT(" "), TEXT("")));
+	if (IsGenesis) Out.Append("_Materials");
+	Out.Append("/");
+
+	return Out;
 }
 
 bool IsGenesis(FString ID)
 {
-	if (ID == "5d3a973b-c62b-4438-b746-d3de2699d42a") return true;
-	if (ID == "625cd381-7c66-4e2f-9f69-f81589105730") return true;
-	if (ID == "ac27f3b9-753d-4ace-84a9-21c041195344") return true;
+	if (ID == FString("5d3a973b-c62b-4438-b746-d3de2699d42a").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
+	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
+	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
 	return false;
+}
+
+FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, FString Slot) 
+{
+	for (int32 i = 0; i < Materials.Num(); i++) {
+		if (Materials[i].AssetName.ToString().ToLower().Contains(Slot.ToLower())) return &Materials[i];
+	}
+	return nullptr;
 }
 
 bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset, TArray<FString> RowCells)
@@ -64,17 +79,37 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 	Record->Label = Record->WarMachineModel->Label + " -> " + Record->Skin->Label;
 
 	FString MaterialsPath = MaterialsPathFromMech(Record->WarMachineModel->ID.ToString(), Record->Skin->Label, IsGenesis(Record->WarMachineModel->ID.ToString()));
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *MaterialsPath);
 
-	IPlatformFile& FileManager = FPlatformFileManager::Get().GetPlatformFile();
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	TArray<FAssetData> AssetData;
 
-	TArray<FString> FoundFiles;
-	FileManager.FindFiles(FoundFiles, *MaterialsPath, TEXT(".uasset"));
-
-	for (int32 i = 0; i < FoundFiles.Num(); i++)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *FoundFiles[i]);
+	AssetRegistryModule.Get().GetAssetsByPath(FName(*MaterialsPath), AssetData, false, false);
+	if (AssetData.Num() <= 0) {
+		UE_LOG(LogTemp, Warning, TEXT("%s: found no material files"), *MaterialsPath);
+	} else {
+		UObject* Object = Record->WarMachineModel->SkeletalMesh.LoadSynchronous();
+		if (Object) {
+			USkeletalMesh* Mesh = Cast<USkeletalMesh>(Object);
+			UE_LOG(LogTemp, Warning, TEXT("loading mesh succeeded"));
+			TArray<FSkeletalMaterial> Materials = Mesh->GetMaterials();
+			for (int32 i = 0; i < Materials.Num(); i++)
+			{
+				FSkeletalMaterial Material = Materials[i];
+				FAssetData* MaterialAsset = GetMaterialForSlot(AssetData, Material.MaterialSlotName.ToString());
+				if (MaterialAsset) {
+					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->ObjectPath.ToString() + FString("'"))));
+				}
+			}
+		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("Failed to load mesh %s"), *(Record->WarMachineModel->SkeletalMesh.ToString()));
+		}
 	}
+
+	//for (int32 i = 0; i < AssetData.Num(); i++)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("%s"), *(AssetData[i].AssetName.ToString()));
+	//}
 
 	SetAssetName(DataAsset, Record, TEXT("Mech Skin Compatibility"));
 	return true;

@@ -109,6 +109,8 @@ public:
 	{}
 };
 
+class AMech;
+
 USTRUCT(BlueprintType)
 struct FWarMachineStruct {
 	GENERATED_BODY()
@@ -155,11 +157,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineStats Stats;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//	TSoftClassPtr<AMech> Blueprint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftClassPtr<AMech> Blueprint;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//	TMap<FString, UMaterial*> DefaultSkin;
+	//TMap<FString, UMaterial*> DefaultSkin;
 	
 	// Convert From Server Struct
 	explicit FWarMachineStruct(const FWarMachineServerStruct& WarMachine) :

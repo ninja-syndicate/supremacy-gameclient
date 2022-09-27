@@ -104,9 +104,6 @@ public:
     FWarMachineStruct WarMachineStructFromStaticDataWarMachine(const FGuid& WarMachineID, const FGuid& PowerCoreID);
 
     UFUNCTION(BlueprintCallable)
-    TSoftClassPtr<AMech> WarMachineBlueprintFromStaticDataWarMachine(const FGuid& ID);
-
-    UFUNCTION(BlueprintCallable)
     FFaction FactionFromStaticDataFaction(const FGuid& ID);
 
 private:

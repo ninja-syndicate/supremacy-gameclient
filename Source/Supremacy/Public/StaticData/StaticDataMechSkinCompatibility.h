@@ -28,5 +28,5 @@ class SUPREMACY_API UStaticDataMechSkinCompatibility : public UStaticDataBaseRec
 	UStaticDataSkin *Skin;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "References", meta = (AllowPrivateAccess = true))
-	TArray<TSoftObjectPtr<UMaterial>> Materials;
+	TMap<FString, TSoftObjectPtr<UMaterial>> Materials;
 };

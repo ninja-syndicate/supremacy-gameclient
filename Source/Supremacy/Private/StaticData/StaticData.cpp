@@ -284,18 +284,7 @@ FWarMachineStruct UStaticData::WarMachineStructFromStaticDataWarMachine(const FG
     Out.PowerCore.Recharge_Rate = PowerCore->RechargeRate;
     Out.PowerCore.Max_Draw_Rate = PowerCore->MaxDrawRate;
 
+    Out.Blueprint = WarMachine->UnrealWarMachine;
+
     return Out;
-}
-
-TSoftClassPtr<AMech> UStaticData::WarMachineBlueprintFromStaticDataWarMachine(const FGuid& ID)
-{
-    UStaticDataWarMachineModel* WarMachine = GetWarMachineModel(ID);
-
-    if (!WarMachine)
-    {
-        UE_LOG(LogTemp, Error, TEXT("WarMachineBlueprintFromStaticDataWarMachine: bad ID (%s)"), *(ID.ToString()));
-        return TSoftClassPtr<AMech>();
-    }
-
-    return WarMachine->UnrealWarMachine;
 }
