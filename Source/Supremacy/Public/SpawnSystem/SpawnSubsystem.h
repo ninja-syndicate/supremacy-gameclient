@@ -63,6 +63,9 @@ private:
 		TArray<AActor*> ActorsToIgnore,
 		FVector& OutNearestLocation);
 
+	UPROPERTY(VisibleAnywhere, Category = "Spawn Subsystem", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UNavigationSubsystem> NavSubsystem = nullptr;
+
 	/** Debug flag used for visualisation. */
 	UPROPERTY(EditAnywhere, Category = "Spawn Subsystem", meta = (AllowPrivateAccess = "true"))
 	bool bEnableDebug;

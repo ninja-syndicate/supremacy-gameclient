@@ -13,6 +13,8 @@
 
 #include "DrawDebugHelpers.h"
 
+#include "Navigation/NavigationSubsystem.h"
+
 USpawnSubsystem::USpawnSubsystem()
 {
 	DefaultNumDirections = 8;
@@ -39,8 +41,9 @@ void USpawnSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 
 void USpawnSubsystem::OnPreBeginPlay()
 {
-	// Get the landscapes in the current map.
+	// Get all the landscapes in the current map.
 	TArray<AActor*> Landscapes;
+
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALandscape::StaticClass(), Landscapes);
 	if (Landscapes.IsEmpty())
 	{
@@ -65,6 +68,13 @@ void USpawnSubsystem::OnPreBeginPlay()
 
 	// Get all the nav modifier volumes in the map. These will be ignored when testing collision.
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ANavModifierVolume::StaticClass(), NavModifiers);
+
+	// Get the nav subsystem.
+	NavSubsystem = GetWorld()->GetSubsystem<UNavigationSubsystem>();
+	if (!NavSubsystem)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpawnSubsystem: Failed to get a UNavigationSubsystem!"));
+	}
 }
 
 bool USpawnSubsystem::GetNearestEmptyLocation(
@@ -207,7 +217,6 @@ bool USpawnSubsystem::TestLocation(
 		IsNavLocation = NavSys->ProjectPointToNavigation(CandidateLocation, NavLoc, QueryingExtent);
 		if (!IsNavLocation)
 		{
-			// TODO: Might not use random point in navigable radius if reachability is required.
 			FNavLocation NearestNavLocation;
 			HasNearestPoint = NavSys->GetRandomPointInNavigableRadius(CandidateLocation, 1000, NearestNavLocation);
 			if (!HasNearestPoint)
