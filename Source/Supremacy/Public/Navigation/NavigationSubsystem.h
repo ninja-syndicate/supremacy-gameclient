@@ -19,6 +19,7 @@ public:
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
+	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 
 	// NOTE: Create a proxy actor that does replication if required.
 
@@ -28,14 +29,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool GetBaseGroundLocation(const FVector& Location, FVector& OutLocation);
 
+	/**
+	 * Gets nearest navigable location from the given `Location`. Note that valid `OutLocation` is not necessarily traversable from the `Location`.
+	 *
+	 * @param Location The location to get the nearest navigable area from.
+	 * @param OutLocation The nearest navigable location from the `Location`.
+	 * @param bSearchUnbound By default, the search radius is bounded. Setting this to true will search unbounded. Enabling this option can cause big performance hits.
+	 * @returns true if nearest navigable location is found and false otherwise.
+	 */
 	UFUNCTION(BlueprintCallable)
-	bool GetNearestNavigableArea(const FVector& Location, FVector& OutLocation);
+	bool GetNearestNavigableArea(const FVector& Location, FVector& OutLocation, bool bSearchUnbound = false);
 
 	UFUNCTION(BlueprintCallable)
 	FVector GetQueryExtent() const;
 
 private:
-	void OnBeginPlay();
+	void OnPreBeginPlay();
 	bool TraceByProfile(const FVector& StartLocation, const FVector& EndLocation, const FName& ProfileName, FVector& OutLocation);
 
 	UPROPERTY(Category = "Navigation", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

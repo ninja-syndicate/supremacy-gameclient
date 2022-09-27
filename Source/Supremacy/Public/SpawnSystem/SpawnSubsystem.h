@@ -19,6 +19,7 @@ public:
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
+	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Spawn Subsystem")
 	bool GetGroundLocation(FVector Origin, float Radius, FVector& OutLocation);
@@ -50,7 +51,7 @@ public:
 		bool bGround = true,
 		bool bNavigable = true);
 private:
-	void Setup();
+	void OnPreBeginPlay();
 
 	bool TestLocation(
 		FVector Location, 
@@ -61,6 +62,9 @@ private:
 		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeQueries,
 		TArray<AActor*> ActorsToIgnore,
 		FVector& OutNearestLocation);
+
+	UPROPERTY(VisibleAnywhere, Category = "Spawn Subsystem", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UNavigationSubsystem> NavSubsystem = nullptr;
 
 	/** Debug flag used for visualisation. */
 	UPROPERTY(EditAnywhere, Category = "Spawn Subsystem", meta = (AllowPrivateAccess = "true"))
