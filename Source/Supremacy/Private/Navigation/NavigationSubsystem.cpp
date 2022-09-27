@@ -17,9 +17,6 @@ UNavigationSubsystem::UNavigationSubsystem() : Super()
 void UNavigationSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	// Bind the OnBeginPlay method to the World BeginPlay event so that it gets called on BeginPlay.
-	GetWorld()->OnWorldBeginPlay.AddUObject(this, &UNavigationSubsystem::OnBeginPlay);
 }
 
 void UNavigationSubsystem::Deinitialize()
@@ -27,7 +24,14 @@ void UNavigationSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UNavigationSubsystem::OnBeginPlay()
+void UNavigationSubsystem::OnWorldBeginPlay(UWorld& InWorld)
+{
+	Super::OnWorldBeginPlay(InWorld);
+
+	OnPreBeginPlay();
+}
+
+void UNavigationSubsystem::OnPreBeginPlay()
 {
 	TArray<AActor*> Landscapes;
 	TArray<AActor*> AIPlayerStarts;
@@ -62,6 +66,15 @@ void UNavigationSubsystem::OnBeginPlay()
 	}
 }
 
+bool UNavigationSubsystem::IsNavigable(const FVector& Location)
+{
+	if (!NavSys) return false;
+
+	FNavLocation ResultLocation;
+	bool bProjectSuccess = NavSys->ProjectPointToNavigation(Location, ResultLocation, GetQueryExtent());
+	return bProjectSuccess;
+}
+
 bool UNavigationSubsystem::GetBaseGroundLocation(const FVector& Location, FVector& OutLocation)
 {
 	// Perform trace by profile to Ground to find the base ground location along the `location`.
@@ -90,11 +103,11 @@ bool UNavigationSubsystem::GetBaseGroundLocation(const FVector& Location, FVecto
 	return false;
 }
 
-bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVector& OutLocation)
+bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVector& OutLocation, bool bSearchUnbound)
 {
 	if (!NavSys) return false;
 
-	const int SearchIterationCount = 5;
+	const int SearchIterationCount = bSearchUnbound ? 100 : 5;
 	const float SearchRadiusDelta = 2500;
 
 	// Test the given location to see if it's navigable.

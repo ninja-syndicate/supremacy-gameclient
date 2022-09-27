@@ -5,6 +5,7 @@
 
 #include "AI/WarMachineFollowingComponent.h"
 #include "Navigation/CrowdFollowingComponent.h"
+#include "Parsers/PascalCaseJsonObjectConverter.h"
 
 ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UWarMachineFollowingComponent>(TEXT("PathFollowingComponent")))
@@ -127,4 +128,11 @@ FAIBrainInput ACrowdAIController::GetBrainInput(
 	BrainInput.EnvQueryStatus = EnvQueryStatus;
 
 	return BrainInput;
+}
+
+FString ACrowdAIController::ToJson(const FAIBrainInput& BrainInput)
+{
+	FString JsonString;
+	FPascalCaseJsonObjectConverter::UStructToJsonObjectString(BrainInput, JsonString);
+	return JsonString;
 }

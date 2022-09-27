@@ -39,6 +39,9 @@ bool Utils::CSVImporter::ParseLine(TArray<FString>& Result, FString Line)
 	bool inQuote = false;
 	bool startOfField = true;
 	FString currentValue;
+	
+	bool AppendEmptyField = Line[Line.Len() - 1] == ',';
+	
 	while(Line.Len() > 0)
 	{
 		TCHAR token = Line[0];
@@ -92,12 +95,15 @@ bool Utils::CSVImporter::ParseLine(TArray<FString>& Result, FString Line)
 
 	if (currentValue.Len() > 0) Result.Push(currentValue);
 
+	if(AppendEmptyField) Result.Push("");
+	
 	return true;
 }
 
 bool Utils::CSVImporter::LoadData()
 {
 	if (dataLoaded) return true;
+	
 	if (!FFileHelper::LoadFileToStringArray(FileData, *CurrentFilename))
 	{
 		return false;

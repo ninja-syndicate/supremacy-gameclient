@@ -32,7 +32,7 @@
           ]
      },
      "HealCrate": {
-          "HealAmount": 5000,
+          "HealAmount": 3800,
           "TriggerRadius": 3000
      },
      "Repair": {
@@ -164,20 +164,20 @@
      },
      "MiniMech": {
           "ZaiStats": {
-               "HealthMax": 1700,
-               "ShieldMax": 2300,
+               "HealthMax": 2000,
+               "ShieldMax": 2000,
                "ShieldRechargeRate": 100,
-               "Speed": 2500,
+               "Speed": 2750,
                "Weapons": [
                     { 
                          "ID": "SniperRifle",
                          "Name": "Sniper Rifle",
-                         "Damage": 85,
-                         "DamageFalloff": 60000,
-                         "DamageFalloffRate": 80,
-                         "Spread": 1,
-                         "ProjectileSpeed": 90000,
-                         "RateOfFire": 45
+                         "Damage": 46,
+                         "DamageFalloff": 40000,
+                         "DamageFalloffRate": 92,
+                         "Spread": 2,
+                         "ProjectileSpeed": 40000,
+                         "RateOfFire": 60
                     },
                     {
                          "ID": "RocketPods",
@@ -193,29 +193,26 @@
                     {
                          "ID": "PlasmaSword",
                          "Name": "Plasma Sword",
-                         "Damage": 70,
+                         "Damage": 80,
                          "DamageType": 1
                     }
                ]
           },
           "BCStats": {
-               "HealthMax": 1800,
-               "ShieldMax": 1800,
-               "ShieldRechargeRate": 50,
+               "HealthMax": 2000,
+               "ShieldMax": 2000,
+               "ShieldRechargeRate": 100,
                "Speed": 2750,
                "Weapons": [
                     { 
                          "ID": "Boston Plasma Rifle",
                          "Name": "Plasma Rifle",
-                         "Damage": 13,
-                         "DamageFalloff": 30000,
-                         "DamageFalloffRate": 24,
-                         "DamageRadiusFalloff": 20,
-                         "DamageRadius": 100,
-                         "DamageType": 1,
+                         "Damage": 46,
+                         "DamageFalloff": 40000,
+                         "DamageFalloffRate": 92,
                          "Spread": 2,
-                         "ProjectileSpeed": 30000,
-                         "RateOfFire": 250
+                         "ProjectileSpeed": 40000,
+                         "RateOfFire": 60
                     },
                     {
                          "ID": "RocketPods",
@@ -231,27 +228,25 @@
                     { 
                          "ID": "Boston Sword",
                          "Name": "Sword",
-                         "Damage": 30
+                         "Damage": 40
                     }
                ]
           },
           "RMStats": {
-               "HealthMax": 2300,
-               "ShieldMax": 1700,
-               "ShieldRechargeRate": 75,
-               "Speed": 2250,
+               "HealthMax": 2000,
+               "ShieldMax": 2000,
+               "ShieldRechargeRate": 100,
+               "Speed": 2750,
                "Weapons": [
                     {
                          "ID": "RedMountainCannon",
                          "Name": "Dual Cannons",
-                         "Damage": 8,
+                         "Damage": 28,
                          "DamageFalloff": 40000,
-                         "DamageFalloffRate": 24,
-                         "DamageRadius": 100,
-                         "DamageRadiusFalloff": 0,
-                         "Spread": 3,
-                         "ProjectileSpeed": 60000,
-                         "RateOfFire": 270
+                         "DamageFalloffRate": 56,
+                         "Spread": 2,
+                         "ProjectileSpeed": 40000,
+                         "RateOfFire": 60
                     },
                     {
                          "ID": "RocketPods",
@@ -265,6 +260,26 @@
                          "RateOfFire": 2
                     }
                ]
+          }
+     },
+     "K9PatrolPack": {
+          "PatrolRadius": 5000,
+          "SpawnAmount": 5,
+          "Stats": {
+               "HealthMax": 1750,
+               "Speed": 3000,
+               "Weapons": [
+                    {
+                         "Name": "Robot Dog Laser",
+                         "Damage": 25,
+                         "Damage_Radius": 40,
+                         "Damage_Type": 1,
+                         "Spread": 2,
+                         "Projectile_Speed": 48000,
+                         "Rate_Of_Fire": 512
+                    }
+               ],
+               "Name": "Robot Dog"
           }
      }
 }
