@@ -54,7 +54,7 @@
       "Spread": 3,
       "Projectile_Speed": 60000,
       "Rate_Of_Fire": 270,
-      "Max_Ammo": 100000,
+      "Max_Ammo": 30,
       "Power_Cost": 10,
       "Recoil_Force": 10
     },
@@ -104,8 +104,6 @@
     "Weapon_AM_BFG": {
       "Name": "Archon Militech BFG",
       "Damage": 1200,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Damage_Radius": 1000,
       "Damage_Type": 2,
       "Spread": 6,
@@ -117,8 +115,6 @@
     "Weapon_AM_Cannon": {
       "Name": "Archon Militech Cannon",
       "Damage": 140,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Damage_Radius": 500,
       "Damage_Type": 2,
       "Rate_Of_Fire": 160,
@@ -127,7 +123,6 @@
     "Weapon_AM_FlameThrower": {
       "Name": "Archon Militech Flamethrower",
       "Damage": 4,
-      "Damage_Falloff": 6000,
       "Spread": 5,
       "Rate_Of_Fire": 600
     },
@@ -141,15 +136,11 @@
     "Weapon_AM_LaserBeam": {
       "Name": "Archon Militech Laser Beam",
       "Damage": 25,
-      "Damage_Falloff": 20000,
-      "Damage_Falloff_Rate": 20,
       "Rate_Of_Fire": 60
     },
     "Weapon_AM_MachineGun": {
       "Name": "Archon Militech Machine Gun",
       "Damage": 9,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Spread": 3,
       "Rate_Of_Fire": 750,
       "Recoil_Force": 10
@@ -157,8 +148,6 @@
     "Weapon_AM_Minigun": {
       "Name": "Archon Militech Minigun",
       "Damage": 6,
-      "Damage_Falloff": 20000,
-      "Damage_Falloff_Rate": 20,
       "Spread": 5,
       "Rate_Of_Fire": 4000,
       "Charge_Time": 3,
@@ -167,8 +156,6 @@
     "Weapon_AM_MissileLauncher": {
       "Name": "Archon Militech Missile Launcher",
       "Damage": 100,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Damage_Radius": 600,
       "Damage_Type": 2,
       "Spread": 800,
@@ -182,8 +169,6 @@
     "Weapon_AM_PlasmaRifle": {
       "Name": "Archon Militech Plasma Rifle",
       "Damage": 20,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Spread": 3,
       "Rate_Of_Fire": 100,
       "Recoil_Force": 30
@@ -191,8 +176,6 @@
     "Weapon_AM_Shotgun": {
       "Name": "Archon Militech Shotgun",
       "Damage": 6,
-      "Damage_Falloff": 6000,
-      "Damage_Falloff_Rate": 2,
       "Spread": 8,
       "Rate_Of_Fire": 100,
       "Projectile_Amount": 12,
@@ -201,8 +184,6 @@
     "Weapon_Pyro_Cannon": {
       "Name": "Pyro Cannon",
       "Damage": 140,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Damage_Radius": 500,
       "Damage_Type": 2,
       "Rate_Of_Fire": 160,
@@ -211,8 +192,6 @@
     "Weapon_Pyro_FlameThrower": {
       "Name": "Pyro Flamethrower",
       "Damage": 4,
-      "Damage_Falloff": 6000,
-      "Damage_Falloff_Rate": 1,
       "Spread": 5,
       "Rate_Of_Fire": 600
     },
@@ -226,22 +205,16 @@
     "Weapon_Pyro_LaserBeam": {
       "Name": "Pyro Laser Beam",
       "Damage": 25,
-      "Damage_Falloff": 20000,
-      "Damage_Falloff_Rate": 20,
       "Rate_Of_Fire": 240
     },
     "Weapon_Pyro_LightningGun": {
       "Name": "Pyro Lightning Gun",
       "Damage": 25,
-      "Damage_Falloff": 6000,
-      "Damage_Falloff_Rate": 20,
       "Rate_Of_Fire": 240
     },
     "Weapon_Pyro_MachineGun": {
       "Name": "Pyro Machine Gun",
       "Damage": 9,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Spread": 3,
       "Rate_Of_Fire": 750,
       "Recoil_Force": 10
@@ -249,8 +222,6 @@
     "Weapon_Pyro_Minigun": {
       "Name": "Pyro Minigun",
       "Damage": 6,
-      "Damage_Falloff": 20000,
-      "Damage_Falloff_Rate": 20,
       "Spread": 5,
       "Rate_Of_Fire": 6000,
       "Charge_Time": 2,
@@ -259,8 +230,6 @@
     "Weapon_Pyro_PlasmaGun": {
       "Name": "Pyro Plasma Gun",
       "Damage": 20,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Spread": 3,
       "Rate_Of_Fire": 100,
       "Recoil_Force": 30
@@ -268,8 +237,6 @@
     "Weapon_Pyro_MissileLauncher": {
       "Name": "Pyro Missile Launcher",
       "Damage": 100,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Damage_Radius": 600,
       "Damage_Type": 2,
       "Spread": 1,
@@ -282,8 +249,6 @@
     "Weapon_Pyro_Shotgun": {
       "Name": "Pyro Shotgun",
       "Damage": 8,
-      "Damage_Falloff": 6000,
-      "Damage_Falloff_Rate": 2,
       "Spread": 8,
       "Rate_Of_Fire": 80,
       "Projectile_Amount": 12,
@@ -292,8 +257,6 @@
     "Weapon_Warsui_Cannon": {
       "Name": "Warsui Cannon",
       "Damage": 140,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Damage_Radius": 500,
       "Damage_Type": 2,
       "Rate_Of_Fire": 160,
@@ -302,8 +265,6 @@
     "Weapon_Warsui_Flakgun": {
       "Name": "Warsui Flakgun",
       "Damage": 5,
-      "Damage_Falloff": 6000,
-      "Damage_Falloff_Rate": 2,
       "Spread": 8,
       "Rate_Of_Fire": 100,
       "Projectile_Amount": 20,
@@ -319,22 +280,16 @@
     "Weapon_Warsui_LaserBeam": {
       "Name": "Warsui Laser Beam",
       "Damage": 25,
-      "Damage_Falloff": 20000,
-      "Damage_Falloff_Rate": 20,
       "Rate_Of_Fire": 240
     },
     "Weapon_Warsui_LightningGun": {
       "Name": "Warsui Lightning Gun",
       "Damage": 25,
-      "Damage_Falloff": 6000,
-      "Damage_Falloff_Rate": 10,
       "Rate_Of_Fire": 240
     },
     "Weapon_Warsui_MachineGun": {
       "Name": "Warsui Machinegun",
       "Damage": 9,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Spread": 3,
       "Rate_Of_Fire": 750,
       "Recoil_Force": 10
@@ -342,8 +297,6 @@
     "Weapon_Warsui_Minigun": {
       "Name": "Warsui Minigun",
       "Damage": 6,
-      "Damage_Falloff": 20000,
-      "Damage_Falloff_Rate": 20,
       "Spread": 5,
       "Rate_Of_Fire": 6000,
       "Charge_Time": 2,
@@ -352,8 +305,6 @@
     "Weapon_Warsui_MissileLauncher": {
       "Name": "Warsui Missile Launcher",
       "Damage": 100,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Damage_Radius": 600,
       "Damage_Type": 2,
       "Spread": 3,
@@ -366,8 +317,6 @@
     "Weapon_Warsui_PlasmaGun": {
       "Name": "Warsui Plasma Gun",
       "Damage": 20,
-      "Damage_Falloff": 40000,
-      "Damage_Falloff_Rate": 40,
       "Spread": 3,
       "Rate_Of_Fire": 100,
       "Recoil_Force": 30
