@@ -40,7 +40,7 @@ public:
 	UPROPERTY(Category = "AI Damage Info", EditAnywhere, BlueprintReadWrite)
 	FString WeaponHash;
 
-	/** The name of the ewapon that caused the damage. For damage with no weaponHash such as abilities. */
+	/** The name of the weapon that caused the damage. For damage with no weaponHash such as abilities. */
 	UPROPERTY(Category = "AI Damage Info", EditAnywhere, BlueprintReadWrite)
 	FString WeaponName;
 	
