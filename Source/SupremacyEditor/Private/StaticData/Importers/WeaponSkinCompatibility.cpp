@@ -128,7 +128,6 @@ bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAss
 	}
 	else {
 		for (int32 i = 0; i < AssetData.Num(); i++) {
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *(AssetData[i].PackageName.ToString()));
 			Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[i].ObjectPath.ToString() + FString("'"))));
 		}
 	}

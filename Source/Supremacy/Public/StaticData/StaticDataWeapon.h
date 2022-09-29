@@ -6,6 +6,7 @@
 #include "StaticDataBaseRecord.h"
 #include "StaticDataBrand.h"
 #include "UObject/Object.h"
+#include "Weapons/Weapon.h"
 #include "Types/WeaponType.h"
 #include "Types/WeaponDamageType.h"
 #include "StaticDataWeapon.generated.h"
@@ -97,4 +98,7 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataBrand* Brand;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "References", meta = (AllowPrivateAccess = true))
+	TSoftClassPtr<AWeapon> Blueprint;
 };
