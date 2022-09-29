@@ -106,6 +106,11 @@ public:
     UFUNCTION(BlueprintCallable)
     FFaction FactionFromStaticDataFaction(const FGuid& ID);
 
+    UFUNCTION(BlueprintCallable)
+    TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForMech(const FGuid &MechID, const FGuid& SkinID);
+
+    UFUNCTION(BlueprintCallable)
+    TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForWeapon(const FGuid& WeaponID, const FGuid& SkinID);
 private:
     UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
     UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);

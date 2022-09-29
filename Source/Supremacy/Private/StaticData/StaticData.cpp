@@ -288,3 +288,45 @@ FWarMachineStruct UStaticData::WarMachineStructFromStaticDataWarMachine(const FG
 
     return Out;
 }
+
+static bool CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid& Out)
+{
+    uint8 Buffer[16] = { 0 };
+    FString AString = A.ToString();
+    FString BString = B.ToString();
+
+    for (int32 i = 0; i < 16;)
+    {
+        if (AString[i] == '-')
+        {
+            continue;
+        }
+
+        Buffer[i] = (unsigned char)AString[i] ^ (unsigned char)BString[i];
+        i++;
+    }
+
+    int32 i0 = Buffer[0] + (Buffer[1] << 8) + (Buffer[2] << 16) + (Buffer[3] << 24);
+    int32 i1 = Buffer[4] + (Buffer[5] << 8) + (Buffer[6] << 16) + (Buffer[7] << 24);
+    int32 i2 = Buffer[8] + (Buffer[9] << 8) + (Buffer[10] << 16) + (Buffer[11] << 24);
+    int32 i3 = Buffer[12] + (Buffer[13] << 8) + (Buffer[14] << 16) + (Buffer[15] << 24);
+
+    Out = FGuid(i0, i1, i2, i3);
+    return true;
+}
+
+UFUNCTION(BlueprintCallable)
+TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForMech(const FGuid& MechID, const FGuid& SkinID) {
+    FGuid ID;
+    CombineGuidsUnique(MechID, SkinID, ID);
+    UStaticDataMechSkinCompatibility* Record = GetMechSkinCompatibility(ID);
+    return Record->Materials;
+}
+
+UFUNCTION(BlueprintCallable)
+TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForWeapon(const FGuid& WeaponID, const FGuid& SkinID) {
+    FGuid ID;
+    CombineGuidsUnique(WeaponID, SkinID, ID);
+    UStaticDataWeaponSkinCompatibility* Record = GetWeaponSkinCompatibility(ID);
+    return Record->Materials;
+}

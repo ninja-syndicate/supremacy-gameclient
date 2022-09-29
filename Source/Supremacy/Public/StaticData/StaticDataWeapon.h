@@ -21,13 +21,14 @@ class UStaticDataBrand;
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataWeapon : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::Weapon;
 	
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	EWeaponType Type;
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	float Damage;
 	

@@ -211,7 +211,7 @@ FString StaticDataImporter::Base::GetErrorReason()
 
 bool StaticDataImporter::Base::CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid &Out)
 {
-	uint8 *Buffer = new uint8[16];
+	uint8 Buffer[16] = { 0 };
 	FString AString = A.ToString();
 	FString BString = B.ToString();
 

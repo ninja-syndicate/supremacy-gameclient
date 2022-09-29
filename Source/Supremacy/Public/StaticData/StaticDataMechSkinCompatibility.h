@@ -17,6 +17,7 @@ namespace StaticDataImporter
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataMechSkinCompatibility : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::MechSkinCompatibility;
 	
 	GENERATED_BODY()
