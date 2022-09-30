@@ -249,40 +249,39 @@ FFaction UStaticData::FactionFromStaticDataFaction(const FGuid& ID)
     return Out;
 }
 
-FWarMachineStruct UStaticData::WarMachineStructFromStaticDataWarMachine(const FGuid& WarMachineID, const FGuid& PowerCoreID) 
+UFUNCTION(BlueprintCallable)
+FWeaponStruct UStaticData::WeaponStruct(const FGuid& WeaponID) {
+    FWeaponStruct Struct;
+    return Struct;
+}
+
+UFUNCTION(BlueprintCallable)
+FPowerCoreStruct UStaticData::PowerCoreStruct(const FGuid& PowerCoreID) {
+    FPowerCoreStruct Struct;
+    return Struct;
+}
+
+FWarMachineStruct UStaticData::WarMachineStruct(const FGuid& MechID) 
 {
-    UStaticDataWarMachineModel* WarMachine = GetWarMachineModel(WarMachineID);
-    UStaticDataPowerCore* PowerCore = GetPowerCore(PowerCoreID);
+    UStaticDataWarMachineModel* WarMachine = GetWarMachineModel(MechID);
 
     FWarMachineStruct Out;
     if (!WarMachine) 
     {
-        UE_LOG(LogTemp, Error, TEXT("WarMachineStructFromStaticDataWarMachine: bad war machine ID (%s)"), *(WarMachineID.ToString()));
+        UE_LOG(LogTemp, Error, TEXT("WarMachineStructFromStaticDataWarMachine: bad war machine ID (%s)"), *(MechID.ToString()));
         return Out;
     }
-    if (!PowerCore)
-    {
-        UE_LOG(LogTemp, Error, TEXT("WarMachineStructFromStaticDataWarMachine: bad power core ID (%s)"), *(PowerCoreID.ToString()));
-        return Out;
-    }
-
+   
     Out.Name = WarMachine->Label;
     Out.Faction = FactionFromStaticDataFaction(WarMachine->Brand->Faction->ID);
 
-    //FString Model;
-    //FString Skin;
     //ERarity Rarity;
-    //TArray<FWeaponStruct> Weapons;
 
     Out.Health = WarMachine->MaxHitpoints;
     Out.HealthMax = WarMachine->MaxHitpoints;
     Out.ShieldMax = WarMachine->MaxShield;
     Out.ShieldRechargeRate = WarMachine->ShieldRechargeRate;
     Out.Speed = WarMachine->Speed;
-
-    Out.PowerCore.Power_Capacity = PowerCore->Capacity;
-    Out.PowerCore.Recharge_Rate = PowerCore->RechargeRate;
-    Out.PowerCore.Max_Draw_Rate = PowerCore->MaxDrawRate;
 
     Out.Blueprint = WarMachine->UnrealWarMachine;
 

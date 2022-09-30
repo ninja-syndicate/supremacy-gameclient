@@ -101,7 +101,13 @@ public:
     UStaticDataShieldType* GetShieldType(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    FWarMachineStruct WarMachineStructFromStaticDataWarMachine(const FGuid& WarMachineID, const FGuid& PowerCoreID);
+    FWarMachineStruct WarMachineStruct(const FGuid& MechID);
+
+    UFUNCTION(BlueprintCallable)
+    FWeaponStruct WeaponStruct(const FGuid& WeaponID);
+
+    UFUNCTION(BlueprintCallable)
+    FPowerCoreStruct PowerCoreStruct(const FGuid& PowerCoreID);
 
     UFUNCTION(BlueprintCallable)
     FFaction FactionFromStaticDataFaction(const FGuid& ID);
