@@ -41,9 +41,9 @@ StaticDataImporter::Weapon::Weapon(): Base()
 FString BlueprintPathForWeapon(UStaticDataWeapon* Weapon, FString &WeaponTypeString) {
 	FString Path;
 
-	if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) Path.Append(FString("/Game/Blueprints/Weapons/GenesisWeapons/RedMountain"));
-	else if (Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04")) Path.Append(FString("/Game/Blueprints/Weapons/GenesisWeapons/BostonCybernetics"));
-	else if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) Path.Append(FString("/Game/Blueprints/Weapons/GenesisWeapons/Zaibatsu"));
+	if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) Path.Append(FString("/Game/Blueprints/Weapons/GenesisWeapons/Zaibatsu"));
+	else if (Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04")) Path.Append(FString("/Game/Blueprints/Weapons/GenesisWeapons/RedMountain"));
+	else if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) Path.Append(FString("/Game/Blueprints/Weapons/GenesisWeapons/Boston"));
 	else if (Weapon->Brand->ID == FGuid("cb84390c-591e-4ac0-a8b4-d283c83504a4")) Path.Append(FString("/Game/Blueprints/Weapons/Nexus_Weapons/ArchonMilitech"));
 	else if (Weapon->Brand->ID == FGuid("953b230b-91ef-4949-b831-165b2b9f2ba8")) Path.Append(FString("/Game/Blueprints/Weapons/Nexus_Weapons/Warsui"));
 	else if (Weapon->Brand->ID == FGuid("0eb63669-3c98-4467-97af-dabc2acc43a6")) Path.Append(FString("/Game/Blueprints/Weapons/Nexus_Weapons/Pyro"));
@@ -89,7 +89,7 @@ FString BlueprintPathForWeapon(UStaticDataWeapon* Weapon, FString &WeaponTypeStr
 		WeaponTypeString = FString("Sword");
 		break;
 	case EWeaponType::EWeaponType_SniperRifle:
-		WeaponTypeString = FString("Sniper");
+		WeaponTypeString = FString("Fire-Sniper");
 		break;
 	case EWeaponType::EWeaponType_Rifle:
 		WeaponTypeString = FString("Plasma-Rifle");
@@ -184,28 +184,27 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 
 	SetAssetName(DataAsset, Record, TEXT("Weapon"));
 
-	FString WeaponTypeString;
-	FString BlueprintPath = BlueprintPathForWeapon(Record, WeaponTypeString);
-	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-	TArray<FAssetData> AssetData;
-	AssetRegistryModule.Get().GetAssetsByPath(FName(*BlueprintPath), AssetData, false, false);
+	if(Record->ID == FGuid("41099781-8586-4783-9d1c-b515a386fe9f")) {
+		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods'"));
+	} else if (Record->ID == FGuid("e9fc2417-6a5b-489d-b82e-42942535af90")) {
+		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods'"));
+	} else {
+		FString WeaponTypeString;
+		FString BlueprintPath = BlueprintPathForWeapon(Record, WeaponTypeString);
+		FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+		TArray<FAssetData> AssetData;
+		AssetRegistryModule.Get().GetAssetsByPath(FName(*BlueprintPath), AssetData, false, false);
 
-	bool Found = false;
-	for (int32 i = 0; i < AssetData.Num(); i++) {
-		if (AssetData[i].AssetName.ToString().Contains(WeaponTypeString)) {
-			UE_LOG(LogTemp, Warning, TEXT("%s %s -> %s"), *Record->Label, *WeaponTypeString, *(AssetData[i].AssetName.ToString()));
-			Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'") + AssetData[i].ObjectPath.ToString() + FString("'"));
-			Found = true;
-			break;
+		bool Found = false;
+		for (int32 i = 0; i < AssetData.Num(); i++) {
+			if (AssetData[i].AssetName.ToString().Contains(WeaponTypeString)) {
+				UE_LOG(LogTemp, Warning, TEXT("%s %s -> %s"), *Record->Label, *WeaponTypeString, *(AssetData[i].AssetName.ToString()));
+				Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'") + AssetData[i].ObjectPath.ToString() + FString("'"));
+				Found = true;
+				break;
+			}
 		}
 	}
-
-	if (!Found) {
-		UE_LOG(LogTemp, Warning, TEXT("%s %s -> --- NONE ---"), *Record->Label, *WeaponTypeString);
-	}
-
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *BlueprintPath);
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *WeaponTypeString);
 
 	return true;
 }
