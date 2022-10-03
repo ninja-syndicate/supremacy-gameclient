@@ -65,7 +65,7 @@
       "Damage_Falloff_Rate": 125,
       "Damage_Radius": 850,
       "Damage_Type": 2,
-      "Spread": 3,
+      "Spread": 1500,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 2,
       "Is_Arced": true
