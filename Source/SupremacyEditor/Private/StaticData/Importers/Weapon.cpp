@@ -185,9 +185,9 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 	SetAssetName(DataAsset, Record, TEXT("Weapon"));
 
 	if(Record->ID == FGuid("41099781-8586-4783-9d1c-b515a386fe9f")) {
-		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods'"));
+		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
 	} else if (Record->ID == FGuid("e9fc2417-6a5b-489d-b82e-42942535af90")) {
-		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods'"));
+		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
 	} else {
 		FString WeaponTypeString;
 		FString BlueprintPath = BlueprintPathForWeapon(Record, WeaponTypeString);
@@ -199,7 +199,7 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 		for (int32 i = 0; i < AssetData.Num(); i++) {
 			if (AssetData[i].AssetName.ToString().Contains(WeaponTypeString)) {
 				UE_LOG(LogTemp, Warning, TEXT("%s %s -> %s"), *Record->Label, *WeaponTypeString, *(AssetData[i].AssetName.ToString()));
-				Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'") + AssetData[i].ObjectPath.ToString() + FString("'"));
+				Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'") + AssetData[i].ObjectPath.ToString() + FString("_C'"));
 				Found = true;
 				break;
 			}

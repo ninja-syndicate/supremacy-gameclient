@@ -252,12 +252,50 @@ FFaction UStaticData::FactionFromStaticDataFaction(const FGuid& ID)
 UFUNCTION(BlueprintCallable)
 FWeaponStruct UStaticData::WeaponStruct(const FGuid& WeaponID) {
     FWeaponStruct Struct;
+
+    UStaticDataWeapon* Record = GetWeapon(WeaponID);
+    if (!Record) {
+        UE_LOG(LogTemp, Warning, TEXT("failed to find weapon with id %s"), *WeaponID.ToString());
+        return Struct;
+    }
+
+    Struct.Damage = Record->Damage;
+    Struct.Damage_Falloff = Record->DamageFalloff;
+    Struct.Damage_Falloff_Rate = Record->DamageFalloffRate;
+    Struct.Damage_Radius = Record->Radius;
+    Struct.Damage_Radius_Falloff = Record->RadiusDamageFalloff;
+    Struct.Damage_Type = (uint8)Record->WeaponDamageType;
+    Struct.Spread = Record->Spread;
+    Struct.Rate_Of_Fire = Record->RateOfFire;
+    Struct.Burst_Rate_Of_Fire = Record->BurstRateOfFire;
+    Struct.Projectile_Speed = Record->ProjectileSpeed;
+    Struct.Max_Ammo = Record->MaxAmmo;
+    Struct.Projectile_Amount = Record->ProjectileAmount;
+    //Struct.Projectile_Life_Span = ...;
+    Struct.Charge_Time = Record->ChargeTimeSeconds;
+    Struct.Is_Arced = Record->IsArced;
+    //Struct.Optimal_Range = ...;
+    //Struct.Recoil_Force = ...;
+    Struct.Power_Cost = Record->EnergyCost;
+    Struct.Power_Instance_Drain = Record->PowerInstantDrain;
+
     return Struct;
 }
 
 UFUNCTION(BlueprintCallable)
 FPowerCoreStruct UStaticData::PowerCoreStruct(const FGuid& PowerCoreID) {
     FPowerCoreStruct Struct;
+
+    UStaticDataPowerCore* Record = GetPowerCore(PowerCoreID);
+    if (!Record) {
+        UE_LOG(LogTemp, Warning, TEXT("failed to find power core with id %s"), *PowerCoreID.ToString());
+        return Struct;
+    }
+
+    Struct.Max_Draw_Rate = Record->MaxDrawRate;
+    Struct.Power_Capacity = Record->Capacity;
+    Struct.Recharge_Rate = Record->RechargeRate;
+
     return Struct;
 }
 
@@ -319,7 +357,8 @@ TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForMech(const FGu
     FGuid ID;
     CombineGuidsUnique(MechID, SkinID, ID);
     UStaticDataMechSkinCompatibility* Record = GetMechSkinCompatibility(ID);
-    return Record->Materials;
+    if (Record) return Record->Materials;
+    return TMap<FString, TSoftObjectPtr<UMaterial>>();
 }
 
 UFUNCTION(BlueprintCallable)
@@ -327,5 +366,6 @@ TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForWeapon(const F
     FGuid ID;
     CombineGuidsUnique(WeaponID, SkinID, ID);
     UStaticDataWeaponSkinCompatibility* Record = GetWeaponSkinCompatibility(ID);
-    return Record->Materials;
+    if(Record) return Record->Materials;
+    return TMap<FString, TSoftObjectPtr<UMaterial>>();
 }
