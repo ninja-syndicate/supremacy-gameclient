@@ -112,7 +112,10 @@
       "Projectile_Speed": 10000,
       "Rate_Of_Fire": 20,
       "Charge_Time": 3,
-      "Recoil_Force": 60
+      "Recoil_Force": 60,
+      "Dot_Tick_Damage": 300,
+      "Dot_Tick_Duration": 1,
+      "Dot_Max_Ticks": 2
     },
     "Weapon_AM_Cannon": {
       "Name": "Archon Militech Cannon",
