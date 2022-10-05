@@ -64,6 +64,9 @@ struct FWarMachineServerStruct {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
@@ -115,6 +118,9 @@ USTRUCT(BlueprintType)
 struct FWarMachineStruct {
 	GENERATED_BODY()
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ID;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
