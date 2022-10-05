@@ -62,44 +62,61 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 
 public:
     UFUNCTION(BlueprintCallable)
-        UStaticDataFaction* GetFaction(const FGuid& ID);
+    UStaticDataFaction* GetFaction(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataBrand* GetBrand(const FGuid& ID);
+    UStaticDataBrand* GetBrand(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataWarMachineModel* GetWarMachineModel(const FGuid& ID);
+    UStaticDataWarMachineModel* GetWarMachineModel(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataSkin* GetSkin(const FGuid& ID);
+    UStaticDataSkin* GetSkin(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataWeaponSkin* GetWeaponSkin(const FGuid& ID);
+    UStaticDataWeaponSkin* GetWeaponSkin(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataWeapon* GetWeapon(const FGuid& ID);
+    UStaticDataWeapon* GetWeapon(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataMechSkinCompatibility* GetMechSkinCompatibility(const FGuid& ID);
+    UStaticDataMechSkinCompatibility* GetMechSkinCompatibility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataWeaponSkinCompatibility* GetWeaponSkinCompatibility(const FGuid& ID);
+    UStaticDataWeaponSkinCompatibility* GetWeaponSkinCompatibility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataPowerCore* GetPowerCore(const FGuid& ID);
+    UStaticDataPowerCore* GetPowerCore(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataBattleAbility* GetBattleAbility(const FGuid& ID);
+    UStaticDataBattleAbility* GetBattleAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataPlayerAbility* GetPlayerAbility(const FGuid& ID);
+    UStaticDataPlayerAbility* GetPlayerAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataGameAbility* GetGameAbility(const FGuid& ID);
+    UStaticDataGameAbility* GetGameAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-        UStaticDataShieldType* GetShieldType(const FGuid& ID);
+    UStaticDataShieldType* GetShieldType(const FGuid& ID);
 
+    UFUNCTION(BlueprintCallable)
+    FWarMachineStruct WarMachineStruct(const FGuid& MechID);
+
+    UFUNCTION(BlueprintCallable)
+    FWeaponStruct WeaponStruct(const FGuid& WeaponID);
+
+    UFUNCTION(BlueprintCallable)
+    FPowerCoreStruct PowerCoreStruct(const FGuid& PowerCoreID);
+
+    UFUNCTION(BlueprintCallable)
+    FFaction FactionFromStaticDataFaction(const FGuid& ID);
+
+    UFUNCTION(BlueprintCallable)
+    TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForMech(const FGuid &MechID, const FGuid& SkinID);
+
+    UFUNCTION(BlueprintCallable)
+    TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForWeapon(const FGuid& WeaponID, const FGuid& SkinID);
 private:
     UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
     UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);

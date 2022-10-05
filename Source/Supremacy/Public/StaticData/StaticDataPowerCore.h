@@ -16,6 +16,7 @@ namespace StaticDataImporter
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataPowerCore : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::PowerCore;
 	
 	GENERATED_BODY()
