@@ -321,8 +321,6 @@ FWarMachineStruct UStaticData::WarMachineStruct(const FGuid& MechID)
     Out.ShieldRechargeRate = WarMachine->ShieldRechargeRate;
     Out.Speed = WarMachine->Speed;
 
-    Out.Blueprint = WarMachine->UnrealWarMachine;
-
     return Out;
 }
 
