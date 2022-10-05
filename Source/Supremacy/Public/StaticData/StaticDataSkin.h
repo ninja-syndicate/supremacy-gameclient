@@ -15,6 +15,7 @@ namespace StaticDataImporter
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataSkin : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::Skin;
 	
 	GENERATED_BODY()
@@ -28,9 +29,9 @@ class SUPREMACY_API UStaticDataSkin : public UStaticDataBaseRecord
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	FString CreatedAt;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
 	int32 StatModifier;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
-	TArray<TSoftObjectPtr<UMaterial>> Materials;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	FGuid CompatibleWeaponID;
 };
