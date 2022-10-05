@@ -22,6 +22,7 @@ class UStaticDataSkin;
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataWarMachineModel : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::WarMachineModel;
 	
 	GENERATED_BODY()
@@ -65,6 +66,9 @@ class SUPREMACY_API UStaticDataWarMachineModel : public UStaticDataBaseRecord
 	// TOOD: Shield Type
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	// ShieldTypeId;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float ShieldRechargeDelay;
 	
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	UStaticDataSkin *DefaultSkin;
@@ -74,4 +78,7 @@ class SUPREMACY_API UStaticDataWarMachineModel : public UStaticDataBaseRecord
 	
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category="References", meta=(AllowPrivateAccess=true))
 	TSoftClassPtr<AMech> UnrealWarMachine;
+
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category = "References", meta = (AllowPrivateAccess = true))
+	TSoftObjectPtr<USkeletalMesh> SkeletalMesh;
 };
