@@ -17,6 +17,7 @@ namespace StaticDataImporter
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataMechSkinCompatibility : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::MechSkinCompatibility;
 	
 	GENERATED_BODY()
@@ -26,4 +27,7 @@ class SUPREMACY_API UStaticDataMechSkinCompatibility : public UStaticDataBaseRec
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataSkin *Skin;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "References", meta = (AllowPrivateAccess = true))
+	TMap<FString, TSoftObjectPtr<UMaterial>> Materials;
 };

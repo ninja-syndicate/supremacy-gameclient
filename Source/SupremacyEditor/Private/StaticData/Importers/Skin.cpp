@@ -23,7 +23,8 @@ StaticDataImporter::Skin::Skin(): Base()
 		"large_image_url",
 		"avatar_url",
 		"background_color",
-		"youtube_url"
+		"youtube_url",
+		"blueprint_weapon_skin_id"
 	};
 }
 
@@ -39,6 +40,7 @@ bool StaticDataImporter::Skin::HandleRow(UStaticData* DataAsset, TArray<FString>
 	Record->Tier = RowCells[3];
 	Record->CreatedAt = RowCells[4];
 	if(!ParseInt(RowCells[5], "stat modifier", Record->StatModifier)) return false;
+	ParseGuid(RowCells[13], "compatible weapon id", Record->CompatibleWeaponID);
 
 	SetAssetName(DataAsset, Record, TEXT("W.M. Skin"));
 	return true;
