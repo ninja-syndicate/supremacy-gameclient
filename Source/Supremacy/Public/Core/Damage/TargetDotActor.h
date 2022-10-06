@@ -18,6 +18,10 @@ public:
 	virtual bool DestroyCondition_Implementation() override;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true, ExposeOnSpawn = true))
 	TObjectPtr<AActor> TargetActor = nullptr;
+
+	/** If greater than 0 and the current TargetActor is not within this radius from this actor, this actor will be destroyed immediately. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true, ExposeOnSpawn = true))
+	float DespawnRadius = 0.0f;
 };

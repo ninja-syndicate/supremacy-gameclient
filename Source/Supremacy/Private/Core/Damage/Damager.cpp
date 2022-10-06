@@ -44,6 +44,7 @@ void UDamager::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	// ...
 }
 
+// NOTE: BaseDamage is technically not necessary, but since it's currently stored in blueprint, no easy way to access.
 float UDamager::ApplyDamage_Implementation(AActor* DamagedActor, float BaseDamage, TSubclassOf<UDamageType> DamageTypeClass)
 {
 	// Re-intialize in case of object pooling.

@@ -5,6 +5,11 @@
 
 bool ATargetDotActor::DestroyCondition_Implementation()
 {
+	if (!IsValid(TargetActor)) return true;
+
+	const float DistToTarget = FVector::Distance(GetActorLocation(), TargetActor->GetActorLocation());
+	if (DespawnRadius > 0 && DistToTarget >= DespawnRadius) return true;
+	
 	const bool bSuperDestroyCondition = Super::DestroyCondition_Implementation();
-	return !IsValid(TargetActor) || bSuperDestroyCondition;
+	return bSuperDestroyCondition;
 }

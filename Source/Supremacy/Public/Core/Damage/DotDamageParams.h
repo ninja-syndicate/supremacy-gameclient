@@ -13,7 +13,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dot Damage Parameters")
 	float TickDuration = 1.0f;
 
-	/** If greater than 0, radial damage will be applied. */
+	/** The radius of the damage. If greater than 0, radial damage with the specified radius will be applied. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dot Damage Parameters")
 	float DamageRadius = 0.0f;
 
