@@ -3,6 +3,8 @@
 
 #include "Core/Damage/Damager.h"
 
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values for this component's properties
 UDamager::UDamager()
 {
@@ -40,4 +42,13 @@ void UDamager::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+float UDamager::ApplyDamage_Implementation(AActor* DamagedActor, float BaseDamage, TSubclassOf<UDamageType> DamageTypeClass)
+{
+	// Re-intialize in case of object pooling.
+	Initialize();
+
+	const float ActualDamage = UGameplayStatics::ApplyDamage(DamagedActor, BaseDamage, Controller, GetOwner(), DamageTypeClass);
+	return ActualDamage;
 }

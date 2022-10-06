@@ -30,6 +30,10 @@ protected:
 	void Initialize();
 	virtual void Initialize_Implementation();
 
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, BlueprintNativeEvent)
+	float ApplyDamage(AActor* DamagedActor, float BaseDamage, TSubclassOf<UDamageType> DamageTypeClass);
+	virtual float ApplyDamage_Implementation(AActor* DamagedActor, float BaseDamage, TSubclassOf<UDamageType> DamageTypeClass);
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

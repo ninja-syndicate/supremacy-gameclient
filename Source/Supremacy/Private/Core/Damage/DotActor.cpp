@@ -21,6 +21,11 @@ void ADotActor::ApplyDamage_Implementation()
 	// Base implementation does nothing.
 }
 
+bool ADotActor::DestroyCondition_Implementation()
+{
+	return CurrentTickCount >= DotDamageParams.MaxTicks;
+}
+
 // Called every frame
 void ADotActor::Tick(float DeltaTime)
 {

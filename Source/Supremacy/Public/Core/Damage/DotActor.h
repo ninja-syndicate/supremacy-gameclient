@@ -7,7 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "DotActor.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class SUPREMACY_API ADotActor : public AActor
 {
 	GENERATED_BODY()
@@ -24,7 +24,11 @@ protected:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ApplyDamage();
-	void ApplyDamage_Implementation();
+	virtual void ApplyDamage_Implementation();
+
+	UFUNCTION(BlueprintPure, BlueprintNativeEvent)
+	bool DestroyCondition();
+	virtual bool DestroyCondition_Implementation();
 
 public:
 	// Called every frame
