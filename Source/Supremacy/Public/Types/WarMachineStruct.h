@@ -74,7 +74,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Model;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Model_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Skin;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Skin_ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Tier;
 
@@ -126,7 +130,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Model;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ModelID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Skin;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SkinID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ERarity Rarity;
 
@@ -164,7 +172,9 @@ public:
 		OwnerName(WarMachine.Owner_Name),
 		Faction(WarMachine.Faction),
 		Model(WarMachine.Model),
+		ModelID(WarMachine.Model_ID),
 		Skin(WarMachine.Skin),
+		SkinID(WarMachine.Skin_ID),
 		Rarity(StringToERarity[WarMachine.Tier]),
 
 		Weapons(WarMachine.Weapons),
