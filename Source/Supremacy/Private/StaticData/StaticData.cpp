@@ -5,78 +5,91 @@
 UStaticDataFaction* UStaticData::GetFaction(const FGuid& ID)
 {
     for (UStaticDataFaction* Record : FactionArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find faction %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataBrand* UStaticData::GetBrand(const FGuid& ID)
 {
     for (UStaticDataBrand* Record : BrandArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find brand %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataWarMachineModel* UStaticData::GetWarMachineModel(const FGuid& ID)
 {
     for (UStaticDataWarMachineModel* Record : WarMachineModelArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find war machine model %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataSkin* UStaticData::GetSkin(const FGuid& ID)
 {
     for (UStaticDataSkin* Record : SkinArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find skin %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataWeaponSkin* UStaticData::GetWeaponSkin(const FGuid& ID)
 {
     for (UStaticDataWeaponSkin* Record : WeaponSkinArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find weapon skin %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataWeapon* UStaticData::GetWeapon(const FGuid& ID)
 {
     for (UStaticDataWeapon* Record : WeaponArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find weapon %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataMechSkinCompatibility* UStaticData::GetMechSkinCompatibility(const FGuid& ID)
 {
     for (UStaticDataMechSkinCompatibility* Record : MechSkinCompatibilityArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find mech skin compatibility %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataWeaponSkinCompatibility* UStaticData::GetWeaponSkinCompatibility(const FGuid& ID)
 {
     for (UStaticDataWeaponSkinCompatibility* Record : WeaponSkinCompatibilityArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find weapon skin compatibility %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataPowerCore* UStaticData::GetPowerCore(const FGuid& ID)
 {
     for (UStaticDataPowerCore* Record : PowerCoreArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find power core %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataBattleAbility* UStaticData::GetBattleAbility(const FGuid& ID)
 {
     for (UStaticDataBattleAbility* Record : BattleAbilityArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find battle ability %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataPlayerAbility* UStaticData::GetPlayerAbility(const FGuid& ID)
 {
     for (UStaticDataPlayerAbility* Record : PlayerAbilityArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find player ability %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataGameAbility* UStaticData::GetGameAbility(const FGuid& ID)
 {
     for (UStaticDataGameAbility* Record : GameAbilityArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find game ability %s"), *ID.ToString());
     return nullptr;
 }
 
 UStaticDataShieldType* UStaticData::GetShieldType(const FGuid& ID)
 {
     for (UStaticDataShieldType* Record : ShieldTypeArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find shield type %s"), *ID.ToString());
     return nullptr;
 }
 

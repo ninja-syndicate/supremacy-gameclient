@@ -78,6 +78,9 @@ class SUPREMACY_API UStaticDataGameAbility : public UStaticDataBaseRecord
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	//TODO
 	FString LocationSelectType;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	int32 CountPerBattle;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataFaction* Faction;
