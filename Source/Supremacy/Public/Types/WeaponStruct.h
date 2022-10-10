@@ -14,9 +14,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Model;
+	FString Model_ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Skin;
+	FString Skin_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Model_Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Skin_Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Damage;

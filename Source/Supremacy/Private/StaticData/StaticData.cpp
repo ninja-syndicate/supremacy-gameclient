@@ -368,7 +368,13 @@ TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForMech(const FGu
     FGuid ID;
     CombineGuidsUnique(MechID, SkinID, ID);
     UStaticDataMechSkinCompatibility* Record = GetMechSkinCompatibility(ID);
-    if (Record) return Record->Materials;
+
+    if (Record) {
+        return Record->Materials;
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("failed to get materials for mech (mech id: %s, skin id: %s)"), *MechID.ToString(), *SkinID.ToString());
+
     return TMap<FString, TSoftObjectPtr<UMaterial>>();
 }
 

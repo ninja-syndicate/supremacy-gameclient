@@ -72,11 +72,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FFactionServer Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Model;
+	FString Model_Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Model_ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Skin;
+	FString Skin_Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Skin_ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -131,11 +131,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FFaction Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Model;
+	FString ModelName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ModelID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Skin;
+	FString SkinName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString SkinID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -177,9 +177,9 @@ public:
 		Name(WarMachine.Name),
 		OwnerName(WarMachine.Owner_Name),
 		Faction(WarMachine.Faction),
-		Model(WarMachine.Model),
+		ModelName(WarMachine.Model_Name),
 		ModelID(WarMachine.Model_ID),
-		Skin(WarMachine.Skin),
+		SkinName(WarMachine.Skin_Name),
 		SkinID(WarMachine.Skin_ID),
 		Rarity(StringToERarity[WarMachine.Tier]),
 
