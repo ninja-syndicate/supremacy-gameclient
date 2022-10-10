@@ -238,7 +238,7 @@
       "Damage": 25,
       "Damage_Falloff": 10000,
       "Damage_Falloff_Rate": 20,
-      "Rate_Of_Fire": 240
+      "Rate_Of_Fire": 960
     },
     "Weapon_Pyro_MachineGun": {
       "Name": "Pyro Machine Gun",
