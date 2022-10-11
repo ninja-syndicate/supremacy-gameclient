@@ -235,10 +235,10 @@
     },
     "Weapon_Pyro_LightningGun": {
       "Name": "Pyro Lightning Gun",
-      "Damage": 25,
+      "Damage": 200,
       "Damage_Falloff": 10000,
       "Damage_Falloff_Rate": 20,
-      "Rate_Of_Fire": 960
+      "Rate_Of_Fire": 240
     },
     "Weapon_Pyro_MachineGun": {
       "Name": "Pyro Machine Gun",
