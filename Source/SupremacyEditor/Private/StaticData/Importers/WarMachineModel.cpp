@@ -29,7 +29,8 @@ StaticDataImporter::WarMachineModel::WarMachineModel(): Base()
 		"shield_recharge_rate",
 		"shield_recharge_power_cost",
 		"shield_type_id",
-		"shield_recharge_delay"
+		"shield_recharge_delay",
+		"height_meters",
 	};
 }
 
@@ -142,6 +143,7 @@ bool StaticDataImporter::WarMachineModel::HandleRow(UStaticData* DataAsset, TArr
 	if(!ParseFloat(RowCells[16], "shield recharge power cost", Record->ShieldRechargePowerCost)) return false;
 	
 	if (!ParseFloat(RowCells[18], "shield recharge delay", Record->ShieldRechargeDelay)) return false;
+	if (!ParseFloat(RowCells[19], "height meters", Record->Height)) return false;
 
 	if (!ParseGuid(RowCells[4], TEXT("brand id"), ID)) return false;
 	UStaticDataBrand* Brand = DataAsset->GetBrand(ID);

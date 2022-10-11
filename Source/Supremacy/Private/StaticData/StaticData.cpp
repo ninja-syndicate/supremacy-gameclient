@@ -333,6 +333,7 @@ FWarMachineStruct UStaticData::WarMachineStruct(const FGuid& MechID)
     Out.ShieldMax = WarMachine->MaxShield;
     Out.ShieldRechargeRate = WarMachine->ShieldRechargeRate;
     Out.Speed = WarMachine->Speed;
+    Out.Height = WarMachine->Height;
 
     return Out;
 }
