@@ -112,7 +112,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-STOP RESPONDING-", DisplayName = "Stop Responding"))
 	static void StopResponding();
 	
-	UFUNCTION(BlueprintCallable, Category = "Helpers", meta = (HalfAngleInDegrees = "30", ConeBackwardOffset = "1500", WorldContext = "WorldContextObject", AutoCreateRefTerm = "ActorsToIgnore"))
+	UFUNCTION(BlueprintCallable, Category = "Helpers", meta = (HalfAngleInDegrees = "25", ConeBackwardOffset = "1500", WorldContext = "WorldContextObject", AutoCreateRefTerm = "ActorsToIgnore"))
 	static bool MultiConeTraceForObjects(
 		const UObject* WorldContextObject, 
 		const FVector& Start, 
