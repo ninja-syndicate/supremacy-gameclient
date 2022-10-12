@@ -188,6 +188,8 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
 	} else if (Record->ID == FGuid("e9fc2417-6a5b-489d-b82e-42942535af90")) {
 		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
+	} else if (Record->ID == FGuid("c1c78867-9de7-43d3-97e9-91381800f38e")) {
+		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
 	} else {
 		FString WeaponTypeString;
 		FString BlueprintPath = BlueprintPathForWeapon(Record, WeaponTypeString);

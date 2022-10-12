@@ -268,7 +268,6 @@ FWeaponStruct UStaticData::WeaponStruct(const FGuid& WeaponID) {
 
     UStaticDataWeapon* Record = GetWeapon(WeaponID);
     if (!Record) {
-        UE_LOG(LogTemp, Warning, TEXT("failed to find weapon with id %s"), *WeaponID.ToString());
         return Struct;
     }
 
@@ -301,7 +300,6 @@ FPowerCoreStruct UStaticData::PowerCoreStruct(const FGuid& PowerCoreID) {
 
     UStaticDataPowerCore* Record = GetPowerCore(PowerCoreID);
     if (!Record) {
-        UE_LOG(LogTemp, Warning, TEXT("failed to find power core with id %s"), *PowerCoreID.ToString());
         return Struct;
     }
 
@@ -317,9 +315,7 @@ FWarMachineStruct UStaticData::WarMachineStruct(const FGuid& MechID)
     UStaticDataWarMachineModel* WarMachine = GetWarMachineModel(MechID);
 
     FWarMachineStruct Out;
-    if (!WarMachine) 
-    {
-        UE_LOG(LogTemp, Error, TEXT("WarMachineStructFromStaticDataWarMachine: bad war machine ID (%s)"), *(MechID.ToString()));
+    if (!WarMachine) {
         return Out;
     }
    
