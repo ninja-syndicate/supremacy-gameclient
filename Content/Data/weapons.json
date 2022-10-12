@@ -235,7 +235,7 @@
     },
     "Weapon_Pyro_LightningGun": {
       "Name": "Pyro Lightning Gun",
-      "Damage": 200,
+      "Damage": 100,
       "Damage_Falloff": 10000,
       "Damage_Falloff_Rate": 20,
       "Rate_Of_Fire": 240
@@ -328,8 +328,8 @@
     },
     "Weapon_Warsui_LightningGun": {
       "Name": "Warsui Lightning Gun",
-      "Damage": 25,
-      "Damage_Falloff": 6000,
+      "Damage": 100,
+      "Damage_Falloff": 10000,
       "Damage_Falloff_Rate": 10,
       "Rate_Of_Fire": 240
     },
