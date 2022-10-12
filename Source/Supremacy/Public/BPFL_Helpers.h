@@ -112,4 +112,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-STOP RESPONDING-", DisplayName = "Stop Responding"))
 	static void StopResponding();
 	
+	UFUNCTION(BlueprintCallable, Category = "Helpers", meta = (HalfAngleInDegrees = "25", ConeBackwardOffset = "1500", WorldContext = "WorldContextObject", AutoCreateRefTerm = "ActorsToIgnore"))
+	static bool MultiConeTraceForObjects(
+		const UObject* WorldContextObject, 
+		const FVector& Start, 
+		const FVector& End, 
+		float HalfAngleInDegrees,
+		float ConeBackwardOffset,
+		const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes,
+		UClass* ActorClassFilter,
+		const TArray<AActor*>& ActorsToIgnore,
+		TArray<class AActor*>& OutActors);
 };
