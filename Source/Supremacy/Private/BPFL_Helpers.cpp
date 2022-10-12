@@ -3,6 +3,7 @@
 
 #include "BPFL_Helpers.h"
 #include "Components/ActorComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 #include "GenericPlatform/GenericPlatformApplicationMisc.h"
 
@@ -241,4 +242,52 @@ void UBPFL_Helpers::StopResponding()
 	bool B = false;
 	while(true)
 		B = !B;
+}
+
+bool UBPFL_Helpers::MultiConeTraceForObjects(
+	const UObject* WorldContextObject,
+	const FVector& Start,
+	const FVector& End,
+	float HalfAngleInDegrees,
+	float ConeBackwardOffset,
+	const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes,
+	UClass* ActorClassFilter,
+	const TArray<AActor*>& ActorsToIgnore,
+	TArray<class AActor*>& OutActors)
+{
+	// Fail-fast on invalid degrees.
+	if (HalfAngleInDegrees <= 0) return false;
+	if (HalfAngleInDegrees >= 90) return false;
+
+	const FVector ToEndDirection = (End - Start).GetSafeNormal();
+	const FVector AdjustedStart = Start - ToEndDirection * ConeBackwardOffset;
+	const FVector ToEnd = End - AdjustedStart;
+
+	const float ConeHeight = ToEnd.Length();
+	const float HalfAngleInRadians = FMath::DegreesToRadians(HalfAngleInDegrees);
+	const float ConeBaseRadius = ConeHeight * FMath::Atan(HalfAngleInRadians);
+	const float ConeSlantHeight = FMath::Sqrt(FMath::Square(ConeBaseRadius) + FMath::Square(ConeHeight));
+	
+	const FVector CoverSphereLoc = AdjustedStart + ToEnd / 2;
+	const float CoverSphereRadius = ConeSlantHeight / 2;
+
+	TArray<AActor*> SphereHitActors;
+	UKismetSystemLibrary::SphereOverlapActors(WorldContextObject, CoverSphereLoc, CoverSphereRadius, ObjectTypes, ActorClassFilter, ActorsToIgnore, SphereHitActors);
+
+	// Filter sphere hit actors that are within the cone angle.
+	const float CosHalfAngle = FMath::Cos(HalfAngleInRadians);
+	for (auto HitActor : SphereHitActors)
+	{
+		const FVector ToHitDirection = (HitActor->GetActorLocation() - AdjustedStart).GetSafeNormal();
+		const float Dot = FVector::DotProduct(ToEndDirection, ToHitDirection);
+		
+		if (Dot > CosHalfAngle)
+		{
+			// TODO: To prevent overshooting given `End` location, use the Dot angle to make another cone to calculate the slant distance
+			// and if the distance to actor is greater than this slant distance, ignore. 
+			OutActors.Add(HitActor);
+
+		}
+	}
+	return !OutActors.IsEmpty();
 }
