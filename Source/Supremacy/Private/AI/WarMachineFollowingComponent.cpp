@@ -16,6 +16,7 @@ void UWarMachineFollowingComponent::BeginPlay()
 	}
 }
 
+/*
 void UWarMachineFollowingComponent::GetCrowdAgentCollisions(float& CylinderRadius, float& CylinderHalfHeight) const
 {
 	Super::GetCrowdAgentCollisions(CylinderRadius, CylinderHalfHeight);
@@ -26,6 +27,7 @@ void UWarMachineFollowingComponent::GetCrowdAgentCollisions(float& CylinderRadiu
 		CylinderRadius = CollisionRadius;
 	}
 }
+*/
 
 void UWarMachineFollowingComponent::OnPathfindingQuery(FPathFindingQuery& Query)
 {

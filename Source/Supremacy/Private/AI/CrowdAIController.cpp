@@ -24,6 +24,7 @@ void ACrowdAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	/*
 	if (AvoidanceType == EAvoidanceType::Unused1 || AvoidanceType == EAvoidanceType::Unused2)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: Unused avoidance type is being used."));
@@ -47,6 +48,7 @@ void ACrowdAIController::BeginPlay()
 		CrowdFollowingComponent->SetCrowdOptimizeTopology(bEnableOptimizeTopology);
 		CrowdFollowingComponent->SetCrowdPathOffset(bEnablePathOffset);
 	}
+	*/
 }
 
 void ACrowdAIController::OnPossess(APawn* InPawn)

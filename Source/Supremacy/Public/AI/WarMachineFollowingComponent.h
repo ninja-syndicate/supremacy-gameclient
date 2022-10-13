@@ -10,22 +10,22 @@
  *
  */
 UCLASS()
-class SUPREMACY_API UWarMachineFollowingComponent : public UCrowdFollowingComponent
+class SUPREMACY_API UWarMachineFollowingComponent : public UPathFollowingComponent
 {
 	GENERATED_BODY()
 public:
 	virtual void BeginPlay() override;
-	virtual void GetCrowdAgentCollisions(float& CylinderRadius, float& CylinderHalfHeight) const override;
+	// virtual void GetCrowdAgentCollisions(float& CylinderRadius, float& CylinderHalfHeight) const override;
 
 	// Override this to modify pathfinding query setting.
 	virtual void OnPathfindingQuery(FPathFindingQuery& Query) override;
 
 private:
-	UPROPERTY(EditAnywhere)
-	bool bEnableCustomCollisionRadius;
+	// UPROPERTY(EditAnywhere)
+	// bool bEnableCustomCollisionRadius;
 
-	UPROPERTY(EditAnywhere)
-	float CollisionRadius;
+	// UPROPERTY(EditAnywhere)
+	// float CollisionRadius;
 
 	/**
 	 * This option allows using the nearest navigable area as the start location when the agent is outside the navigable area.
