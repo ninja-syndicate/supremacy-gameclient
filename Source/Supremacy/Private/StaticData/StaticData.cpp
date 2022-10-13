@@ -367,6 +367,9 @@ TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForMech(const FGu
     UStaticDataMechSkinCompatibility* Record = GetMechSkinCompatibility(ID);
 
     if (Record) {
+        if (Record->Materials.Num() <= 0) {
+            UE_LOG(LogTemp, Warning, TEXT("materials array was empty for mech (mech id: %s, skin id: %s)"), *MechID.ToString(), *SkinID.ToString());
+        }
         return Record->Materials;
     }
 
