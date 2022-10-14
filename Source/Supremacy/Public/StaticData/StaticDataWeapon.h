@@ -6,6 +6,7 @@
 #include "StaticDataBaseRecord.h"
 #include "StaticDataBrand.h"
 #include "UObject/Object.h"
+#include "Weapons/Weapon.h"
 #include "Types/WeaponType.h"
 #include "Types/WeaponDamageType.h"
 #include "StaticDataWeapon.generated.h"
@@ -21,13 +22,14 @@ class UStaticDataBrand;
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataWeapon : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::Weapon;
 	
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	EWeaponType Type;
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	float Damage;
 	
@@ -96,4 +98,7 @@ class SUPREMACY_API UStaticDataWeapon : public UStaticDataBaseRecord
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataBrand* Brand;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "References", meta = (AllowPrivateAccess = true))
+	TSoftClassPtr<AWeapon> Blueprint;
 };

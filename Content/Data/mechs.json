@@ -4,55 +4,64 @@
       "HealthMax": 5500,
       "ShieldMax": 1500,
       "ShieldRechargeRate": 150,
-      "Speed": 2500
+      "Speed": 2500,
+      "Height": 27
     },
     "Mech_RedMountain": {
       "HealthMax": 6200,
       "ShieldMax": 1500,
       "ShieldRechargeRate": 150,
-      "Speed": 2000
+      "Speed": 2000,
+      "Height": 26.5
     },
     "Mech_Zaibastsu": {
       "HealthMax": 5500,
       "ShieldMax": 2000,
       "ShieldRechargeRate": 250,
-      "Speed": 2250
+      "Speed": 2250,
+      "Height": 22.5
     },
     "NewMech_Boston": {
       "HealthMax": 5500,
       "ShieldMax": 1500,
       "ShieldRechargeRate": 150,
-      "Speed": 2500
+      "Speed": 2500,
+      "Height": 27
     },
     "NewMech_RedMountain": {
       "HealthMax": 6200,
       "ShieldMax": 1500,
       "ShieldRechargeRate": 150,
-      "Speed": 2000
+      "Speed": 2000,
+      "Height": 26.5
     },
     "NewMech_Zaibatsu": {
       "HealthMax": 5500,
       "ShieldMax": 2000,
       "ShieldRechargeRate": 250,
-      "Speed": 2250
+      "Speed": 2250,
+      "Height": 22.5
     },
     "Mech_Humanoid_Dais_WarEnforcer": {
       "HealthMax": 5500,
       "ShieldMax": 1500,
       "ShieldRechargeRate": 150,
-      "Speed": 2500
+      "Speed": 2500,
+      "Height": 25.2
     },
     "Mech_Humanoid_UMC_Aries": {
       "HealthMax": 5500,
       "ShieldMax": 1500,
       "ShieldRechargeRate": 150,
-      "Speed": 2500
+      "Speed": 2500,
+      "Height": 25.9
     },
     "Mech_Humanoid_X3_Kenji": {
       "HealthMax": 5500,
       "ShieldMax": 1500,
       "ShieldRechargeRate": 150,
-      "Speed": 2500
+      "Speed": 2500,
+      "Height": 26.9
     }
   }
 }

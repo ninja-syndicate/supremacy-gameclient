@@ -43,6 +43,17 @@ public:
 	int Max_Ammo;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="The amount of projectile spawned per shot or burst."))
 	int Projectile_Amount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The life span of this weapon's projectile. If non-positive value, projectile's default initial life span will be used."))
+	float Projectile_Life_Span = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The damage dealt each tick."))
+	float Dot_Tick_Damage = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The duration of each tick."))
+	float Dot_Tick_Duration = 1.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The maximum number of ticks."))
+	int Dot_Max_Ticks = 0;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="Time before weapon starts firing (eg: minigun spin-up.)"))
 	float Charge_Time;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="Arcs projectiles towards their target location. Spread becomes radius offset."))
@@ -51,7 +62,7 @@ public:
 	int Optimal_Range;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "For recoil on the Mech's arms."))
 	float Recoil_Force;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Power_Cost;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

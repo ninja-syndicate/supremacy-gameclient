@@ -64,6 +64,9 @@ struct FWarMachineServerStruct {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
@@ -82,6 +85,9 @@ public:
 	TArray<FWeaponStruct> Weapons;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineCustomisation Customisation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Height;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Health;
@@ -105,14 +111,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineStats Stats;
 
-	FWarMachineServerStruct(): Health(3000), Health_Max(3000), Shield_Max(0), Shield_Recharge_Rate(0), Speed(0), Sprint_Spread_Modifier(1.25)
+	FWarMachineServerStruct(): Height(0), Health(3000), Health_Max(3000), Shield_Max(0), Shield_Recharge_Rate(0), Speed(0), Sprint_Spread_Modifier(1.25)
 	{}
 };
+
+class AMech;
 
 USTRUCT(BlueprintType)
 struct FWarMachineStruct {
 	GENERATED_BODY()
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ID;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -132,6 +143,9 @@ public:
 	TArray<FWeaponStruct> Weapons;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineCustomisation Customisation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Height;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Health;
@@ -168,6 +182,8 @@ public:
 		Weapons(WarMachine.Weapons),
 		Customisation(WarMachine.Customisation),
 	
+		Height(WarMachine.Height),
+
 		Health(WarMachine.Health),
 		HealthMax(WarMachine.Health_Max),
 		ShieldMax(WarMachine.Shield_Max),
@@ -182,6 +198,6 @@ public:
 		Stats(WarMachine.Stats)
 	{}
 
-	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0), SprintSpreadModifier(1.25)
+	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Height(0), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0), SprintSpreadModifier(1.25)
 	{}
 };

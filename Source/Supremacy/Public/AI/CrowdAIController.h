@@ -122,6 +122,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Configuration")
 	bool bEnableEyesMatchRotation;
 
+	/** Currently focused target. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	TObjectPtr<AActor> CurrentFocusTarget = nullptr;
+
 	/** Reference to the current crowd following component. */
 	UPROPERTY()
 	class UCrowdFollowingComponent* CrowdFollowingComponent;

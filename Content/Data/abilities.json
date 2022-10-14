@@ -271,12 +271,12 @@
                "Weapons": [
                     {
                          "Name": "Robot Dog Laser",
-                         "Damage": 25,
+                         "Damage": 10,
                          "Damage_Radius": 40,
                          "Damage_Type": 1,
                          "Spread": 2,
                          "Projectile_Speed": 48000,
-                         "Rate_Of_Fire": 512
+                         "Rate_Of_Fire": 256
                     }
                ],
                "Name": "Robot Dog"

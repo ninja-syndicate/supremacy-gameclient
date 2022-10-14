@@ -11,6 +11,7 @@ namespace StaticDataImporter
 UCLASS(BlueprintType)
 class UStaticDataFaction : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::Faction;
 	
 	GENERATED_BODY()

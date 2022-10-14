@@ -65,7 +65,7 @@
       "Damage_Falloff_Rate": 125,
       "Damage_Radius": 850,
       "Damage_Type": 2,
-      "Spread": 3,
+      "Spread": 1500,
       "Projectile_Speed": 50000,
       "Rate_Of_Fire": 2,
       "Is_Arced": true
@@ -112,7 +112,10 @@
       "Projectile_Speed": 10000,
       "Rate_Of_Fire": 20,
       "Charge_Time": 3,
-      "Recoil_Force": 60
+      "Recoil_Force": 60,
+      "Dot_Tick_Damage": 300,
+      "Dot_Tick_Duration": 1,
+      "Dot_Max_Ticks": 2
     },
     "Weapon_AM_Cannon": {
       "Name": "Archon Militech Cannon",
@@ -232,8 +235,8 @@
     },
     "Weapon_Pyro_LightningGun": {
       "Name": "Pyro Lightning Gun",
-      "Damage": 25,
-      "Damage_Falloff": 6000,
+      "Damage": 100,
+      "Damage_Falloff": 10000,
       "Damage_Falloff_Rate": 20,
       "Rate_Of_Fire": 240
     },
@@ -325,8 +328,8 @@
     },
     "Weapon_Warsui_LightningGun": {
       "Name": "Warsui Lightning Gun",
-      "Damage": 25,
-      "Damage_Falloff": 6000,
+      "Damage": 100,
+      "Damage_Falloff": 10000,
       "Damage_Falloff_Rate": 10,
       "Rate_Of_Fire": 240
     },
