@@ -69,6 +69,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
 	float ShieldRechargeDelay;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float Height;
 	
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	UStaticDataSkin *DefaultSkin;
@@ -79,6 +82,4 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category="References", meta=(AllowPrivateAccess=true))
 	TSoftClassPtr<AMech> UnrealWarMachine;
 
-	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category = "References", meta = (AllowPrivateAccess = true))
-	TSoftObjectPtr<USkeletalMesh> SkeletalMesh;
 };
