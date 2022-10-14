@@ -249,52 +249,6 @@ UStaticDataShieldType* UStaticData::GetOrCreateShieldType(const FGuid& ID)
     return Record;
 }
 
-FFaction UStaticData::FactionFromStaticDataFaction(const FGuid& ID)
-{
-    UStaticDataFaction* Faction = GetFaction(ID);
-
-    FFaction Out;
-
-    Out.ID = Faction->ID.ToString();
-    Out.Name = Faction->Label;
-    Out.Color = Faction->PrimaryColor;
-
-    return Out;
-}
-
-UFUNCTION(BlueprintCallable)
-FWeaponStruct UStaticData::WeaponStruct(const FGuid& WeaponID) {
-    FWeaponStruct Struct;
-
-    UStaticDataWeapon* Record = GetWeapon(WeaponID);
-    if (!Record) {
-        return Struct;
-    }
-
-    Struct.Damage = Record->Damage;
-    Struct.Damage_Falloff = Record->DamageFalloff;
-    Struct.Damage_Falloff_Rate = Record->DamageFalloffRate;
-    Struct.Damage_Radius = Record->Radius;
-    Struct.Damage_Radius_Falloff = Record->RadiusDamageFalloff;
-    Struct.Damage_Type = (uint8)Record->WeaponDamageType;
-    Struct.Spread = Record->Spread;
-    Struct.Rate_Of_Fire = Record->RateOfFire;
-    Struct.Burst_Rate_Of_Fire = Record->BurstRateOfFire;
-    Struct.Projectile_Speed = Record->ProjectileSpeed;
-    Struct.Max_Ammo = Record->MaxAmmo;
-    Struct.Projectile_Amount = Record->ProjectileAmount;
-    //Struct.Projectile_Life_Span = ...;
-    Struct.Charge_Time = Record->ChargeTimeSeconds;
-    Struct.Is_Arced = Record->IsArced;
-    //Struct.Optimal_Range = ...;
-    //Struct.Recoil_Force = ...;
-    Struct.Power_Cost = Record->EnergyCost;
-    Struct.Power_Instance_Drain = Record->PowerInstantDrain;
-
-    return Struct;
-}
-
-UFUNCTION(BlueprintCallable)
 FPowerCoreStruct UStaticData::PowerCoreStruct(const FGuid& PowerCoreID) {
     FPowerCoreStruct Struct;
 
@@ -308,30 +262,6 @@ FPowerCoreStruct UStaticData::PowerCoreStruct(const FGuid& PowerCoreID) {
     Struct.Recharge_Rate = Record->RechargeRate;
 
     return Struct;
-}
-
-FWarMachineStruct UStaticData::WarMachineStruct(const FGuid& MechID) 
-{
-    UStaticDataWarMachineModel* WarMachine = GetWarMachineModel(MechID);
-
-    FWarMachineStruct Out;
-    if (!WarMachine) {
-        return Out;
-    }
-   
-    Out.Name = WarMachine->Label;
-    Out.Faction = FactionFromStaticDataFaction(WarMachine->Brand->Faction->ID);
-
-    //ERarity Rarity;
-
-    Out.Health = WarMachine->MaxHitpoints;
-    Out.HealthMax = WarMachine->MaxHitpoints;
-    Out.ShieldMax = WarMachine->MaxShield;
-    Out.ShieldRechargeRate = WarMachine->ShieldRechargeRate;
-    Out.Speed = WarMachine->Speed;
-    Out.Height = WarMachine->Height;
-
-    return Out;
 }
 
 static bool CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid& Out)

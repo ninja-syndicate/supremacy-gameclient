@@ -82,6 +82,4 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category="References", meta=(AllowPrivateAccess=true))
 	TSoftClassPtr<AMech> UnrealWarMachine;
 
-	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category = "References", meta = (AllowPrivateAccess = true))
-	TSoftObjectPtr<USkeletalMesh> SkeletalMesh;
 };

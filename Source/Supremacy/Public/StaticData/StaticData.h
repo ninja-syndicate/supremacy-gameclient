@@ -101,16 +101,7 @@ public:
     UStaticDataShieldType* GetShieldType(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    FWarMachineStruct WarMachineStruct(const FGuid& MechID);
-
-    UFUNCTION(BlueprintCallable)
-    FWeaponStruct WeaponStruct(const FGuid& WeaponID);
-
-    UFUNCTION(BlueprintCallable)
     FPowerCoreStruct PowerCoreStruct(const FGuid& PowerCoreID);
-
-    UFUNCTION(BlueprintCallable)
-    FFaction FactionFromStaticDataFaction(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
     TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForMech(const FGuid &MechID, const FGuid& SkinID);
