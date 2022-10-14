@@ -3,6 +3,7 @@
 
 #include "AI/WarMachineFollowingComponent.h"
 
+#include "NavigationSystem.h"
 #include "Navigation/NavigationSubsystem.h"
 
 void UWarMachineFollowingComponent::BeginPlay()
@@ -35,13 +36,24 @@ void UWarMachineFollowingComponent::OnPathfindingQuery(FPathFindingQuery& Query)
 
 	if (!bUseNearestNavAreaStart) return;
 	if (!NavSubsystem) return;
-	if (NavSubsystem->IsNavigable(Query.StartLocation)) return;
+	if (!MyNavData) return;
 
-	// Find the nearest navigable location and use that as a start location.
+	// Use the specified start location to see if it's navigable.
+	FVector NavLocation;
+	const FVector QueryExtent = MyNavData->GetDefaultQueryExtent();
+	const bool bIsNavigable = NavSubsystem->ProjectPointToNavigation(Query.StartLocation, QueryExtent, NavLocation);
+	if (bIsNavigable)
+	{
+		Query.StartLocation = NavLocation;
+		return;
+	}
+
+	// Otherwise, find the nearest navigable location and use that as a start location.
 	FVector NearestNavLocation;
-	const bool bSucceed = NavSubsystem->GetNearestNavigableArea(Query.StartLocation, NearestNavLocation);
+	const bool bSucceed = NavSubsystem->GetNearestNavigableAreaByExtent(Query.StartLocation, NearestNavLocation, QueryExtent, false);
 	if (bSucceed)
 	{
 		Query.StartLocation = NearestNavLocation;
+		return;
 	}
 }

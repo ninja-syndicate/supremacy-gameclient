@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "NavigationSystem.h"
 #include "Navigation/CrowdFollowingComponent.h"
 #include "WarMachineFollowingComponent.generated.h"
 
