@@ -1,5 +1,6 @@
 #pragma once
 
+#include "StaticDataSkin.h"
 #include "StaticData/StaticDataWeapon.h"
 #include "StaticData/StaticDataWarMachineModel.h"
 #include "Types/WarMachineStruct.h"
@@ -36,12 +37,20 @@ public:
 
 	    //ERarity Rarity;
 
+		Struct.ModelID = Record->ID.ToString();
+		Struct.ModelName = Record->Label;
 	    Struct.Health = Record->MaxHitpoints;
 	    Struct.HealthMax = Record->MaxHitpoints;
 	    Struct.ShieldMax = Record->MaxShield;
 	    Struct.ShieldRechargeRate = Record->ShieldRechargeRate;
 	    Struct.Speed = Record->Speed;
 	    Struct.Height = Record->Height;
+
+        if (Record->DefaultSkin)
+		{
+			Struct.SkinID = Record->DefaultSkin->ID.ToString();
+			Struct.SkinName = Record->DefaultSkin->Label;
+		}
 		
     	return Struct;
     }
@@ -54,6 +63,8 @@ public:
 			return Struct;
 		}
 
+		Struct.Model_ID = Record->ID.ToString();
+		Struct.Model_Name = Record->Label;
 		Struct.Damage = Record->Damage;
 		Struct.Damage_Falloff = Record->DamageFalloff;
 		Struct.Damage_Falloff_Rate = Record->DamageFalloffRate;
