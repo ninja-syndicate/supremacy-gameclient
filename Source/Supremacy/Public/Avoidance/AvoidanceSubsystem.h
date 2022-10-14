@@ -7,7 +7,7 @@
 #include "AvoidanceSubsystem.generated.h"
 
 USTRUCT(BlueprintType)
-struct FAvoidanceAgent {
+struct FAvoidanceAgentInfo {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -40,9 +40,12 @@ public:
 	bool UnregisterAgent(APawn* Agent);
 
 	UFUNCTION(BlueprintCallable)
-	const TArray<APawn*>& GetAgents();
+	const TArray<FAvoidanceAgentInfo>& GetAgentInfos();
 
 private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	TArray<FAvoidanceAgentInfo> AgentInfos;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TArray<TObjectPtr<APawn>> Agents;
 };

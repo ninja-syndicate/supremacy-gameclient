@@ -33,7 +33,7 @@ bool UAvoidanceSubsystem::UnregisterAgent(APawn* Agent)
 	return NumRemoved > 0;
 }
 
-const TArray<APawn*>& UAvoidanceSubsystem::GetAgents()
+const TArray<FAvoidanceAgentInfo>& UAvoidanceSubsystem::GetAgentInfos()
 {
-	return Agents;
+	return AgentInfos;
 }
