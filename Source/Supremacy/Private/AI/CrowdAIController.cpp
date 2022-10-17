@@ -54,11 +54,23 @@ void ACrowdAIController::BeginPlay()
 void ACrowdAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	bIsScriptEnabled = true;
 }
 
 void ACrowdAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ACrowdAIController::EnableScript()
+{
+	bIsScriptEnabled = true;
+}
+
+void ACrowdAIController::DisableScript()
+{
+	bIsScriptEnabled = false;
 }
 
 /**

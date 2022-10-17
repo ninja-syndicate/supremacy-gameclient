@@ -54,6 +54,18 @@ public:
 	void OnCooldownEnd(const FGameplayTag ActionTag);
 	void OnCooldownEnd_Implementation(const FGameplayTag ActionTag);
 
+private:
+	//~ Begin Script AI Debugging functions.
+	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Script AI Debugging")
+	void EnableScript();
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Script AI Debugging")
+	void DisableScript();
+	//~ End Script AI Debugging functions.
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Script AI Debugging", meta = (AllowPrivateAccess = true))
+	bool bIsScriptEnabled = false;
+
 protected:
 	UFUNCTION(BlueprintCallable, Category = "AI Utils")
 	FString ToJson(const FAIBrainInput& BrainInput);
