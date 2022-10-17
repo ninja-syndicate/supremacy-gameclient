@@ -168,6 +168,7 @@
                "ShieldMax": 2000,
                "ShieldRechargeRate": 100,
                "Speed": 2750,
+               "Height": 15.75,
                "Weapons": [
                     { 
                          "ID": "SniperRifle",
@@ -203,6 +204,7 @@
                "ShieldMax": 2000,
                "ShieldRechargeRate": 100,
                "Speed": 2750,
+               "Height": 18.9,
                "Weapons": [
                     { 
                          "ID": "Boston Plasma Rifle",
@@ -237,6 +239,7 @@
                "ShieldMax": 2000,
                "ShieldRechargeRate": 100,
                "Speed": 2750,
+               "Height": 18.55,
                "Weapons": [
                     {
                          "ID": "RedMountainCannon",

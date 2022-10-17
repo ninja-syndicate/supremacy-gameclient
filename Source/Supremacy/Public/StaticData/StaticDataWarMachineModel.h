@@ -69,6 +69,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
 	float ShieldRechargeDelay;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float Height;
 	
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	UStaticDataSkin *DefaultSkin;
@@ -79,6 +82,32 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category="References", meta=(AllowPrivateAccess=true))
 	TSoftClassPtr<AMech> UnrealWarMachine;
 
-	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category = "References", meta = (AllowPrivateAccess = true))
-	TSoftObjectPtr<USkeletalMesh> SkeletalMesh;
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To WarMachineStruct (From StaticDataWarMachine)", CompactNodeTitle = "->", BlueprintAutocast))
+	FWarMachineStruct ToWarMachineStruct()
+	{
+		FWarMachineStruct Struct;
+
+		Struct.Name = Label;
+		Struct.Faction = Brand->Faction->ToFaction();
+
+		//ERarity Rarity;
+
+		Struct.ModelID = ID.ToString();
+		Struct.ModelName = Label;
+		Struct.Health = MaxHitpoints;
+		Struct.HealthMax = MaxHitpoints;
+		Struct.ShieldMax = MaxShield;
+		Struct.ShieldRechargeRate = ShieldRechargeRate;
+		Struct.Speed = Speed;
+		Struct.Height = Height;
+
+		// if (DefaultSkin)
+		// {
+		// 	Struct.SkinID = DefaultSkin->ID.ToString();
+		// 	Struct.SkinName = DefaultSkin->Label;
+		// }
+		
+		return Struct;
+	}
+	
 };
