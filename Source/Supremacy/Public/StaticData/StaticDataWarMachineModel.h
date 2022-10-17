@@ -9,7 +9,6 @@
 #include "Types/WarMachineBoostStat.h"
 #include "Types/WarMachineType.h"
 #include "Types/WarMachinePowerCoreSize.h"
-#include "UObject/Object.h"
 #include "StaticDataWarMachineModel.generated.h"
 
 namespace StaticDataImporter
@@ -83,7 +82,7 @@ public:
 	TSoftClassPtr<AMech> UnrealWarMachine;
 
 	UFUNCTION(BlueprintPure, meta=(DisplayName="To WarMachineStruct (From StaticDataWarMachine)", CompactNodeTitle = "->", BlueprintAutocast))
-	FWarMachineStruct ToWarMachineStruct()
+	FWarMachineStruct ToWarMachineStruct() const
 	{
 		FWarMachineStruct Struct;
 
