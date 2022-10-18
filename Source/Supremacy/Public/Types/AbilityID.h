@@ -26,4 +26,5 @@ enum class EAbilityID : uint8
 	AbilityID_Ammo UMETA(DisplayName = "Ammo"),
 	AbilityID_MiniMech UMETA(DisplayName = "Mini Mech", ToolTip="Spawns the mini genesis mech for the faction to the specified location."),
 	AbilityID_Turret UMETA(DisplayName = "Turret"),
+	AbilityID_K9PatrolPack UMETA(DisplayName = "K9 Patrol Pack", ToolTip="Spawns a pack of robot dogs that guards the given location.")
 };

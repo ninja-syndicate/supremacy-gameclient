@@ -6,7 +6,9 @@
 #include "StaticDataBaseRecord.h"
 #include "StaticDataBrand.h"
 #include "Mechs/Mech.h"
+#include "Types/WarMachineBoostStat.h"
 #include "Types/WarMachineType.h"
+#include "Types/WarMachinePowerCoreSize.h"
 #include "UObject/Object.h"
 #include "StaticDataWarMachineModel.generated.h"
 
@@ -15,19 +17,97 @@ namespace StaticDataImporter
 	class WarMachineModel;
 }
 
+class UStaticDataSkin;
+
 UCLASS(BlueprintType)
 class SUPREMACY_API UStaticDataWarMachineModel : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::WarMachineModel;
 	
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	EWarMachineModelType Type;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	EWarMachineBoostStat BoostStat;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 WeaponHardpointCount;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 UtilitySlotCount;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 MaxHitpoints;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	int32 Speed;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	EWarMachinePowerCoreSize PowerCoreSize;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	FString Collection;
+
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+    FString CreatedAt;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	float MaxShield;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	float ShieldRechargeRate;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	float ShieldRechargePowerCost;
+	
+	// TOOD: Shield Type
+	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	// ShieldTypeId;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float ShieldRechargeDelay;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float Height;
+	
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	UStaticDataSkin *DefaultSkin;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataBrand *Brand;
 	
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category="References", meta=(AllowPrivateAccess=true))
 	TSoftClassPtr<AMech> UnrealWarMachine;
+
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To WarMachineStruct (From StaticDataWarMachine)", CompactNodeTitle = "->", BlueprintAutocast))
+	FWarMachineStruct ToWarMachineStruct()
+	{
+		FWarMachineStruct Struct;
+
+		Struct.Name = Label;
+		Struct.Faction = Brand->Faction->ToFaction();
+
+		//ERarity Rarity;
+
+		Struct.ModelID = ID.ToString();
+		Struct.ModelName = Label;
+		Struct.Health = MaxHitpoints;
+		Struct.HealthMax = MaxHitpoints;
+		Struct.ShieldMax = MaxShield;
+		Struct.ShieldRechargeRate = ShieldRechargeRate;
+		Struct.Speed = Speed;
+		Struct.Height = Height;
+
+		// if (DefaultSkin)
+		// {
+		// 	Struct.SkinID = DefaultSkin->ID.ToString();
+		// 	Struct.SkinName = DefaultSkin->Label;
+		// }
+		
+		return Struct;
+	}
+	
 };

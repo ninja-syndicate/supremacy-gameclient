@@ -14,9 +14,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Model;
+	FString Model_ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Skin;
+	FString Skin_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Model_Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Skin_Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Damage;
@@ -43,17 +47,30 @@ public:
 	int Max_Ammo;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="The amount of projectile spawned per shot or burst."))
 	int Projectile_Amount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The life span of this weapon's projectile. If non-positive value, projectile's default initial life span will be used."))
+	float Projectile_Life_Span = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The damage dealt each tick."))
+	float Dot_Tick_Damage = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The duration of each tick."))
+	float Dot_Tick_Duration = 1.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "The maximum number of ticks."))
+	int Dot_Max_Ticks = 0;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="Time before weapon starts firing (eg: minigun spin-up.)"))
 	float Charge_Time;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="Arcs projectiles towards their target location. Spread becomes radius offset."))
-	bool bIs_Arced;
+	bool Is_Arced;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="For AI reference."))
 	int Optimal_Range;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "For recoil on the Mech's arms."))
+	float Recoil_Force;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Power_Cost;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bPower_Instance_Drain;
+	bool Power_Instance_Drain;
 	
 	FWeaponStruct(): Damage(0), Damage_Falloff(0), Damage_Falloff_Rate(0), Damage_Radius(0), Damage_Radius_Falloff(0),
 	                 Damage_Type(0),
@@ -63,8 +80,9 @@ public:
 	                 Projectile_Speed(0), Max_Ammo(0),
 	                 Projectile_Amount(0),
 	                 Charge_Time(0),
-	                 bIs_Arced(false), Optimal_Range(0),
-	                 Power_Cost(0), bPower_Instance_Drain(false)
+	                 Is_Arced(false), Optimal_Range(0),
+	                 Recoil_Force(0),
+	                 Power_Cost(0), Power_Instance_Drain(false)
 	{
 	}
 };

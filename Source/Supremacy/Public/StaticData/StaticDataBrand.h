@@ -12,6 +12,7 @@ namespace StaticDataImporter
 UCLASS(BlueprintType)
 class UStaticDataBrand  : public UStaticDataBaseRecord
 {
+public:
 	friend class StaticDataImporter::Brand;
 	
 	GENERATED_BODY()

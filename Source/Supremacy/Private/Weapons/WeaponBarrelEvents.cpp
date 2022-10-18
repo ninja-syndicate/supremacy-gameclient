@@ -22,7 +22,8 @@ void UWeaponBarrel::Shoot(const bool Trigger) {
 		Location = GetComponentTransform().GetLocation();
 		ShootRepCSA(Trigger, UGameplayStatics::RebaseLocalOriginOntoZero(GetWorld(), Location), Aim);
 	}
-	else {
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
 		ShootRep(Trigger);
 	}
 }

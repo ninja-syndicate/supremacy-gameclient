@@ -48,7 +48,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "DesertCity",
     {
-      "DesertCity",
+      "Desert City",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/DesertCity.webp",
       2160, 2160,
       30, 30,
@@ -59,7 +59,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "ArcticBay",
     {
-      "ArcticBay",
+      "Arctic Bay",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/ArcticBay.webp",
       2160, 2160,
       55, 55,
@@ -70,7 +70,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "UrbanBuildings",
     {
-      "UrbanBuildings",
+      "MIBT",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/UrbanBuildings.webp",
       2160, 2160,
       62, 62,
@@ -81,7 +81,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "NeoTokyo",
     {
-      "NeoTokyo",
+      "NyuTokyo",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/NeoTokyo.webp",
       2160, 2160,
       34, 34,
@@ -92,7 +92,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "CloudKu",
     {
-      "CloudKu",
+      "CloudKu 9",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/CloudKu.webp",
       2160, 2160,
       45,  45,
@@ -114,7 +114,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "AokigaharaForest",
     {
-      "AokigaharaForest",
+      "Aokigahara Sea of Trees",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/AokigaharaForest.webp",
       2160, 2160,
       46, 46,
@@ -125,7 +125,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "CityBlockArena",
     {
-      "CityBlockArena",
+      "Kazuya City",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/CityBlockArena.webp",
       2160, 2160,
       34, 34,
@@ -136,7 +136,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
   {
     "RedMountainMine",
     {
-      "RedMountainMine",
+      "IronDust 5",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/RedMountainMine.webp",
       2160, 2160,
       72, 72,

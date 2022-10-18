@@ -21,6 +21,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Parse Net Message", meta=(Keywords = "Parse Net Message Bytes Byte Array"))
 	static void ParseNetMessage(const TArray<uint8> Bytes, uint8 &Type, FString &Message);
 
+	static TArray<uint8> ConvertIntToBytes(const int Input);
+	static TArray<uint8> ConvertUInt16ToBytes(const uint16 Input);
+	
 	/** Pack WarMachine Update  */
 	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Update", meta=(Keywords = "Net Message Bytes Byte Array Binary"))
 	static void PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, const TArray<bool> DiffArray, TArray<uint8> &Bytes);
@@ -40,6 +43,14 @@ public:
 	/** Unpacks an array of booleans from a single byte */
 	UFUNCTION(BlueprintPure, Category = "Helpers")
 	static TArray<bool> UnpackBooleansFromByte(const uint8 Byte);
+
+	/** Packs an array of booleans into multiple bytes */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static TArray<uint8> PackBooleansIntoBytes(const TArray<bool> Booleans);
+
+	/** Unpacks an array of booleans from an array of bytes */
+	UFUNCTION(BlueprintPure, Category = "Helpers")
+	static TArray<bool> UnpackBooleansFromBytes(const TArray<uint8> Bytes);
 	
 	/** Converts hex string to color. Supports formats RGB, RRGGBB, RRGGBBAA, RGB, #RRGGBB, #RRGGBBAA */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
@@ -60,6 +71,13 @@ public:
 		if (!SupremacyMapDetails.Contains(MapName)) return {};
 		IsValid = true;
 		return *SupremacyMapDetails.Find(MapName);
+	}
+
+	/** Returns all map details */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Helpers")
+	static TMap<FString, FMapDetails> GetAllSupremacyMapDetails()
+	{
+		return SupremacyMapDetails;
 	}
 	
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
@@ -94,4 +112,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-STOP RESPONDING-", DisplayName = "Stop Responding"))
 	static void StopResponding();
 	
+	UFUNCTION(BlueprintCallable, Category = "Helpers", meta = (HalfAngleInDegrees = "25", ConeBackwardOffset = "1500", WorldContext = "WorldContextObject", AutoCreateRefTerm = "ActorsToIgnore"))
+	static bool MultiConeTraceForObjects(
+		const UObject* WorldContextObject, 
+		const FVector& Start, 
+		const FVector& End, 
+		float HalfAngleInDegrees,
+		float ConeBackwardOffset,
+		const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes,
+		UClass* ActorClassFilter,
+		const TArray<AActor*>& ActorsToIgnore,
+		TArray<class AActor*>& OutActors);
 };

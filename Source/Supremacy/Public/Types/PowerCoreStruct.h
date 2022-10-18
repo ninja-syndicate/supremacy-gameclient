@@ -8,6 +8,11 @@ struct FPowerCoreStruct {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Model_ID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Power_Capacity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Recharge_Rate;
