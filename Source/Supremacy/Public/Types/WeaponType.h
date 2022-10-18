@@ -19,6 +19,7 @@ enum class EWeaponType : uint8
 	EWeaponType_SniperRifle UMETA(DisplayName="SniperRifle"),
 	EWeaponType_Rifle UMETA(DisplayName="Rifle"),
 	EWeaponType_LightningGun UMETA(DisplayName="Lightning Gun"),
+	EWeaponType_RocketPods UMETA(DisplayName="Rocket Pods"),
 };
 
 const TMap<FString, EWeaponType> StringToEWeaponType = {
@@ -35,6 +36,7 @@ const TMap<FString, EWeaponType> StringToEWeaponType = {
 	{ "Sword", EWeaponType::EWeaponType_Sword },
 	{ "Sniper Rifle", EWeaponType::EWeaponType_SniperRifle },
 	{ "Rifle", EWeaponType::EWeaponType_Rifle },
-	{ "Lightning Gun", EWeaponType::EWeaponType_LightningGun }
+	{ "Lightning Gun", EWeaponType::EWeaponType_LightningGun },
+	{ "Rocket Pods", EWeaponType::EWeaponType_RocketPods }
 };
 
