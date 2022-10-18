@@ -107,6 +107,11 @@
 			"Name": "LowEntryExtStdLib",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/846c2ad08f164f45b0335ecebf85361e"
+		},
+		{
+			"Name": "PhysicalBoids",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/7fac9e28df5b4dd08fa02235157598bc"
 		}
 	]
 }
