@@ -34,21 +34,6 @@ bool UAvoidanceSubsystem::UnregisterAgent(APawn* Agent)
 	return NumRemoved > 0;
 }
 
-bool UAvoidanceSubsystem::CalcAgentBounds(APawn* Agent, float& OutCylinderRadius, float& OutCylinderHeight)
-{
-	const UPawnMovementComponent* MoveComp = Agent->GetMovementComponent();
-	if (!MoveComp) return false;
-	if (!MoveComp->UpdatedComponent) return false;
-
-	float CylinderRadius = 0.0f;
-	float CylinderHeight = 0.0f;
-	MoveComp->UpdatedComponent->CalcBoundingCylinder(CylinderRadius, CylinderHeight);
-
-	OutCylinderRadius = CylinderRadius;
-	OutCylinderHeight = CylinderHeight;
-	return true;
-}
-
 bool UAvoidanceSubsystem::Separation(APawn* Agent, FVector& OutSeparationForce)
 {
 	if (!IsValid(Agent)) return false;
@@ -60,15 +45,25 @@ bool UAvoidanceSubsystem::Separation(APawn* Agent, FVector& OutSeparationForce)
 	return true;
 }
 
+bool UAvoidanceSubsystem::Steering(APawn* Agent, FVector& OutSteeringForce)
+{
+	if (!IsValid(Agent)) return false;
+
+	const FAgentAvoidanceSettings* AvoidanceSettings = Agents.Find(Agent);
+	if (!AvoidanceSettings) return false;
+
+	OutSteeringForce = GetSteeringForce(Agent, *AvoidanceSettings);
+	return true;
+}
+
 FVector UAvoidanceSubsystem::GetSeparationForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings)
 {
-	// Ideally, need agent, obstacle, and environemnt separation range.
-
 	// Fail-fast on invalid configurations.
 	if (AvoidanceSettings.AgentRadius <= 0) return FVector::ZeroVector;
 	if (AvoidanceSettings.SeparationQueryRange <= 0) return FVector::ZeroVector;
-	if (AvoidanceSettings.MaxSeparationForce <= 0) return FVector::ZeroVector;
+	if (AvoidanceSettings.MaxAccelerationSpeed <= 0) return FVector::ZeroVector;
 
+	int Count = 0;
 	FVector SeparationVector = FVector::ZeroVector;
 	for (auto It = Agents.CreateIterator(); It; ++It)
 	{
@@ -77,12 +72,14 @@ FVector UAvoidanceSubsystem::GetSeparationForce(APawn* Agent, const FAgentAvoida
 		// Skip self.
 		if (OtherAgent == Agent) continue;
 
+		// @todo - might need IsValid on OtherAgent due to lack of reflection?
+
 		// Calculate a direction to this agent and magnitude.
 		const FVector ToThisAgentDirection = Agent->GetActorLocation() - OtherAgent->GetActorLocation();
-		const float Magnitude = ToThisAgentDirection.Length();
+		const float Distance = ToThisAgentDirection.Length();
 
 		// Skip if the other agent is too far away (i.e. outside the separation query range).
-		if (Magnitude >= AvoidanceSettings.SeparationQueryRange) continue;
+		if (Distance >= AvoidanceSettings.SeparationQueryRange) continue;
 
 		const FAgentAvoidanceSettings OtherAgentAvoidanceSettings = It.Value();
 
@@ -90,10 +87,89 @@ FVector UAvoidanceSubsystem::GetSeparationForce(APawn* Agent, const FAgentAvoida
 		const float TotalAgentRadius = AvoidanceSettings.AgentRadius + OtherAgentAvoidanceSettings.AgentRadius;
 
 		// Calculate the separation force required.
-		const float SeparationForce = FMath::Min(AvoidanceSettings.MaxSeparationForce * (TotalAgentRadius / Magnitude), AvoidanceSettings.MaxSeparationForce);
-		const FVector NormalizedDirection = ToThisAgentDirection.GetSafeNormal();
+		const float MaxDist = FMath::Max(TotalAgentRadius, Distance);
+		const float Strength = (TotalAgentRadius / MaxDist);
+		const float SeparationForce = FMath::Min(AvoidanceSettings.MaxAccelerationSpeed * Strength, AvoidanceSettings.MaxAccelerationSpeed);
 
+		const FVector NormalizedDirection = ToThisAgentDirection.GetSafeNormal();
 		SeparationVector += NormalizedDirection * SeparationForce;
+		++Count;
 	}
-	return SeparationVector.GetClampedToMaxSize(AvoidanceSettings.MaxSeparationForce);
+	// No agents within the separation query range. No separation needed.
+	if (Count == 0) return FVector::ZeroVector;
+
+	SeparationVector /= Count;
+	return SeparationVector.GetClampedToMaxSize(AvoidanceSettings.MaxAccelerationSpeed);
+}
+
+FVector UAvoidanceSubsystem::GetSteeringForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings)
+{
+	// Fail-fast on invalid configurations.
+	if (AvoidanceSettings.MaxAccelerationSpeed <= 0) return FVector::ZeroVector;
+
+	float ShortestCollisionTime = FLT_MAX;
+	struct CollisionInfo {
+		const APawn* Target = nullptr;
+		float MinSeparation = 0.0f;
+		float Distance = 0.0f;
+		FVector ToThisAgentDirection = FVector::ZeroVector;
+		FVector VelocityDiff = FVector::ZeroVector;
+		float TotalRadius = 0.0f;
+	} ShortestCollidingAgent;
+
+	for (auto It = Agents.CreateIterator(); It; ++It)
+	{
+		const APawn* OtherAgent = It.Key();
+
+		// Skip self.
+		if (OtherAgent == Agent) continue;
+
+		// @todo - might need IsValid on OtherAgent due to lack of reflection?
+
+		const FVector ToThisAgentDirection = Agent->GetActorLocation() - OtherAgent->GetActorLocation();
+		const FVector VelocityDiff = Agent->GetVelocity() - OtherAgent->GetVelocity();
+		const float Distance = ToThisAgentDirection.Length();
+
+		// Skip if too far away, i.e. outside the steering query range.
+		if (Distance > AvoidanceSettings.SteeringQueryRange) continue;
+
+		const float VelocityDiffSquared = VelocityDiff.SquaredLength();
+
+		// Skip if the velocity diff squared is zero.
+		if (VelocityDiffSquared == 0.0f) continue;
+
+		const float CollisionTime = -ToThisAgentDirection.Dot(VelocityDiff) / (VelocityDiffSquared);
+		const FVector Separation = ToThisAgentDirection + VelocityDiff * CollisionTime;
+		const float MinSeparation = Separation.Length();
+		const FAgentAvoidanceSettings OtherAgentAvoidanceSettings = It.Value();
+
+		// Skip if the min separation required is greater than the total agent radius, i.e. no collision.
+		const float TotalAgentRadius = AvoidanceSettings.AgentRadius + OtherAgentAvoidanceSettings.AgentRadius;
+		if (MinSeparation > TotalAgentRadius) continue;
+
+		// If the collision time is shorter, update the shortest colliding agent and time.
+		if (CollisionTime > 0.0f && CollisionTime < ShortestCollisionTime)
+		{
+			ShortestCollisionTime = CollisionTime;
+			ShortestCollidingAgent = { OtherAgent, MinSeparation, Distance, ToThisAgentDirection, VelocityDiff, TotalAgentRadius };
+		}
+	}
+
+	// If no colliding agent, then no steering is needed.
+	if (!ShortestCollidingAgent.Target) return FVector::ZeroVector;
+
+	FVector SteeringForce = FVector::ZeroVector;
+	if (ShortestCollidingAgent.MinSeparation <= 0 || ShortestCollidingAgent.Distance < ShortestCollidingAgent.TotalRadius)
+	{
+		SteeringForce = Agent->GetActorLocation() - ShortestCollidingAgent.Target->GetActorLocation();
+	}
+	else
+	{
+		SteeringForce = ShortestCollidingAgent.ToThisAgentDirection + ShortestCollidingAgent.VelocityDiff * ShortestCollisionTime;
+	}
+	const float MaxDist = FMath::Max(ShortestCollidingAgent.Distance, ShortestCollidingAgent.TotalRadius);
+	const float Strength = MaxDist > 0 ? (ShortestCollidingAgent.TotalRadius / MaxDist) : 1; 
+
+	SteeringForce.Normalize();
+	return SteeringForce * AvoidanceSettings.MaxAccelerationSpeed * Strength;
 }

@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "NavigationSystem.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/PawnMovementComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "Navigation/NavigationSubsystem.h"
 #include "Avoidance/AvoidanceSubsystem.h"
@@ -35,13 +37,11 @@ void UWarMachineFollowingComponent::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: The owner controller must be AAIController!"));
 		return;
 	}
-
 	PossessedPawn = OwnerController->GetPawn();
 	if (PossessedPawn)
 	{
-		RegisterAgent(PossessedPawn);
+		RegisterAgent();
 	}
-	OwnerController->OnPossessedPawnChanged.AddDynamic(this, &UWarMachineFollowingComponent::OnPossessedPawnChanged);
 }
 
 void UWarMachineFollowingComponent::FollowPathSegment(float DeltaTime)
@@ -77,8 +77,9 @@ void UWarMachineFollowingComponent::FollowPathSegment(float DeltaTime)
 			}
 		}
 
-		// Add avoidance and steering behavior.
-		CurrentMoveInput += Avoidance(DeltaTime);
+		// Add separation and steering behaviors.
+		CurrentMoveInput += Separation() * SeparationWeight;
+		CurrentMoveInput += Steering() * SteeringWeight;
 		if (bIsDecelerating)
 		{
 			// Only normalize if the resultant vector exceeds unit length.
@@ -102,72 +103,6 @@ void UWarMachineFollowingComponent::FollowPathSegment(float DeltaTime)
 
 		PostProcessMove.ExecuteIfBound(this, MoveVelocity);
 		MovementComp->RequestDirectMove(MoveVelocity, bNotFollowingLastSegment);
-	}
-}
-
-FVector UWarMachineFollowingComponent::Avoidance(float DeltaTime)
-{
-	if (!PossessedPawn) return FVector::ZeroVector;
-	if (AvoidanceSettings.MaxSeparationForce == 0.0f) return FVector::ZeroVector;
-
-	FVector AvoidanceForce = FVector::ZeroVector;
-	FVector SeparationForce = FVector::ZeroVector;
-
-	if (AvoidanceSubsystem->Separation(PossessedPawn, SeparationForce)) AvoidanceForce += SeparationForce;
-
-	// Clamp the resultant avoidance vector and take ratio to map it between [0, 1].
-	const FVector ClampedAvoidanceVector = AvoidanceForce.GetClampedToMaxSize(AvoidanceSettings.MaxSeparationForce);
-	const float Ratio = ClampedAvoidanceVector.Length() / AvoidanceSettings.MaxSeparationForce;
-
-	// TEST: Visualization only
-	const FVector StartLocation = PossessedPawn->GetActorLocation();
-	const FVector EndLocation = StartLocation + ClampedAvoidanceVector;  // clamp here for visualization
-	if (!ClampedAvoidanceVector.IsNearlyZero())
-		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor(255, 0, 0), false, 1, 0, 50);
-
-	return ClampedAvoidanceVector * Ratio;
-}
-
-void UWarMachineFollowingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
-void UWarMachineFollowingComponent::OnPossessedPawnChanged(APawn* OldPawn, APawn* NewPawn)
-{
-	if (!IsValid(NewPawn))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: Invalid possessed pawn!"));
-		return;
-	}
-	RegisterAgent(NewPawn);
-}
-
-void UWarMachineFollowingComponent::RegisterAgent(APawn* Pawn)
-{
-	// If the custom avoidance setting is not enabled, try to determine appropriate avoidance settings from the pawn.
-	if (!bEnableCustomAvoidanceSettings)
-	{
-		// Otherwise, 
-		float CylinderRadius = 0.0f;
-		float CylinderHeight = 0.0f;
-		const bool bSuccess = AvoidanceSubsystem->CalcAgentBounds(Pawn, CylinderRadius, CylinderHeight);
-		if (!bSuccess)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to calculate agent bounds!"));
-			return;
-		}
-		AvoidanceSettings.AgentRadius = CylinderRadius;
-		AvoidanceSettings.SeparationQueryRange = AvoidanceSettings.AgentRadius * 12.0f;
-		AvoidanceSettings.MaxSeparationForce = 2500.0f; // use max walk speed/acceleration? reconsider & decide later.
-	}
-
-	// Register the agent with the specified avoidance settings.
-	const bool bRegisterd = AvoidanceSubsystem->RegisterAgent(Pawn, AvoidanceSettings);
-	if (!bRegistered)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to register the agent."));
-		return;
 	}
 }
 
@@ -203,4 +138,146 @@ bool UWarMachineFollowingComponent::IsOnPath() const
 {
 	// Make it always on path to allow agent to get off-path for steering and avoidance purposes.
 	return true;
+}
+
+void UWarMachineFollowingComponent::OnNewPawn(APawn* NewPawn)
+{
+	if (HasBegunPlay())
+	{
+		// Unregister the previous possessed pawn if any.
+		if (PossessedPawn)
+		{
+			UnregisterAgent();
+		}
+		// Return if it's unpossession.
+		if (!NewPawn) return;
+		
+		// Otherwise register the new pawn.
+		PossessedPawn = NewPawn;
+		if (PossessedPawn)
+		{
+			RegisterAgent();
+		}
+	}
+}
+
+bool UWarMachineFollowingComponent::GetMaxAccelerationSpeed(float& OutMaxAccelerationSpeed)
+{
+	if (!PossessedPawn) return false;
+
+	const UPawnMovementComponent* MoveComp = PossessedPawn->GetMovementComponent();
+	if (!MoveComp) return false;
+
+	const UCharacterMovementComponent* CharacterMoveComp = Cast<UCharacterMovementComponent>(MoveComp);
+	if (!CharacterMoveComp)
+	{
+		// Use the pawn move comp max speed as the fallback.
+		OutMaxAccelerationSpeed = MoveComp->GetMaxSpeed();
+		return true;
+	}
+	OutMaxAccelerationSpeed = CharacterMoveComp->GetMaxAcceleration();
+	return true;
+}
+
+bool UWarMachineFollowingComponent::CalcAgentBounds(float& OutCylinderRadius, float& OutCylinderHeight)
+{
+	if (!PossessedPawn) return false;
+
+	const UPawnMovementComponent* MoveComp = PossessedPawn->GetMovementComponent();
+	if (!MoveComp) return false;
+	if (!MoveComp->UpdatedComponent) return false;
+
+	float CylinderRadius = 0.0f;
+	float CylinderHeight = 0.0f;
+	MoveComp->UpdatedComponent->CalcBoundingCylinder(CylinderRadius, CylinderHeight);
+
+	OutCylinderRadius = CylinderRadius;
+	OutCylinderHeight = CylinderHeight;
+	return true;
+}
+
+void UWarMachineFollowingComponent::RegisterAgent()
+{
+	// If the custom avoidance setting is not enabled, try to determine appropriate avoidance settings from the pawn.
+	if (!bEnableCustomAvoidanceSettings)
+	{
+		float CylinderRadius = 0.0f;
+		float CylinderHeight = 0.0f;
+		bool bSuccess = CalcAgentBounds(CylinderRadius, CylinderHeight);
+		if (!bSuccess)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to calculate agent bounds!"));
+			return;
+		}
+		float MaxAccelerationSpeed = 0.0f;
+		bSuccess = GetMaxAccelerationSpeed(MaxAccelerationSpeed);
+		if (!bSuccess)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to calculate max acceleration speed!"));
+			return;
+		}
+		AvoidanceSettings.AgentRadius = CylinderRadius;
+		AvoidanceSettings.SeparationQueryRange = AvoidanceSettings.AgentRadius * 13.0f;
+		AvoidanceSettings.SteeringQueryRange = AvoidanceSettings.AgentRadius * 30.0f;
+		AvoidanceSettings.MaxAccelerationSpeed = MaxAccelerationSpeed;
+	}
+
+	// Register the agent with the specified avoidance settings.
+	const bool bRegisterd = AvoidanceSubsystem->RegisterAgent(PossessedPawn, AvoidanceSettings);
+	if (!bRegistered)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to register the agent."));
+		return;
+	}
+}
+
+void UWarMachineFollowingComponent::UnregisterAgent()
+{
+	AvoidanceSubsystem->UnregisterAgent(PossessedPawn);
+}
+
+FVector UWarMachineFollowingComponent::Separation()
+{
+	if (!PossessedPawn) return FVector::ZeroVector;
+	if (AvoidanceSettings.MaxAccelerationSpeed == 0.0f) return FVector::ZeroVector;
+
+	FVector SeparationForce = FVector::ZeroVector;
+
+	const bool bSucceed = AvoidanceSubsystem->Separation(PossessedPawn, SeparationForce);
+	if (!bSucceed) return FVector::ZeroVector;
+
+	// Get the separation direction and map it to [0, 1] depending on the strength.
+	const FVector SeparationDirectionNormal = SeparationForce.GetSafeNormal();
+	const float Strength = SeparationForce.Length() / AvoidanceSettings.MaxAccelerationSpeed;
+
+	// @debug Visualization only.
+	const FVector StartLocation = PossessedPawn->GetActorLocation();
+	const FVector EndLocation = StartLocation + SeparationForce;
+	if (!SeparationForce.IsNearlyZero())
+		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor(255, 0, 0), false, 1, 0, 50);
+
+	return SeparationDirectionNormal * Strength;
+}
+
+FVector UWarMachineFollowingComponent::Steering()
+{
+	if (!PossessedPawn) return FVector::ZeroVector;
+	if (AvoidanceSettings.MaxAccelerationSpeed == 0.0f) return FVector::ZeroVector;
+
+	FVector SteeringForce = FVector::ZeroVector;
+
+	const bool bSucceed = AvoidanceSubsystem->Steering(PossessedPawn, SteeringForce);
+	if (!bSucceed) return FVector::ZeroVector;
+
+	// Get the separation direction and map it to [0, 1] depending on the strength.
+	const FVector SteeringDirectionNormal = SteeringForce.GetSafeNormal();
+	const float Strength = SteeringForce.Length() / AvoidanceSettings.MaxAccelerationSpeed;
+
+	// @debug Visualization only.
+	const FVector StartLocation = PossessedPawn->GetActorLocation();
+	const FVector EndLocation = StartLocation + SteeringForce;
+	if (!SteeringForce.IsNearlyZero())
+		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor(0, 255, 0), false, 1, 0, 50);
+
+	return SteeringDirectionNormal * Strength;
 }

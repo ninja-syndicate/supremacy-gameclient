@@ -17,26 +17,31 @@ class SUPREMACY_API UWarMachineFollowingComponent : public UPathFollowingCompone
 	GENERATED_BODY()
 public:
 	virtual void BeginPlay() override;
-	
+
 	// Override this to modify the agent path following direction and its velocity. 
 	virtual void FollowPathSegment(float DeltaTime) override;
 
 	// Override this to modify pathfinding query setting.
 	virtual void OnPathfindingQuery(FPathFindingQuery& Query) override;
 
-	// Override this to allow AI to get off-path for steering and avoidance purposes.
+	/** Override this to allow AI to get off - path for steeringand avoidance purposes. */
 	virtual bool IsOnPath() const override;
 
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	/** Override to register the agent in case it got possessed after BeginPlay. */
+	virtual void OnNewPawn(APawn* NewPawn) override;
 
 private:
-	FVector Avoidance(float DeltaTime);
-	void RegisterAgent(APawn* Pawn);
+	FVector Separation();
+	FVector Steering();
 
-	UFUNCTION()
-	void OnPossessedPawnChanged(APawn* OldPawn, APawn* NewPawn);
+	void RegisterAgent();
+	void UnregisterAgent();
+
+	// Uses the pawn's cylinder to calculate the agent radius and height.
+	bool CalcAgentBounds(float& OutCylinderRadius, float& OutCylinderHeight);
+
+	// Uses the pawn's movement component to figure out the maximum acceleration speed. Fallback to its max speed if it doesn't support acceleration.
+	bool GetMaxAccelerationSpeed(float& OutMaxAccelerationSpeed);
 
 private:
 	/** The possessed pawn of the owning AI controller. */
@@ -77,4 +82,10 @@ private:
 	 */
 	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	bool bEnableCustomAvoidanceSettings = false;
+
+	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	float SeparationWeight = 1.0f;
+
+	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	float SteeringWeight = 1.0f;
 };

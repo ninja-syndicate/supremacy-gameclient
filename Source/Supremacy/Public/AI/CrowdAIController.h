@@ -35,6 +35,7 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
 	virtual void GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const override;
 
 	// TEMP: Need to refactor.
@@ -138,7 +139,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<AActor> CurrentFocusTarget = nullptr;
 
-	/** Reference to the current crowd following component. */
+	/** Reference to the current mech following component. */
 	UPROPERTY()
-	class UCrowdFollowingComponent* CrowdFollowingComponent;
+	class UWarMachineFollowingComponent* MechFollowingComponent;
 };

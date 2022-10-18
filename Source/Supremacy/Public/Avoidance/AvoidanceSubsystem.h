@@ -25,14 +25,21 @@ USTRUCT(BlueprintType)
 struct FAgentAvoidanceSettings {
 	GENERATED_BODY()
 public:
+	/** The agent radius used for the avoidance. Doesn't need to be matched exactly with the actual agent radius. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Avoidance Agent Settings")
 	float AgentRadius = 0.0f;
 
+	/** The distance at which the separation starts to take place. Recommended value is `AgentRadius` * 13.0f. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Avoidance Agent Settings")
 	float SeparationQueryRange = 0.0f;
 
+	/** The distance at which the steering starts to take place. Recommended value is `AgentRadius` * 30.0f. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Avoidance Agent Settings")
-	float MaxSeparationForce = 0.0f;
+	float SteeringQueryRange = 0.0f;
+
+	/** Maximum acceleration speed for the agent. If the agent does not use acceleration, you can provide the maximum speed of the agent here. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Avoidance Agent Settings")
+	float MaxAccelerationSpeed = 0.0f;
 };
 
 /**
@@ -55,17 +62,13 @@ public:
 	bool UnregisterAgent(APawn* Agent);
 
 	bool Separation(APawn* Agent, FVector& OutSeparationForce);
-
-	// Uses the pawn's cylinder to calculate the agent radius and height.
-	bool CalcAgentBounds(APawn* Agent, float& OutCylinderRadius, float& OutCylinderHeight);
+	bool Steering(APawn* Agent, FVector& OutSteeringForce);
 
 private:
-	FVector GetSeparationForce(APawn* Pawn, const FAgentAvoidanceSettings& AvoidanceSettings);
+	FVector GetSeparationForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
+	FVector GetSteeringForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	TArray<FAvoidanceAgentInfo> AgentInfos;
-
-	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TMap<APawn*, FAgentAvoidanceSettings> Agents;
 };

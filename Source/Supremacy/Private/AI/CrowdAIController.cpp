@@ -4,7 +4,6 @@
 #include "AI/CrowdAIController.h"
 
 #include "AI/WarMachineFollowingComponent.h"
-#include "Navigation/CrowdFollowingComponent.h"
 #include "Parsers/PascalCaseJsonObjectConverter.h"
 
 ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializer)
@@ -18,12 +17,20 @@ ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializ
 	SeparationWeight = 2;
 	CollisionQueryRange = 8400; // Approximately 16 * AgentRadius.
 	PathOptimizationRange = 10000;
+
+	MechFollowingComponent = Cast<UWarMachineFollowingComponent>(GetPathFollowingComponent());
+	if (!MechFollowingComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: Fatal! UWarMachineFollowingComponent is invalid. AI will not work properly..."));
+		return;
+	}
 }
 
 void ACrowdAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	EnableScript();
 	/*
 	if (AvoidanceType == EAvoidanceType::Unused1 || AvoidanceType == EAvoidanceType::Unused2)
 	{
@@ -54,8 +61,13 @@ void ACrowdAIController::BeginPlay()
 void ACrowdAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+}
 
-	bIsScriptEnabled = true;
+void ACrowdAIController::OnUnPossess()
+{
+	Super::OnUnPossess();
+
+	DisableScript();
 }
 
 void ACrowdAIController::Tick(float DeltaTime)
