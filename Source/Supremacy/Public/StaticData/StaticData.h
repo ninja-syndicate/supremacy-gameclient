@@ -108,6 +108,13 @@ public:
 
     UFUNCTION(BlueprintCallable)
     TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForWeapon(const FGuid& WeaponID, const FGuid& SkinID);
+
+    UFUNCTION(BlueprintCallable, meta=(ToolTip="Get an array of all possible skins for a mech model."))
+    TArray<UStaticDataSkin*> GetMechSkins(const FGuid& MechModelID);
+
+    UFUNCTION(BlueprintCallable)
+    void Clear();
+    
 private:
     UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
     UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);
