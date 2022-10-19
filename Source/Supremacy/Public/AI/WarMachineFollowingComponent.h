@@ -84,6 +84,9 @@ private:
 	bool bEnableCustomAvoidanceSettings = false;
 
 	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	float AgentRadiusMultiplier = 1.0f;
+
+	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	float SeparationWeight = 1.0f;
 
 	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))

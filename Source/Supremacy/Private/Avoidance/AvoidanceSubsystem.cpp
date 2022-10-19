@@ -72,7 +72,8 @@ FVector UAvoidanceSubsystem::GetSeparationForce(APawn* Agent, const FAgentAvoida
 		// Skip self.
 		if (OtherAgent == Agent) continue;
 
-		// @todo - might need IsValid on OtherAgent due to lack of reflection?
+		// Skip invalidy one.
+		if (!IsValid(OtherAgent)) continue;
 
 		// Calculate a direction to this agent and magnitude.
 		const FVector ToThisAgentDirection = Agent->GetActorLocation() - OtherAgent->GetActorLocation();
@@ -124,7 +125,8 @@ FVector UAvoidanceSubsystem::GetSteeringForce(APawn* Agent, const FAgentAvoidanc
 		// Skip self.
 		if (OtherAgent == Agent) continue;
 
-		// @todo - might need IsValid on OtherAgent due to lack of reflection?
+		// Skip invalidy one.
+		if (!IsValid(OtherAgent)) continue;
 
 		const FVector ToThisAgentDirection = Agent->GetActorLocation() - OtherAgent->GetActorLocation();
 		const FVector VelocityDiff = Agent->GetVelocity() - OtherAgent->GetVelocity();

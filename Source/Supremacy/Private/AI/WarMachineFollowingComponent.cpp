@@ -216,7 +216,7 @@ void UWarMachineFollowingComponent::RegisterAgent()
 			UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to calculate max acceleration speed!"));
 			return;
 		}
-		AvoidanceSettings.AgentRadius = CylinderRadius;
+		AvoidanceSettings.AgentRadius = CylinderRadius * AgentRadiusMultiplier;
 		AvoidanceSettings.SeparationQueryRange = AvoidanceSettings.AgentRadius * 13.0f;
 		AvoidanceSettings.SteeringQueryRange = AvoidanceSettings.AgentRadius * 30.0f;
 		AvoidanceSettings.MaxAccelerationSpeed = MaxAccelerationSpeed;
@@ -251,10 +251,12 @@ FVector UWarMachineFollowingComponent::Separation()
 	const float Strength = SeparationForce.Length() / AvoidanceSettings.MaxAccelerationSpeed;
 
 	// @debug Visualization only.
+	/*
 	const FVector StartLocation = PossessedPawn->GetActorLocation();
 	const FVector EndLocation = StartLocation + SeparationForce;
 	if (!SeparationForce.IsNearlyZero())
 		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor(255, 0, 0), false, 1, 0, 50);
+	*/
 
 	return SeparationDirectionNormal * Strength;
 }
@@ -269,15 +271,17 @@ FVector UWarMachineFollowingComponent::Steering()
 	const bool bSucceed = AvoidanceSubsystem->Steering(PossessedPawn, SteeringForce);
 	if (!bSucceed) return FVector::ZeroVector;
 
-	// Get the separation direction and map it to [0, 1] depending on the strength.
+	// Get the steering direction and map it to [0, 1] depending on the strength.
 	const FVector SteeringDirectionNormal = SteeringForce.GetSafeNormal();
 	const float Strength = SteeringForce.Length() / AvoidanceSettings.MaxAccelerationSpeed;
 
 	// @debug Visualization only.
+	/*
 	const FVector StartLocation = PossessedPawn->GetActorLocation();
 	const FVector EndLocation = StartLocation + SteeringForce;
 	if (!SteeringForce.IsNearlyZero())
 		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor(0, 255, 0), false, 1, 0, 50);
+	*/
 
 	return SteeringDirectionNormal * Strength;
 }

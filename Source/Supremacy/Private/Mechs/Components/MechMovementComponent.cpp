@@ -20,5 +20,12 @@ void UMechMovementComponent::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("UMechMovementComponent: bUseFixedBrakingDistanceForPaths is not enabled! Braking deceleration will not work."));
 		return;
 	}
-	FixedPathBrakingDistance = BrakingDecelerationMaxSpeedScale * GetMaxSpeed();
+	FixedPathBrakingDistance = BrakingDecelerationMaxSpeedScale * GetMaxSpeed();	
+}
+
+float UMechMovementComponent::GetMaxSpeed() const
+{
+	// Get the max speed and fallback to max walk speed if the movement mode is not set (thus have MaxSpeed of 0).
+	const float MaxSpeed = Super::GetMaxSpeed();
+	return MaxSpeed > 0 ? MaxSpeed : MaxWalkSpeed;
 }

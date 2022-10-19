@@ -17,6 +17,8 @@ class SUPREMACY_API UMechMovementComponent : public UCharacterMovementComponent
 public:
 	virtual void BeginPlay() override;
 
+	virtual float GetMaxSpeed() const override;
+
 protected:
 	/** 
 	 * Whether to automatically calculate the braking deceleration distance based on the max speed and the deceleration max speed scale. 
