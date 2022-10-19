@@ -10,7 +10,7 @@ namespace Utils
 		void Reset();
 		bool GetNextDataRow(TArray<FString>& Result);
 		int GetCurrentIndex() const { return currentIndex; }
-		
+		int GetLineNumber() { return currentIndex + 1; }
 	private:
 		FString CurrentFilename = "";
 		TArray<FString> FileData;

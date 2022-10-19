@@ -64,9 +64,6 @@ struct FWarMachineServerStruct {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString ID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
@@ -75,9 +72,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FFactionServer Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Model;
+	FString Model_Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Skin;
+	FString Model_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Skin_Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Skin_ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Tier;
 
@@ -122,9 +123,6 @@ struct FWarMachineStruct {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString ID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
@@ -133,9 +131,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FFaction Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Model;
+	FString ModelName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Skin;
+	FString ModelID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SkinName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SkinID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ERarity Rarity;
 
@@ -175,8 +177,10 @@ public:
 		Name(WarMachine.Name),
 		OwnerName(WarMachine.Owner_Name),
 		Faction(WarMachine.Faction),
-		Model(WarMachine.Model),
-		Skin(WarMachine.Skin),
+		ModelName(WarMachine.Model_Name),
+		ModelID(WarMachine.Model_ID),
+		SkinName(WarMachine.Skin_Name),
+		SkinID(WarMachine.Skin_ID),
 		Rarity(StringToERarity[WarMachine.Tier]),
 
 		Weapons(WarMachine.Weapons),

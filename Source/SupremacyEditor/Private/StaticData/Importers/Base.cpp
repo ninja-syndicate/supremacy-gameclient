@@ -190,12 +190,14 @@ bool StaticDataImporter::Base::ImportAndUpdate(UStaticData* DataAsset)
 	{
 		if (rowData.Num() != FileHeaders.Num())
 		{
-			success = false;
-			break;
+			ErrorReason = FString::Printf(TEXT("header count doesn't match (line = %d, expected = %d, got = %d"), Importer.GetLineNumber(), FileHeaders.Num(), rowData.Num());
+			//success = false;
+			continue;
 		}
 
 		if (!HandleRow(DataAsset, rowData))
 		{
+			ErrorReason = "failed to handle row";
 			success = false;
 			break;
 		}

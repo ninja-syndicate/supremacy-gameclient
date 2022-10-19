@@ -9,6 +9,8 @@ struct FPowerCoreStruct {
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Model_ID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Power_Capacity;

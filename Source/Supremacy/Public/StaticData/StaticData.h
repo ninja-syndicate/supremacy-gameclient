@@ -101,22 +101,20 @@ public:
     UStaticDataShieldType* GetShieldType(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
-    FWarMachineStruct WarMachineStruct(const FGuid& MechID);
-
-    UFUNCTION(BlueprintCallable)
-    FWeaponStruct WeaponStruct(const FGuid& WeaponID);
-
-    UFUNCTION(BlueprintCallable)
     FPowerCoreStruct PowerCoreStruct(const FGuid& PowerCoreID);
-
-    UFUNCTION(BlueprintCallable)
-    FFaction FactionFromStaticDataFaction(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
     TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForMech(const FGuid &MechID, const FGuid& SkinID);
 
     UFUNCTION(BlueprintCallable)
     TMap<FString, TSoftObjectPtr<UMaterial>> MaterialsForWeapon(const FGuid& WeaponID, const FGuid& SkinID);
+
+    UFUNCTION(BlueprintCallable, meta=(ToolTip="Get an array of all possible skins for a mech model."))
+    TArray<UStaticDataSkin*> GetMechSkins(const FGuid& MechModelID);
+
+    UFUNCTION(BlueprintCallable)
+    void Clear();
+    
 private:
     UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
     UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);

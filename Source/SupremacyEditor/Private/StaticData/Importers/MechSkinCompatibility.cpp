@@ -87,9 +87,15 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 	if (AssetData.Num() <= 0) {
 		//UE_LOG(LogTemp, Warning, TEXT("%s: found no material files"), *MaterialsPath);
 	} else {
-		UObject* Object = Record->WarMachineModel->SkeletalMesh.LoadSynchronous();
+		const UClass* ObjectClass = Record->WarMachineModel->UnrealWarMachine.LoadSynchronous();
+		if (!ObjectClass)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Failed to load WarMachineModel: "), *Record->WarMachineModel->Label)
+			return false;
+		}
+		UObject* Object = ObjectClass->GetDefaultObject();
 		if (Object) {
-			USkeletalMesh* Mesh = Cast<USkeletalMesh>(Object);
+			USkeletalMesh* Mesh = Cast<AMech>(Object)->GetMesh()->SkeletalMesh;
 			//UE_LOG(LogTemp, Warning, TEXT("loading mesh succeeded"));
 			TArray<FSkeletalMaterial> Materials = Mesh->GetMaterials();
 			for (int32 i = 0; i < Materials.Num(); i++)

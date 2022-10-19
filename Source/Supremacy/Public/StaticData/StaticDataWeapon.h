@@ -101,4 +101,34 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "References", meta = (AllowPrivateAccess = true))
 	TSoftClassPtr<AWeapon> Blueprint;
+
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To WeaponStruct (From StaticDataWeapon)", CompactNodeTitle = "->", BlueprintAutocast))
+	FWeaponStruct ToWeaponStruct()
+	{
+		FWeaponStruct Struct;
+
+		Struct.Model_ID = ID.ToString();
+		Struct.Model_Name = Label;
+		Struct.Damage = Damage;
+		Struct.Damage_Falloff = DamageFalloff;
+		Struct.Damage_Falloff_Rate = DamageFalloffRate;
+		Struct.Damage_Radius = Radius;
+		Struct.Damage_Radius_Falloff = RadiusDamageFalloff;
+		Struct.Damage_Type = static_cast<uint8>(WeaponDamageType);
+		Struct.Spread = Spread;
+		Struct.Rate_Of_Fire = RateOfFire;
+		Struct.Burst_Rate_Of_Fire = BurstRateOfFire;
+		Struct.Projectile_Speed = ProjectileSpeed;
+		Struct.Max_Ammo = MaxAmmo;
+		Struct.Projectile_Amount = ProjectileAmount;
+		//Struct.Projectile_Life_Span = ...;
+		Struct.Charge_Time = ChargeTimeSeconds;
+		Struct.Is_Arced = IsArced;
+		//Struct.Optimal_Range = ...;
+		//Struct.Recoil_Force = ...;
+		Struct.Power_Cost = EnergyCost;
+		Struct.Power_Instance_Drain = PowerInstantDrain;
+
+		return Struct;
+	}
 };

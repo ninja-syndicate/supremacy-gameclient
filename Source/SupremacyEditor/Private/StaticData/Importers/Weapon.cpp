@@ -53,16 +53,10 @@ FString BlueprintPathForWeapon(UStaticDataWeapon* Weapon, FString &WeaponTypeStr
 		WeaponTypeString = FString("Minigun");
 		break;
 	case EWeaponType::EWeaponType_PlasmaGun:
-		if (Weapon->Brand->ID == FGuid("cb84390c-591e-4ac0-a8b4-d283c83504a4"))
-			WeaponTypeString = FString("PlasmaRifle");
-		else
-			WeaponTypeString = FString("PlasmaGun");
+		WeaponTypeString = FString("PlasmaGun");
 		break;
 	case EWeaponType::EWeaponType_Flak:
-		if (Weapon->Brand->ID == FGuid("0eb63669-3c98-4467-97af-dabc2acc43a6") || Weapon->Brand->ID == FGuid("cb84390c-591e-4ac0-a8b4-d283c83504a4"))
-			WeaponTypeString = FString("Shotgun");
-		else
-			WeaponTypeString = FString("FlakGun");
+		WeaponTypeString = FString("FlakGun");
 		break;
 	case EWeaponType::EWeaponType_MachineGun:
 		WeaponTypeString = FString("MachineGun");
@@ -89,13 +83,16 @@ FString BlueprintPathForWeapon(UStaticDataWeapon* Weapon, FString &WeaponTypeStr
 		WeaponTypeString = FString("Sword");
 		break;
 	case EWeaponType::EWeaponType_SniperRifle:
-		WeaponTypeString = FString("Fire-Sniper");
+		WeaponTypeString = FString("Sniper");
 		break;
 	case EWeaponType::EWeaponType_Rifle:
-		WeaponTypeString = FString("Plasma-Rifle");
+		WeaponTypeString = FString("Rifle");
 		break;
 	case EWeaponType::EWeaponType_LightningGun:
 		WeaponTypeString = FString("LightningGun");
+		break;
+	case EWeaponType::EWeaponType_RocketPods:
+		WeaponTypeString = FString("RocketPods");
 		break;
 	}
 
@@ -187,6 +184,8 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 	if(Record->ID == FGuid("41099781-8586-4783-9d1c-b515a386fe9f")) {
 		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
 	} else if (Record->ID == FGuid("e9fc2417-6a5b-489d-b82e-42942535af90")) {
+		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
+	} else if (Record->ID == FGuid("c1c78867-9de7-43d3-97e9-91381800f38e")) {
 		Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'/Game/Blueprints/Weapons/RocketPods.RocketPods_C'"));
 	} else {
 		FString WeaponTypeString;
