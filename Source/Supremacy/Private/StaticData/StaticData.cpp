@@ -316,3 +316,31 @@ TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForWeapon(const F
     if(Record) return Record->Materials;
     return TMap<FString, TSoftObjectPtr<UMaterial>>();
 }
+
+TArray<UStaticDataSkin*> UStaticData::GetMechSkins(const FGuid& MechModelID)
+{
+    TArray<UStaticDataSkin*> SkinList;
+    for (const UStaticDataMechSkinCompatibility* Record : MechSkinCompatibilityArray)
+    {
+        if (Record->WarMachineModel->ID == MechModelID) SkinList.Push(Record->Skin);
+    }
+    return SkinList;
+}
+
+void UStaticData::Clear()
+{
+    FactionArray.Empty();
+    BrandArray.Empty();
+    WarMachineModelArray.Empty();
+    WarMachineModelArray.Empty();
+    SkinArray.Empty();
+    WeaponSkinArray.Empty();
+    WeaponArray.Empty();
+    MechSkinCompatibilityArray.Empty();
+    WeaponSkinCompatibilityArray.Empty();
+    PowerCoreArray.Empty();
+    BattleAbilityArray.Empty();
+    PlayerAbilityArray.Empty();
+    GameAbilityArray.Empty();
+    ShieldTypeArray.Empty();
+}
