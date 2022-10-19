@@ -37,7 +37,7 @@ public:
 	FString BackgroundURL;
 
 	UFUNCTION(BlueprintPure, meta=(DisplayName="To Faction (From StaticDataFaction)", CompactNodeTitle = "->", BlueprintAutocast))
-	FFaction ToFaction()
+	FFaction ToFaction() const
 	{
 		FFaction Struct;
 		Struct.ID = ID.ToString();
