@@ -66,13 +66,46 @@ void UNavigationSubsystem::OnPreBeginPlay()
 	}
 }
 
-bool UNavigationSubsystem::IsNavigable(const FVector& Location)
+bool UNavigationSubsystem::IsNavigable(const FVector& Location, const FVector& QueryExtent)
+{
+	FVector OutLocation;
+	return ProjectPointToNavigation(Location, QueryExtent, OutLocation);
+}
+
+bool UNavigationSubsystem::GetDefaultQueryExtentByPawn(APawn* Pawn, FVector& OutDefaultQueryExtent)
+{
+	if (!NavSys) return false;
+	if (!IsValid(Pawn)) return false;
+
+	const FNavAgentProperties& NavAgentProps = Pawn->GetNavAgentPropertiesRef();
+	const ANavigationData* NavData = NavSys->GetNavDataForProps(NavAgentProps);
+	if (!NavData) return false;
+
+	OutDefaultQueryExtent = NavData->GetDefaultQueryExtent();
+	return true;
+}
+
+bool UNavigationSubsystem::GetDefaultQueryExtent(FVector& OutDefaultQueryExtent)
+{
+	if (!NavSys) return false;
+
+	const ANavigationData* NavData = NavSys->GetDefaultNavDataInstance();
+	if (!NavData) return false;
+
+	OutDefaultQueryExtent = NavData->GetDefaultQueryExtent();
+	return true;
+}
+
+bool UNavigationSubsystem::ProjectPointToNavigation(const FVector& Location, const FVector& QueryExtent, FVector& OutLocation)
 {
 	if (!NavSys) return false;
 
 	FNavLocation ResultLocation;
-	bool bProjectSuccess = NavSys->ProjectPointToNavigation(Location, ResultLocation, GetQueryExtent());
-	return bProjectSuccess;
+	const bool bProjectSucceed = NavSys->ProjectPointToNavigation(Location, ResultLocation, QueryExtent);
+	if (!bProjectSucceed) return false;
+	
+	OutLocation = ResultLocation.Location;
+	return true;
 }
 
 bool UNavigationSubsystem::GetBaseGroundLocation(const FVector& Location, FVector& OutLocation)
@@ -103,22 +136,28 @@ bool UNavigationSubsystem::GetBaseGroundLocation(const FVector& Location, FVecto
 	return false;
 }
 
-bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVector& OutLocation, bool bSearchUnbound)
+bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVector& OutLocation, float AgentRadius, float AgentHeight, bool bSearchUnbound)
 {
 	if (!NavSys) return false;
-
-	const int SearchIterationCount = bSearchUnbound ? 100 : 5;
-	const float SearchRadiusDelta = 2500;
+	
+	// Make nav agent props for query extent testing.
+	FNavAgentProperties NavAgentProps;
+	NavAgentProps.AgentRadius = AgentRadius;
+	NavAgentProps.AgentHeight = AgentHeight;
+	NavAgentProps.NavWalkingSearchHeightScale = FNavigationSystem::GetDefaultSupportedAgent().NavWalkingSearchHeightScale;
 
 	// Test the given location to see if it's navigable.
 	FNavLocation ResultLocation;
-	bool bProjectSuccess = NavSys->ProjectPointToNavigation(Location, ResultLocation, GetQueryExtent());
+	bool bProjectSuccess = NavSys->ProjectPointToNavigation(Location, ResultLocation, INVALID_NAVEXTENT, &NavAgentProps);
 
 	if (bProjectSuccess)
 	{
 		OutLocation = ResultLocation.Location;
 		return true;
 	}
+
+	const int SearchIterationCount = bSearchUnbound ? 100 : 5;
+	const float SearchRadiusDelta = 2500;
 
 	float CurrentSearchRadius = SearchRadiusDelta;
 	if (CurrentSearchRadius <= 0)
@@ -127,10 +166,13 @@ bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVec
 		return false;
 	}
 
+	// Get the nav data associated with the nav agent props.
+	ANavigationData* NavData = NavSys->GetNavDataForProps(NavAgentProps);
+
 	// Get random navigable point in radius from the given location, with increasing search radius.
 	for (int32 i = 0; i < SearchIterationCount; ++i)
 	{
-		const bool bSearchSuccess = NavSys->GetRandomPointInNavigableRadius(Location, CurrentSearchRadius, ResultLocation);
+		const bool bSearchSuccess = NavSys->GetRandomPointInNavigableRadius(Location, CurrentSearchRadius, ResultLocation, NavData);
 
 		if (bSearchSuccess)
 		{
@@ -143,10 +185,23 @@ bool UNavigationSubsystem::GetNearestNavigableArea(const FVector& Location, FVec
 	return false;
 }
 
-FVector UNavigationSubsystem::GetQueryExtent() const
+bool UNavigationSubsystem::GetNearestNavigableAreaByPawn(APawn* Pawn, FVector& OutLocation, bool bSearchUnbound)
 {
-	// NOTE: The height needs to be high enough to also take account of jumping.
-	return FVector(750, 750, 2000);
+	if (!IsValid(Pawn)) return false;
+
+	FVector DefaultQueryExtent;
+
+	const bool bSuccess = GetDefaultQueryExtentByPawn(Pawn, DefaultQueryExtent);
+	if (bSuccess) return false;
+
+	return GetNearestNavigableAreaByExtent(Pawn->GetActorLocation(), OutLocation, DefaultQueryExtent, bSearchUnbound);
+}
+
+bool UNavigationSubsystem::GetNearestNavigableAreaByExtent(const FVector& Location, FVector& OutLocation, const FVector& DefaultQueryExtent, bool bSearchUnbound)
+{
+	const float AgentRadius = DefaultQueryExtent.X;
+	const float AgentHeight = DefaultQueryExtent.Z;
+	return GetNearestNavigableArea(Location, OutLocation, AgentRadius, AgentHeight, bSearchUnbound);
 }
 
 bool UNavigationSubsystem::TraceByProfile(const FVector& StartLocation, const FVector& EndLocation, const FName& ProfileName, FVector& OutLocation)
