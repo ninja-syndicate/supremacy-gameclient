@@ -21,6 +21,8 @@ public:
 	FString Model_Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Skin_Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Socket_Index;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Damage;
@@ -72,15 +74,22 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Power_Instance_Drain;
 	
-	FWeaponStruct(): Damage(0), Damage_Falloff(0), Damage_Falloff_Rate(0), Damage_Radius(0), Damage_Radius_Falloff(0),
+	FWeaponStruct(): Socket_Index(0),
+	                 Damage(0),
+	                 Damage_Falloff(0),
+	                 Damage_Falloff_Rate(0),
+	                 Damage_Radius(0),
+	                 Damage_Radius_Falloff(0),
 	                 Damage_Type(0),
 	                 Spread(0),
 	                 Rate_Of_Fire(0),
 	                 Burst_Rate_Of_Fire(0),
-	                 Projectile_Speed(0), Max_Ammo(0),
+	                 Projectile_Speed(0),
+	                 Max_Ammo(0),
 	                 Projectile_Amount(0),
 	                 Charge_Time(0),
-	                 Is_Arced(false), Optimal_Range(0),
+	                 Is_Arced(false),
+	                 Optimal_Range(0),
 	                 Recoil_Force(0),
 	                 Power_Cost(0), Power_Instance_Drain(false)
 	{
