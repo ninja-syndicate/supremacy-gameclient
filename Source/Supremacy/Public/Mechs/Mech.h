@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Types/WarMachineStruct.h"
+#include "Weapons/WeaponizedInterface.h"
 #include "Mech.generated.h"
 
 UCLASS()
-class SUPREMACY_API AMech final : public ACharacter
+class SUPREMACY_API AMech final : public ACharacter, public IWeaponizedInterface
 {
 	GENERATED_BODY()
 	
@@ -31,6 +32,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Animation")
 	void PlayAnimationOutro();
 	
+public:
+	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
+
+	UPROPERTY(Category = "Weapon", Replicated, BlueprintReadWrite)
+	TArray<class AWeapon*> Weapons;
+
 protected:
 	UFUNCTION()
 	virtual void OnRep_SetWarMachineStruct();
