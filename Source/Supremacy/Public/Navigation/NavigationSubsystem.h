@@ -23,8 +23,17 @@ public:
 
 	// NOTE: Create a proxy actor that does replication if required.
 
-	UFUNCTION(BlueprintCallable)
-	bool IsNavigable(const FVector& Location);
+	UFUNCTION(BlueprintPure)
+	bool IsNavigable(const FVector& Location, const FVector& QueryExtent);
+
+	UFUNCTION(BlueprintPure)
+	bool GetDefaultQueryExtentByPawn(APawn* Pawn, FVector& OutDefaultQueryExtent);
+
+	UFUNCTION(BlueprintPure)
+	bool GetDefaultQueryExtent(FVector& OutDefaultQueryExtent);
+
+	UFUNCTION(BlueprintPure)
+	bool ProjectPointToNavigation(const FVector& Location, const FVector& QueryExtent, FVector& OutLocation);
 
 	UFUNCTION(BlueprintCallable)
 	bool GetBaseGroundLocation(const FVector& Location, FVector& OutLocation);
@@ -34,14 +43,19 @@ public:
 	 *
 	 * @param Location The location to get the nearest navigable area from.
 	 * @param OutLocation The nearest navigable location from the `Location`.
+	 * @param AgentRadius The radius of the agent.
+	 * @param AgentHeight The total height of the agent.
 	 * @param bSearchUnbound By default, the search radius is bounded. Setting this to true will search unbounded. Enabling this option can cause big performance hits.
 	 * @returns true if nearest navigable location is found and false otherwise.
 	 */
-	UFUNCTION(BlueprintCallable)
-	bool GetNearestNavigableArea(const FVector& Location, FVector& OutLocation, bool bSearchUnbound = false);
+	UFUNCTION(BlueprintCallable, meta = (AgentRadius = 500, AgentHeight = 1000, bSearchUnbound = false))
+	bool GetNearestNavigableArea(const FVector& Location, FVector& OutLocation, float AgentRadius, float AgentHeight, bool bSearchUnbound);
 
-	UFUNCTION(BlueprintCallable)
-	FVector GetQueryExtent() const;
+	UFUNCTION(BlueprintCallable, meta = (bSearchUnbound = false))
+	bool GetNearestNavigableAreaByPawn(APawn* Pawn, FVector& OutLocation, bool bSearchUnbound);
+
+	UFUNCTION(BlueprintCallable, meta = (bSearchUnbound = false))
+	bool GetNearestNavigableAreaByExtent(const FVector& Location, FVector& OutLocation, const FVector& DefaultQueryExtent, bool bSearchUnbound);
 
 private:
 	void OnPreBeginPlay();

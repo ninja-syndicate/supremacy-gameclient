@@ -35,6 +35,7 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
 	virtual void GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const override;
 
 	// TEMP: Need to refactor.
@@ -53,6 +54,18 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void OnCooldownEnd(const FGameplayTag ActionTag);
 	void OnCooldownEnd_Implementation(const FGameplayTag ActionTag);
+
+private:
+	//~ Begin Script AI Debugging functions.
+	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Script AI Debugging")
+	void EnableScript();
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Script AI Debugging")
+	void DisableScript();
+	//~ End Script AI Debugging functions.
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Script AI Debugging", meta = (AllowPrivateAccess = true))
+	bool bIsScriptEnabled = false;
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = "AI Utils")
@@ -126,7 +139,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<AActor> CurrentFocusTarget = nullptr;
 
-	/** Reference to the current crowd following component. */
+	/** Reference to the current mech following component. */
 	UPROPERTY()
-	class UCrowdFollowingComponent* CrowdFollowingComponent;
+	class UWarMachineFollowingComponent* MechFollowingComponent;
 };
