@@ -24,10 +24,19 @@ StaticDataImporter::MechSkinCompatibility::MechSkinCompatibility(): Base()
 FString MaterialsPathFromMech(const FString ID, const FString SkinName)
 {
 	FString BasePath;
+	bool HasDeprecatedMaterialFolderName = false; // Red Mountain and Zai mech skins have folder names like "Gold_Materials" instead of "Gold"
 
 	if (ID == FString("5d3a973b-c62b-4438-b746-d3de2699d42a").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/BostonCybernetics_MechAssets/Materials";
-	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
-	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
+	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT("")))
+	{
+		BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
+		HasDeprecatedMaterialFolderName = true;
+	}
+	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT("")))
+	{
+		BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
+		HasDeprecatedMaterialFolderName = true;
+	}
 	if (ID == FString("02ba91b7-55dc-450a-9fbd-e7337ae97a2b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/WarEnforcer_Humanoid_MechAssets/Materials";
 	if (ID == FString("7068ab3e-89dc-4ac1-bcbb-1089096a5eda").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/Annihilator_Platform_MechAssets/Materials";
 	if (ID == FString("3dc5888b-f5ff-4d08-a520-26fd3681707f").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Kenji_HumanoidMechAssets/Materials";
@@ -39,6 +48,7 @@ FString MaterialsPathFromMech(const FString ID, const FString SkinName)
 	Out.Append(BasePath);
 	Out.Append("/");
 	Out.Append(SkinName.Replace(TEXT(" "), TEXT("")));
+	if (HasDeprecatedMaterialFolderName) Out.Append("_Materials");
 	Out.Append("/");
 
 	return Out;
@@ -57,6 +67,17 @@ FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, FString Slot)
 	for (int32 i = 0; i < Materials.Num(); i++) {
 		if (Materials[i].AssetName.ToString().ToLower().Contains(Slot.ToLower())) return &Materials[i];
 	}
+
+	// Failed? Some zai materials have old names still
+	if (Slot == "UpperBody") return GetMaterialForSlot(Materials, "pmech1_low");
+	if (Slot == "LowerBody") return GetMaterialForSlot(Materials, "pmech2_low");
+	// Some Red Mountain Materials don't have number prefix
+	if (Slot.Contains("_"))
+	{
+		const int32 UnderscoreIndex = Slot.Find("_");
+		return GetMaterialForSlot(Materials, Slot.Mid(UnderscoreIndex+1));
+	}
+	
 	return nullptr;
 }
 
