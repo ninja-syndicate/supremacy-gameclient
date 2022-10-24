@@ -192,7 +192,7 @@ bool UNavigationSubsystem::GetNearestNavigableAreaByPawn(APawn* Pawn, FVector& O
 	FVector DefaultQueryExtent;
 
 	const bool bSuccess = GetDefaultQueryExtentByPawn(Pawn, DefaultQueryExtent);
-	if (bSuccess) return false;
+	if (!bSuccess) return false;
 
 	return GetNearestNavigableAreaByExtent(Pawn->GetActorLocation(), OutLocation, DefaultQueryExtent, bSearchUnbound);
 }
