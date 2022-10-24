@@ -112,6 +112,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Debug|Helpers", Meta = (CompactNodeTitle = "-STOP RESPONDING-", DisplayName = "Stop Responding"))
 	static void StopResponding();
 	
+	UFUNCTION(BlueprintPure, Category = "Math Helpers")
+	static FTransform GetRotationByQuat(const FTransform& Transform, const FRotator& RotationDelta);
+
 	UFUNCTION(BlueprintCallable, Category = "Helpers", meta = (HalfAngleInDegrees = "25", ConeBackwardOffset = "1500", WorldContext = "WorldContextObject", AutoCreateRefTerm = "ActorsToIgnore"))
 	static bool MultiConeTraceForObjects(
 		const UObject* WorldContextObject, 
