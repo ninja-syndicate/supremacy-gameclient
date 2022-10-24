@@ -21,7 +21,7 @@ StaticDataImporter::MechSkinCompatibility::MechSkinCompatibility(): Base()
 	};
 }
 
-FString MaterialsPathFromMech(FString ID, FString SkinName, bool IsGenesis)
+FString MaterialsPathFromMech(const FString ID, const FString SkinName)
 {
 	FString BasePath;
 
@@ -39,13 +39,12 @@ FString MaterialsPathFromMech(FString ID, FString SkinName, bool IsGenesis)
 	Out.Append(BasePath);
 	Out.Append("/");
 	Out.Append(SkinName.Replace(TEXT(" "), TEXT("")));
-	if (IsGenesis) Out.Append("_Materials");
 	Out.Append("/");
 
 	return Out;
 }
 
-bool IsGenesis(FString ID)
+bool IsGenesis(const FString ID)
 {
 	if (ID == FString("5d3a973b-c62b-4438-b746-d3de2699d42a").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
 	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
@@ -78,7 +77,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 
 	Record->Label = Record->WarMachineModel->Label + " -> " + Record->Skin->Label;
 
-	FString MaterialsPath = MaterialsPathFromMech(Record->WarMachineModel->ID.ToString(), Record->Skin->Label, IsGenesis(Record->WarMachineModel->ID.ToString()));
+	FString MaterialsPath = MaterialsPathFromMech(Record->WarMachineModel->ID.ToString(), Record->Skin->Label);
 
 	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
 	TArray<FAssetData> AssetData;

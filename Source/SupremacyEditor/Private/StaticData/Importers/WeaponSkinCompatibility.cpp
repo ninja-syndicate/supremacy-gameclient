@@ -27,9 +27,9 @@ FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin 
 
 	bool IsArchon = false;
 
-	if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) Path.Append(FString("/Game/Weapons/GenesisWeapons/RedMountain"));
-	else if (Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04")) Path.Append(FString("/Game/Weapons/GenesisWeapons/BostonCybernetics"));
-	else if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) Path.Append(FString("/Game/Weapons/GenesisWeapons/Zaibatsu"));
+	if (Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04")) Path.Append(FString("/Game/Weapons/GenesisWeapons/RedMountain"));
+	else if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) Path.Append(FString("/Game/Weapons/GenesisWeapons/BostonCybernetics"));
+	else if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) Path.Append(FString("/Game/Weapons/GenesisWeapons/Zaibatsu"));
 	else if (Weapon->Brand->ID == FGuid("cb84390c-591e-4ac0-a8b4-d283c83504a4")) {
 		Path.Append(FString("/Game/Weapons/Nexus_Weapons/ArchonMilitech")); 
 		IsArchon = true;
@@ -40,7 +40,7 @@ FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin 
 		IsArchon = true;
 	}
 
-	if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) {
+	if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) {
 		Path.Append("/Materials_Both");
 	} else {
 		switch (Weapon->Type) {
