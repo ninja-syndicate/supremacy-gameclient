@@ -171,8 +171,8 @@
                "Height": 15.75,
                "Weapons": [
                     { 
-                         "ID": "SniperRifle",
                          "Name": "Sniper Rifle",
+                         "Model_ID": "8c3cbbc7-eae8-4ca8-9811-663de0e73eb6",
                          "Damage": 46,
                          "DamageFalloff": 40000,
                          "DamageFalloffRate": 92,
@@ -181,8 +181,14 @@
                          "RateOfFire": 60
                     },
                     {
-                         "ID": "RocketPods",
+                         "Name": "Plasma Sword",
+                         "Model_ID": "0612fbda-3967-456b-86cb-1fb6eb03829d",
+                         "Damage": 80,
+                         "DamageType": 1
+                    },
+                    {
                          "Name": "Rocket Pods",
+                         "Model_ID": "c1c78867-9de7-43d3-97e9-91381800f38e",
                          "DamageFalloff": 50000,
                          "DamageFalloffRate": 125,
                          "Damage": 70,
@@ -190,12 +196,6 @@
                          "DamageType": 2,
                          "ProjectileSpeed": 50000,
                          "RateOfFire": 2
-                    },
-                    {
-                         "ID": "PlasmaSword",
-                         "Name": "Plasma Sword",
-                         "Damage": 80,
-                         "DamageType": 1
                     }
                ]
           },
@@ -207,8 +207,8 @@
                "Height": 18.9,
                "Weapons": [
                     { 
-                         "ID": "Boston Plasma Rifle",
                          "Name": "Plasma Rifle",
+                         "Model_ID": "260370f6-aaef-4dcb-a75a-c4642ba89dfb",
                          "Damage": 46,
                          "DamageFalloff": 40000,
                          "DamageFalloffRate": 92,
@@ -216,9 +216,15 @@
                          "ProjectileSpeed": 40000,
                          "RateOfFire": 60
                     },
+                    { 
+                         "ID": "Boston Sword",
+                         "Name": "Sword",
+                         "Model_ID": "d831dea7-e598-47af-b4e3-3c37b5eb969a",
+                         "Damage": 40
+                    },
                     {
-                         "ID": "RocketPods",
                          "Name": "Rocket Pods",
+                         "Model_ID": "e9fc2417-6a5b-489d-b82e-42942535af90",
                          "DamageFalloff": 50000,
                          "DamageFalloffRate": 125,
                          "Damage": 70,
@@ -226,11 +232,6 @@
                          "DamageType": 2,
                          "ProjectileSpeed": 50000,
                          "RateOfFire": 2
-                    },
-                    { 
-                         "ID": "Boston Sword",
-                         "Name": "Sword",
-                         "Damage": 40
                     }
                ]
           },
@@ -242,8 +243,18 @@
                "Height": 18.55,
                "Weapons": [
                     {
-                         "ID": "RedMountainCannon",
-                         "Name": "Dual Cannons",
+                         "Name": "Auto Cannon",
+                         "Model_ID": "74005f3b-a6e2-4e4b-a59c-e07ff42cb800",
+                         "Damage": 28,
+                         "DamageFalloff": 40000,
+                         "DamageFalloffRate": 56,
+                         "Spread": 2,
+                         "ProjectileSpeed": 40000,
+                         "RateOfFire": 60
+                    },
+                                        {
+                         "Name": "Auto Cannon",
+                         "Model_ID": "74005f3b-a6e2-4e4b-a59c-e07ff42cb800",
                          "Damage": 28,
                          "DamageFalloff": 40000,
                          "DamageFalloffRate": 56,
@@ -252,8 +263,8 @@
                          "RateOfFire": 60
                     },
                     {
-                         "ID": "RocketPods",
                          "Name": "Rocket Pods",
+                         "Model_ID": "41099781-8586-4783-9d1c-b515a386fe9f",
                          "DamageFalloff": 50000,
                          "DamageFalloffRate": 125,
                          "Damage": 70,

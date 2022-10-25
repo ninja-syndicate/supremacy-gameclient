@@ -167,7 +167,7 @@
       "Charge_Time": 3,
       "Recoil_Force": 5
     },
-    "Weapon_AM_MissileLauncher": {
+    "Weapon_AM_RocketPods": {
       "Name": "Archon Militech Missile Launcher",
       "Damage": 100,
       "Damage_Falloff": 40000,
@@ -191,7 +191,7 @@
       "Rate_Of_Fire": 100,
       "Recoil_Force": 30
     },
-    "Weapon_AM_Shotgun": {
+    "Weapon_AM_FlakGun": {
       "Name": "Archon Militech Shotgun",
       "Damage": 6,
       "Damage_Falloff": 6000,
@@ -268,7 +268,7 @@
       "Rate_Of_Fire": 100,
       "Recoil_Force": 30
     },
-    "Weapon_Pyro_MissileLauncher": {
+    "Weapon_Pyro_RocketPods": {
       "Name": "Pyro Missile Launcher",
       "Damage": 100,
       "Damage_Falloff": 40000,
@@ -282,7 +282,7 @@
       "Burst_Rate_Of_Fire": 1000,
       "Recoil_Force": 10
     },
-    "Weapon_Pyro_Shotgun": {
+    "Weapon_Pyro_FlakGun": {
       "Name": "Pyro Shotgun",
       "Damage": 8,
       "Damage_Falloff": 6000,
@@ -302,7 +302,7 @@
       "Rate_Of_Fire": 160,
       "Recoil_Force": 40
     },
-    "Weapon_Warsui_Flakgun": {
+    "Weapon_Warsui_FlakGun": {
       "Name": "Warsui Flakgun",
       "Damage": 5,
       "Damage_Falloff": 6000,
@@ -352,7 +352,7 @@
       "Charge_Time": 2,
       "Recoil_Force": 5
     },
-    "Weapon_Warsui_MissileLauncher": {
+    "Weapon_Warsui_RocketPods": {
       "Name": "Warsui Missile Launcher",
       "Damage": 100,
       "Damage_Falloff": 40000,
