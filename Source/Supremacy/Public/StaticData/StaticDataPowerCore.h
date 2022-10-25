@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "StaticDataBaseRecord.h"
-#include "UObject/Object.h"
 #include "Types/WarMachinePowerCoreSize.h"
+#include "Types/PowerCoreStruct.h"
 #include "StaticDataPowerCore.generated.h"
 
 namespace StaticDataImporter
@@ -47,4 +47,16 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	FString CreatedAt;
+
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To PowerCoreStruct (From StaticDataPowerCore)", CompactNodeTitle = "->", BlueprintAutocast))
+	FPowerCoreStruct ToPowerCoreStruct() const
+	{
+		FPowerCoreStruct Struct;
+		Struct.ID = ID.ToString();
+		Struct.Power_Capacity = Capacity;
+		Struct.Recharge_Rate = RechargeRate;
+		Struct.Max_Draw_Rate = MaxDrawRate;
+		
+		return Struct;
+	}
 };

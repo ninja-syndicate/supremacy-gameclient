@@ -53,16 +53,10 @@ FString BlueprintPathForWeapon(UStaticDataWeapon* Weapon, FString &WeaponTypeStr
 		WeaponTypeString = FString("Minigun");
 		break;
 	case EWeaponType::EWeaponType_PlasmaGun:
-		if (Weapon->Brand->ID == FGuid("cb84390c-591e-4ac0-a8b4-d283c83504a4"))
-			WeaponTypeString = FString("PlasmaRifle");
-		else
-			WeaponTypeString = FString("PlasmaGun");
+		WeaponTypeString = FString("PlasmaGun");
 		break;
 	case EWeaponType::EWeaponType_Flak:
-		if (Weapon->Brand->ID == FGuid("0eb63669-3c98-4467-97af-dabc2acc43a6") || Weapon->Brand->ID == FGuid("cb84390c-591e-4ac0-a8b4-d283c83504a4"))
-			WeaponTypeString = FString("Shotgun");
-		else
-			WeaponTypeString = FString("FlakGun");
+		WeaponTypeString = FString("FlakGun");
 		break;
 	case EWeaponType::EWeaponType_MachineGun:
 		WeaponTypeString = FString("MachineGun");
@@ -89,13 +83,16 @@ FString BlueprintPathForWeapon(UStaticDataWeapon* Weapon, FString &WeaponTypeStr
 		WeaponTypeString = FString("Sword");
 		break;
 	case EWeaponType::EWeaponType_SniperRifle:
-		WeaponTypeString = FString("Fire-Sniper");
+		WeaponTypeString = FString("Sniper");
 		break;
 	case EWeaponType::EWeaponType_Rifle:
-		WeaponTypeString = FString("Plasma-Rifle");
+		WeaponTypeString = FString("Rifle");
 		break;
 	case EWeaponType::EWeaponType_LightningGun:
 		WeaponTypeString = FString("LightningGun");
+		break;
+	case EWeaponType::EWeaponType_RocketPods:
+		WeaponTypeString = FString("RocketPods");
 		break;
 	}
 
@@ -200,7 +197,7 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 		bool Found = false;
 		for (int32 i = 0; i < AssetData.Num(); i++) {
 			if (AssetData[i].AssetName.ToString().Contains(WeaponTypeString)) {
-				UE_LOG(LogTemp, Warning, TEXT("%s %s -> %s"), *Record->Label, *WeaponTypeString, *(AssetData[i].AssetName.ToString()));
+				UE_LOG(LogTemp, Log, TEXT("%s %s -> %s"), *Record->Label, *WeaponTypeString, *(AssetData[i].AssetName.ToString()));
 				Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'") + AssetData[i].ObjectPath.ToString() + FString("_C'"));
 				Found = true;
 				break;
