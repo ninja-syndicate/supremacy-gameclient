@@ -44,6 +44,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	int32 Speed;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float WalkSpeedModifier;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	EWarMachinePowerCoreSize PowerCoreSize;
 
@@ -98,6 +101,7 @@ public:
 		Struct.ShieldMax = MaxShield;
 		Struct.ShieldRechargeRate = ShieldRechargeRate;
 		Struct.Speed = Speed;
+		Struct.WalkSpeedModifier = WalkSpeedModifier;
 		Struct.Height = Height;
 
 		// if (DefaultSkin)
