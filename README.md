@@ -1,17 +1,20 @@
 # Supremacy
+
 Developed with Unreal Engine 5
 
 ## Getting Started
+
 To get started, you will need to meet the prerequisites first:
 
 ### Prerequisites
-+ [Git](https://git-scm.com/download) or [GitHub Desktop](https://desktop.github.com/)
-+ [Unreal Engine 5](https://www.unrealengine.com/en-US/unreal-engine-5)
-+ [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 
-> **_NOTE:_**  It is recommended that you have at least 300GiB of free space to install Unreal Engine 5 and clone the repository.
+- [Git](https://git-scm.com/download) or [GitHub Desktop](https://desktop.github.com/)
+- [Unreal Engine 5](https://www.unrealengine.com/en-US/unreal-engine-5)
+- [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 
-While you are installing VS2019 or you have already met all those prerequisites, in the Visual Studio Installer that comes along with VS2019, modify the 
+> **_NOTE:_** It is recommended that you have at least 300GiB of free space to install Unreal Engine 5 and clone the repository.
+
+While you are installing VS2019 or you have already met all those prerequisites, in the Visual Studio Installer that comes along with VS2019, modify the
 installation to check the following:
 
 - ASP.NET and web development ✅
@@ -24,7 +27,7 @@ And then, click install.
 
 ### Git
 
-Note that if you are using Git on Cmd or Bash, you will also need to download [Git LFS](https://git-lfs.github.com/). Install it and execute the following 
+Note that if you are using Git on Cmd or Bash, you will also need to download [Git LFS](https://git-lfs.github.com/). Install it and execute the following
 command on Git Cmd/Bash:
 
 ```
@@ -34,14 +37,14 @@ git lfs install
 Once Git LFS has been installed and configured by the above step, clone the repository by executing the following command:
 
 > **_NOTE:_** Cloning the repository can take very long time. If you already have a local copy of supremacy-gameclient, you can skip this clone step. If your
-> local copy of supremacy-gameclient contains auto-generated files that were built on other PC, you will need to regenerate them. See 
+> local copy of supremacy-gameclient contains auto-generated files that were built on other PC, you will need to regenerate them. See
 > [Troubleshooting](#Troubleshooting) section on how to clean up the auto-generated files.
 
 ```
 git clone https://github.com/ninja-syndicate/supremacy-gameclient.git
 ```
 
-After the repository has been cloned, you may want to set your Git username and email by executing the following commands on the repository you have cloned to 
+After the repository has been cloned, you may want to set your Git username and email by executing the following commands on the repository you have cloned to
 unless you have already done so.
 
 ```
@@ -53,7 +56,7 @@ git config user.email "Your Email Address"
 
 The following Unreal Engine Plugins need to be installed. Find them in the Library tab of the Epic Launcher, under Vault.
 
-*( Note: You'll need to be signed in with the company's Epic Account to have access to paid assets/plugins. )*
+_( Note: You'll need to be signed in with the company's Epic Account to have access to paid assets/plugins. )_
 
 - Quixel Bridge
 - [LE Extended Standard Library](https://www.unrealengine.com/marketplace/en-US/product/low-entry-extended-standard-library)
@@ -63,8 +66,8 @@ The following Unreal Engine Plugins need to be installed. Find them in the Libra
 - [Actor Pool Manager Plugin](https://www.unrealengine.com/marketplace/en-US/product/actor-pool-manager-plugin)
 - [Flying Navigation System](https://www.unrealengine.com/marketplace/en-US/product/flying-navigation-system)
 
-[UnrealJS](https://github.com/getnamo/UnrealJs) is also used but is included in the repo. It does however require the V8 library to be installed which can be 
-done via `setup.bat`. If `setup.bat` doesn't work due to `sh` command not being recognised, navigate to `Plugins/UnrealJs` directory and run 
+[UnrealJS](https://github.com/getnamo/UnrealJs) is also used but is included in the repo. It does however require the V8 library to be installed which can be
+done via `setup.bat`. If `setup.bat` doesn't work due to `sh` command not being recognised, navigate to `Plugins/UnrealJs` directory and run
 `install-v8-libs.bat` instead.
 
 Once you have finished installing all the necessary plugins, right click `Supremacy.uproject`, click "Show More Options" if you are using Windows 11, and click
@@ -72,18 +75,21 @@ Once you have finished installing all the necessary plugins, right click `Suprem
 can simply open up `Supremacy.uproject` in the repository, and you are ready for the development!
 
 ### Recommended Workflow
+
 #### Turn-off Editor Auto Save Option
+
 Since Unreal's blueprints are binary, it is recommended to turn off auto-save option in the Editor Preferences setting. Sometimes, when this auto-save option is
-enabled, Unreal will save blueprints that are open even if there are no changes. This can make it hard to track which files have actually changed and more 
+enabled, Unreal will save blueprints that are open even if there are no changes. This can make it hard to track which files have actually changed and more
 time-consuming to resolve merge conflicts.
 
 #### Make a GitHub Issue and Assign Yourself
+
 Before making changes to the existing files or work on a new feature, make a GitHub issue if it doesn't already exist and assign yourself. This will help others
-know which conflicts are expected and possibly work on something else meanwhile. 
+know which conflicts are expected and possibly work on something else meanwhile.
 
 ## Keybinds
 
-- **SHIFT+ENTER :** Show Main Menu / Start test match if on specific map  *(for testing without a server)*
+- **SHIFT+ENTER :** Show Main Menu / Start test match if on specific map _(for testing without a server)_
 - **CTRL+SHIFT+ENTER :** Start test match and skip the intro animations
 - **CTRL+SHIFT+R:** Load battle from clipboard (text w/ battle commands on each line)
 - **ENTER :** Toggle free camera
@@ -101,34 +107,35 @@ know which conflicts are expected and possibly work on something else meanwhile.
 - **CTRL+ALT+SHIFT+\\:** Force Not Responding
 
 ### Abilities (Numbers or Numpad)
-- **1 :** Airstrike *(on random mech)*
-- **2 :** Nuke *(on random mech)*
-- **3 :** Heal *(on random mech)*
-- **SHIFT+3 :** Shield Buff *(on random mech)*
-- **ALT+3 :** Ammo *(on random mech)*
+
+- **1 :** Airstrike _(on random mech)_
+- **2 :** Nuke _(on random mech)_
+- **3 :** Heal _(on random mech)_
+- **SHIFT+3 :** Shield Buff _(on random mech)_
+- **ALT+3 :** Ammo _(on random mech)_
 - **4 :** Robot Dogs
-- **5 :** Red Mountain Reinforcements
-- **SHIFT+5 :** Mini Mech
+- **5 :** Mini Mech
 - **ALT+5 :** Turret
-- **6 :** Satellite Overload *(on random mech)*
-- **7 :** Landmines *(on random mech)*
-- **8 :** EMP *(on random mech)*
-- **9 :** Hacker Drone *(on random mech)*
-- **SHIFT+9 :** Camera Drone *(on random mech)*
-- **0 :** Incognito *(on random mech)*
-- **SHIFT+0 :** Blackout *(on random mech)*
-- **F :** Fireworks *(on random mech)*
-- **G :** Move Command *(on random mech, to random map spawn point)*
-- **SHIFT+G :** Cancel Move Command *(on random mech)*
-- **H :** Lower Tile *(on random mech, NOTE: The Hive map only)*
+- **6 :** Satellite Overload _(on random mech)_
+- **7 :** Landmines _(on random mech)_
+- **8 :** EMP _(on random mech)_
+- **9 :** Hacker Drone _(on random mech)_
+- **SHIFT+9 :** Camera Drone _(on random mech)_
+- **0 :** Incognito _(on random mech)_
+- **SHIFT+0 :** Blackout _(on random mech)_
+- **F :** Fireworks _(on random mech)_
+- **G :** Move Command _(on random mech, to random map spawn point)_
+- **SHIFT+G :** Cancel Move Command _(on random mech)_
+- **H :** Lower Tile _(on random mech, NOTE: The Hive map only)_
 
 ## Troubleshooting
+
 **Missing C++ files after pulling, warnings/errors or certain things don't work**
 
 Unreal sometimes fail to recognise new C++ files if you open up the project after pulling. It sometimes works and sometimes doesn't. So if there were changes to
 C++ files, often you will have to rebuild the project.
 
-> **_NOTE:_**  Rebuilding the project can take quite some time and storage space, so it is recommended that you have sufficient disk space for it.
+> **_NOTE:_** Rebuilding the project can take quite some time and storage space, so it is recommended that you have sufficient disk space for it.
 
 **Cleaning up auto-generated files**
 
@@ -144,11 +151,13 @@ try deleting automatically generated folders in the project. These are:
 And then open up the project again. This will cause those folders to be re-generated.
 
 ## Coding Standard
-+ [Coding Standard By Unreal](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/CodingStandard/)
-+ [Recommended Asset Naming Convention](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/AssetNaming/)
+
+- [Coding Standard By Unreal](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/CodingStandard/)
+- [Recommended Asset Naming Convention](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/AssetNaming/)
 
 ## Configs
-If you'd like to run the built game-client for development purposes, you can edit `GameUserSettings.ini` file (found in 
+
+If you'd like to run the built game-client for development purposes, you can edit `GameUserSettings.ini` file (found in
 `Supremacy/Saved/Config/Windows/GameUserSettings.ini`) to reduce CPU and GPU usage:
 
 <details>
@@ -196,11 +205,12 @@ LastGPUBenchmarkResult=-1.000000
 LastGPUBenchmarkMultiplier=1.000000
 bUseHDRDisplayOutput=False
 HDRDisplayOutputNits=1000
-```
+
+````
 </details>
 
 ## Battle Replaying
-You can emulate incoming messages from the server to "replay" a previous battle. With a list of battles commands in your clipboard you can use **CTRL+SHIFT+R** 
+You can emulate incoming messages from the server to "replay" a previous battle. With a list of battles commands in your clipboard you can use **CTRL+SHIFT+R**
 to start a match that uses them.
 
 Each line is a battle command; starting with `BATTLE:INIT`, each line after that starts with the delay in seconds followed by a `|`.
@@ -216,5 +226,6 @@ Each line is a battle command; starting with `BATTLE:INIT`, each line after that
 83|{"battleCommand":"BATTLE:ABILITY","payload":{"eventID":"8e800e27-d54c-44c2-aa10-6cff17169db2","gameClientAbilityID":7,"participantID":4,"warMachineHash":"mr9oGQEng","isTriggered":true,"triggeredByUsername":null,"gameLocation":{"x":0,"y":0}}}
 22|{"battleCommand":"BATTLE:ABILITY","payload":{"eventID":"8cc44de9-837f-415e-8fb4-e044706aede8","gameClientAbilityID":7,"participantID":8,"warMachineHash":"vTO5V8EnR","isTriggered":true,"triggeredByUsername":null,"gameLocation":{"x":0,"y":0}}}
 140|{"battleCommand":"BATTLE:ABILITY","payload":{"eventID":"6e4d504d-abb1-439a-a9b7-d0718a80d276","gameClientAbilityID":7,"participantID":7,"warMachineHash":"l1EjB77EAX","isTriggered":true,"triggeredByUsername":null,"gameLocation":{"x":0,"y":0}}}
-```
+````
+
 </details>
