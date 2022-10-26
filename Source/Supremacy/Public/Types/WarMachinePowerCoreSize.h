@@ -7,12 +7,14 @@ enum class EWarMachinePowerCoreSize : uint8
 {
 	WarMachineCoreSize_Small = 0 UMETA(DisplayName = "Small"),
 	WarMachineCoreSize_Medium UMETA(DisplayName = "Medium"),
-	WarMachineCoreSize_Large UMETA(DisplayName = "Large")
+	WarMachineCoreSize_Large UMETA(DisplayName = "Large"),
+	WarMachineCoreSize_Turbo UMETA(DisplayName = "Turbo")
 };
 
 const TMap<FString, EWarMachinePowerCoreSize> StringToEWarMachinePowerCoreSize = {
 	{ "SMALL", EWarMachinePowerCoreSize::WarMachineCoreSize_Small },
 	{ "MEDIUM", EWarMachinePowerCoreSize::WarMachineCoreSize_Medium },
-	{ "LARGE", EWarMachinePowerCoreSize::WarMachineCoreSize_Large }
+	{ "LARGE", EWarMachinePowerCoreSize::WarMachineCoreSize_Large },
+	{ "TURBO", EWarMachinePowerCoreSize::WarMachineCoreSize_Turbo },
 };
 
