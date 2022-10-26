@@ -197,7 +197,7 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 		bool Found = false;
 		for (int32 i = 0; i < AssetData.Num(); i++) {
 			if (AssetData[i].AssetName.ToString().Contains(WeaponTypeString)) {
-				UE_LOG(LogTemp, Warning, TEXT("%s %s -> %s"), *Record->Label, *WeaponTypeString, *(AssetData[i].AssetName.ToString()));
+				UE_LOG(LogTemp, Log, TEXT("%s %s -> %s"), *Record->Label, *WeaponTypeString, *(AssetData[i].AssetName.ToString()));
 				Record->Blueprint = TSoftClassPtr<AWeapon>(FString("Blueprint'") + AssetData[i].ObjectPath.ToString() + FString("_C'"));
 				Found = true;
 				break;

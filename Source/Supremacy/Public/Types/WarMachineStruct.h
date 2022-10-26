@@ -200,7 +200,13 @@ public:
 		PowerStats(WarMachine.Power_Stats),
 
 		Stats(WarMachine.Stats)
-	{}
+	{
+		const auto SortWeaponBySlotPredicate = [](const FWeaponStruct& ThisWeapon, const FWeaponStruct& OtherWeapon)
+		{
+			return ThisWeapon.Socket_Index < OtherWeapon.Socket_Index;
+		};
+		Weapons.Sort(SortWeaponBySlotPredicate);
+	}
 
 	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Height(0), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0), SprintSpreadModifier(1.25)
 	{}
