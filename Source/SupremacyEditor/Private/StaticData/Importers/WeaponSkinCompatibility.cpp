@@ -4,7 +4,6 @@
 #include "Misc/DefaultValueHelper.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Types/WeaponType.h"
-#include "StaticData/StaticDataMechSkinCompatibility.h"
 
 StaticDataImporter::WeaponSkinCompatibility::WeaponSkinCompatibility() : Base()
 {
@@ -26,10 +25,15 @@ FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin 
 	FString Path;
 
 	bool IsArchon = false;
-
-	if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) Path.Append(FString("/Game/Weapons/GenesisWeapons/RedMountain"));
-	else if (Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04")) Path.Append(FString("/Game/Weapons/GenesisWeapons/BostonCybernetics"));
-	else if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) Path.Append(FString("/Game/Weapons/GenesisWeapons/Zaibatsu"));
+	bool IsRedMountainCannon = Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04");
+	
+	if (IsRedMountainCannon)
+	{
+		// Red mountain cannon skins are still in mech folder
+		Path.Append(FString("/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials"));
+	}
+	else if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) Path.Append(FString("/Game/Weapons/GenesisWeapons/BostonCybernetics"));
+	else if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) Path.Append(FString("/Game/Weapons/GenesisWeapons/Zaibatsu"));
 	else if (Weapon->Brand->ID == FGuid("cb84390c-591e-4ac0-a8b4-d283c83504a4")) {
 		Path.Append(FString("/Game/Weapons/Nexus_Weapons/ArchonMilitech")); 
 		IsArchon = true;
@@ -40,9 +44,9 @@ FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin 
 		IsArchon = true;
 	}
 
-	if (Weapon->Brand->ID == FGuid("009f71fc-3594-4d24-a6e2-f05070d66f40")) {
+	if (Weapon->Brand->ID == FGuid("2b203c87-ad8c-4ce2-af17-e079835fdbcb")) {
 		Path.Append("/Materials_Both");
-	} else {
+	} else if (!IsRedMountainCannon) {
 		switch (Weapon->Type) {
 		case EWeaponType::EWeaponType_Minigun:
 			Path.Append(FString("/Minigun"));
@@ -96,6 +100,8 @@ FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin 
 		SkinName = TEXT("LessThanLethal");
 	}
 
+	if (IsRedMountainCannon) SkinName += "_Materials";
+
 	Path.Append(FString("/") + SkinName);
 
 	return Path;
@@ -127,9 +133,13 @@ bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAss
 		UE_LOG(LogTemp, Warning, TEXT("%s: found no material files"), *MaterialsPath);
 	}
 	else {
-		for (int32 i = 0; i < AssetData.Num(); i++) {
-			Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[i].ObjectPath.ToString() + FString("'"))));
+		int32 AssetIndex = 0;
+		if (AssetData.Num() > 1 && Record->Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04"))
+		{
+			// Red Mountain cannon material is still in it's mech folder; specify the material
+			for (int32 i = 0; i < AssetData.Num(); i++) if (AssetData[i].AssetName.ToString().Contains("Right_Gun")) AssetIndex = i;
 		}
+		Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].ObjectPath.ToString() + FString("'"))));
 	}
 	
 	SetAssetName(DataAsset, Record, TEXT("Weapon Skin Compatibility"));

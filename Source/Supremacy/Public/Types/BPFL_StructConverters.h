@@ -52,6 +52,7 @@ public:
 		if (Struct.ShieldMax == 0) Struct.ShieldMax = DefaultStruct.ShieldMax;
 		if (Struct.ShieldRechargeRate == 0) Struct.ShieldRechargeRate = DefaultStruct.ShieldRechargeRate;
 		if (Struct.Speed == 0) Struct.Speed = DefaultStruct.Speed;
+		if (Struct.WalkSpeedModifier == 0) Struct.WalkSpeedModifier = DefaultStruct.WalkSpeedModifier;
 		if (Struct.SprintSpreadModifier == 0) Struct.SprintSpreadModifier = DefaultStruct.SprintSpreadModifier;
 		if (Struct.Height == 0) Struct.Height = DefaultStruct.Height;
 	}
