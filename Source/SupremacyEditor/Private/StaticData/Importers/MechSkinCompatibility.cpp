@@ -21,19 +21,19 @@ StaticDataImporter::MechSkinCompatibility::MechSkinCompatibility(): Base()
 	};
 }
 
-FString MaterialsPathFromMech(FString ID, FString SkinName, bool IsGenesis)
+FString MaterialsPathFromMech(FGuid ID, FString SkinName, bool IsGenesis)
 {
 	FString BasePath;
 
-	if (ID == FString("5d3a973b-c62b-4438-b746-d3de2699d42a").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/BostonCybernetics_MechAssets/Materials";
-	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
-	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
-	if (ID == FString("02ba91b7-55dc-450a-9fbd-e7337ae97a2b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/WarEnforcer_Humanoid_MechAssets/Materials";
-	if (ID == FString("7068ab3e-89dc-4ac1-bcbb-1089096a5eda").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/Annihilator_Platform_MechAssets/Materials";
-	if (ID == FString("3dc5888b-f5ff-4d08-a520-26fd3681707f").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Kenji_HumanoidMechAssets/Materials";
-	if (ID == FString("0639ebde-fbba-498b-88ac-f7122ead9c90").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Shirokuma_PlatformMechAssets/Materials";
-	if (ID == FString("fc9546d0-9682-468e-af1f-24eb1735315b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Aries_HumanoidMechAssets/Materials";
-	if (ID == FString("df1ac803-0a90-4631-b9e0-b62a44bdadff").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Viking_Platform_MechAssets/Materials";
+	if (ID == FGuid("5d3a973b-c62b-4438-b746-d3de2699d42a")) BasePath = "/Game/Mechs/Genesis_Mechs/BostonCybernetics_MechAssets/Materials";
+	if (ID == FGuid("ac27f3b9-753d-4ace-84a9-21c041195344")) BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
+	if (ID == FGuid("625cd381-7c66-4e2f-9f69-f81589105730")) BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
+	if (ID == FGuid("02ba91b7-55dc-450a-9fbd-e7337ae97a2b")) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/WarEnforcer_Humanoid_MechAssets/Materials";
+	if (ID == FGuid("7068ab3e-89dc-4ac1-bcbb-1089096a5eda")) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/Annihilator_Platform_MechAssets/Materials";
+	if (ID == FGuid("3dc5888b-f5ff-4d08-a520-26fd3681707f")) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Kenji_HumanoidMechAssets/Materials";
+	if (ID == FGuid("0639ebde-fbba-498b-88ac-f7122ead9c90")) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Shirokuma_PlatformMechAssets/Materials";
+	if (ID == FGuid("fc9546d0-9682-468e-af1f-24eb1735315b")) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Aries_HumanoidMechAssets/Materials";
+	if (ID == FGuid("df1ac803-0a90-4631-b9e0-b62a44bdadff")) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Viking_Platform_MechAssets/Materials";
 
 	FString Out;
 	Out.Append(BasePath);
@@ -45,11 +45,11 @@ FString MaterialsPathFromMech(FString ID, FString SkinName, bool IsGenesis)
 	return Out;
 }
 
-bool IsGenesis(FString ID)
+bool IsGenesis(FGuid ID)
 {
-	if (ID == FString("5d3a973b-c62b-4438-b746-d3de2699d42a").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
-	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
-	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT(""))) return true;
+	if (ID == FGuid("5d3a973b-c62b-4438-b746-d3de2699d42a")) return true;
+	if (ID == FGuid("ac27f3b9-753d-4ace-84a9-21c041195344")) return true;
+	if (ID == FGuid("625cd381-7c66-4e2f-9f69-f81589105730")) return true;
 	return false;
 }
 
@@ -78,7 +78,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 
 	Record->Label = Record->WarMachineModel->Label + " -> " + Record->Skin->Label;
 
-	FString MaterialsPath = MaterialsPathFromMech(Record->WarMachineModel->ID.ToString(), Record->Skin->Label, IsGenesis(Record->WarMachineModel->ID.ToString()));
+	FString MaterialsPath = MaterialsPathFromMech(Record->WarMachineModel->ID, Record->Skin->Label, IsGenesis(Record->WarMachineModel->ID));
 
 	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
 	TArray<FAssetData> AssetData;
