@@ -52,7 +52,7 @@ public:
 	FPowerCoreStruct ToPowerCoreStruct() const
 	{
 		FPowerCoreStruct Struct;
-		Struct.ID = ID.ToString();
+		Struct.ID = ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		Struct.Power_Capacity = Capacity;
 		Struct.Recharge_Rate = RechargeRate;
 		Struct.Max_Draw_Rate = MaxDrawRate;

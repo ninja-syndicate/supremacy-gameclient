@@ -40,7 +40,7 @@ public:
 	FFaction ToFaction() const
 	{
 		FFaction Struct;
-		Struct.ID = ID.ToString();
+		Struct.ID = ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		Struct.Name = Label;
 		Struct.Color = PrimaryColor;
 		
