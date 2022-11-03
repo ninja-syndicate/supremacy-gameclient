@@ -197,7 +197,8 @@ bool StaticDataImporter::Base::ImportAndUpdate(UStaticData* DataAsset)
 
 		if (!HandleRow(DataAsset, rowData))
 		{
-			ErrorReason = "failed to handle row";
+			FString Temp = ErrorReason;
+			ErrorReason = FString::Printf(TEXT("failed to handle row: %s"), *Temp);
 			success = false;
 			break;
 		}

@@ -31,6 +31,12 @@ StaticDataImporter::WarMachineModel::WarMachineModel(): Base()
 		"shield_type_id",
 		"shield_recharge_delay",
 		"height_meters",
+		"walk_speed_modifier",
+		"sprint_spread_modifier",
+		"idle_drain",
+		"walk_drain",
+		"run_drain"
+
 	};
 }
 
@@ -111,6 +117,12 @@ bool StaticDataImporter::WarMachineModel::HandleRow(UStaticData* DataAsset, TArr
 	
 	if (!ParseFloat(RowCells[18], "shield recharge delay", Record->ShieldRechargeDelay)) return false;
 	if (!ParseFloat(RowCells[19], "height meters", Record->Height)) return false;
+
+	if (!ParseFloat(RowCells[20], "walk speed modifier", Record->WalkSpeedModifier)) return false;
+	if (!ParseFloat(RowCells[21], "sprint spread modifier", Record->SprintSpreadModifier)) return false;
+	if (!ParseFloat(RowCells[22], "idle drain", Record->IdleDrain)) return false;
+	if (!ParseFloat(RowCells[23], "walk drain", Record->WalkDrain)) return false;
+	if (!ParseFloat(RowCells[24], "run drain", Record->RunDrain)) return false;
 
 	if (!ParseGuid(RowCells[4], TEXT("brand id"), ID)) return false;
 	UStaticDataBrand* Brand = DataAsset->GetBrand(ID);
