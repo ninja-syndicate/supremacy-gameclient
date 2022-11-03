@@ -78,4 +78,10 @@ public:
 		if (Struct.Power_Cost == 0) Struct.Power_Cost = DefaultStruct.Power_Cost;
 		if (Struct.Power_Instance_Drain == 0) Struct.Power_Instance_Drain = DefaultStruct.Power_Instance_Drain;
 	}
+	
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To UUID Formatted String (Guid)", CompactNodeTitle = "->", BlueprintAutocast, ToolTip="Converts a GUID value to a string, in the form 'a-b-c-d'"))
+    static FString Conv_GUIDToUUIDFormattedString(const FGuid& GUID)
+    {
+    	return GUID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
+    }
 };
