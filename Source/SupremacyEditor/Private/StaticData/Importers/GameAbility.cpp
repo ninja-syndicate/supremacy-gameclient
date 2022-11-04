@@ -36,10 +36,15 @@ bool StaticDataImporter::GameAbility::HandleRow(UStaticData* DataAsset, TArray<F
 	UStaticDataGameAbility* Record = DataAsset->GetOrCreateGameAbility(ID);
 
 	if(!ParseInt(RowCells[1], "game client ability id", Record->GameClientAbilityID)) return false;
-	if(!ParseGuid(RowCells[2], "faction id", ID)) return false;
-	Record->Faction = DataAsset->GetFaction(ID);
-	ParseGuid(RowCells[3], "battle ability id", ID);
-	Record->BattleAbility = DataAsset->GetBattleAbility(ID);
+
+	FGuid FactionID;
+	if(!ParseGuid(RowCells[2], "faction id", FactionID)) return false;
+	Record->Faction = DataAsset->GetFaction(FactionID);
+
+	FGuid BattleAbilityID;
+	ParseGuid(RowCells[3], "battle ability id", BattleAbilityID);
+	if (BattleAbilityID.IsValid()) Record->BattleAbility = DataAsset->GetBattleAbility(BattleAbilityID);
+	
 	Record->Label = RowCells[4];
 	if(!ParseColor(RowCells[5], "colour", Record->Colour)) return false;
 	Record->ImageURL = RowCells[6];

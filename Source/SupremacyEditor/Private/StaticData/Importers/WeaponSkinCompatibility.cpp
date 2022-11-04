@@ -21,11 +21,19 @@ StaticDataImporter::WeaponSkinCompatibility::WeaponSkinCompatibility() : Base()
 	};
 }
 
-FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin *WeaponSkin) {
+FString MaterialsPathForWeapon(const UStaticDataWeapon* Weapon, const UStaticDataWeaponSkin *WeaponSkin) {
 	FString Path;
 
 	bool IsArchon = false;
-	bool IsRedMountainCannon = Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04");
+	const bool IsRedMountainCannon = Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04");
+
+	// Genesis Rocket Pods don't have models/materials
+	if (Weapon->ID == FGuid("e9fc2417-6a5b-489d-b82e-42942535af90") ||
+		Weapon->ID == FGuid("41099781-8586-4783-9d1c-b515a386fe9f") ||
+		Weapon->ID == FGuid("c1c78867-9de7-43d3-97e9-91381800f38e"))
+	{
+		return "";
+	}
 	
 	if (IsRedMountainCannon)
 	{
@@ -61,6 +69,7 @@ FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin 
 			Path.Append(FString("/MachineGun"));
 			break;
 		case EWeaponType::EWeaponType_MissileLauncher:
+		case EWeaponType::EWeaponType_RocketPods: // TODO: Rename MissileLauncher folder to RocketPods
 			Path.Append(FString("/MissileLauncher"));
 			break;
 		case EWeaponType::EWeaponType_LaserBeam:
@@ -90,6 +99,7 @@ FString MaterialsPathForWeapon(UStaticDataWeapon* Weapon, UStaticDataWeaponSkin 
 		case EWeaponType::EWeaponType_LightningGun:
 			Path.Append(FString("/LightningGun"));
 			break;
+		default: ;
 		}
 
 		Path.Append("/Materials");
@@ -124,22 +134,24 @@ bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAss
 
 	Record->Label = Record->Weapon->Label + " -> " + Record->WeaponSkin->Label;
 
-	FString MaterialsPath = MaterialsPathForWeapon(Record->Weapon, Record->WeaponSkin);
-
-	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-	TArray<FAssetData> AssetData;
-	AssetRegistryModule.Get().GetAssetsByPath(FName(*MaterialsPath), AssetData, false, false);
-	if (AssetData.Num() <= 0) {
-		UE_LOG(LogTemp, Warning, TEXT("%s: found no material files"), *MaterialsPath);
-	}
-	else {
-		int32 AssetIndex = 0;
-		if (AssetData.Num() > 1 && Record->Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04"))
-		{
-			// Red Mountain cannon material is still in it's mech folder; specify the material
-			for (int32 i = 0; i < AssetData.Num(); i++) if (AssetData[i].AssetName.ToString().Contains("Right_Gun")) AssetIndex = i;
+	const FString MaterialsPath = MaterialsPathForWeapon(Record->Weapon, Record->WeaponSkin);
+	if (MaterialsPath != "")
+	{
+		const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+		TArray<FAssetData> AssetData;
+		AssetRegistryModule.Get().GetAssetsByPath(FName(*MaterialsPath), AssetData, false, false);
+		if (AssetData.Num() <= 0) {
+			UE_LOG(LogTemp, Warning, TEXT("%s: found no material files"), *MaterialsPath);
 		}
-		Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].ObjectPath.ToString() + FString("'"))));
+		else {
+			int32 AssetIndex = 0;
+			if (AssetData.Num() > 1 && Record->Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04"))
+			{
+				// Red Mountain cannon material is still in it's mech folder; specify the material
+				for (int32 i = 0; i < AssetData.Num(); i++) if (AssetData[i].AssetName.ToString().Contains("Right_Gun")) AssetIndex = i;
+			}
+			Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].ObjectPath.ToString() + FString("'"))));
+		}
 	}
 	
 	SetAssetName(DataAsset, Record, TEXT("Weapon Skin Compatibility"));
