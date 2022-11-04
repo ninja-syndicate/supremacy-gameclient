@@ -19,7 +19,7 @@ public:
 
 	/** Enables RVO avoidance. The avoidance consideration range is automatically determined from the agent bounds. */
 	UFUNCTION(Category = "Mech Movement Component", BlueprintCallable)
-	void SetRVOAvoidance(bool Enable);
+	void SetRVOAvoidanceEnabled(bool Enable);
 
 	/** Retrieves the cylinder radius and the height of the agent. */
 	UFUNCTION(Category = "Mech Movement Component", BlueprintCallable)

@@ -226,14 +226,13 @@ void UWarMachineFollowingComponent::RegisterAgent()
 	if (bEnableRVOAvoidance)
 	{
 		UPawnMovementComponent* MoveComp = PossessedPawn->GetMovementComponent();
-		UCharacterMovementComponent* CharacterMoveComp = Cast<UCharacterMovementComponent>(MoveComp);
+		UMechMovementComponent* CharacterMoveComp = Cast<UMechMovementComponent>(MoveComp);
 		if (!CharacterMoveComp)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: RVO can only be enabled on ACharacter!"));
 			return;
 		}
-		CharacterMoveComp->AvoidanceConsiderationRadius = AvoidanceSettings.SeparationQueryRange;
-		CharacterMoveComp->SetAvoidanceEnabled(true);
+		CharacterMoveComp->SetRVOAvoidanceEnabled(true);
 	}
 	else
 	{

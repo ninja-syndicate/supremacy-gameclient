@@ -24,7 +24,7 @@ void UMechMovementComponent::BeginPlay()
 	FixedPathBrakingDistance = BrakingDecelerationMaxSpeedScale * MaxWalkSpeed;
 }
 
-void UMechMovementComponent::SetRVOAvoidance(bool Enable)
+void UMechMovementComponent::SetRVOAvoidanceEnabled(bool Enable)
 {
 	// If disabling, just disable as nothing needs to be done.
 	if (!Enable)
