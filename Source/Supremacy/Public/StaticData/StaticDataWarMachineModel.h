@@ -104,7 +104,7 @@ public:
 
 		//ERarity Rarity;
 
-		Struct.ModelID = ID.ToString();
+		Struct.ModelID = ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		Struct.ModelName = Label;
 		Struct.Health = MaxHitpoints;
 		Struct.HealthMax = MaxHitpoints;
@@ -116,7 +116,7 @@ public:
 
 		// if (DefaultSkin)
 		// {
-		// 	Struct.SkinID = DefaultSkin->ID.ToString();
+		// 	Struct.SkinID = DefaultSkin->ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		// 	Struct.SkinName = DefaultSkin->Label;
 		// }
 		

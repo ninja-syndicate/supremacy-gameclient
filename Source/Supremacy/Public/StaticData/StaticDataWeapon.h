@@ -113,7 +113,7 @@ public:
 	{
 		FWeaponStruct Struct;
 
-		Struct.Model_ID = ID.ToString();
+		Struct.Model_ID = ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		Struct.Model_Name = Label;
 		Struct.Damage = Damage;
 		Struct.Damage_Falloff = DamageFalloff;
