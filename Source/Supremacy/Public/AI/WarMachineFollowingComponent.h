@@ -37,9 +37,6 @@ private:
 	void RegisterAgent();
 	void UnregisterAgent();
 
-	// Uses the pawn's cylinder to calculate the agent radius and height.
-	bool CalcAgentBounds(float& OutCylinderRadius, float& OutCylinderHeight);
-
 	// Uses the pawn's movement component to figure out the maximum acceleration speed. Fallback to its max speed if it doesn't support acceleration.
 	bool GetMaxAccelerationSpeed(float& OutMaxAccelerationSpeed);
 
@@ -76,6 +73,19 @@ private:
 	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	bool bEnableAvoidance = true;
 
+	/** Toggle switch to use the Unreal's RVO avoidance system. */
+	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	bool bEnableRVOAvoidance = true;
+
+	/** 
+	 * Toggle switch for enabling the separation upon reaching destination.
+	 * This has no effect if bEnableRVOAvoidance is enabled.
+	 * 
+	 * Recommended to be turned off if the AI can't reach destination due to separation force. 
+	 */
+	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	bool bEnableSeparationOnDestination = false;
+
 	/** 
 	 * By default, the avoidance settings are automatically determined from the pawn radius and its movement component settings.
 	 * You can toggle this on to provide custom avoidance settings for debugging. 
@@ -86,9 +96,11 @@ private:
 	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	float AgentRadiusMultiplier = 1.0f;
 
+	/** This has no effect if bEnableRVOAvoidance is enabled currently .*/
 	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	float SeparationWeight = 1.0f;
 
+	/** This has no effect if bEnableRVOAvoidance is enabled currently */
 	UPROPERTY(Category = "AI Avoidance and Steering Behavior", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	float SteeringWeight = 1.0f;
 };

@@ -56,6 +56,13 @@ bool UAvoidanceSubsystem::Steering(APawn* Agent, FVector& OutSteeringForce)
 	return true;
 }
 
+bool UAvoidanceSubsystem::ObstacleAvoidance(APawn* Agent, FVector& OutObstacleAvoidanceForce)
+{
+	// TODO: Implementation;
+	OutObstacleAvoidanceForce = FVector::ZeroVector;
+	return true;
+}
+
 FVector UAvoidanceSubsystem::GetSeparationForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings)
 {
 	// Fail-fast on invalid configurations.
@@ -174,4 +181,10 @@ FVector UAvoidanceSubsystem::GetSteeringForce(APawn* Agent, const FAgentAvoidanc
 
 	SteeringForce.Normalize();
 	return SteeringForce * AvoidanceSettings.MaxAccelerationSpeed * Strength;
+}
+
+FVector UAvoidanceSubsystem::GetObstacleAvoidanceForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings)
+{
+	// TODO: Implementation
+	return FVector::ZeroVector;
 }

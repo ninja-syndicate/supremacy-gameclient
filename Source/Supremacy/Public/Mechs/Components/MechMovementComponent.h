@@ -17,7 +17,13 @@ class SUPREMACY_API UMechMovementComponent : public UCharacterMovementComponent
 public:
 	virtual void BeginPlay() override;
 
-	virtual float GetMaxSpeed() const override;
+	/** Enables RVO avoidance. The avoidance consideration range is automatically determined from the agent bounds. */
+	UFUNCTION(Category = "Mech Movement Component", BlueprintCallable)
+	void SetRVOAvoidance(bool Enable);
+
+	/** Retrieves the cylinder radius and the height of the agent. */
+	UFUNCTION(Category = "Mech Movement Component", BlueprintCallable)
+	bool CalcAgentBounds(float& OutCylinderRadius, float& OutCylinderHeight);
 
 protected:
 	/** 
@@ -30,4 +36,8 @@ protected:
 	/** The scale multiplied to the max speed of the movement component to determine braking deceleration distance. */
 	UPROPERTY(Category = "Mech Movement Component", EditAnywhere, BlueprintReadWrite, meta = (EditCondition="bEnableAutoBrakingDecelerationDistance"))
 	float BrakingDecelerationMaxSpeedScale = 1.6f;
+
+	/** The multiplier to the agnet radius to determine the avoidance consideration range. */
+	UPROPERTY(Category = "Mech Movement Component", EditAnywhere, BlueprintReadWrite)
+	float RadiusConsiderationMultiplier = 13.0f;
 };

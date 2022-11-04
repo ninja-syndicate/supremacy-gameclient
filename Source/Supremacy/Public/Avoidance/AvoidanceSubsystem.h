@@ -63,10 +63,12 @@ public:
 
 	bool Separation(APawn* Agent, FVector& OutSeparationForce);
 	bool Steering(APawn* Agent, FVector& OutSteeringForce);
+	bool ObstacleAvoidance(APawn* Agent, FVector& OutObstacleAvoidanceForce);
 
 private:
 	FVector GetSeparationForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
 	FVector GetSteeringForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
+	FVector GetObstacleAvoidanceForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
