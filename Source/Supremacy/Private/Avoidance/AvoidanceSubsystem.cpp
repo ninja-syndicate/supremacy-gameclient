@@ -2,7 +2,9 @@
 
 
 #include "Avoidance/AvoidanceSubsystem.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Mechs/Components/MechMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 
 void UAvoidanceSubsystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -18,6 +20,28 @@ void UAvoidanceSubsystem::Deinitialize()
 void UAvoidanceSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
+
+	if (bAutoRegisterPlayerPawn)
+	{
+		const APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+		if (!PlayerPawn)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UAvoidanceSubsystem: Player Pawn not found!"));
+			return;
+		}
+
+		if (bUseRVOAvoidance)
+		{
+			UPawnMovementComponent* MoveComp = PlayerPawn->GetMovementComponent();
+			UMechMovementComponent* MechMoveComp = Cast<UMechMovementComponent>(MoveComp);
+			if (!MechMoveComp) return;
+
+			MechMoveComp->SetRVOAvoidanceEnabled(true);
+			MechMoveComp->SetAvoidanceGroup(EAvoidanceFlags::AvoidanceSubsystem_Player);
+			MechMoveComp->SetGroupsToIgnore(EAvoidanceFlags::AvoidanceSubsystem_AI | EAvoidanceFlags::AvoidanceSubsystem_Player);
+		}
+		// TODO: Support other avoidance type.
+	}
 }
 
 bool UAvoidanceSubsystem::RegisterAgent(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings)

@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "AvoidanceFlags.h"
 #include "AvoidanceSubsystem.generated.h"
 
 /**
  * Current agent information.
  */
 USTRUCT(BlueprintType)
-struct FAvoidanceAgentInfo {
+struct FAvoidanceAgentInfo 
+{
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -22,7 +24,8 @@ public:
 
 
 USTRUCT(BlueprintType)
-struct FAgentAvoidanceSettings {
+struct FAgentAvoidanceSettings 
+{
 	GENERATED_BODY()
 public:
 	/** The agent radius used for the avoidance. Doesn't need to be matched exactly with the actual agent radius. */
@@ -73,4 +76,10 @@ private:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TMap<APawn*, FAgentAvoidanceSettings> Agents;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	bool bAutoRegisterPlayerPawn = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	bool bUseRVOAvoidance = true;
 };
