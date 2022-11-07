@@ -244,6 +244,14 @@ void UBPFL_Helpers::StopResponding()
 		B = !B;
 }
 
+FTransform UBPFL_Helpers::GetRotationByQuat(const FTransform& Transform, const FRotator& RotationDelta)
+{
+	FTransform NewTransform = Transform;
+	NewTransform.ConcatenateRotation(RotationDelta.Quaternion());
+	NewTransform.NormalizeRotation();
+	return NewTransform;
+}
+
 bool UBPFL_Helpers::MultiConeTraceForObjects(
 	const UObject* WorldContextObject,
 	const FVector& Start,

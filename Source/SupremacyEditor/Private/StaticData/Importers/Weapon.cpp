@@ -34,7 +34,10 @@ StaticDataImporter::Weapon::Weapon(): Base()
 		"is_arced",
 		"charge_time_seconds",
 		"burst_rate_of_fire",
-		"power_instant_drain"
+		"power_instant_drain",
+		"dot_tick_duration",
+		"projectile_life_span"
+
 	};
 }
 
@@ -178,6 +181,8 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 	if(!ParseFloat(RowCells[23], "charge time seconds", Record->ChargeTimeSeconds)) return false;
 	if(!ParseFloat(RowCells[24], "burst rate of fire", Record->BurstRateOfFire)) return false;
 	if(!ParseBool(RowCells[25], "power instant drain", Record->PowerInstantDrain)) return false;
+	if(!ParseFloat(RowCells[26], "dot tick duration", Record->DotTickDuration)) return false;
+	if(!ParseFloat(RowCells[27], "projectile life span", Record->ProjectileLifeSpan)) return false;
 
 	SetAssetName(DataAsset, Record, TEXT("Weapon"));
 

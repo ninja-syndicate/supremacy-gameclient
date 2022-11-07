@@ -52,6 +52,7 @@ public:
 		if (Struct.ShieldMax == 0) Struct.ShieldMax = DefaultStruct.ShieldMax;
 		if (Struct.ShieldRechargeRate == 0) Struct.ShieldRechargeRate = DefaultStruct.ShieldRechargeRate;
 		if (Struct.Speed == 0) Struct.Speed = DefaultStruct.Speed;
+		if (Struct.WalkSpeedModifier == 0) Struct.WalkSpeedModifier = DefaultStruct.WalkSpeedModifier;
 		if (Struct.SprintSpreadModifier == 0) Struct.SprintSpreadModifier = DefaultStruct.SprintSpreadModifier;
 		if (Struct.Height == 0) Struct.Height = DefaultStruct.Height;
 	}
@@ -76,5 +77,11 @@ public:
 		if (Struct.Recoil_Force == 0) Struct.Recoil_Force = DefaultStruct.Recoil_Force;
 		if (Struct.Power_Cost == 0) Struct.Power_Cost = DefaultStruct.Power_Cost;
 		if (Struct.Power_Instance_Drain == 0) Struct.Power_Instance_Drain = DefaultStruct.Power_Instance_Drain;
+	}
+		
+	UFUNCTION(BlueprintPure, meta=(DisplayName="To UUID Formatted String (Guid)", CompactNodeTitle = "->", BlueprintAutocast, ToolTip="Converts a GUID value to a string, in the form 'a-b-c-d'"))
+	static FString Conv_GUIDToUUIDFormattedString(const FGuid& GUID)
+	{
+		return GUID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 	}
 };

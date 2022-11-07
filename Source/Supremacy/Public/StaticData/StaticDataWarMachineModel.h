@@ -44,6 +44,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	int32 Speed;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float WalkSpeedModifier;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	EWarMachinePowerCoreSize PowerCoreSize;
 
@@ -71,6 +74,16 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
 	float Height;
+
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float SprintSpreadModifier;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float IdleDrain;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float WalkDrain;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float RunDrain;
 	
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	UStaticDataSkin *DefaultSkin;
@@ -91,18 +104,19 @@ public:
 
 		//ERarity Rarity;
 
-		Struct.ModelID = ID.ToString();
+		Struct.ModelID = ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		Struct.ModelName = Label;
 		Struct.Health = MaxHitpoints;
 		Struct.HealthMax = MaxHitpoints;
 		Struct.ShieldMax = MaxShield;
 		Struct.ShieldRechargeRate = ShieldRechargeRate;
 		Struct.Speed = Speed;
+		Struct.WalkSpeedModifier = WalkSpeedModifier;
 		Struct.Height = Height;
 
 		// if (DefaultSkin)
 		// {
-		// 	Struct.SkinID = DefaultSkin->ID.ToString();
+		// 	Struct.SkinID = DefaultSkin->ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		// 	Struct.SkinName = DefaultSkin->Label;
 		// }
 		

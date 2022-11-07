@@ -92,6 +92,12 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	bool PowerInstantDrain;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float DotTickDuration;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float ProjectileLifeSpan;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataWeaponSkin* DefaultSkin;
@@ -107,7 +113,7 @@ public:
 	{
 		FWeaponStruct Struct;
 
-		Struct.Model_ID = ID.ToString();
+		Struct.Model_ID = ID.ToString(EGuidFormats::DigitsWithHyphens).ToLower();
 		Struct.Model_Name = Label;
 		Struct.Damage = Damage;
 		Struct.Damage_Falloff = DamageFalloff;
