@@ -127,7 +127,7 @@ public:
 		Struct.Projectile_Speed = ProjectileSpeed;
 		Struct.Max_Ammo = MaxAmmo;
 		Struct.Projectile_Amount = ProjectileAmount;
-		//Struct.Projectile_Life_Span = ...;
+		Struct.Projectile_Life_Span = ProjectileLifeSpan;
 		Struct.Charge_Time = ChargeTimeSeconds;
 		Struct.Is_Arced = IsArced;
 		//Struct.Optimal_Range = ...;
