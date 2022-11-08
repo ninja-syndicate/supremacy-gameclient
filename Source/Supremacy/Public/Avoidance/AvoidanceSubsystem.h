@@ -74,12 +74,15 @@ private:
 	FVector GetObstacleAvoidanceForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UPROPERTY(Category = "Avoidance Subsystem", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TMap<APawn*, FAgentAvoidanceSettings> Agents;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UPROPERTY(Category = "Avoidance Subsystem", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bAutoRegisterPlayerPawn = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UPROPERTY(Category = "Avoidance Subsystem", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	float PlayerRVOAvoidanceWeight = 0.0f;
+
+	UPROPERTY(Category = "Avoidance Subsystem", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bUseRVOAvoidance = true;
 };

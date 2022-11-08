@@ -36,9 +36,10 @@ void UAvoidanceSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 			UMechMovementComponent* MechMoveComp = Cast<UMechMovementComponent>(MoveComp);
 			if (!MechMoveComp) return;
 
-			MechMoveComp->SetRVOAvoidanceEnabled(true);
+			MechMoveComp->SetRVOAvoidanceWeight(PlayerRVOAvoidanceWeight);
 			MechMoveComp->SetAvoidanceGroup(EAvoidanceFlags::AvoidanceSubsystem_Player);
 			MechMoveComp->SetGroupsToIgnore(EAvoidanceFlags::AvoidanceSubsystem_AI | EAvoidanceFlags::AvoidanceSubsystem_Player);
+			MechMoveComp->SetRVOAvoidanceEnabled(true);
 		}
 		// TODO: Support other avoidance type.
 	}

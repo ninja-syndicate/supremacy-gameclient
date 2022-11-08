@@ -232,8 +232,8 @@ void UWarMachineFollowingComponent::RegisterAgent()
 			UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: RVO can only be enabled on ACharacter!"));
 			return;
 		}
-		MechMoveComp->SetRVOAvoidanceEnabled(true);
 		MechMoveComp->SetAvoidanceGroup(EAvoidanceFlags::AvoidanceSubsystem_AI);
+		MechMoveComp->SetRVOAvoidanceEnabled(true);
 	}
 	else
 	{
