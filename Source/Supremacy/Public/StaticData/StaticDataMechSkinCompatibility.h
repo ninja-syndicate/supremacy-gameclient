@@ -28,6 +28,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataSkin *Skin;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "References", meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "References", meta=(AllowPrivateAccess=true))
 	TMap<FString, TSoftObjectPtr<UMaterial>> Materials;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	FString AvatarURL;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	UTexture2D *Avatar;
 };
