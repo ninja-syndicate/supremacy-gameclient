@@ -2,6 +2,32 @@
 
 #include "StaticData/StaticData.h"
 
+static bool CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid& Out)
+{
+    uint8 Buffer[16] = { 0 };
+    FString AString = A.ToString();
+    FString BString = B.ToString();
+
+    for (int32 i = 0; i < 16;)
+    {
+        if (AString[i] == '-')
+        {
+            continue;
+        }
+
+        Buffer[i] = static_cast<unsigned char>(AString[i]) ^ static_cast<unsigned char>(BString[i]);
+        i++;
+    }
+
+    const int32 I0 = Buffer[0] + (Buffer[1] << 8) + (Buffer[2] << 16) + (Buffer[3] << 24);
+    const int32 I1 = Buffer[4] + (Buffer[5] << 8) + (Buffer[6] << 16) + (Buffer[7] << 24);
+    const int32 I2 = Buffer[8] + (Buffer[9] << 8) + (Buffer[10] << 16) + (Buffer[11] << 24);
+    const int32 I3 = Buffer[12] + (Buffer[13] << 8) + (Buffer[14] << 16) + (Buffer[15] << 24);
+
+    Out = FGuid(I0, I1, I2, I3);
+    return true;
+}
+
 UStaticDataFaction* UStaticData::GetFaction(const FGuid& ID)
 {
     for (UStaticDataFaction* Record : FactionArray) if (Record->ID == ID) return Record;
@@ -51,11 +77,25 @@ UStaticDataMechSkinCompatibility* UStaticData::GetMechSkinCompatibility(const FG
     return nullptr;
 }
 
+UStaticDataMechSkinCompatibility* UStaticData::GetMechSkinCompatibility(const FGuid& MechID, const FGuid& SkinID)
+{
+    FGuid ID;
+    CombineGuidsUnique(MechID, SkinID, ID);
+    return GetMechSkinCompatibility(ID);
+}
+
 UStaticDataWeaponSkinCompatibility* UStaticData::GetWeaponSkinCompatibility(const FGuid& ID)
 {
     for (UStaticDataWeaponSkinCompatibility* Record : WeaponSkinCompatibilityArray) if (Record->ID == ID) return Record;
     UE_LOG(LogTemp, Error, TEXT("Failed to find weapon skin compatibility %s"), *ID.ToString());
     return nullptr;
+}
+
+UStaticDataWeaponSkinCompatibility* UStaticData::GetWeaponSkinCompatibility(const FGuid& WeaponID, const FGuid& SkinID)
+{
+    FGuid ID;
+    CombineGuidsUnique(WeaponID, SkinID, ID);
+    return GetWeaponSkinCompatibility(ID);
 }
 
 UStaticDataPowerCore* UStaticData::GetPowerCore(const FGuid& ID)
@@ -264,37 +304,8 @@ FPowerCoreStruct UStaticData::PowerCoreStruct(const FGuid& PowerCoreID) {
     return Struct;
 }
 
-static bool CombineGuidsUnique(const FGuid& A, const FGuid& B, FGuid& Out)
-{
-    uint8 Buffer[16] = { 0 };
-    FString AString = A.ToString();
-    FString BString = B.ToString();
-
-    for (int32 i = 0; i < 16;)
-    {
-        if (AString[i] == '-')
-        {
-            continue;
-        }
-
-        Buffer[i] = (unsigned char)AString[i] ^ (unsigned char)BString[i];
-        i++;
-    }
-
-    int32 i0 = Buffer[0] + (Buffer[1] << 8) + (Buffer[2] << 16) + (Buffer[3] << 24);
-    int32 i1 = Buffer[4] + (Buffer[5] << 8) + (Buffer[6] << 16) + (Buffer[7] << 24);
-    int32 i2 = Buffer[8] + (Buffer[9] << 8) + (Buffer[10] << 16) + (Buffer[11] << 24);
-    int32 i3 = Buffer[12] + (Buffer[13] << 8) + (Buffer[14] << 16) + (Buffer[15] << 24);
-
-    Out = FGuid(i0, i1, i2, i3);
-    return true;
-}
-
-UFUNCTION(BlueprintCallable)
 TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForMech(const FGuid& MechID, const FGuid& SkinID) {
-    FGuid ID;
-    CombineGuidsUnique(MechID, SkinID, ID);
-    UStaticDataMechSkinCompatibility* Record = GetMechSkinCompatibility(ID);
+    UStaticDataMechSkinCompatibility* Record = GetMechSkinCompatibility(MechID, SkinID);
 
     if (Record) {
         if (Record->Materials.Num() <= 0) {
@@ -308,11 +319,8 @@ TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForMech(const FGu
     return TMap<FString, TSoftObjectPtr<UMaterial>>();
 }
 
-UFUNCTION(BlueprintCallable)
 TMap<FString, TSoftObjectPtr<UMaterial>> UStaticData::MaterialsForWeapon(const FGuid& WeaponID, const FGuid& SkinID) {
-    FGuid ID;
-    CombineGuidsUnique(WeaponID, SkinID, ID);
-    UStaticDataWeaponSkinCompatibility* Record = GetWeaponSkinCompatibility(ID);
+    UStaticDataWeaponSkinCompatibility* Record = GetWeaponSkinCompatibility(WeaponID, SkinID);
     if(Record) return Record->Materials;
     return TMap<FString, TSoftObjectPtr<UMaterial>>();
 }
