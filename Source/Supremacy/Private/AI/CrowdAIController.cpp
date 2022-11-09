@@ -3,6 +3,9 @@
 
 #include "AI/CrowdAIController.h"
 
+#include "Weapons/Weapon.h"
+#include "Weapons/WeaponizedInterface.h"
+
 #include "AI/WarMachineFollowingComponent.h"
 #include "Parsers/PascalCaseJsonObjectConverter.h"
 
@@ -32,12 +35,15 @@ void ACrowdAIController::BeginPlay()
 void ACrowdAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	PossessedPawn = InPawn;
 }
 
 void ACrowdAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
+	PossessedPawn = nullptr;
 	DisableScript();
 }
 
@@ -55,6 +61,52 @@ void ACrowdAIController::DisableScript()
 {
 	bIsScriptEnabled = false;
 }
+
+//~Begin Script API
+/*
+bool ACrowdAIController::SetFocalPointByHash(FString Hash)
+{
+	// TODO:
+	// SetFocus();
+}
+*/
+
+void ACrowdAIController::ClearFocalPoint()
+{
+	ClearFocus(EAIFocusPriority::Gameplay);
+}
+
+bool ACrowdAIController::WeaponTrigger(int Slot, FVector Location)
+{
+	if (!IsValid(PossessedPawn)) return false;
+	if (!PossessedPawn->Implements<UWeaponizedInterface>()) return false;
+
+	AWeapon* Weapon = IWeaponizedInterface::Execute_GetWeaponBySlot(PossessedPawn, Slot);
+	if (!IsValid(Weapon)) return false;
+
+	// TODO: Support Location.
+	if (Weapon->Struct.Is_Arced && IsValid(CurrentTarget))
+	{
+		// Set the target location to the current target's location for now.
+		// TODO: Probably need constraint and possibly prediction.
+		Weapon->TargetLocation = CurrentTarget->GetActorLocation();
+	}
+	Weapon->Trigger();
+	return true;
+}
+
+bool ACrowdAIController::WeaponRelease(int Slot)
+{
+	if (!IsValid(PossessedPawn)) return false;
+	if (!PossessedPawn->Implements<UWeaponizedInterface>()) return false;
+
+	AWeapon* Weapon = IWeaponizedInterface::Execute_GetWeaponBySlot(PossessedPawn, Slot);
+	if (!IsValid(Weapon)) return false;
+	
+	Weapon->Release();
+	return true;
+}
+//~End Script API
 
 /**
  * This function needs to be overriden to provide correct eyes location and rotation if AIPerception is being used.
