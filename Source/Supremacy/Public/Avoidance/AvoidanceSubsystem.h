@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "AvoidanceFlags.h"
 #include "AvoidanceSubsystem.generated.h"
 
 /**
  * Current agent information.
  */
 USTRUCT(BlueprintType)
-struct FAvoidanceAgentInfo {
+struct FAvoidanceAgentInfo 
+{
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -22,7 +24,8 @@ public:
 
 
 USTRUCT(BlueprintType)
-struct FAgentAvoidanceSettings {
+struct FAgentAvoidanceSettings 
+{
 	GENERATED_BODY()
 public:
 	/** The agent radius used for the avoidance. Doesn't need to be matched exactly with the actual agent radius. */
@@ -63,12 +66,23 @@ public:
 
 	bool Separation(APawn* Agent, FVector& OutSeparationForce);
 	bool Steering(APawn* Agent, FVector& OutSteeringForce);
+	bool ObstacleAvoidance(APawn* Agent, FVector& OutObstacleAvoidanceForce);
 
 private:
 	FVector GetSeparationForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
 	FVector GetSteeringForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
+	FVector GetObstacleAvoidanceForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings);
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UPROPERTY(Category = "Avoidance Subsystem", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TMap<APawn*, FAgentAvoidanceSettings> Agents;
+
+	UPROPERTY(Category = "Avoidance Subsystem", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	bool bAutoRegisterPlayerPawn = true;
+
+	UPROPERTY(Category = "Avoidance Subsystem", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	float PlayerRVOAvoidanceWeight = 0.0f;
+
+	UPROPERTY(Category = "Avoidance Subsystem", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	bool bUseRVOAvoidance = true;
 };

@@ -9,14 +9,10 @@
 ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UWarMachineFollowingComponent>(TEXT("PathFollowingComponent")))
 {
-	bEnableSeparation = true;
 	bEnableEyesViewPointOffset = false;
 	bEnableCustomEyesViewPoint = false;
 	bEnableEyesMatchRotation = true;
 	eyesViewPointOffset = 256;
-	SeparationWeight = 2;
-	CollisionQueryRange = 8400; // Approximately 16 * AgentRadius.
-	PathOptimizationRange = 10000;
 
 	MechFollowingComponent = Cast<UWarMachineFollowingComponent>(GetPathFollowingComponent());
 	if (!MechFollowingComponent)
@@ -31,31 +27,6 @@ void ACrowdAIController::BeginPlay()
 	Super::BeginPlay();
 
 	EnableScript();
-	/*
-	if (AvoidanceType == EAvoidanceType::Unused1 || AvoidanceType == EAvoidanceType::Unused2)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: Unused avoidance type is being used."));
-	}
-
-	CrowdFollowingComponent = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent());
-	if (!CrowdFollowingComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: CrowdFollowingComponent is invalid. AI will not work properly..."));
-	}
-	else
-	{
-		CrowdFollowingComponent->SetCrowdAvoidanceQuality(static_cast<ECrowdAvoidanceQuality::Type>(AvoidanceType.GetValue()));
-		CrowdFollowingComponent->SetCrowdCollisionQueryRange(CollisionQueryRange);
-		CrowdFollowingComponent->SetCrowdPathOptimizationRange(PathOptimizationRange);
-		// CrowdFollowingComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Type::High);
-		CrowdFollowingComponent->SetCrowdSeparation(bEnableSeparation);
-		CrowdFollowingComponent->SetCrowdSeparationWeight(SeparationWeight);
-		CrowdFollowingComponent->SetCrowdSlowdownAtGoal(bEnableSlowdownAtGoal);
-		CrowdFollowingComponent->SetCrowdOptimizeVisibility(bEnableOptimizeVisibility);
-		CrowdFollowingComponent->SetCrowdOptimizeTopology(bEnableOptimizeTopology);
-		CrowdFollowingComponent->SetCrowdPathOffset(bEnablePathOffset);
-	}
-	*/
 }
 
 void ACrowdAIController::OnPossess(APawn* InPawn)
