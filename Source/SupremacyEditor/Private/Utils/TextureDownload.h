@@ -13,6 +13,11 @@ typedef TSharedPtr<IImageWrapper> IImageWrapperPtr;
 
 namespace StaticDataImporter
 {
+	static bool IsPowerOfTwo(const int X)
+	{
+		return (X != 0) && ((X & (X - 1)) == 0);
+	}
+	
 	static FString GetPackageNameForURL(const FString URL, const FString PackageDirectory, FString& AssetFileName)
 	{
 		FString PackageName = TEXT("/Game/" + PackageDirectory);
@@ -99,7 +104,7 @@ namespace StaticDataImporter
 			return nullptr;
 		}
 
-		TArray<unsigned char> UncompressedBGRA = TArray<uint8>();
+		TArray<uint8> UncompressedBGRA = TArray<uint8>();
 		if (!ImageWrapper->GetRaw(ERGBFormat::BGRA, 8, UncompressedBGRA))
 		{
 			UE_LOG(LogSupremacyEditor, Error, TEXT("Failed to get image data for: %s"), *URL);
@@ -109,40 +114,49 @@ namespace StaticDataImporter
 		// texture settings
 		const int32 TextureWidth = ImageWrapper->GetWidth();
 		const int32 TextureHeight = ImageWrapper->GetHeight();
+		if (TextureWidth != TextureHeight || !(IsPowerOfTwo(TextureWidth)))
+		{
+			AvatarTexture->MipGenSettings = TMGS_LeaveExistingMips;
+			AvatarTexture->CompressionSettings = TC_EditorIcon;
+			//UE_LOG(LogSupremacyEditor, Error, TEXT("Failed to create texture due to non-power of 2 texture size: %s (%dx%d)"), *URL, TextureWidth, TextureHeight);
+		}
 
 		FTexturePlatformData* AvatarTexturePlatformData = new FTexturePlatformData();
 		AvatarTexturePlatformData->SizeX = TextureWidth;
 		AvatarTexturePlatformData->SizeY = TextureHeight;
+		AvatarTexturePlatformData->SetNumSlices(1);
 		AvatarTexturePlatformData->PixelFormat = PF_B8G8R8A8;
 		AvatarTexture->SetPlatformData(AvatarTexturePlatformData);
 
 		// allocate first mipmap
 		FTexture2DMipMap* Mip = new FTexture2DMipMap();
 		AvatarTexturePlatformData->Mips.Add(Mip);
-		Mip->SizeX = AvatarTexturePlatformData->SizeX;
-		Mip->SizeY = AvatarTexturePlatformData->SizeY;
+		Mip->SizeX = TextureWidth;
+		Mip->SizeY = TextureHeight;
 
 		// lock the texture so it can be modified
 		Mip->BulkData.Lock(LOCK_READ_WRITE);
+		const auto Pixels = UncompressedBGRA.GetData();
 		uint8* TextureData = static_cast<uint8*>(Mip->BulkData.Realloc(TextureWidth * TextureHeight * 4));
-		FMemory::Memcpy(TextureData, UncompressedBGRA.GetData(), UncompressedBGRA.Num());
+		FMemory::Memcpy(TextureData, Pixels, UncompressedBGRA.Num());
 		Mip->BulkData.Unlock();
 
 		// save texture
-		AvatarTexture->AddToRoot();
+		AvatarTexture->Source.Init(TextureWidth, TextureHeight, 1, 1, TSF_BGRA8, Pixels);
+		
 		AvatarTexture->UpdateResource();
 		bool bMarkedDirty = Package->MarkPackageDirty();
 		FAssetRegistryModule::AssetCreated(AvatarTexture);
 
-		// const FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
-		// FSavePackageArgs SaveArgs = FSavePackageArgs();
-		// SaveArgs.TopLevelFlags = RF_Public | RF_Standalone;
-		// SaveArgs.bForceByteSwapping = true;
-		// SaveArgs.bWarnOfLongFilename = true;
-		// SaveArgs.SaveFlags = SAVE_NoError;
-		// const bool bSaved = UPackage::SavePackage(Package, AvatarTexture, *PackageFileName, SaveArgs);
-		// if (bSaved)
-		// 	UE_LOG(LogSupremacyEditor, Log, TEXT("Saved: %s"), *URL);
+		const FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
+		FSavePackageArgs SaveArgs = FSavePackageArgs();
+		SaveArgs.TopLevelFlags = RF_Public | RF_Standalone;
+		SaveArgs.bForceByteSwapping = true;
+		SaveArgs.bWarnOfLongFilename = true;
+		SaveArgs.SaveFlags = SAVE_NoError;
+		const bool bSaved = UPackage::SavePackage(Package, AvatarTexture, *PackageFileName, SaveArgs);
+		if (bSaved)
+			UE_LOG(LogSupremacyEditor, Log, TEXT("Saved: %s"), *URL);
 
 		return AvatarTexture;
 	}
