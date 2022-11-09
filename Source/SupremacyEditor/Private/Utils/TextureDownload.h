@@ -134,15 +134,15 @@ namespace StaticDataImporter
 		bool bMarkedDirty = Package->MarkPackageDirty();
 		FAssetRegistryModule::AssetCreated(AvatarTexture);
 
-		const FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
-		FSavePackageArgs SaveArgs = FSavePackageArgs();
-		SaveArgs.TopLevelFlags = RF_Public | RF_Standalone;
-		SaveArgs.bForceByteSwapping = true;
-		SaveArgs.bWarnOfLongFilename = true;
-		SaveArgs.SaveFlags = SAVE_NoError;
-		const bool bSaved = UPackage::SavePackage(Package, AvatarTexture, *PackageFileName, SaveArgs);
-		if (bSaved)
-			UE_LOG(LogSupremacyEditor, Log, TEXT("Saved: %s"), *URL);
+		// const FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
+		// FSavePackageArgs SaveArgs = FSavePackageArgs();
+		// SaveArgs.TopLevelFlags = RF_Public | RF_Standalone;
+		// SaveArgs.bForceByteSwapping = true;
+		// SaveArgs.bWarnOfLongFilename = true;
+		// SaveArgs.SaveFlags = SAVE_NoError;
+		// const bool bSaved = UPackage::SavePackage(Package, AvatarTexture, *PackageFileName, SaveArgs);
+		// if (bSaved)
+		// 	UE_LOG(LogSupremacyEditor, Log, TEXT("Saved: %s"), *URL);
 
 		return AvatarTexture;
 	}
