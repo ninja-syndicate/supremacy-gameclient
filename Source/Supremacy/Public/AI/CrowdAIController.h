@@ -71,41 +71,6 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "AI Utils")
 	FString ToJson(const FAIBrainInput& BrainInput);
 
-	/** Whether to enable crowd separation or not. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableSeparation;
-
-	/** The weight applied to the separation of the agents. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	float SeparationWeight;
-
-	/** The range to check for the collision. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	float CollisionQueryRange;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	float PathOptimizationRange;
-
-	/** Slowdown the agent when it reaches close to the goal. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableSlowdownAtGoal;
-
-	/** Whether to optimise visibility. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableOptimizeVisibility;
-
-	/** Whether to optimise topology. Recommended to be turned-off as it is buggy. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableOptimizeTopology;
-
-	/** Whether to enable path offset. topology. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnablePathOffset;
-
-	/** For setting the avoidance type. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	TEnumAsByte<EAvoidanceType> AvoidanceType;
-
 	/** Whether to enable eyes view-point offset. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Configuration")
 	bool bEnableEyesViewPointOffset;
