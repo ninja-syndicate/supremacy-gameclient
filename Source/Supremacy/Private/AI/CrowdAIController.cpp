@@ -52,6 +52,7 @@ void ACrowdAIController::BeginPlay()
 
 	}
 	EnableScript();
+	bIsInitialized = true;
 }
 
 void ACrowdAIController::OnPossess(APawn* InPawn)

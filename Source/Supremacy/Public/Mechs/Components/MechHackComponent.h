@@ -6,8 +6,17 @@
 #include "Components/ActorComponent.h"
 #include "MechHackComponent.generated.h"
 
+USTRUCT()
+struct FWeaponState
+{
+	GENERATED_BODY()
+public:
+	int Slot;
+	bool bIsTriggered;
+	bool bCanFriendlyFire;
+};
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SUPREMACY_API UMechHackComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -36,6 +45,10 @@ protected:
 	void InitHackDuration();
 	virtual void InitHackDuration_Implementation();
 
+	UFUNCTION(Category = "Mech Hack Component", BlueprintNativeEvent)
+	void AddHackEffect();
+	virtual void AddHackEffect_Implementation();
+
 private:
 	void SaveWeaponStates();
 
@@ -44,14 +57,23 @@ private:
 	TObjectPtr<APawn> OwnerPawn = nullptr;
 
 	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	TObjectPtr<USkeletalMeshComponent> OwnerMeshComp = nullptr;
+
+	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	class UNiagaraComponent* HackNiagaraComponent = nullptr;
+
+	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsInitialized = false;
 
 	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsHacked = false;
 
 	UPROPERTY(Category = "Mech Hack Component", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	class UNiagaraSystem* HackNiagaraSystem = nullptr;
+
+	UPROPERTY(Category = "Mech Hack Component", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	float HackDuration = 0.0f;
 
-	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	TArray<bool> WeaponStates;
+	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere)
+	TArray<FWeaponState> WeaponStates;
 };

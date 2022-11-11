@@ -38,3 +38,13 @@ bool AWeapon::IsTriggered() const
 {
 	return bIsTriggered;
 }
+
+bool AWeapon::CanFriendlyFire() const
+{
+	return bEnableFriendlyFire;
+}
+
+void AWeapon::SetFriendlyFire(bool Enable)
+{
+	bEnableFriendlyFire = Enable;
+}

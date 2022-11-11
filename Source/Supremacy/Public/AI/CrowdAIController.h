@@ -85,6 +85,9 @@ protected:
 	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
 	virtual bool GetWeaponInfos(TArray<FAIWeaponInfo>& OutWeaponInfos);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bIsInitialized = false;
+
 	/** The possessed pawn of this controller. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<APawn> PossessedPawn = nullptr;

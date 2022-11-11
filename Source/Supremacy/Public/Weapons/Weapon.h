@@ -17,6 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	AWeapon();
 
+public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated, meta=(ExposeOnSpawn="true"))
 	FWeaponStruct Struct;
 
@@ -31,6 +32,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void Release();
+
+	UFUNCTION(Category = "Weapon", BlueprintPure)
+	bool CanFriendlyFire() const;
+
+	UFUNCTION(Category = "Weapon", BlueprintCallable)
+	void SetFriendlyFire(bool Enable);
 	
 protected:
 	// Called when the game starts or when spawned
@@ -39,6 +46,9 @@ protected:
 protected:
 	UPROPERTY(Category = "Weapon", EditAnywhere, BlueprintReadWrite)
 	bool bIsTriggered = false;
+
+	UPROPERTY(Category = "Weapon", EditAnywhere, BlueprintReadWrite)
+	bool bEnableFriendlyFire = false;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags", Replicated)

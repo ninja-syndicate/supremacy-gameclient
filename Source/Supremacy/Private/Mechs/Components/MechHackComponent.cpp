@@ -3,6 +3,9 @@
 
 #include "Mechs/Components/MechHackComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+
+#include "Components/SkeletalMeshComponent.h"
 
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponizedInterface.h"
@@ -29,6 +32,11 @@ void UMechHackComponent::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("UMechHackComponent: Owner is not a pawn!"));
 		return;
 	}
+
+	// The hack effect will be attached to the mesh component if available.
+	UActorComponent* Comp = OwnerPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass());
+	OwnerMeshComp = Cast<USkeletalMeshComponent>(Comp);
+
 	InitHackDuration();
 	bIsInitialized = true;
 }
@@ -48,26 +56,69 @@ void UMechHackComponent::Hack()
 		TArray<AWeapon*> Weapons;
 		IWeaponizedInterface::Execute_GetWeapons(OwnerPawn, Weapons);
 	
-		WeaponStates.Reserve(Weapons.Num());
 		for (AWeapon* Weapon : Weapons)
 		{
 			// Remember the weapon states to restore when unhacked.
-			const bool bIsTriggered = Weapon->IsTriggered();
-			WeaponStates[Weapon->Struct.Socket_Index] = bIsTriggered;
+			FWeaponState WeaponState;
+			WeaponState.Slot = Weapon->Struct.Socket_Index;
+			WeaponState.bIsTriggered = Weapon->IsTriggered();
+			WeaponState.bCanFriendlyFire = Weapon->CanFriendlyFire();
+			WeaponStates.Add(WeaponState);
 
-			// Release the weapon.
+			// Release the weapon and set it to do friendly fire.
 			Weapon->Release();
+			Weapon->SetFriendlyFire(true);
 		}
-		//OwnerPawn->
 	}
+	AddHackEffect();
+
+	// TODO: If player controlled, replace its controller with AI controller.
+	// TODO: Set timer to unhack
+	// TODO: Change the script to AI begin call, and cancel queries.
+	// TODO: Send an event to the server.
+
 	bIsHacked = true;
 }
 
 void UMechHackComponent::Unhack()
 {
+	for (const FWeaponState& WeaponState : WeaponStates)
+	{
+		AWeapon* Weapon = IWeaponizedInterface::Execute_GetWeaponBySlot(OwnerPawn, WeaponState.Slot);
+		if (!IsValid(Weapon)) continue;
 
+		// TODO: Need a way to check if it was previously player controlled. Release the weapon in that case.
+		if (OwnerPawn->IsPlayerControlled())
+		{
+			Weapon->Release();
+		}
+		else if (WeaponState.bIsTriggered)
+		{
+			// If AI-controlled previously and the weapon was triggered, then trigger the weapon to maintain
+			// the same state as the script.
+			Weapon->Trigger();
+		}
+		Weapon->SetFriendlyFire(WeaponState.bCanFriendlyFire);
+	}
 	// Empty the weapon states.
 	WeaponStates.Empty();
+
+	bIsHacked = false;
+}
+
+void UMechHackComponent::AddHackEffect_Implementation()
+{
+	if (!OwnerMeshComp) return;
+	if (!HackNiagaraSystem) return;
+
+	HackNiagaraComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
+		HackNiagaraSystem, 
+		OwnerMeshComp, 
+		FName("None"), 
+		FVector::ZeroVector, 
+		FRotator::ZeroRotator, 
+		EAttachLocation::SnapToTarget,
+		false);
 }
 
 void UMechHackComponent::SaveWeaponStates()
