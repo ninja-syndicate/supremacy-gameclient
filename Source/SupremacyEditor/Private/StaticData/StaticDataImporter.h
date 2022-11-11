@@ -31,7 +31,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Is Ready", meta=(Keywords = "See if importer is ready to execute"))
 	bool IsReady();
 	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Update Asset", meta=(Keywords = "Update specified asset"))
-	bool UpdateAsset(UStaticData *asset);
+	bool UpdateAsset(UStaticData *Asset);
 	
 	UFUNCTION(BlueprintCallable)
 	FString GetImportPath() { return ImportPath; }
@@ -44,7 +44,7 @@ private:
 	bool Ready;
 	IDesktopPlatform *DesktopPlatform;
 	const void *ParentWindowHandle;
-	void LogError(FString text) const;
-	void LogWarning(FString text) const;
-	void LogMessage(FString text) const;
+	void LogError(FString Text) const;
+	void LogWarning(FString Text) const;
+	void LogMessage(FString Text) const;
 };
