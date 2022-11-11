@@ -15,7 +15,6 @@
 #include "Importers/Skin.h"
 #include "Importers/Weapon.h"
 #include "Importers/WeaponSkin.h"
-#include "Importers/BattleAbility.h"
 #include "Importers/GameAbility.h"
 #include "Importers/PlayerAbility.h"
 #include "Importers/ShieldType.h"
@@ -96,7 +95,7 @@ bool UStaticDataImporter::IsReady()
 	return Ready;
 }
 
-bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
+bool UStaticDataImporter::UpdateAsset(UStaticData* Asset)
 {
 	if (ImportPath.Len() == 0)
 	{
@@ -110,18 +109,18 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* asset)
 		return false;
 	}
 
-	UKismetSystemLibrary::BeginTransaction("StaticDataImporter", FText::FromString("Data Import"), asset);
-	UKismetSystemLibrary::TransactObject(asset);
+	UKismetSystemLibrary::BeginTransaction("StaticDataImporter", FText::FromString("Data Import"), Asset);
+	UKismetSystemLibrary::TransactObject(Asset);
 
 	for (const auto DataImporter : Importers)
 	{
-		if(!DataImporter->ImportAndUpdate(asset))
+		if(!DataImporter->ImportAndUpdate(Asset))
 		{
 			LogMessage(FString::Printf(TEXT("Importer %s failed because: %s"), *DataImporter->FileName, *DataImporter->GetErrorReason()));
 		}
 	}
 
-	asset->Modify(true);
+	Asset->Modify(true);
 	UKismetSystemLibrary::EndTransaction();
 	
 	LogMessage("Import Succeeded!");
@@ -145,4 +144,3 @@ void UStaticDataImporter::LogMessage(const FString Text) const
 	OnLogMessage.Broadcast(FString::Printf(TEXT("%ls\n"), *Text));
 	UE_LOG(LogSupremacyEditor, Log, TEXT("%s"), *Text);
 }
-

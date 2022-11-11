@@ -46,7 +46,7 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 	
 	GENERATED_BODY()
 
-        friend StaticDataImporter::Faction;
+    friend StaticDataImporter::Faction;
     friend StaticDataImporter::Brand;
     friend StaticDataImporter::WarMachineModel;
     friend StaticDataImporter::Skin;
@@ -79,11 +79,13 @@ public:
     UFUNCTION(BlueprintCallable)
     UStaticDataWeapon* GetWeapon(const FGuid& ID);
 
-    UFUNCTION(BlueprintCallable)
     UStaticDataMechSkinCompatibility* GetMechSkinCompatibility(const FGuid& ID);
-
     UFUNCTION(BlueprintCallable)
+    UStaticDataMechSkinCompatibility* GetMechSkinCompatibility(const FGuid& MechID, const FGuid& SkinID);
+
     UStaticDataWeaponSkinCompatibility* GetWeaponSkinCompatibility(const FGuid& ID);
+    UFUNCTION(BlueprintCallable)
+    UStaticDataWeaponSkinCompatibility* GetWeaponSkinCompatibility(const FGuid& WeaponID, const FGuid& SkinID);
 
     UFUNCTION(BlueprintCallable)
     UStaticDataPowerCore* GetPowerCore(const FGuid& ID);
