@@ -34,6 +34,7 @@ public:
 	
 public:
 	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
+	virtual void GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons) override;
 
 	UPROPERTY(Category = "Weapon", Replicated, BlueprintReadWrite)
 	TArray<class AWeapon*> Weapons;

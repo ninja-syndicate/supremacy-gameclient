@@ -76,6 +76,15 @@ protected:
 	TObjectPtr<AActor> CurrentTarget = nullptr;
 
 protected:
+	// virtual void Initialize();
+
+	// TODO: Separate for the target ideally.
+	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
+	virtual bool GetTargetWeaponInfos(TArray<FAIWeaponInfo>& OutWeaponInfos);
+
+	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
+	virtual bool GetWeaponInfos(TArray<FAIWeaponInfo>& OutWeaponInfos);
+
 	/** The possessed pawn of this controller. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<APawn> PossessedPawn = nullptr;
