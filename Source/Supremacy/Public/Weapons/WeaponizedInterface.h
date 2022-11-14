@@ -24,4 +24,7 @@ class SUPREMACY_API IWeaponizedInterface
 public:
 	UFUNCTION(Category = "Weaponized", BlueprintCallable, BlueprintNativeEvent)
 	class AWeapon* GetWeaponBySlot(int SlotIndex);
+
+	UFUNCTION(Category = "Weaponized", BlueprintCallable, BlueprintNativeEvent)
+	void GetWeapons(TArray<class AWeapon*>& OutWeapons);
 };
