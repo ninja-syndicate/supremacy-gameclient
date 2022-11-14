@@ -33,5 +33,5 @@ public:
 
 protected:
 	UPROPERTY(Category = "Supremacy Game State", EditAnywhere, BlueprintReadWrite, Replicated)
-	ESupremacyMatchState CurrentGameState = ESupremacyMatchState::GameState_Default;
+	ESupremacyMatchState CurrentGameState = ESupremacyMatchState::MatchState_Default;
 };
