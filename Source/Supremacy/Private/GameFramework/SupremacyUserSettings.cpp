@@ -14,3 +14,10 @@ bool USupremacyUserSettings::IsHUDEnabled() const
 {
 	return bHUDEnabled;
 }
+
+void USupremacyUserSettings::SetToDefaults()
+{
+	Super::SetToDefaults();
+
+	bHUDEnabled = true;
+}
