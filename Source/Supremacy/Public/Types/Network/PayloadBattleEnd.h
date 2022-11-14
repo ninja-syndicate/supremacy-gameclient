@@ -14,7 +14,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDamageHistoryResultItem> Damage_History;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FDamageHistoryResultItem> All_Damage_History;
+	TArray<FDamageHistoryResultItem> Damage_History_Full;
 
 	FPayloadBattleEnd_WarMachine(): Health(0) {}
 };
