@@ -22,6 +22,8 @@ public:
 	uint8 Participant_ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDamageHistoryResultItem> Damage_History;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDamageHistoryResultItem> Damage_History_Full;
 
 	FPayloadDestroyedWarMachine() : Participant_ID(0) {}
 };
