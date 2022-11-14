@@ -3,6 +3,7 @@
 #include "SupremacyEditorModule.h"
 #include "Misc/DefaultValueHelper.h"
 #include "StaticData/StaticDataMechSkinCompatibility.h"
+#include "Utils/TextureDownload.h"
 
 StaticDataImporter::MechSkinCompatibility::MechSkinCompatibility(): Base()
 {
@@ -83,6 +84,8 @@ FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, FString Slot)
 
 bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset, TArray<FString> RowCells)
 {
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	
 	FGuid SkinId, MechId;
 
 	if(!ParseGuid(RowCells[0], "skin id", SkinId)) return false;
@@ -98,9 +101,28 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 
 	Record->Label = Record->WarMachineModel->Label + " -> " + Record->Skin->Label;
 
-	FString MaterialsPath = MaterialsPathFromMech(Record->WarMachineModel->ID.ToString(), Record->Skin->Label);
-
-	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	// Get Avatar
+	Record->AvatarURL = RowCells[6];
+	
+	FString AvatarPackageURL = GetPackageNameForURL(Record->AvatarURL, "UI/Images/MechAvatars/");
+	
+	TArray<FAssetData> AvatarAsset;
+	AssetRegistryModule.Get().GetAssetsByPackageName(FName(AvatarPackageURL), AvatarAsset);
+	if (AvatarAsset.Num() == 0)
+	{
+		// Download and create asset
+		if (UTexture2D* AvatarTexture = GetTexture2DFromURL(Record->AvatarURL, "UI/Images/MechAvatars/"); AvatarTexture != nullptr)
+			Record->Avatar = AvatarTexture;
+	}
+	else
+	{
+		// Use existing asset
+		Record->Avatar = Cast<UTexture2D>(AvatarAsset[0].GetAsset());
+	}
+	
+	// Get Materials
+	const FString MaterialsPath = MaterialsPathFromMech(Record->WarMachineModel->ID.ToString(), Record->Skin->Label);
+	
 	TArray<FAssetData> AssetData;
 
 	AssetRegistryModule.Get().GetAssetsByPath(FName(*MaterialsPath), AssetData, false, false);
@@ -121,7 +143,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 			for (int32 i = 0; i < Materials.Num(); i++)
 			{
 				FSkeletalMaterial Material = Materials[i];
-				FAssetData* MaterialAsset = GetMaterialForSlot(AssetData, Material.MaterialSlotName.ToString());
+				const FAssetData* MaterialAsset = GetMaterialForSlot(AssetData, Material.MaterialSlotName.ToString());
 				if (MaterialAsset) {
 					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->ObjectPath.ToString() + FString("'"))));
 				}

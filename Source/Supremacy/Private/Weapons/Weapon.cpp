@@ -34,3 +34,17 @@ void AWeapon::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifet
 	DOREPLIFETIME_CONDITION( AWeapon, TargetLocation, COND_InitialOnly );
 }
 
+bool AWeapon::IsTriggered() const
+{
+	return bIsTriggered;
+}
+
+bool AWeapon::CanFriendlyFire() const
+{
+	return bEnableFriendlyFire;
+}
+
+void AWeapon::SetFriendlyFire(bool Enable)
+{
+	bEnableFriendlyFire = Enable;
+}
