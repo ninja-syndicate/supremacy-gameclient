@@ -18,4 +18,12 @@ public:
 
 public:
 	virtual void StartMatch() override;
+
+protected:
+	virtual bool ReadyToStartMatch_Implementation() override;
+
+protected:
+	/** Set this variable to true to start the match. */
+	UPROPERTY(Category = "Supremacy Game Mode", EditAnywhere, BlueprintReadWrite)
+	bool bReadyToStartMatch = false;
 };

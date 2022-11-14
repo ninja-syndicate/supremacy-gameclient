@@ -5,7 +5,9 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "BlueprintGameplayTagLibrary.h"
-#include "GameFramework/GameStateBase.h"
+#include "Core/Game/SupremacyGameState.h"
+
+#include "GameFramework/NavMovementComponent.h"
 
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponizedInterface.h"
@@ -34,36 +36,48 @@ void ACrowdAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	const AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld());
+	// Get the game state.
+	ASupremacyGameState* GameState = Cast<ASupremacyGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (!IsValid(GameState)) 
 	{
 		UE_LOG(LogTemp, Error, TEXT("ACrowdAIController: Unable to retrieve the game state!"));
 		return;
 	}
 
+	// In case OnPossess gets called before BeginPlay(), initialize if the pawn is valid.
+	if (IsValid(GetPawn()))
+	{
+		Initialize();
+	}
+
+	// Query for the match state and start AI if the battle has already started. Otherwise wait for the match start.
 	const bool bHasMatchStarted = GameState->HasMatchStarted();
 	if (bHasMatchStarted)
 	{
-		// Initialize();
+		StartAI();
 	}
 	else
 	{
-		// Bind event to the game state and intialize.
-
+		GameState->OnMatchStarted.AddDynamic(this, &ACrowdAIController::StartAI);
 	}
-	EnableScript();
-	bIsInitialized = true;
 }
 
 void ACrowdAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	// TODO: Refactor blueprint so it uses Get Controlled Pawn.
 	PossessedPawn = InPawn;
 	if (!PossessedPawn->Implements<UWeaponizedInterface>())
 	{
 		UE_LOG(LogTemp, Error, TEXT("ACrowdAIController: Possessed pawn does not implement IWeaponizedInterface!"));
 		return;
+	}
+
+	// Initialize if the actor has already begun play. Otherwise let BeginPlay event handle initializing.
+	if (HasActorBegunPlay())
+	{
+		Initialize();
 	}
 }
 
@@ -71,8 +85,47 @@ void ACrowdAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
-	PossessedPawn = nullptr;
 	DisableScript();
+	PossessedPawn = nullptr;
+}
+
+void ACrowdAIController::Initialize_Implementation()
+{
+	bIsInitialized = true;
+}
+
+void ACrowdAIController::StartAI_Implementation()
+{
+	EnableScript();
+}
+
+void ACrowdAIController::StopAI_Implementation()
+{
+	if (!IsValid(GetPawn())) return;
+
+	// Disable the running script.
+	DisableScript();
+
+	if (GetPawn()->Implements<UWeaponizedInterface>())
+	{
+		// Get all the weapons.
+		TArray<AWeapon*> Weapons;
+		IWeaponizedInterface::Execute_GetWeapons(PossessedPawn, Weapons);
+
+		for (AWeapon* Weapon : Weapons)
+		{
+			Weapon->Release();
+		}
+	}
+	
+	// Get the nav movement component if it has one and stop movement immediately.
+	UActorComponent* Comp = GetPawn()->GetComponentByClass(UNavMovementComponent::StaticClass());
+	UNavMovementComponent* MoveComp = Cast<UNavMovementComponent>(Comp);
+	if (MoveComp)
+	{
+		MoveComp->StopMovementImmediately();
+	}
+	StopMovement();
 }
 
 void ACrowdAIController::Tick(float DeltaTime)
@@ -87,6 +140,7 @@ void ACrowdAIController::EnableScript()
 
 void ACrowdAIController::DisableScript()
 {
+	GetWorldTimerManager().ClearTimer(ScriptTickTimer);
 	bIsScriptEnabled = false;
 }
 
