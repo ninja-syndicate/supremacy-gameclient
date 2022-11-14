@@ -55,6 +55,43 @@ public:
 	void OnCooldownEnd(const FGameplayTag ActionTag);
 	void OnCooldownEnd_Implementation(const FGameplayTag ActionTag);
 
+public:
+	//~ Begin Script API
+	//UFUNCTION(Category = "Script API", BlueprintCallable)
+	//bool SetFocalPointByHash(FString Hash);
+
+	UFUNCTION(Category = "Script API", BlueprintCallable)
+	void ClearFocalPoint();
+
+	UFUNCTION(Category = "Script API", BlueprintCallable)
+	bool WeaponTrigger(int Slot, FVector Location);
+
+	UFUNCTION(Category = "Script API", BlueprintCallable)
+	bool WeaponRelease(int Slot);
+	//~ End Script API
+
+protected:
+	/** The current target actor set by the script. */
+	UPROPERTY(Category = "Script AI Controller", EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<AActor> CurrentTarget = nullptr;
+
+protected:
+	// virtual void Initialize();
+
+	// TODO: Separate for the target ideally.
+	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
+	virtual bool GetTargetWeaponInfos(TArray<FAIWeaponInfo>& OutWeaponInfos);
+
+	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
+	virtual bool GetWeaponInfos(TArray<FAIWeaponInfo>& OutWeaponInfos);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bIsInitialized = false;
+
+	/** The possessed pawn of this controller. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<APawn> PossessedPawn = nullptr;
+
 private:
 	//~ Begin Script AI Debugging functions.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Script AI Debugging")
@@ -70,41 +107,6 @@ private:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "AI Utils")
 	FString ToJson(const FAIBrainInput& BrainInput);
-
-	/** Whether to enable crowd separation or not. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableSeparation;
-
-	/** The weight applied to the separation of the agents. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	float SeparationWeight;
-
-	/** The range to check for the collision. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	float CollisionQueryRange;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	float PathOptimizationRange;
-
-	/** Slowdown the agent when it reaches close to the goal. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableSlowdownAtGoal;
-
-	/** Whether to optimise visibility. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableOptimizeVisibility;
-
-	/** Whether to optimise topology. Recommended to be turned-off as it is buggy. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnableOptimizeTopology;
-
-	/** Whether to enable path offset. topology. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	bool bEnablePathOffset;
-
-	/** For setting the avoidance type. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detour Crowd AI")
-	TEnumAsByte<EAvoidanceType> AvoidanceType;
 
 	/** Whether to enable eyes view-point offset. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Configuration")
@@ -134,10 +136,6 @@ protected:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Configuration")
 	bool bEnableEyesMatchRotation;
-
-	/** Currently focused target. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-	TObjectPtr<AActor> CurrentFocusTarget = nullptr;
 
 	/** Reference to the current mech following component. */
 	UPROPERTY()

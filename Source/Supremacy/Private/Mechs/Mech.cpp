@@ -26,3 +26,8 @@ AWeapon* AMech::GetWeaponBySlot_Implementation(int SlotIndex)
 	// Assumes the `Weapons` array is sorted by slot.
 	return SlotIndex >= 0 && SlotIndex < Weapons.Num() ? Weapons[SlotIndex] : nullptr;
 }
+
+void AMech::GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons)
+{
+	OutWeapons = Weapons;
+}
