@@ -13,6 +13,8 @@ public:
 	int Health;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDamageHistoryResultItem> Damage_History;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDamageHistoryResultItem> All_Damage_History;
 
 	FPayloadBattleEnd_WarMachine(): Health(0) {}
 };
