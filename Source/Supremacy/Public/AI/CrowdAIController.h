@@ -76,8 +76,30 @@ protected:
 	TObjectPtr<AActor> CurrentTarget = nullptr;
 
 protected:
-	// virtual void Initialize();
+	UFUNCTION(Category = "Script AI Controller", BlueprintCallable, BlueprintNativeEvent)
+	void Initialize();
+	virtual void Initialize_Implementation();
 
+	UFUNCTION(Category = "Script AI Controller", BlueprintCallable, BlueprintNativeEvent)
+	void StartAI();
+	virtual void StartAI_Implementation();
+
+	UFUNCTION(Category = "Script AI Controller", BlueprintCallable, BlueprintNativeEvent)
+	void StopAI();
+	virtual void StopAI_Implementation();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bIsInitialized = false;
+
+	/** The possessed pawn of this controller. */
+	UPROPERTY(Category = "Script AI Controller", VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<APawn> PossessedPawn = nullptr;
+
+	/** The skeletal mesh of the possessed pawn if available. */
+	UPROPERTY(Category = "Script AI Controller", VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USkeletalMeshComponent> PossessedPawnMesh = nullptr;
+
+protected:
 	// TODO: Separate for the target ideally.
 	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
 	virtual bool GetTargetWeaponInfos(TArray<FAIWeaponInfo>& OutWeaponInfos);
@@ -85,12 +107,8 @@ protected:
 	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
 	virtual bool GetWeaponInfos(TArray<FAIWeaponInfo>& OutWeaponInfos);
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool bIsInitialized = false;
-
-	/** The possessed pawn of this controller. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<APawn> PossessedPawn = nullptr;
+	UPROPERTY(Category = "Script AI Controller", EditAnywhere, BlueprintReadWrite)
+	FTimerHandle ScriptTickTimer;
 
 private:
 	//~ Begin Script AI Debugging functions.
