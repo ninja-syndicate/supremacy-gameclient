@@ -12,7 +12,7 @@ StaticDataImporter::Weapon::Weapon(): Base()
 		"id",
 		"brand_id",
 		"label",
-		"label",
+		"weapon_type",
 		"default_skin_id",
 		"damage",
 		"damage_falloff",
