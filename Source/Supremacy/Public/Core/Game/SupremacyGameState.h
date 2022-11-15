@@ -18,6 +18,7 @@ class SUPREMACY_API ASupremacyGameState : public AGameState
 	GENERATED_BODY()
 	
 public:
+	
 	virtual bool HasMatchStarted() const override;
 	virtual void HandleMatchHasStarted() override;
 
@@ -25,9 +26,10 @@ public:
 	void MulticastOnMatchStarted();
 	virtual void MulticastOnMatchStarted_Implementation();
 
-	UFUNCTION(Category = "Supremacy Game State", NetMulticast, Reliable, BlueprintCallable)
-	void MulticastOnMatchEnd(const FFaction& Faction);
-	virtual void MulticastOnMatchEnd_Implementation(const FFaction& Faction);
+	UFUNCTION(Category = "Supremacy Game State", NetMulticast, Reliable, BlueprintCallable, meta = (AutoCreateRefTerm = "Faction"))
+	void MulticastOnMatchEnded(const FFaction& Faction);
+	virtual void MulticastOnMatchEnded_Implementation(const FFaction& Faction);
+
 
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -37,9 +39,9 @@ public:
 	UPROPERTY(Category = "Supremacy Game State", BlueprintAssignable, Replicated)
 	FMatchStartedDelegate OnMatchStarted;
 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMatchEndDelegate, FFaction, Faction);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMatchEndedDelegate, FFaction, Faction);
 	UPROPERTY(Category = "Supremacy Game State", BlueprintAssignable, Replicated)
-	FMatchEndDelegate OnMatchEnd;
+	FMatchEndedDelegate OnMatchEnded;
 
 protected:
 	UPROPERTY(Category = "Supremacy Game State", EditAnywhere, BlueprintReadWrite, Replicated)

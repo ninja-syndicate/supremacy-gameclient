@@ -32,8 +32,8 @@ void ASupremacyGameState::MulticastOnMatchStarted_Implementation()
 	OnMatchStarted.Broadcast();
 }
 
-void ASupremacyGameState::MulticastOnMatchEnd_Implementation(const FFaction& Faction)
+void ASupremacyGameState::MulticastOnMatchEnded_Implementation(const FFaction& Faction)
 {
 	CurrentGameState = ESupremacyMatchState::MatchState_RoundEnd;
-	OnMatchEnd.Broadcast(Faction);
+	OnMatchEnded.Broadcast(Faction);
 }

@@ -27,7 +27,7 @@ ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializ
 	MechFollowingComponent = Cast<UWarMachineFollowingComponent>(GetPathFollowingComponent());
 	if (!MechFollowingComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: Fatal! UWarMachineFollowingComponent is invalid. AI will not work properly..."));
+		UE_LOG(LogTemp, Error, TEXT("CrowdAIController: Fatal! UWarMachineFollowingComponent is invalid. AI will not work properly..."));
 		return;
 	}
 }
@@ -66,11 +66,17 @@ void ACrowdAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	if (!IsValid(InPawn))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Attempt to possess an invalid pawn!"));
+		return;
+	}
+
 	// TODO: Refactor blueprint so it uses Get Controlled Pawn.
 	PossessedPawn = InPawn;
 	if (!PossessedPawn->Implements<UWeaponizedInterface>())
 	{
-		UE_LOG(LogTemp, Error, TEXT("ACrowdAIController: Possessed pawn does not implement IWeaponizedInterface!"));
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Possessed pawn does not implement IWeaponizedInterface!"));
 		return;
 	}
 
@@ -229,7 +235,7 @@ void ACrowdAIController::ClearFocalPoint()
 
 bool ACrowdAIController::WeaponTrigger(int Slot, FVector Location)
 {
-	if (!IsValid(PossessedPawn)) return false;
+	if (!bIsInitialized) return false;
 
 	AWeapon* Weapon = IWeaponizedInterface::Execute_GetWeaponBySlot(PossessedPawn, Slot);
 	if (!IsValid(Weapon)) return false;
@@ -247,7 +253,7 @@ bool ACrowdAIController::WeaponTrigger(int Slot, FVector Location)
 
 bool ACrowdAIController::WeaponRelease(int Slot)
 {
-	if (!IsValid(PossessedPawn)) return false;
+	if (!bIsInitialized) return false;
 
 	AWeapon* Weapon = IWeaponizedInterface::Execute_GetWeaponBySlot(PossessedPawn, Slot);
 	if (!IsValid(Weapon)) return false;
@@ -265,14 +271,21 @@ void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& 
 	if (bEnableCustomEyesViewPoint)
 	{
 		// TODO: Store reference to avoid getting the object cost.
-		const APawn* ControlledPawn = GetPawn();
-		if (!IsValid(ControlledPawn)) return;
+		if (!PossessedPawn) return;
 		
-		const USkeletalMeshComponent* Mesh = Cast<USkeletalMeshComponent>(ControlledPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
-		if (!IsValid(Mesh)) return;
-
-		out_Location = Mesh->GetSocketLocation("AI_Eyes");
-		out_Rotation = Mesh->GetSocketRotation("AI_Eyes");
+		if (!PossessedPawnMesh)
+		{
+			const UActorComponent* Comp = PossessedPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass());
+			const USkeletalMeshComponent* MeshComp = Cast<USkeletalMeshComponent>(Comp);
+			if (!IsValid(MeshComp))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Failed to get the skeletal mesh component of the pawn!"));
+				return;
+			}
+			PossessedPawnMesh = MeshComp;
+		}
+		out_Location = PossessedPawnMesh->GetSocketLocation("AI_Eyes");
+		out_Rotation = PossessedPawnMesh->GetSocketRotation("AI_Eyes");
 		return;
 	}
 

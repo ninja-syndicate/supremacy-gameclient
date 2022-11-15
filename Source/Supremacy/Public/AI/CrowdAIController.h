@@ -95,6 +95,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<APawn> PossessedPawn = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USkeletalMeshComponent> PossessedPawnMesh = nullptr;
+
 protected:
 	// TODO: Separate for the target ideally.
 	UFUNCTION(Category = "Script AI Controller", BlueprintCallable)
