@@ -40,7 +40,8 @@ TArray<uint8> UBPFL_Helpers::ConvertUInt16ToBytes(const uint16 Input)
 }
 
 void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, 
-                                         const TArray<bool> DiffArray, TArray<uint8>& Bytes)
+										 const uint8 UpdatedWeaponCount, const TArray<uint8>& WeaponSocketIndices, const TArray<int>& WeaponAmmoCounts, 
+										 const TArray<bool> DiffArray, TArray<uint8>& Bytes)
 {
 	Bytes = TArray<uint8>();
 	Bytes.Emplace(Number);
@@ -58,6 +59,12 @@ void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const 
 		Bytes.Append(ConvertIntToBytes(Shield));
 	if (DiffArray[3])
 		Bytes.Append(ConvertIntToBytes(Energy));
+
+	Bytes.Add(UpdatedWeaponCount);
+	for (int i = 0; i < UpdatedWeaponCount; i++) {
+		Bytes.Add(WeaponSocketIndices[i]);
+		Bytes.Append(ConvertIntToBytes(WeaponAmmoCounts[i]));
+	}
 }
 
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
