@@ -7,6 +7,7 @@
 #include "BlueprintGameplayTagLibrary.h"
 #include "Core/Game/SupremacyGameState.h"
 
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/NavMovementComponent.h"
 
 #include "Weapons/Weapon.h"
@@ -97,6 +98,22 @@ void ACrowdAIController::OnUnPossess()
 
 void ACrowdAIController::Initialize_Implementation()
 {
+	if (!IsValid(PossessedPawn))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: A valid possessed pawn is needed to initialize."));
+		return;
+	}
+
+	// Get the skeletal mesh component of the possessed pawn to get its eyes view point.
+	UActorComponent* Comp = PossessedPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass());
+	USkeletalMeshComponent* MeshComp = Cast<USkeletalMeshComponent>(Comp);
+	if (!IsValid(MeshComp))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Failed to get the skeletal mesh component of the pawn!"));
+		return;
+	}
+	PossessedPawnMesh = MeshComp;
+
 	bIsInitialized = true;
 }
 
@@ -268,22 +285,12 @@ bool ACrowdAIController::WeaponRelease(int Slot)
  */
 void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const
 {
+	if (!PossessedPawn) return;
+
 	if (bEnableCustomEyesViewPoint)
 	{
-		// TODO: Store reference to avoid getting the object cost.
-		if (!PossessedPawn) return;
-		
-		if (!PossessedPawnMesh)
-		{
-			const UActorComponent* Comp = PossessedPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass());
-			const USkeletalMeshComponent* MeshComp = Cast<USkeletalMeshComponent>(Comp);
-			if (!IsValid(MeshComp))
-			{
-				UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Failed to get the skeletal mesh component of the pawn!"));
-				return;
-			}
-			PossessedPawnMesh = MeshComp;
-		}
+		if (!PossessedPawnMesh) return;
+
 		out_Location = PossessedPawnMesh->GetSocketLocation("AI_Eyes");
 		out_Rotation = PossessedPawnMesh->GetSocketRotation("AI_Eyes");
 		return;
@@ -293,17 +300,16 @@ void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& 
 	FRotator EyesRotation;
 	Super::GetActorEyesViewPoint(EyesLocation, EyesRotation);
 
-	if (bEnableEyesViewPointOffset) {
+	if (bEnableEyesViewPointOffset) 
+	{
 		EyesLocation = FVector(EyesLocation.X, EyesLocation.Y, EyesLocation.Z + eyesViewPointOffset);
 	}
+
 	out_Location = EyesLocation;
-
-	if (bEnableEyesMatchRotation) {
+	if (bEnableEyesMatchRotation) 
+	{
 		// TODO: Store reference to avoid getting the object cost.
-		const APawn* ControlledPawn = GetPawn();
-		if (!IsValid(ControlledPawn)) return;
-
-		FRotator PawnRotation = ControlledPawn->GetActorRotation();
+		FRotator PawnRotation = PossessedPawn->GetActorRotation();
 		EyesRotation = PawnRotation;
 	}
 	out_Rotation = EyesRotation;

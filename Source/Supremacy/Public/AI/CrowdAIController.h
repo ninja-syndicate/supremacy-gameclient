@@ -92,10 +92,11 @@ protected:
 	bool bIsInitialized = false;
 
 	/** The possessed pawn of this controller. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = "Script AI Controller", VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<APawn> PossessedPawn = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	/** The skeletal mesh of the possessed pawn if available. */
+	UPROPERTY(Category = "Script AI Controller", VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> PossessedPawnMesh = nullptr;
 
 protected:
