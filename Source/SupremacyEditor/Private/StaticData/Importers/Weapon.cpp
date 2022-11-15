@@ -12,7 +12,7 @@ StaticDataImporter::Weapon::Weapon(): Base()
 		"id",
 		"brand_id",
 		"label",
-		"weapon_type",
+		"label",
 		"default_skin_id",
 		"damage",
 		"damage_falloff",
@@ -24,7 +24,7 @@ StaticDataImporter::Weapon::Weapon(): Base()
 		"projectile_speed",
 		"max_ammo",
 		"is_melee",
-		"energy_cost",
+		"power_cost",
 		"game_client_weapon_id",
 		"collection",
 		"default_damage_type",
@@ -36,7 +36,9 @@ StaticDataImporter::Weapon::Weapon(): Base()
 		"burst_rate_of_fire",
 		"power_instant_drain",
 		"dot_tick_duration",
-		"projectile_life_span"
+		"projectile_life_span",
+		"recoil_force",
+		"idle_power_cost"
 
 	};
 }
@@ -174,15 +176,17 @@ bool StaticDataImporter::Weapon::HandleRow(UStaticData* DataAsset, TArray<FStrin
 
 	Record->WeaponDamageType = StringToEWeaponDamageType[RowCells[18]];
 
-	if(!ParseFloat(RowCells[19], "projectile amount", Record->ProjectileAmount)) return false;
-	if(!ParseFloat(RowCells[20], "dot tick damage", Record->DotTickDamage)) return false;
-	if(!ParseFloat(RowCells[21], "dot max ticks", Record->DotMaxTicks)) return false;
-	if(!ParseBool(RowCells[22], "is arced", Record->IsArced)) return false;
-	if(!ParseFloat(RowCells[23], "charge time seconds", Record->ChargeTimeSeconds)) return false;
-	if(!ParseFloat(RowCells[24], "burst rate of fire", Record->BurstRateOfFire)) return false;
-	if(!ParseBool(RowCells[25], "power instant drain", Record->PowerInstantDrain)) return false;
-	if(!ParseFloat(RowCells[26], "dot tick duration", Record->DotTickDuration)) return false;
-	if(!ParseFloat(RowCells[27], "projectile life span", Record->ProjectileLifeSpan)) return false;
+	if (!ParseFloat(RowCells[19], "projectile amount", Record->ProjectileAmount)) return false;
+	if (!ParseFloat(RowCells[20], "dot tick damage", Record->DotTickDamage)) return false;
+	if (!ParseFloat(RowCells[21], "dot max ticks", Record->DotMaxTicks)) return false;
+	if (!ParseBool(RowCells[22], "is arced", Record->IsArced)) return false;
+	if (!ParseFloat(RowCells[23], "charge time seconds", Record->ChargeTimeSeconds)) return false;
+	if (!ParseFloat(RowCells[24], "burst rate of fire", Record->BurstRateOfFire)) return false;
+	if (!ParseBool(RowCells[25], "power instant drain", Record->PowerInstantDrain)) return false;
+	if (!ParseFloat(RowCells[26], "dot tick duration", Record->DotTickDuration)) return false;
+	if (!ParseFloat(RowCells[27], "projectile life span", Record->ProjectileLifeSpan)) return false;
+	if (!ParseFloat(RowCells[28], "recoil force", Record->RecoilForce)) return false;
+	if (!ParseFloat(RowCells[29], "idle power cost", Record->IdlePowerCost)) return false;
 
 	SetAssetName(DataAsset, Record, TEXT("Weapon"));
 

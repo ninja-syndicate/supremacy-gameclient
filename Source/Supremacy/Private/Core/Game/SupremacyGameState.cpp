@@ -14,6 +14,7 @@ void ASupremacyGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ASupremacyGameState, OnMatchStarted);
+	DOREPLIFETIME(ASupremacyGameState, OnMatchEnded);
 	DOREPLIFETIME(ASupremacyGameState, CurrentGameState);
 }
 

@@ -18,7 +18,6 @@ class SUPREMACY_API ASupremacyGameState : public AGameState
 	GENERATED_BODY()
 	
 public:
-	
 	virtual bool HasMatchStarted() const override;
 	virtual void HandleMatchHasStarted() override;
 
@@ -29,7 +28,6 @@ public:
 	UFUNCTION(Category = "Supremacy Game State", NetMulticast, Reliable, BlueprintCallable, meta = (AutoCreateRefTerm = "Faction"))
 	void MulticastOnMatchEnded(const FFaction& Faction);
 	virtual void MulticastOnMatchEnded_Implementation(const FFaction& Faction);
-
 
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
