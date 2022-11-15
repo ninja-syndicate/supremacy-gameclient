@@ -49,7 +49,10 @@ if exist "%RunUAT%" (
      REM Set version number
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Version=%Version%
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildBranch=%Branch%
-	Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Hash=%Hash%
+	 Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Hash=%Hash%
+
+     REM Set BuildNo for HUD
+     Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildNo=%Version%
 
      echo BuildNo %Version% Branch %Branch% Hash %Hash%
 pause
