@@ -136,8 +136,10 @@ public:
 		Struct.Projectile_Life_Span = ProjectileLifeSpan;
 		Struct.Charge_Time = ChargeTimeSeconds;
 		Struct.Is_Arced = IsArced;
-		//Struct.Optimal_Range = ...;
-		//Struct.Recoil_Force = ...;
+		Struct.Dot_Tick_Duration = DotTickDuration;
+		Struct.Projectile_Life_Span = ProjectileLifeSpan;
+		Struct.Recoil_Force = RecoilForce;
+		Struct.Idle_Power_Cost = IdlePowerCost;
 		Struct.Power_Cost = EnergyCost;
 		Struct.Power_Instance_Drain = PowerInstantDrain;
 

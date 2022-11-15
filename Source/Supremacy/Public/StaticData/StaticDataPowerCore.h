@@ -65,7 +65,10 @@ public:
 		Struct.Power_Capacity = Capacity;
 		Struct.Recharge_Rate = RechargeRate;
 		Struct.Max_Draw_Rate = MaxDrawRate;
-		
+		Struct.Weapon_System_Allocation = WeaponShare;
+		Struct.Movement_System_Allocation = MovementShare;
+		Struct.Utility_System_Allocation = UtilityShare;
+
 		return Struct;
 	}
 };
