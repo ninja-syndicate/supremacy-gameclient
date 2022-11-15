@@ -2,7 +2,9 @@
 
 
 #include "Avoidance/AvoidanceSubsystem.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Mechs/Components/MechMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 
 void UAvoidanceSubsystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -18,6 +20,29 @@ void UAvoidanceSubsystem::Deinitialize()
 void UAvoidanceSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
+
+	if (bAutoRegisterPlayerPawn)
+	{
+		const APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+		if (!PlayerPawn)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UAvoidanceSubsystem: Player Pawn not found!"));
+			return;
+		}
+
+		if (bUseRVOAvoidance)
+		{
+			UPawnMovementComponent* MoveComp = PlayerPawn->GetMovementComponent();
+			UMechMovementComponent* MechMoveComp = Cast<UMechMovementComponent>(MoveComp);
+			if (!MechMoveComp) return;
+
+			MechMoveComp->SetRVOAvoidanceWeight(PlayerRVOAvoidanceWeight);
+			MechMoveComp->SetAvoidanceGroup(EAvoidanceFlags::AvoidanceSubsystem_Player);
+			MechMoveComp->SetGroupsToIgnore(EAvoidanceFlags::AvoidanceSubsystem_AI | EAvoidanceFlags::AvoidanceSubsystem_Player);
+			MechMoveComp->SetRVOAvoidanceEnabled(true);
+		}
+		// TODO: Support other avoidance type.
+	}
 }
 
 bool UAvoidanceSubsystem::RegisterAgent(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings)
@@ -53,6 +78,13 @@ bool UAvoidanceSubsystem::Steering(APawn* Agent, FVector& OutSteeringForce)
 	if (!AvoidanceSettings) return false;
 
 	OutSteeringForce = GetSteeringForce(Agent, *AvoidanceSettings);
+	return true;
+}
+
+bool UAvoidanceSubsystem::ObstacleAvoidance(APawn* Agent, FVector& OutObstacleAvoidanceForce)
+{
+	// TODO: Implementation;
+	OutObstacleAvoidanceForce = FVector::ZeroVector;
 	return true;
 }
 
@@ -174,4 +206,10 @@ FVector UAvoidanceSubsystem::GetSteeringForce(APawn* Agent, const FAgentAvoidanc
 
 	SteeringForce.Normalize();
 	return SteeringForce * AvoidanceSettings.MaxAccelerationSpeed * Strength;
+}
+
+FVector UAvoidanceSubsystem::GetObstacleAvoidanceForce(APawn* Agent, const FAgentAvoidanceSettings& AvoidanceSettings)
+{
+	// TODO: Implementation
+	return FVector::ZeroVector;
 }

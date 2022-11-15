@@ -11,6 +11,7 @@
 
 #include "Navigation/NavigationSubsystem.h"
 #include "Avoidance/AvoidanceSubsystem.h"
+#include "Mechs/Components/MechMovementComponent.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -63,7 +64,9 @@ void UWarMachineFollowingComponent::FollowPathSegment(float DeltaTime)
 		CurrentMoveInput = (CurrentTarget - CurrentLocation).GetSafeNormal();
 
 		// TODO: Provide an option to disable slowdown at destination.
-		if (bStopMovementOnFinish && (MoveSegmentStartIndex >= DecelerationSegmentIndex))
+		const bool bIsLastSegment = MoveSegmentStartIndex >= DecelerationSegmentIndex;
+		const bool bConsiderDeceleration = bStopMovementOnFinish && bIsLastSegment;
+		if (bConsiderDeceleration)
 		{
 			const FVector PathEnd = Path->GetEndLocation();
 			const float DistToEndSq = FVector::DistSquared(CurrentLocation, PathEnd);
@@ -77,18 +80,23 @@ void UWarMachineFollowingComponent::FollowPathSegment(float DeltaTime)
 			}
 		}
 
-		// Add separation and steering behaviors.
-		CurrentMoveInput += Separation() * SeparationWeight;
-		CurrentMoveInput += Steering() * SteeringWeight;
-		if (bIsDecelerating)
+		if (bEnableAvoidance && !bEnableRVOAvoidance)
 		{
-			// Only normalize if the resultant vector exceeds unit length.
-			if (CurrentMoveInput.Length() > 1.0f)
+			// Add separation and steering behaviors.
+			if (!bIsLastSegment || bEnableSeparationOnDestination)
+				CurrentMoveInput += Separation() * SeparationWeight;
+
+			CurrentMoveInput += Steering() * SteeringWeight;
+			if (bIsDecelerating)
+			{
+				// Only normalize if the resultant vector exceeds unit length.
+				if (CurrentMoveInput.Length() > 1.0f)
+					CurrentMoveInput.Normalize();
+			}
+			else
+			{
 				CurrentMoveInput.Normalize();
-		}
-		else
-		{
-			CurrentMoveInput.Normalize();
+			}
 		}
 		PostProcessMove.ExecuteIfBound(this, CurrentMoveInput);
 		MovementComp->RequestPathMove(CurrentMoveInput);
@@ -179,23 +187,6 @@ bool UWarMachineFollowingComponent::GetMaxAccelerationSpeed(float& OutMaxAcceler
 	return true;
 }
 
-bool UWarMachineFollowingComponent::CalcAgentBounds(float& OutCylinderRadius, float& OutCylinderHeight)
-{
-	if (!PossessedPawn) return false;
-
-	const UPawnMovementComponent* MoveComp = PossessedPawn->GetMovementComponent();
-	if (!MoveComp) return false;
-	if (!MoveComp->UpdatedComponent) return false;
-
-	float CylinderRadius = 0.0f;
-	float CylinderHeight = 0.0f;
-	MoveComp->UpdatedComponent->CalcBoundingCylinder(CylinderRadius, CylinderHeight);
-
-	OutCylinderRadius = CylinderRadius;
-	OutCylinderHeight = CylinderHeight;
-	return true;
-}
-
 void UWarMachineFollowingComponent::RegisterAgent()
 {
 	// If the custom avoidance setting is not enabled, try to determine appropriate avoidance settings from the pawn.
@@ -203,17 +194,27 @@ void UWarMachineFollowingComponent::RegisterAgent()
 	{
 		float CylinderRadius = 0.0f;
 		float CylinderHeight = 0.0f;
-		bool bSuccess = CalcAgentBounds(CylinderRadius, CylinderHeight);
-		if (!bSuccess)
+
+		UPawnMovementComponent* MoveComp = PossessedPawn->GetMovementComponent();
+		UMechMovementComponent* MechMoveComp = Cast<UMechMovementComponent>(MoveComp);
+		if (!MechMoveComp)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to calculate agent bounds!"));
+			UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: Failed to retrieve UMechMovementComponent!"));
 			return;
 		}
+
+		bool bSuccess = MechMoveComp->CalcAgentBounds(CylinderRadius, CylinderHeight);
+		if (!bSuccess)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: Failed to calculate agent bounds!"));
+			return;
+		}
+
 		float MaxAccelerationSpeed = 0.0f;
 		bSuccess = GetMaxAccelerationSpeed(MaxAccelerationSpeed);
 		if (!bSuccess)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to calculate max acceleration speed!"));
+			UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: Failed to calculate max acceleration speed!"));
 			return;
 		}
 		AvoidanceSettings.AgentRadius = CylinderRadius * AgentRadiusMultiplier;
@@ -222,17 +223,34 @@ void UWarMachineFollowingComponent::RegisterAgent()
 		AvoidanceSettings.MaxAccelerationSpeed = MaxAccelerationSpeed;
 	}
 
-	// Register the agent with the specified avoidance settings.
-	const bool bRegisterd = AvoidanceSubsystem->RegisterAgent(PossessedPawn, AvoidanceSettings);
-	if (!bRegistered)
+	if (bEnableRVOAvoidance)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("USteeringBehaviorComponent: Failed to register the agent."));
-		return;
+		UPawnMovementComponent* MoveComp = PossessedPawn->GetMovementComponent();
+		UMechMovementComponent* MechMoveComp = Cast<UMechMovementComponent>(MoveComp);
+		if (!MechMoveComp)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: RVO can only be enabled on ACharacter!"));
+			return;
+		}
+		MechMoveComp->SetAvoidanceGroup(EAvoidanceFlags::AvoidanceSubsystem_AI);
+		MechMoveComp->SetRVOAvoidanceEnabled(true);
+	}
+	else
+	{
+		// Register the agent with the specified avoidance settings.
+		const bool bRegisterd = AvoidanceSubsystem->RegisterAgent(PossessedPawn, AvoidanceSettings);
+		if (!bRegistered)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UWarMachineFollowingComponent: Failed to register the agent."));
+			return;
+		}
 	}
 }
 
 void UWarMachineFollowingComponent::UnregisterAgent()
 {
+	if (!AvoidanceSubsystem) return;
+
 	AvoidanceSubsystem->UnregisterAgent(PossessedPawn);
 }
 
@@ -250,14 +268,6 @@ FVector UWarMachineFollowingComponent::Separation()
 	const FVector SeparationDirectionNormal = SeparationForce.GetSafeNormal();
 	const float Strength = SeparationForce.Length() / AvoidanceSettings.MaxAccelerationSpeed;
 
-	// @debug Visualization only.
-	/*
-	const FVector StartLocation = PossessedPawn->GetActorLocation();
-	const FVector EndLocation = StartLocation + SeparationForce;
-	if (!SeparationForce.IsNearlyZero())
-		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor(255, 0, 0), false, 1, 0, 50);
-	*/
-
 	return SeparationDirectionNormal * Strength;
 }
 
@@ -274,14 +284,6 @@ FVector UWarMachineFollowingComponent::Steering()
 	// Get the steering direction and map it to [0, 1] depending on the strength.
 	const FVector SteeringDirectionNormal = SteeringForce.GetSafeNormal();
 	const float Strength = SteeringForce.Length() / AvoidanceSettings.MaxAccelerationSpeed;
-
-	// @debug Visualization only.
-	/*
-	const FVector StartLocation = PossessedPawn->GetActorLocation();
-	const FVector EndLocation = StartLocation + SteeringForce;
-	if (!SteeringForce.IsNearlyZero())
-		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor(0, 255, 0), false, 1, 0, 50);
-	*/
 
 	return SteeringDirectionNormal * Strength;
 }
