@@ -5,7 +5,10 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "BlueprintGameplayTagLibrary.h"
-#include "GameFramework/GameStateBase.h"
+#include "Core/Game/SupremacyGameState.h"
+
+#include "Components/SkeletalMeshComponent.h"
+#include "GameFramework/NavMovementComponent.h"
 
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponizedInterface.h"
@@ -25,7 +28,7 @@ ACrowdAIController::ACrowdAIController(const FObjectInitializer& ObjectInitializ
 	MechFollowingComponent = Cast<UWarMachineFollowingComponent>(GetPathFollowingComponent());
 	if (!MechFollowingComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("CrowdAIController: Fatal! UWarMachineFollowingComponent is invalid. AI will not work properly..."));
+		UE_LOG(LogTemp, Error, TEXT("CrowdAIController: Fatal! UWarMachineFollowingComponent is invalid. AI will not work properly..."));
 		return;
 	}
 }
@@ -34,36 +37,54 @@ void ACrowdAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	const AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld());
+	// Get the game state.
+	ASupremacyGameState* GameState = Cast<ASupremacyGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (!IsValid(GameState)) 
 	{
 		UE_LOG(LogTemp, Error, TEXT("ACrowdAIController: Unable to retrieve the game state!"));
 		return;
 	}
 
+	// In case OnPossess gets called before BeginPlay(), initialize if the pawn is valid.
+	if (IsValid(GetPawn()))
+	{
+		Initialize();
+	}
+
+	// Query for the match state and start AI if the battle has already started. Otherwise wait for the match start.
 	const bool bHasMatchStarted = GameState->HasMatchStarted();
 	if (bHasMatchStarted)
 	{
-		// Initialize();
+		StartAI();
 	}
 	else
 	{
-		// Bind event to the game state and intialize.
-
+		GameState->OnMatchStarted.AddDynamic(this, &ACrowdAIController::StartAI);
 	}
-	EnableScript();
-	bIsInitialized = true;
 }
 
 void ACrowdAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	if (!IsValid(InPawn))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Attempt to possess an invalid pawn!"));
+		return;
+	}
+
+	// TODO: Refactor blueprint so it uses Get Controlled Pawn.
 	PossessedPawn = InPawn;
 	if (!PossessedPawn->Implements<UWeaponizedInterface>())
 	{
-		UE_LOG(LogTemp, Error, TEXT("ACrowdAIController: Possessed pawn does not implement IWeaponizedInterface!"));
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Possessed pawn does not implement IWeaponizedInterface!"));
 		return;
+	}
+
+	// Initialize if the actor has already begun play. Otherwise let BeginPlay event handle initializing.
+	if (HasActorBegunPlay())
+	{
+		Initialize();
 	}
 }
 
@@ -71,8 +92,63 @@ void ACrowdAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
-	PossessedPawn = nullptr;
 	DisableScript();
+	PossessedPawn = nullptr;
+}
+
+void ACrowdAIController::Initialize_Implementation()
+{
+	if (!IsValid(PossessedPawn))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: A valid possessed pawn is needed to initialize."));
+		return;
+	}
+
+	// Get the skeletal mesh component of the possessed pawn to get its eyes view point.
+	UActorComponent* Comp = PossessedPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass());
+	USkeletalMeshComponent* MeshComp = Cast<USkeletalMeshComponent>(Comp);
+	if (!IsValid(MeshComp))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACrowdAIController: Failed to get the skeletal mesh component of the pawn!"));
+		return;
+	}
+	PossessedPawnMesh = MeshComp;
+
+	bIsInitialized = true;
+}
+
+void ACrowdAIController::StartAI_Implementation()
+{
+	EnableScript();
+}
+
+void ACrowdAIController::StopAI_Implementation()
+{
+	if (!IsValid(GetPawn())) return;
+
+	// Disable the running script.
+	DisableScript();
+
+	if (GetPawn()->Implements<UWeaponizedInterface>())
+	{
+		// Get all the weapons.
+		TArray<AWeapon*> Weapons;
+		IWeaponizedInterface::Execute_GetWeapons(PossessedPawn, Weapons);
+
+		for (AWeapon* Weapon : Weapons)
+		{
+			Weapon->Release();
+		}
+	}
+	
+	// Get the nav movement component if it has one and stop movement immediately.
+	UActorComponent* Comp = GetPawn()->GetComponentByClass(UNavMovementComponent::StaticClass());
+	UNavMovementComponent* MoveComp = Cast<UNavMovementComponent>(Comp);
+	if (MoveComp)
+	{
+		MoveComp->StopMovementImmediately();
+	}
+	StopMovement();
 }
 
 void ACrowdAIController::Tick(float DeltaTime)
@@ -87,6 +163,7 @@ void ACrowdAIController::EnableScript()
 
 void ACrowdAIController::DisableScript()
 {
+	GetWorldTimerManager().ClearTimer(ScriptTickTimer);
 	bIsScriptEnabled = false;
 }
 
@@ -175,7 +252,7 @@ void ACrowdAIController::ClearFocalPoint()
 
 bool ACrowdAIController::WeaponTrigger(int Slot, FVector Location)
 {
-	if (!IsValid(PossessedPawn)) return false;
+	if (!bIsInitialized) return false;
 
 	AWeapon* Weapon = IWeaponizedInterface::Execute_GetWeaponBySlot(PossessedPawn, Slot);
 	if (!IsValid(Weapon)) return false;
@@ -193,7 +270,7 @@ bool ACrowdAIController::WeaponTrigger(int Slot, FVector Location)
 
 bool ACrowdAIController::WeaponRelease(int Slot)
 {
-	if (!IsValid(PossessedPawn)) return false;
+	if (!bIsInitialized) return false;
 
 	AWeapon* Weapon = IWeaponizedInterface::Execute_GetWeaponBySlot(PossessedPawn, Slot);
 	if (!IsValid(Weapon)) return false;
@@ -208,17 +285,14 @@ bool ACrowdAIController::WeaponRelease(int Slot)
  */
 void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& out_Rotation) const
 {
+	if (!PossessedPawn) return;
+
 	if (bEnableCustomEyesViewPoint)
 	{
-		// TODO: Store reference to avoid getting the object cost.
-		const APawn* ControlledPawn = GetPawn();
-		if (!IsValid(ControlledPawn)) return;
-		
-		const USkeletalMeshComponent* Mesh = Cast<USkeletalMeshComponent>(ControlledPawn->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
-		if (!IsValid(Mesh)) return;
+		if (!PossessedPawnMesh) return;
 
-		out_Location = Mesh->GetSocketLocation("AI_Eyes");
-		out_Rotation = Mesh->GetSocketRotation("AI_Eyes");
+		out_Location = PossessedPawnMesh->GetSocketLocation("AI_Eyes");
+		out_Rotation = PossessedPawnMesh->GetSocketRotation("AI_Eyes");
 		return;
 	}
 
@@ -226,17 +300,16 @@ void ACrowdAIController::GetActorEyesViewPoint(FVector& out_Location, FRotator& 
 	FRotator EyesRotation;
 	Super::GetActorEyesViewPoint(EyesLocation, EyesRotation);
 
-	if (bEnableEyesViewPointOffset) {
+	if (bEnableEyesViewPointOffset) 
+	{
 		EyesLocation = FVector(EyesLocation.X, EyesLocation.Y, EyesLocation.Z + eyesViewPointOffset);
 	}
+
 	out_Location = EyesLocation;
-
-	if (bEnableEyesMatchRotation) {
+	if (bEnableEyesMatchRotation) 
+	{
 		// TODO: Store reference to avoid getting the object cost.
-		const APawn* ControlledPawn = GetPawn();
-		if (!IsValid(ControlledPawn)) return;
-
-		FRotator PawnRotation = ControlledPawn->GetActorRotation();
+		FRotator PawnRotation = PossessedPawn->GetActorRotation();
 		EyesRotation = PawnRotation;
 	}
 	out_Rotation = EyesRotation;
