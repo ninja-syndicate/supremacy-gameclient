@@ -42,6 +42,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	float MaxHitpoints;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float WeaponShare;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float MovementShare;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
+	float UtilityShare;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	FString Tier;
 
@@ -56,7 +65,10 @@ public:
 		Struct.Power_Capacity = Capacity;
 		Struct.Recharge_Rate = RechargeRate;
 		Struct.Max_Draw_Rate = MaxDrawRate;
-		
+		Struct.Weapon_System_Allocation = WeaponShare;
+		Struct.Movement_System_Allocation = MovementShare;
+		Struct.Utility_System_Allocation = UtilityShare;
+
 		return Struct;
 	}
 };
