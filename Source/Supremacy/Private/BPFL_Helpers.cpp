@@ -6,6 +6,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 
 #include "GenericPlatform/GenericPlatformApplicationMisc.h"
+#include "Weapons/Weapon.h"
+#include "Weapons/WeaponizedInterface.h"
+#include "Weapons/Components/WeaponAmmunitionComponent.h"
 
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
@@ -65,6 +68,37 @@ void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const 
 		Bytes.Add(WeaponSocketIndices[i]);
 		Bytes.Append(ConvertIntToBytes(WeaponAmmoCounts[i]));
 	}
+}
+
+void UBPFL_Helpers::PackWarMachineWeaponUpdates(UObject* WarMachine, const int PreviousTotalAmmo, TArray<uint8>& Bytes, int& TotalAmmo) {
+	// Get Weapons
+	if (!WarMachine->GetClass()->ImplementsInterface(UWeaponizedInterface::StaticClass())) return;
+	const IWeaponizedInterface* Weaponized = Cast<IWeaponizedInterface>(WarMachine);
+	TArray<AWeapon*> Weapons;
+	Weaponized->Execute_GetWeapons(WarMachine, Weapons);
+	
+	if (Weapons.IsEmpty()) return;
+
+	// weapon count
+	TArray<uint8> OutBytes = TArray<uint8>();
+	OutBytes.Emplace(static_cast<uint8>(Weapons.Num()));
+
+	for (int i = 0; i < Weapons.Num(); i++)
+	{
+		// Get Ammo
+		UActorComponent* Comp = Weapons[i]->GetComponentByClass(UWeaponAmmunitionComponent::StaticClass());
+		const UWeaponAmmunitionComponent* AmmoComp = Cast<UWeaponAmmunitionComponent>(Comp);
+
+		TotalAmmo += AmmoComp->GetAmmo();
+
+		// socket index + ammo count
+		OutBytes.Emplace(static_cast<uint8>(i));
+		OutBytes.Append(ConvertIntToBytes(AmmoComp->GetAmmo()));
+	}
+
+	// Total ammo changed - return packed bytes
+	if (TotalAmmo != PreviousTotalAmmo)
+		Bytes = OutBytes;
 }
 
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
