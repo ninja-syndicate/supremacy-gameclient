@@ -17,8 +17,9 @@ class SUPREMACY_API USupremacyGameInstance : public UGameInstance
 public:
 	USupremacyGameInstance();
 
+	const TArray<TSubclassOf<class UDamageType>>& GetDamageTypes() const;
+
 protected:
-	// @note - WIP DO NOT USE ANYTHING.
 	UPROPERTY(Category = "Supremacy Game Instance", EditAnywhere, BlueprintReadWrite)
 	TArray<TSubclassOf<class UDamageType>> DamageTypes;
 };

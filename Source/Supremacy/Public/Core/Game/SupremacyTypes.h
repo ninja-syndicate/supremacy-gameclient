@@ -5,15 +5,6 @@
 #include "Chaos/ChaosEngineInterface.h"
 #include "SupremacyTypes.generated.h"
 
-UCLASS()
-class SUPREMACY_API USupremacyFunctionLibrary : public UBlueprintFunctionLibrary
-{
-	GENERATED_BODY()
-public:
-	UFUNCTION(Category = "Supremacy Function Library", BlueprintPure, meta = (BlueprintThreadSafe))
-	static TSubclassOf<class UDamageType> ConvertToDamageType(uint8 DamageType);
-};
-
 // @note - Not all custom channels/types are listed.
 /** Supremacy Trace Channels */
 #define TraceChannel_Damageable ECollisionChannel::ECC_GameTraceChannel3
@@ -23,3 +14,12 @@ public:
 /** Supremacy Physical Surface Types */
 #define SurfaceType_Sand EPhysicalSurface::SurfaceType3
 #define SurfaceType_Energy EPhysicalSurface::SurfaceType5
+
+UCLASS()
+class SUPREMACY_API USupremacyFunctionLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+public:
+	UFUNCTION(Category = "Supremacy Function Library", BlueprintPure, meta = (WorldContext = "WorldContextObject"))
+	static TSubclassOf<class UDamageType> ConvertToDamageType(const UObject* WorldContextObject, uint8 DamageType);
+};
