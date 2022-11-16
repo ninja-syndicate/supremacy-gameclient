@@ -22,5 +22,7 @@ public:
 
 	/** Whether the HUD is enabled by default or not. (public to allow UI to connect to it) */
 	UPROPERTY(Config)
-	bool bHUDEnabled;
+	bool bHUDEnabled = true;
+
+	virtual void SetToDefaults() override;
  };
