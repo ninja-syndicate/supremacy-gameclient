@@ -34,6 +34,16 @@ void AWeapon::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifet
 	DOREPLIFETIME_CONDITION( AWeapon, TargetLocation, COND_InitialOnly );
 }
 
+void AWeapon::Trigger_Implementation()
+{
+	
+}
+
+void AWeapon::Release_Implementation()
+{
+
+}
+
 bool AWeapon::IsTriggered() const
 {
 	return bIsTriggered;

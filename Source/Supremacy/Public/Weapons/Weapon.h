@@ -27,17 +27,25 @@ public:
 	UFUNCTION(Category = "Weapon", BlueprintPure)
 	bool IsTriggered() const;
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(Category = "Weapon", BlueprintNativeEvent, BlueprintCallable)
 	void Trigger();
+	virtual void Trigger_Implementation();
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(Category = "Weapon", BlueprintNativeEvent, BlueprintCallable)
 	void Release();
+	virtual void Release_Implementation();
 
 	UFUNCTION(Category = "Weapon", BlueprintPure)
 	bool CanFriendlyFire() const;
 
 	UFUNCTION(Category = "Weapon", BlueprintCallable)
 	void SetFriendlyFire(bool Enable);
+
+public:
+	/** Note that it will only dispatch the event when the `bIsTriggered` state changes rather than on every Trigger/Release. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTriggerStateChanged, bool, bIsTriggered);
+	UPROPERTY(Category = "Weapon", BlueprintAssignable)
+	FOnTriggerStateChanged OnTriggered;
 	
 protected:
 	// Called when the game starts or when spawned
