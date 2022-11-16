@@ -30,7 +30,10 @@ StaticDataImporter::PowerCore::PowerCore(): Base()
 		"large_image_url",
 		"background_color",
 		"animation_url",
-		"youtube_url"
+		"youtube_url",
+		"weapon_share",
+		"movement_share",
+		"utility_share",
 	};
 }
 
@@ -62,6 +65,10 @@ bool ::StaticDataImporter::PowerCore::HandleRow(UStaticData* DataAsset, TArray<F
 
 	Record->Tier = RowCells[9];
 	Record->CreatedAt = RowCells[10];
+
+	if (!ParseFloat(RowCells[18], "weapon share", Record->WeaponShare)) return false;
+	if (!ParseFloat(RowCells[19], "movement share", Record->MovementShare)) return false;
+	if (!ParseFloat(RowCells[20], "utility share", Record->UtilityShare)) return false;
 	
 	SetAssetName(DataAsset, Record, TEXT("Power Core"));
 	return true;

@@ -4,6 +4,7 @@ set project=%~dp0Supremacy.uproject
 set build_dir=%~dp0Build
 set ConfigFolder=%build_dir%\Windows\Supremacy\Saved\Config\Windows\
 set ConfigFile=%ConfigFolder%Engine.ini
+set GameFile=%ConfigFolder%Game.ini
 set DefaultEngineFile=%~dp0Config\DefaultEngine.ini
 for /f %%i in ('git describe --tags') do set Version=%%i
 for /f %%i in ('git rev-parse --abbrev-ref HEAD') do set Branch=%%i
@@ -38,9 +39,10 @@ if exist "%RunUAT%" (
      Config\inifile %DefaultEngineFile% [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=
      Config\inifile %DefaultEngineFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX12
 
-     REM Create Config Folder and Engine.ini file if they don't exist
+     REM Create Config Folder, Engine.ini, and Game.ini if they don't exist
      if not exist %ConfigFolder% mkdir %ConfigFolder%
      if not exist %ConfigFile% type nul >%ConfigFile%
+     if not exist %GameFile% type nul >%GameFile%
 
      REM Setup local config to DX11
      Config\inifile %ConfigFile% [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0
@@ -49,7 +51,13 @@ if exist "%RunUAT%" (
      REM Set version number
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Version=%Version%
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildBranch=%Branch%
-	Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Hash=%Hash%
+	 Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Hash=%Hash%
+
+     REM Set BuildNo for HUD
+     Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildNo=%Version%
+
+     REM enable display of build number
+     Config\inifile %GameFile% [/Game/Blueprints/SupremacyGameInstance.SupremacyGameInstance_C] ShowBuildNo=True
 
      echo BuildNo %Version% Branch %Branch% Hash %Hash%
 pause
