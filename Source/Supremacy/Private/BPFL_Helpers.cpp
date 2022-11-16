@@ -60,6 +60,14 @@ void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const 
 		Bytes.Append(ConvertIntToBytes(Energy));
 }
 
+void UBPFL_Helpers::PackWarMachineWeaponUpdates(const uint8 UpdatedWeaponCount, const TArray<uint8>& WeaponIndices, const TArray<int>& WeaponAmmoCounts, TArray<uint8>& Bytes) {
+	Bytes.Emplace(UpdatedWeaponCount);
+	for (int i = 0; i < UpdatedWeaponCount; i++) {
+		Bytes.Emplace(WeaponIndices[i]);
+		Bytes.Append(ConvertIntToBytes(WeaponAmmoCounts[i]));
+	}
+}
+
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
 {
 	const int32 BufferSize = String.Len();
