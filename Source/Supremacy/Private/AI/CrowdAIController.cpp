@@ -151,6 +151,11 @@ void ACrowdAIController::StopAI_Implementation()
 	StopMovement();
 }
 
+void ACrowdAIController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
+{
+	Super::GameHasEnded(EndGameFocus, bIsWinner);
+}
+
 void ACrowdAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
