@@ -5,6 +5,8 @@
 
 #include "Kismet/GameplayStatics.h"
 
+#include "Types/WeaponStruct.h"
+
 // Sets default values for this component's properties
 UDamager::UDamager()
 {
@@ -42,6 +44,18 @@ void UDamager::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UDamager::SetDamageByWeaponStruct_Implementation(const FWeaponStruct& WeaponStruct)
+{
+	Damage = WeaponStruct.Damage;
+	DamageFalloff = WeaponStruct.Damage_Falloff;
+	DamageFalloffRate = WeaponStruct.Damage_Falloff_Rate;
+	DamageRadius = WeaponStruct.Damage_Radius;
+	DamageRadiusFalloff = WeaponStruct.Damage_Radius_Falloff;
+
+	// @todo - do conversion to damage type
+	// DamageType = WeaponStruct.Damage_Type;
 }
 
 // NOTE: BaseDamage is technically not necessary, but since it's currently stored in blueprint, no easy way to access.
