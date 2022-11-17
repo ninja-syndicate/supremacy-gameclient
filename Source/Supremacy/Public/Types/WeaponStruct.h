@@ -93,7 +93,7 @@ public:
 	                 Is_Arced(false),
 	                 Optimal_Range(0),
 	                 Recoil_Force(0),
-	                 Power_Cost(0), Power_Instance_Drain(false), Idle_Power_Cost(0)
+	                 Idle_Power_Cost(0), Power_Cost(0), Power_Instance_Drain(false)
 	{
 	}
 };
