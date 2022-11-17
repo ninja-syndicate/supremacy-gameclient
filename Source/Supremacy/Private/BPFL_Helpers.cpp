@@ -9,6 +9,7 @@
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponizedInterface.h"
 #include "Weapons/Components/WeaponAmmunitionComponent.h"
+#include "Mechs/PowerCoreBase.h"
 
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
@@ -43,7 +44,6 @@ TArray<uint8> UBPFL_Helpers::ConvertUInt16ToBytes(const uint16 Input)
 }
 
 void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const int Y, const int Yaw, const int Health, const int Shield, const int Energy, 
-										 const uint8 UpdatedWeaponCount, const TArray<uint8>& WeaponSocketIndices, const TArray<int>& WeaponAmmoCounts, 
 										 const TArray<bool> DiffArray, TArray<uint8>& Bytes)
 {
 	Bytes = TArray<uint8>();
@@ -62,12 +62,6 @@ void UBPFL_Helpers::PackWarMachineUpdate(const uint8 Number, const int X, const 
 		Bytes.Append(ConvertIntToBytes(Shield));
 	if (DiffArray[3])
 		Bytes.Append(ConvertIntToBytes(Energy));
-
-	Bytes.Add(UpdatedWeaponCount);
-	for (int i = 0; i < UpdatedWeaponCount; i++) {
-		Bytes.Add(WeaponSocketIndices[i]);
-		Bytes.Append(ConvertIntToBytes(WeaponAmmoCounts[i]));
-	}
 }
 
 void UBPFL_Helpers::PackWarMachineWeaponUpdates(UObject* WarMachine, const int PreviousTotalAmmo, TArray<uint8>& Bytes, int& TotalAmmo) {
@@ -101,6 +95,27 @@ void UBPFL_Helpers::PackWarMachineWeaponUpdates(UObject* WarMachine, const int P
 		Bytes = OutBytes;
 }
 
+void UBPFL_Helpers::PackWarMachinePowerCoreUpdate(UObject* WarMachine, const float PreviousTotalPower, TArray<uint8>& Bytes, float& TotalPower) {
+	AActor *Actor = Cast<AActor>(WarMachine);
+	if (!Actor) return;
+
+	UActorComponent *Component = Actor->GetComponentByClass(UPowerCoreBase::StaticClass());
+	if (!Component) return;
+
+	UPowerCoreBase* PowerCore = Cast<UPowerCoreBase>(Component);
+	if (!PowerCore) return;
+
+	float Total = PowerCore->TotalCurrentPower();
+
+	if (fabs(PreviousTotalPower - Total) < DBL_EPSILON) {
+		Bytes.Emplace(0);
+		return;
+	}
+	
+	Bytes.Emplace(1);
+	Bytes.Append(ConvertFloatToBytes(Total));
+}
+
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
 {
 	const int32 BufferSize = String.Len();
@@ -111,6 +126,24 @@ void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &By
 	{
 		Bytes.Add(Buffer[i]);
 	}
+}
+
+TArray<uint8> UBPFL_Helpers::ConvertFloatToBytes(const float& Value) {
+	TArray<uint8> Bytes;
+
+	union {
+		float f;
+		uint8 b[4];
+	} data;
+
+	data.f = Value;
+
+	Bytes.Emplace(data.b[0]);
+	Bytes.Emplace(data.b[1]);
+	Bytes.Emplace(data.b[2]);
+	Bytes.Emplace(data.b[3]);
+
+	return Bytes;
 }
 
 void UBPFL_Helpers::ConvertBytesToString(const TArray<uint8> Bytes, FString& String)
