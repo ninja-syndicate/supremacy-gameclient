@@ -8,6 +8,8 @@
 #include "Types/WeaponStruct.h"
 #include "Weapon.generated.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogWeapon, Log, All);
+
 UCLASS()
 class SUPREMACY_API AWeapon : public AActor, public IGameplayTagAssetInterface
 {
@@ -45,7 +47,7 @@ public:
 	/** Note that it will only dispatch the event when the `bIsTriggered` state changes rather than on every Trigger/Release. */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTriggerStateChanged, bool, bIsTriggered);
 	UPROPERTY(Category = "Weapon", BlueprintAssignable)
-	FOnTriggerStateChanged OnTriggered;
+	FOnTriggerStateChanged OnTriggerStateChanged;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -62,6 +64,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags", Replicated)
     FGameplayTagContainer GameplayTagContainer;
 
+protected:
+	/** Indicates whether this weapon is properly initialized so its API can be used. */
+	UPROPERTY(Category = "Weapon", VisibleAnywhere, BlueprintReadWrite)
+	bool bIsInitialized = false;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
