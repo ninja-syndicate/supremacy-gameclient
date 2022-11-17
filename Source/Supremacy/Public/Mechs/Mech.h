@@ -33,9 +33,12 @@ public:
 	void PlayAnimationOutro();
 	
 public:
+	//~Begin IWeaponizedInterface
 	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
 	virtual void GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons) override;
+	//~End IWeaponizedInterface
 
+protected:
 	UPROPERTY(Category = "Weapon", Replicated, BlueprintReadWrite)
 	TArray<class AWeapon*> Weapons;
 
