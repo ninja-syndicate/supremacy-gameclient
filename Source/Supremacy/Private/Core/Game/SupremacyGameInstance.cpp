@@ -3,6 +3,7 @@
 
 #include "Core/Game/SupremacyGameInstance.h"
 
+#include "Core/Game/SupremacyTypes.h"
 #include "Core/Damage/DamageTypes.h"
 
 USupremacyGameInstance::USupremacyGameInstance() : Super()
@@ -12,9 +13,19 @@ USupremacyGameInstance::USupremacyGameInstance() : Super()
 		UEnergyDamageType::StaticClass(), 
 		UExplosiveDamageType::StaticClass() 
 	};
+
+	NonflammableSurfaceTypes = { 
+		SurfaceType_Sand, 
+		SurfaceType_Energy 
+	};
 }
 
 const TArray<TSubclassOf<UDamageType>>& USupremacyGameInstance::GetDamageTypes() const
 {
 	return DamageTypes;
+}
+
+const TArray<TEnumAsByte<EPhysicalSurface>>& USupremacyGameInstance::GetNonflammableSurfaceTypes() const
+{
+	return NonflammableSurfaceTypes;
 }

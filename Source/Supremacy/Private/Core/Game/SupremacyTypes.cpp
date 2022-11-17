@@ -5,20 +5,22 @@
 
 #include "Core/Game/SupremacyGameInstance.h"
 
+DEFINE_LOG_CATEGORY(LogSupremacy);
+
 TSubclassOf<UDamageType> USupremacyFunctionLibrary::ConvertToDamageType(const UObject* WorldContextObject, uint8 DamageType)
 {
 	const UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(WorldContextObject);
 	const USupremacyGameInstance* SupremacyGameInstance = Cast<USupremacyGameInstance>(GameInstance);
 	if (!SupremacyGameInstance)
 	{
-		UE_LOG(LogTemp, Error, TEXT("USupremacyFunctionLibrary: Game instance must be USupremacyGameInstance!"));
+		UE_LOG(LogSupremacy, Error, TEXT("USupremacyFunctionLibrary: Game instance must be USupremacyGameInstance!"));
 		return nullptr;
 	}
 
 	const TArray<TSubclassOf<UDamageType>>& DamageTypes = SupremacyGameInstance->GetDamageTypes();
 	if (DamageType >= DamageTypes.Num())
 	{
-		UE_LOG(LogTemp, Error, TEXT("USupremacyFunctionLibrary: Invalid Damage Type!"));
+		UE_LOG(LogSupremacy, Warning, TEXT("USupremacyFunctionLibrary: Invalid Damage Type!"));
 		return nullptr;
 	}
 	return DamageTypes[DamageType];
