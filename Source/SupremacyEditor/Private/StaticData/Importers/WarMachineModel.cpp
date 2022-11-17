@@ -114,6 +114,11 @@ bool StaticDataImporter::WarMachineModel::HandleRow(UStaticData* DataAsset, TArr
 	if(!ParseFloat(RowCells[14], "max shield", Record->MaxShield)) return false;
 	if(!ParseFloat(RowCells[15], "shield recharge rate", Record->ShieldRechargeRate)) return false;
 	if(!ParseFloat(RowCells[16], "shield recharge power cost", Record->ShieldRechargePowerCost)) return false;
+
+	FGuid ShieldTypeID;
+	if (!ParseGuid(RowCells[17], TEXT("id"), ShieldTypeID)) return false;
+	Record->ShieldTypeId = ShieldTypeID;
+	Record->ShieldType = GuidToEShieldType[ShieldTypeID];
 	
 	if (!ParseFloat(RowCells[18], "shield recharge delay", Record->ShieldRechargeDelay)) return false;
 	if (!ParseFloat(RowCells[19], "height meters", Record->Height)) return false;
