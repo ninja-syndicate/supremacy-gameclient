@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "Damager.generated.h"
 
+/** NOTE: Category LogDamage is already being used in Unreal. */
+DECLARE_LOG_CATEGORY_EXTERN(LogDamager, Log, All);
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SUPREMACY_API UDamager : public UActorComponent

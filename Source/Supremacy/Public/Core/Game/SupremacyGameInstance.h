@@ -18,8 +18,12 @@ public:
 	USupremacyGameInstance();
 
 	const TArray<TSubclassOf<class UDamageType>>& GetDamageTypes() const;
+	const TArray<TEnumAsByte<EPhysicalSurface>>& GetNonflammableSurfaceTypes() const;
 
 protected:
 	UPROPERTY(Category = "Supremacy Game Instance", EditAnywhere, BlueprintReadWrite)
 	TArray<TSubclassOf<class UDamageType>> DamageTypes;
+
+	UPROPERTY(Category = "Supremacy Game Instance", EditAnywhere, BlueprintReadWrite)
+	TArray<TEnumAsByte<EPhysicalSurface>> NonflammableSurfaceTypes;
 };
