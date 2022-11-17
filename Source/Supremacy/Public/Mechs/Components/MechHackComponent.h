@@ -63,6 +63,10 @@ private:
 	TObjectPtr<class UNiagaraComponent> HackNiagaraComponent = nullptr;
 
 	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	FTimerHandle HackTimerHandle;
+
+private:
+	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsInitialized = false;
 
 	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
