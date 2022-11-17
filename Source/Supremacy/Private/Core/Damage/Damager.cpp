@@ -6,6 +6,9 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "Types/WeaponStruct.h"
+#include "Core/Game/SupremacyTypes.h"
+
+DEFINE_LOG_CATEGORY(LogDamager);
 
 // Sets default values for this component's properties
 UDamager::UDamager()
@@ -31,7 +34,7 @@ void UDamager::Initialize_Implementation()
 	const auto Owner = GetOwner();
 	if (!Owner)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UDamager: Invalid actor component owner!"));
+		UE_LOG(LogDamage, Warning, TEXT("UDamager: Invalid actor component owner!"));
 		return;
 	}
 	Instigator = Owner->GetInstigator();
@@ -53,9 +56,7 @@ void UDamager::SetDamageByWeaponStruct_Implementation(const FWeaponStruct& Weapo
 	DamageFalloffRate = WeaponStruct.Damage_Falloff_Rate;
 	DamageRadius = WeaponStruct.Damage_Radius;
 	DamageRadiusFalloff = WeaponStruct.Damage_Radius_Falloff;
-
-	// @todo - do conversion to damage type
-	// DamageType = WeaponStruct.Damage_Type;
+	DamageType = USupremacyFunctionLibrary::ConvertToDamageType(GetWorld(), WeaponStruct.Damage_Type);
 }
 
 // NOTE: BaseDamage is technically not necessary, but since it's currently stored in blueprint, no easy way to access.
