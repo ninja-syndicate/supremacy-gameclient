@@ -5,6 +5,9 @@
 
 #include "Net/UnrealNetwork.h"
 
+#include "Gameplay/BPFL_GameplayTagHelpers.h"
+#include "BlueprintGameplayTagLibrary.h"
+
 DEFINE_LOG_CATEGORY(LogWeapon);
 
 // Sets default values
@@ -20,7 +23,11 @@ AWeapon::AWeapon()
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// Append the init gameplay tags into the main gameplay tag container.
+	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(GameplayTagContainer, UBPFL_GameplayTagHelpers::GetAllTags(InitGameplayTagContainer));
+
+	bIsInitialized = true;
 }
 
 // Called every frame
@@ -29,12 +36,14 @@ void AWeapon::Tick(const float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AWeapon::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifetimeProps ) const
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps); 
-	DOREPLIFETIME( AWeapon, GameplayTagContainer );
-	DOREPLIFETIME( AWeapon, Struct );
-	DOREPLIFETIME_CONDITION( AWeapon, TargetLocation, COND_InitialOnly );
+
+	DOREPLIFETIME(AWeapon, GameplayTagContainer);
+	DOREPLIFETIME(AWeapon, Struct);
+	DOREPLIFETIME_CONDITION(AWeapon, InitGameplayTagContainer, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(AWeapon, TargetLocation, COND_InitialOnly);
 }
 
 void AWeapon::Trigger_Implementation()

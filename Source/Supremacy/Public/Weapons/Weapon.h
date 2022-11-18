@@ -26,6 +26,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
 	FVector TargetLocation;
 
+public:
 	UFUNCTION(Category = "Weapon", BlueprintPure)
 	bool IsTriggered() const;
 
@@ -61,16 +62,23 @@ protected:
 	bool bEnableFriendlyFire = false;
 
 protected:
+	/** Gameplay tags passed on spawn and then appended to the main gameplay tag container in BeginPlay. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, meta = (ExposeOnSpawn = true), Category = "Weapon|Gameplay Tags")
+	FGameplayTagContainer InitGameplayTagContainer;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags", Replicated)
     FGameplayTagContainer GameplayTagContainer;
 
 protected:
-	/** Indicates whether this weapon is properly initialized so its API can be used. */
+	/** Indicates whether this weapon is properly initialized so it can be used. */
 	UPROPERTY(Category = "Weapon", VisibleAnywhere, BlueprintReadWrite)
 	bool bIsInitialized = false;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//~Begin IGameplayTagAssetInterface
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = GameplayTagContainer; }
+	//~End IGameplayTagAssetInterface
 };
