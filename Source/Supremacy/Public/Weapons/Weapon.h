@@ -20,6 +20,9 @@ public:
 	AWeapon();
 
 public:
+	static const FName GetTagName() { return "Weapon"; };
+
+public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated, meta=(ExposeOnSpawn="true"))
 	FWeaponStruct Struct;
 
