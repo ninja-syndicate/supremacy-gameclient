@@ -27,31 +27,53 @@ void UMeleeCapabilityComponent::BeginPlay()
 		return;
 	}
 
-	if (bUseBoxComp)
+	if (!GetOwner()->GetInstigator())
 	{
-		TArray<UActorComponent*> Components = GetOwner()->GetComponentsByTag(UBoxComponent::StaticClass(), MeleeBoxCompTagName);
-		if (Components.Num() > 1)
-		{
-			UE_LOG(LogWeapon, Warning, TEXT("UMeleeCapabilityComponent: Multiple melee box components aren't supported yet. Using the first one as a fallback."));
-		}
+		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Invalid instigator!"));
+		return;
+	}
 
-		UWeaponAmmunitionComponent* AmmoComp = GetOwner()->FindComponentByClass<UWeaponAmmunitionComponent>();
-		if (!AmmoComp)
-		{
-			// For now, if it has no ammo comp, always melee. TODO: Provide options.
-			bSwitchToMeleePose = true;
-		}
-		else
-		{
-			// Bind event on zero ammo so it can switch to melee pose when out of ammo.
-			AmmoComp->OnZeroAmmo.AddDynamic(this, &UMeleeCapabilityComponent::HandleNoAmmo);
-		}
+	if (!bUseBoxComp)
+	{
+		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Not using box component is currently not supported."));
+		return;
+	}
+
+	TArray<UActorComponent*> Components = GetOwner()->GetComponentsByTag(UBoxComponent::StaticClass(), MeleeBoxCompTagName);
+	if (Components.Num() == 0)
+	{
+		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Needs a UBoxComponent to work."));
+		return;
+	}
+
+	if (Components.Num() > 1)
+	{
+		UE_LOG(LogWeapon, Warning, TEXT("UMeleeCapabilityComponent: Multiple melee box components aren't supported yet. Using the first one as a fallback."));
+	}
+	MeleeBoxComp = Cast<UBoxComponent>(Components[0]);
+
+	UWeaponAmmunitionComponent* AmmoComp = GetOwner()->FindComponentByClass<UWeaponAmmunitionComponent>();
+	if (!AmmoComp)
+	{
+		// For now, if it has no ammo comp, always melee. TODO: Provide options.
+		bSwitchToMeleePose = true;
+	}
+	else
+	{
+		bSwitchToMeleePose = !AmmoComp->HasAmmo();
+		AmmoComp->OnAmmoChanged.AddDynamic(this, &UMeleeCapabilityComponent::HandleAmmoChanged);
 	}
 }
 
-void UMeleeCapabilityComponent::HandleNoAmmo()
+void UMeleeCapabilityComponent::HandleAmmoChanged(int CurrentAmmo)
 {
-	bSwitchToMeleePose = true;
+	bSwitchToMeleePose = CurrentAmmo <= 0;
+}
+
+bool UMeleeCapabilityComponent::TriggerMelee_Implementation()
+{
+	// For now, the main logic will be implemented in the blueprints.
+	return true;
 }
 
 // Called every frame

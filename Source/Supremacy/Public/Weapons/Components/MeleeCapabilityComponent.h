@@ -16,6 +16,11 @@ public:
 	// Sets default values for this component's properties
 	UMeleeCapabilityComponent();
 
+public:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Melee Capability Component")
+	bool TriggerMelee();
+	virtual bool TriggerMelee_Implementation();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -25,15 +30,18 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	void HandleNoAmmo();
+	void HandleAmmoChanged(int CurrentAmmo);
 
 private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Melee Capability Component")
+	TObjectPtr<class UBoxComponent> MeleeBoxComp = nullptr;
+
 	UPROPERTY(Category = "Melee Capability Component", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	FName MeleeBoxCompTagName = FName("MeleeBoxComp");
 
 	UPROPERTY(Category = "Melee Capability Component", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	bool bUseBoxComp = true;
 
-	UPROPERTY(Category = "Melee Capability Component", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true), Category = "Melee Capability Component")
 	bool bSwitchToMeleePose = false;
 };
