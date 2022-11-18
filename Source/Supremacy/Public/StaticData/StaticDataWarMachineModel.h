@@ -6,6 +6,7 @@
 #include "StaticDataBaseRecord.h"
 #include "StaticDataBrand.h"
 #include "Mechs/Mech.h"
+#include "Types/ShieldType.h"
 #include "Types/WarMachineBoostStat.h"
 #include "Types/WarMachineType.h"
 #include "Types/WarMachinePowerCoreSize.h"
@@ -65,9 +66,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	float ShieldRechargePowerCost;
 	
-	// TOOD: Shield Type
-	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
-	// ShieldTypeId;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	FGuid ShieldTypeId;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	EShieldType ShieldType;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
 	float ShieldRechargeDelay;
@@ -113,6 +115,11 @@ public:
 		Struct.Speed = Speed;
 		Struct.WalkSpeedModifier = WalkSpeedModifier;
 		Struct.Height = Height;
+
+		Struct.ShieldType = ShieldType;
+		Struct.PowerStats.Idle_Drain = IdleDrain;
+		Struct.PowerStats.Walk_Drain = WalkDrain;
+		Struct.PowerStats.Run_Drain = RunDrain;
 
 		// if (DefaultSkin)
 		// {

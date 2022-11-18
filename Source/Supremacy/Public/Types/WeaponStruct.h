@@ -70,6 +70,8 @@ public:
 	float Recoil_Force;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Idle_Power_Cost;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Power_Cost;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Power_Instance_Drain;
@@ -91,7 +93,7 @@ public:
 	                 Is_Arced(false),
 	                 Optimal_Range(0),
 	                 Recoil_Force(0),
-	                 Power_Cost(0), Power_Instance_Drain(false)
+	                 Idle_Power_Cost(0), Power_Cost(0), Power_Instance_Drain(false)
 	{
 	}
 };
