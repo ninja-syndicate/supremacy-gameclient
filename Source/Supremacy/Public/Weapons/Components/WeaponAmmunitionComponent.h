@@ -34,9 +34,15 @@ public:
 	UFUNCTION(Category = "Weapon Ammunition Component", BlueprintCallable)
 	void RefillAmmo();
 
+public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoChanged, int, CurrentAmmo);
 	UPROPERTY(BlueprintAssignable, Category = "Weapon Ammunition Component")
 	FOnAmmoChanged OnAmmoChanged;
+
+	/** Only dispatched when the ammo becomes zero as a result of reducing ammo. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnZeroAmmo);
+	UPROPERTY(BlueprintAssignable, Category = "Weapon Ammunition Component")
+	FOnZeroAmmo OnZeroAmmo;
 
 protected:
 	// Called when the game starts
