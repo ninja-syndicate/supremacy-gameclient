@@ -24,10 +24,27 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (!GetInstigator())
+	{
+		UE_LOG(LogWeapon, Error, TEXT("AWeapon: Instigator is invalid."));
+		return;
+	}
+
 	// Append the init gameplay tags into the main gameplay tag container.
 	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(GameplayTagContainer, UBPFL_GameplayTagHelpers::GetAllTags(InitGameplayTagContainer));
 
-	bIsInitialized = true;
+	TArray<USceneComponent*> ChildrenComps;
+	RootComponent->GetChildrenComponents(true, ChildrenComps);
+
+	// Ignore this weapon's components when moving. (This may not be required?)
+	for (USceneComponent* Comp : ChildrenComps)
+	{
+		UPrimitiveComponent* PrimitiveComp = Cast<UPrimitiveComponent>(Comp);
+		if (!PrimitiveComp) return;
+
+		PrimitiveComp->IgnoreActorWhenMoving(this, true);
+		PrimitiveComp->IgnoreActorWhenMoving(GetInstigator(), true);
+	}
 }
 
 // Called every frame
@@ -44,6 +61,12 @@ void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 	DOREPLIFETIME(AWeapon, Struct);
 	DOREPLIFETIME_CONDITION(AWeapon, InitGameplayTagContainer, COND_InitialOnly);
 	DOREPLIFETIME_CONDITION(AWeapon, TargetLocation, COND_InitialOnly);
+}
+
+
+void AWeapon::Initialize_Implementation()
+{
+	// @todo implementation
 }
 
 void AWeapon::Trigger_Implementation()
@@ -74,6 +97,11 @@ void AWeapon::Release_Implementation()
 	}
 }
 
+bool AWeapon::IsInitialized() const
+{
+	return bIsInitialized;
+}
+
 bool AWeapon::IsTriggered() const
 {
 	return bIsTriggered;
@@ -87,4 +115,9 @@ bool AWeapon::CanFriendlyFire() const
 void AWeapon::SetFriendlyFire(bool Enable)
 {
 	bEnableFriendlyFire = Enable;
+}
+
+void AWeapon::LoadAssetAsync_Implementation()
+{
+	// todo TArray<
 }
