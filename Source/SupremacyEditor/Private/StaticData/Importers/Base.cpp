@@ -155,26 +155,26 @@ bool StaticDataImporter::Base::Valid()
 		return false;
 	}
 
-	TArray<FString> headers;
-	if (!Importer.GetHeader(headers))
+	TArray<FString> Headers;
+	if (!Importer.GetHeader(Headers))
 	{
 		ErrorReason = FString::Format(TEXT("Could not get headers for file at {0}"), {FileName});
 		return false;
 	}
 
-	if (headers.Num() != FileHeaders.Num())
+	if (Headers.Num() != FileHeaders.Num())
 	{
 		ErrorReason = FString::Format(TEXT("file {0} had {1} headers, should have had {2} headers"), {
-			FileName, headers.Num(), FileHeaders.Num()});
+			FileName, Headers.Num(), FileHeaders.Num()});
 		return false;
 	}
 
-	for (int index = 0; index < headers.Num(); ++index)
+	for (int Index = 0; Index < Headers.Num(); ++Index)
 	{
-		if (headers[index] != FileHeaders[index])
+		if (Headers[Index] != FileHeaders[Index])
 		{
 			ErrorReason = FString::Format(TEXT("file {0}'s {1} header was \"{2}\" not \"{3}\""), {
-				FileName, index, headers[index], FileHeaders[index]});
+				FileName, Index, Headers[Index], FileHeaders[Index]});
 			return false;
 		}
 	}
@@ -183,28 +183,33 @@ bool StaticDataImporter::Base::Valid()
 
 bool StaticDataImporter::Base::ImportAndUpdate(UStaticData* DataAsset)
 {
-	TArray<FString> rowData;
-	bool success = true;
+	TArray<FString> RowData;
+	bool bSuccess = true;
 
-	while(Importer.GetNextDataRow(rowData))
+	while(Importer.GetNextDataRow(RowData))
 	{
-		if (rowData.Num() != FileHeaders.Num())
+		if (RowData.Num() != FileHeaders.Num())
 		{
-			ErrorReason = FString::Printf(TEXT("header count doesn't match (line = %d, expected = %d, got = %d"), Importer.GetLineNumber(), FileHeaders.Num(), rowData.Num());
-			//success = false;
+			ErrorReason = FString::Printf(TEXT("header count doesn't match (line = %d, expected = %d, got = %d"), Importer.GetLineNumber(), FileHeaders.Num(), RowData.Num());
+			//bSuccess = false;
 			continue;
 		}
 
-		if (!HandleRow(DataAsset, rowData))
+		if (!HandleRow(DataAsset, RowData))
 		{
-			FString Temp = ErrorReason;
+			const FString Temp = ErrorReason;
 			ErrorReason = FString::Printf(TEXT("failed to handle row: %s"), *Temp);
-			success = false;
+			bSuccess = false;
 			break;
 		}
 	}
 
-	return success;
+	return bSuccess;
+}
+
+void StaticDataImporter::Base::Reset()
+{
+	Importer.Reset();
 }
 
 FString StaticDataImporter::Base::GetErrorReason()
