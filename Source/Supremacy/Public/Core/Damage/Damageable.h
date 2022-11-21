@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "NativeGameplayTags.h"
 #include "Damageable.generated.h"
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Damageable);
 
 // @todo - need to reparent existing damageable to c++ damageable.
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )

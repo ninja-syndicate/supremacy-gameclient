@@ -3,6 +3,8 @@
 
 #include "Core/Damage/Damageable.h"
 
+UE_DEFINE_GAMEPLAY_TAG(TAG_Damageable, "Damageable");
+
 // Sets default values for this component's properties
 UDamageable::UDamageable()
 {
