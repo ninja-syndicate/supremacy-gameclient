@@ -32,6 +32,7 @@ class SUPREMACY_API ACrowdAIController : public AAIController
 public:
 	ACrowdAIController(const FObjectInitializer& ObjectInitializer);
 	
+	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false);
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;

@@ -41,7 +41,7 @@ void ACrowdAIController::BeginPlay()
 	ASupremacyGameState* GameState = Cast<ASupremacyGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (!IsValid(GameState)) 
 	{
-		UE_LOG(LogTemp, Error, TEXT("ACrowdAIController: Unable to retrieve the game state!"));
+		UE_LOG(LogTemp, Error, TEXT("ACrowdAIController: Unsupported game state!"));
 		return;
 	}
 
@@ -149,6 +149,11 @@ void ACrowdAIController::StopAI_Implementation()
 		MoveComp->StopMovementImmediately();
 	}
 	StopMovement();
+}
+
+void ACrowdAIController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
+{
+	Super::GameHasEnded(EndGameFocus, bIsWinner);
 }
 
 void ACrowdAIController::Tick(float DeltaTime)

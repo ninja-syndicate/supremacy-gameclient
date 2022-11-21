@@ -91,6 +91,9 @@ public:
     UStaticDataPowerCore* GetPowerCore(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
+    TArray<UStaticDataPowerCore*> GetPowerCoresBySize(const EWarMachinePowerCoreSize& Size);
+
+    UFUNCTION(BlueprintCallable)
     UStaticDataBattleAbility* GetBattleAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
