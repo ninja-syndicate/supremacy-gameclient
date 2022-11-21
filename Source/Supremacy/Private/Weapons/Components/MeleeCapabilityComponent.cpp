@@ -26,24 +26,27 @@ void UMeleeCapabilityComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!GetOwner())
-	{
-		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Owner is invalid!"));
-		return;
-	}
-
-	if (!GetOwner()->GetInstigator())
-	{
-		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Invalid instigator!"));
-		return;
-	}
-
+	// Feature: Use the weapon collision instead of box collision if required.
 	if (!bUseBoxComp)
 	{
 		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Not using box component is currently not supported."));
 		return;
 	}
 
+	// Check if it's valid owner.
+	if (!GetOwner())
+	{
+		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Owner is invalid!"));
+		return;
+	}
+	// Check if it has valid instigator to associate damage with.
+	if (!GetOwner()->GetInstigator())
+	{
+		UE_LOG(LogWeapon, Error, TEXT("UMeleeCapabilityComponent: Invalid instigator!"));
+		return;
+	}
+
+	// Check for melee box comps.
 	TArray<UActorComponent*> Components = GetOwner()->GetComponentsByTag(UBoxComponent::StaticClass(), MeleeBoxCompTagName);
 	if (Components.Num() == 0)
 	{
@@ -55,10 +58,12 @@ void UMeleeCapabilityComponent::BeginPlay()
 	{
 		UE_LOG(LogWeapon, Warning, TEXT("UMeleeCapabilityComponent: Multiple melee box components aren't supported yet. Using the first one as a fallback."));
 	}
+	// Bind events.
 	MeleeBoxComp = Cast<UBoxComponent>(Components[0]);
 	MeleeBoxComp.Get()->OnComponentBeginOverlap.AddDynamic(this, &UMeleeCapabilityComponent::OnMeleeBoxBeginOverlap);
 	MeleeBoxComp.Get()->OnComponentEndOverlap.AddDynamic(this, &UMeleeCapabilityComponent::OnMeleeBoxEndOverlap);
 
+	// Get the ammo comp if it has one and use that to determine when to switch poses.
 	UWeaponAmmunitionComponent* AmmoComp = GetOwner()->FindComponentByClass<UWeaponAmmunitionComponent>();
 	if (!AmmoComp)
 	{
@@ -142,7 +147,4 @@ void UMeleeCapabilityComponent::OnMeleeBoxEndOverlap(
 void UMeleeCapabilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
-
