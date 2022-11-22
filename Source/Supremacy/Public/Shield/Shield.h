@@ -4,11 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "NativeGameplayTags.h"
 #include "GameplayTagAssetInterface.h"
 #include "Shield.generated.h"
-
-UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Shield);
 
 UCLASS()
 class SUPREMACY_API AShield : public AActor, public IGameplayTagAssetInterface
