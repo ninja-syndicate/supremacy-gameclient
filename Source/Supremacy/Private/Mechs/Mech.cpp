@@ -5,10 +5,17 @@
 
 #include "Weapons/Weapon.h"
 
+DEFINE_LOG_CATEGORY(LogMech);
+
 // Sets default values
 AMech::AMech() {}
 
-void AMech::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifetimeProps ) const
+void AMech::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void AMech::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps); 
 
@@ -19,6 +26,11 @@ void AMech::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifetim
 void AMech::OnRep_SetWarMachineStruct()
 {
 	Setup();
+}
+
+bool AMech::IsInitialized() const
+{
+	return bIsInitialized;
 }
 
 AWeapon* AMech::GetWeaponBySlot_Implementation(int SlotIndex)
