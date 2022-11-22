@@ -14,6 +14,7 @@ namespace StaticDataImporter
 		void SetDirectory(FString DirectoryPath);
 		bool Valid();
 		virtual bool ImportAndUpdate(UStaticData *DataAsset);
+		void Reset();
 		FString GetErrorReason();
 		virtual ~Base();
 

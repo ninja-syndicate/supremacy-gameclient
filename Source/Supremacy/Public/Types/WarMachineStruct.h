@@ -4,6 +4,7 @@
 #include "Faction.h"
 #include "PowerCoreStruct.h"
 #include "Rarity.h"
+#include "ShieldType.h"
 #include "WeaponStruct.h"
 #include "WarMachineStruct.generated.h"
 
@@ -168,6 +169,8 @@ public:
 	float SprintSpreadModifier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EShieldType ShieldType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FPowerCoreStruct PowerCore;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachinePowerStats PowerStats;
@@ -189,18 +192,19 @@ public:
 
 		Weapons(WarMachine.Weapons),
 		Customisation(WarMachine.Customisation),
-	
+
 		Height(WarMachine.Height),
 
 		Health(WarMachine.Health),
 		HealthMax(WarMachine.Health_Max),
 		ShieldMax(WarMachine.Shield_Max),
 		ShieldRechargeRate(WarMachine.Shield_Recharge_Rate),
-	
+
 		Speed(WarMachine.Speed),
 		WalkSpeedModifier(WarMachine.Walk_Speed_Modifier),
 		SprintSpreadModifier(WarMachine.Sprint_Spread_Modifier),
 
+		ShieldType(EShieldType::ShieldType_Orb),
 		PowerCore(WarMachine.Power_Core),
 		PowerStats(WarMachine.Power_Stats),
 
@@ -213,6 +217,8 @@ public:
 		Weapons.Sort(SortWeaponBySlotPredicate);
 	}
 
-	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Height(0), Health(3000), HealthMax(3000), ShieldMax(0), ShieldRechargeRate(0), Speed(0), WalkSpeedModifier(2), SprintSpreadModifier(1.25)
-	{}
+	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Height(0), Health(3000), HealthMax(3000), ShieldMax(0),
+	                     ShieldRechargeRate(0), Speed(0), WalkSpeedModifier(2), SprintSpreadModifier(1.25), ShieldType(EShieldType::ShieldType_Orb)
+	{
+	}
 };
