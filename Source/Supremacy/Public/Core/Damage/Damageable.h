@@ -3,21 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagAssetInterface.h"
 #include "Components/ActorComponent.h"
-#include "NativeGameplayTags.h"
 #include "Damageable.generated.h"
-
-UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Damageable);
 
 // @todo - need to reparent existing damageable to c++ damageable.
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SUPREMACY_API UDamageable : public UActorComponent
+class SUPREMACY_API UDamageable : public UActorComponent, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
 	UDamageable();
+
+public:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+public:
+	//~Begin IGameplayTagAssetInterface
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = GameplayTagContainer; }
+	//~End IGameplayTagAssetInterface
 
 protected:
 	// Called when the game starts
@@ -27,5 +33,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Damageable|Gameplay Tags")
+	FGameplayTagContainer GameplayTagContainer;
 };
