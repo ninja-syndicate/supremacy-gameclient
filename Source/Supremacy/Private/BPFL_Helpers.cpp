@@ -409,5 +409,5 @@ UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString TextureNa
 }
 
 uint8 UBPFL_Helpers::SafeConvertFloatToColourByte(const float Value) {
-	return (uint8)Value;
+	return (uint8)(Value);
 }
