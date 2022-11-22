@@ -8,8 +8,6 @@
 #include "Weapons/WeaponizedInterface.h"
 #include "Mech.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogMech, Log, All);
-
 UCLASS()
 class SUPREMACY_API AMech final : public ACharacter, public IWeaponizedInterface
 {

@@ -13,8 +13,6 @@
 #include "Core/Gameplay/GameplayTagFunctionLibrary.h"
 #include "StaticData/StaticData.h"
 
-DEFINE_LOG_CATEGORY(LogWeapon);
-
 // Sets default values
 AWeapon::AWeapon() : Super()
 {

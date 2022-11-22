@@ -5,8 +5,6 @@
 
 #include "Weapons/Weapon.h"
 
-DEFINE_LOG_CATEGORY(LogMech);
-
 // Sets default values
 AMech::AMech() {}
 
