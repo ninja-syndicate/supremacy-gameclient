@@ -7,7 +7,6 @@
 #include "GameFramework/PawnMovementComponent.h"
 
 #include "Mechs/Mech.h"
-#include "Weapons/Weapon.h"
 
 UMechAnimInstance::UMechAnimInstance() : Super()
 {
