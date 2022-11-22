@@ -135,5 +135,8 @@ public:
 	static UTexture2D *CreateLinearTextureFromPixels(const FString TextureName, const int Width, const int Height, const TArray<FColor>& Pixels);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
+	static TArray<FColor> GetPixelsFromLinearTexture(UTexture2D* Texture);
+
+	UFUNCTION(BlueprintCallable, Category = "Helpers")
 	static uint8 SafeConvertFloatToColourByte(const float Value);
 };

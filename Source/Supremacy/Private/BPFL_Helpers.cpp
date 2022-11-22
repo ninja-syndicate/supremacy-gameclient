@@ -408,6 +408,33 @@ UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString TextureNa
 	return Texture;
 }
 
+TArray<FColor> UBPFL_Helpers::GetPixelsFromLinearTexture(UTexture2D* Texture) {
+	TArray<FColor> Colors;
+
+	if (!Texture) return Colors;
+
+	FTexturePlatformData* PlatformData = Texture->GetPlatformData();
+	const uint8 *Data = (const uint8 *) PlatformData->Mips[0].BulkData.LockReadOnly();
+
+	int Width = PlatformData->Mips[0].SizeX;
+	int Height = PlatformData->Mips[0].SizeY;
+
+	for (int y = 0; y < Height; y++) {
+		for (int x = 0; x < Width; x++) {
+			FColor Color;
+			Color.B = Data[((x + y * Width) * 4) + 0];
+			Color.G = Data[((x + y * Width) * 4) + 1];
+			Color.R = Data[((x + y * Width) * 4) + 2];
+			Color.A = Data[((x + y * Width) * 4) + 3];
+			Colors.Emplace(Color);
+		}
+	}
+
+	PlatformData->Mips[0].BulkData.Unlock();
+
+	return Colors;
+}
+
 uint8 UBPFL_Helpers::SafeConvertFloatToColourByte(const float Value) {
 	return (uint8)(Value);
 }
