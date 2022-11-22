@@ -10,6 +10,19 @@
 #include "Weapons/WeaponizedInterface.h"
 #include "Weapons/Components/WeaponAmmunitionComponent.h"
 
+#include "Misc/FileHelper.h"
+
+#if WITH_EDITOR
+#include "AssetRegistryModule.h"
+#include "ContentBrowserModule.h"
+#include "Factories/Texture2DFactoryNew.h"
+#include "AssetToolsModule.h"
+#include "IAssetTools.h"
+#include "IContentBrowserSingleton.h"
+#include "PackageTools.h"
+#endif
+
+
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
 	Type = Bytes[0];
@@ -332,4 +345,69 @@ bool UBPFL_Helpers::MultiConeTraceForObjects(
 		}
 	}
 	return !OutActors.IsEmpty();
+}
+
+UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString TextureName, const int Width, const int Height, const TArray<FColor>& Pixels) {
+	FString PackagePath = TEXT("/Game/Blueprints/EditorUtilities/MaterialDefiner/LookupTables/");
+		
+	IAssetTools& AssetTools = FModuleManager::Get().LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
+
+	FString PackageName;
+	FString AssetName;
+	AssetTools.CreateUniqueAssetName(PackagePath, TextureName, PackageName, AssetName);
+
+	UPackage* Package = CreatePackage(*PackageName);
+	Package->FullyLoad();
+
+	UTexture2D *Texture = NewObject<UTexture2D>(Package, *AssetName, RF_Public | RF_Standalone | RF_MarkAsRootSet);
+	Texture->AddToRoot();
+
+	Texture->Filter = TextureFilter::TF_Nearest;
+	Texture->MipGenSettings = TextureMipGenSettings::TMGS_NoMipmaps;
+	Texture->CompressionSettings = TextureCompressionSettings::TC_Masks;
+	Texture->SRGB = 0;
+	
+	FTexturePlatformData *PlatformData = new FTexturePlatformData();
+	PlatformData->SizeX = Width;
+	PlatformData->SizeY = Height;
+	PlatformData->SetNumSlices(1);
+	PlatformData->PixelFormat = EPixelFormat::PF_B8G8R8A8;
+
+	FTexture2DMipMap* Mip = new FTexture2DMipMap;
+	Mip->SizeX = Width;
+	Mip->SizeY = Height;
+	PlatformData->Mips.Add(Mip);
+
+	Texture->SetPlatformData(PlatformData);
+
+	uint8* PixelData = new uint8[Width * Height * 4];
+	for (int y = 0; y < Height; y++) {
+		for (int x = 0; x < Width; x++) {
+			int32 Index = x + y * Width;
+			PixelData[Index * 4 + 0] = Pixels[Index].B;
+			PixelData[Index * 4 + 1] = Pixels[Index].G;
+			PixelData[Index * 4 + 2] = Pixels[Index].R;
+			PixelData[Index * 4 + 3] = Pixels[Index].A;
+		}
+	}
+
+	Mip->BulkData.Lock(LOCK_READ_WRITE);
+	uint8* TextureData = (uint8*)Mip->BulkData.Realloc(Width * Height * 4);
+	FMemory::Memcpy(TextureData, (void *)PixelData, sizeof(uint8) * Height * Width * 4);
+	Mip->BulkData.Unlock();
+
+	Texture->Source.Init(Width, Height, 1, 1, ETextureSourceFormat::TSF_BGRA8, PixelData);
+
+	Texture->UpdateResource();
+	Package->MarkPackageDirty();
+	FAssetRegistryModule::AssetCreated(Texture);
+
+	FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
+	UPackage::SavePackage(Package, Texture, EObjectFlags::RF_Public | EObjectFlags::RF_Standalone, *PackageFileName, GError, nullptr, true, true, SAVE_NoError);
+
+	return Texture;
+}
+
+uint8 UBPFL_Helpers::SafeConvertFloatToColourByte(const float Value) {
+	return (uint8)Value;
 }

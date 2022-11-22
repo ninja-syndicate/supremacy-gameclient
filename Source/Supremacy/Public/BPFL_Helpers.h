@@ -130,4 +130,10 @@ public:
 		UClass* ActorClassFilter,
 		const TArray<AActor*>& ActorsToIgnore,
 		TArray<class AActor*>& OutActors);
+
+	UFUNCTION(BlueprintCallable, Category = "Helpers")
+	static UTexture2D *CreateLinearTextureFromPixels(const FString TextureName, const int Width, const int Height, const TArray<FColor>& Pixels);
+
+	UFUNCTION(BlueprintCallable, Category = "Helpers")
+	static uint8 SafeConvertFloatToColourByte(const float Value);
 };
