@@ -18,15 +18,15 @@
 
 AFlamethrowerWeapon::AFlamethrowerWeapon() : Super()
 {
-	Damager = CreateDefaultSubobject<UDamager>(TEXT("Damager"));
-	
-	// Every flamethrower can be used as a melee weapon.
-	MeleeBoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("MeleeBoxComponent"));
-
 	// Create default flamethrower static mesh component to be set by blueprints.
 	// Assumes that every flamethrower will have some sort of static mesh.
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComp->SetCanEverAffectNavigation(false);
+
+	Damager = CreateDefaultSubobject<UDamager>(TEXT("Damager"));
+
+	// Every flamethrower can be used as a melee weapon.
+	MeleeBoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("MeleeBoxComponent"));
 
 	// Create default flame stream niagara component and turn it off by default.
 	FlameStreamNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("FlameStreamNiagaraComponent"));
@@ -38,8 +38,9 @@ AFlamethrowerWeapon::AFlamethrowerWeapon() : Super()
 	FlameStreamNiagaraComp->SetAbsolute(false, false, true);
 
 	// Setup component hierarchy.
-	FlameStreamNiagaraComp->SetupAttachment(StaticMeshComp, BarrelSocketName);
 	StaticMeshComp->SetupAttachment(RootComponent);
+	FlameStreamNiagaraComp->SetupAttachment(StaticMeshComp, BarrelSocketName);
+	MeleeBoxComp->SetupAttachment(StaticMeshComp);
 }
 
 void AFlamethrowerWeapon::BeginPlay()
