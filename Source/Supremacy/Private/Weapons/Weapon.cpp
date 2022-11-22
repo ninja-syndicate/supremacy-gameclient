@@ -5,9 +5,13 @@
 
 #include "Net/UnrealNetwork.h"
 #include "Engine/AssetManager.h"
-
-#include "Core/Gameplay/GameplayTagFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetGuidLibrary.h"
 #include "BlueprintGameplayTagLibrary.h"
+
+#include "Core/Game/SupremacyGameInstance.h"
+#include "Core/Gameplay/GameplayTagFunctionLibrary.h"
+#include "StaticData/StaticData.h"
 
 DEFINE_LOG_CATEGORY(LogWeapon);
 
@@ -121,6 +125,61 @@ void AWeapon::SetFriendlyFire(bool Enable)
 
 void AWeapon::LoadAssetAsync_Implementation()
 {
+	// Use the default skin if the skin id is empty.
+	if (Struct.Skin_ID.IsEmpty()) return;
+
 	// Anything that needs to be asynchronously loaded.
-	// FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+
+	// Parse the model ID and skin ID into GUID.
+	bool bModelIDParseSuccess = false, bSkinIDParseSuccess = false;
+	FGuid ModelGuidID, SkinGuidID;
+	UKismetGuidLibrary::Parse_StringToGuid(Struct.Model_ID, ModelGuidID, bModelIDParseSuccess);
+	UKismetGuidLibrary::Parse_StringToGuid(Struct.Skin_ID, SkinGuidID, bSkinIDParseSuccess);
+
+	// Get the game instance.
+	USupremacyGameInstance* GameInstance = Cast<USupremacyGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance)
+	{
+		UE_LOG(LogWeapon, Error, TEXT("AWeapon: Failed to retrieve the supremacy game instance!"));
+		return;
+	}
+	if (!GameInstance->GetStaticData())
+	{
+		UE_LOG(LogWeapon, Error, TEXT("AWeapon: Invalid static data."));
+		return;
+	}
+
+	// Get the skin for this weapon model.
+	const TMap<FString, TSoftObjectPtr<UMaterial>>& WeaponMaterials = 
+		GameInstance->GetStaticData()->MaterialsForWeapon(ModelGuidID, SkinGuidID);
+	for (const auto& Pair : WeaponMaterials)
+	{
+		if (Pair.Value.IsNull()) continue;
+	
+		StreamableHandle = Streamable.RequestAsyncLoad(
+			Pair.Value.ToSoftObjectPath(),
+			FStreamableDelegate::CreateUObject(this, &AWeapon::LoadAssetDeferred)
+		);
+	}
+}
+
+void AWeapon::LoadAssetDeferred()
+{
+	if (!StreamableHandle.IsValid()) return;
+	if (!StreamableHandle->HasLoadCompleted()) return;
+
+	UMaterialInstance* Material = Cast<UMaterialInstance>(StreamableHandle->GetLoadedAsset());
+	if (!Material) return;
+
+	TArray<UStaticMeshComponent*> StaticComps;
+	GetComponents<UStaticMeshComponent>(StaticComps, true);
+
+	for (UActorComponent* Comp : StaticComps)
+	{
+		UStaticMeshComponent* StaticComp = Cast<UStaticMeshComponent>(Comp);
+		if (!StaticComp) continue;
+
+		StaticComp->SetMaterial(0, Material);
+	}
 }

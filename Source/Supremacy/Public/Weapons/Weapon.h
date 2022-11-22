@@ -91,9 +91,15 @@ protected:
 	void Initialize();
 	virtual void Initialize_Implementation();
 
+	// todo: moving functions
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void LoadAssetAsync();
 	virtual void LoadAssetAsync_Implementation();
+
+	TSharedPtr<struct FStreamableHandle> StreamableHandle;
+
+	void LoadAssetDeferred();
 
 	/** Indicates whether this weapon is properly initialized so it can be used. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
