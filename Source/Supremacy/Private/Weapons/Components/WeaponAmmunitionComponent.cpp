@@ -66,6 +66,11 @@ void UWeaponAmmunitionComponent::ReduceAmmo()
 
 	--CurrentAmmo;
 	OnAmmoChanged.Broadcast(CurrentAmmo);
+
+	if (CurrentAmmo <= 0)
+	{
+		OnZeroAmmo.Broadcast();
+	}
 }
 
 void UWeaponAmmunitionComponent::RefillAmmo()

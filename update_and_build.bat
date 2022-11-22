@@ -51,13 +51,17 @@ if exist "%RunUAT%" (
      REM Set version number
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Version=%Version%
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildBranch=%Branch%
-	 Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Hash=%Hash%
+     Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] Hash=%Hash%
 
      REM Set BuildNo for HUD
      Config\inifile %ConfigFile% [/Game/UI/HUD.HUD_C] BuildNo=%Version%
 
-     REM enable display of build number
+     REM Enable display of build number
      Config\inifile %GameFile% [/Game/Blueprints/SupremacyGameInstance.SupremacyGameInstance_C] ShowBuildNo=True
+
+     REM Stream client - enable connection to battle server
+     Config\inifile %GameFile% [/Game/Blueprints/SupremacyGameInstance.SupremacyGameInstance_C] ConnectToBattleServer=True
+     Config\inifile %GameFile% [/Game/Blueprints/SupremacyGameInstance.SupremacyGameInstance_C] AutoHost=True
 
      echo BuildNo %Version% Branch %Branch% Hash %Hash%
 pause

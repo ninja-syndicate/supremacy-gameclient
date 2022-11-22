@@ -105,6 +105,13 @@ UStaticDataPowerCore* UStaticData::GetPowerCore(const FGuid& ID)
     return nullptr;
 }
 
+TArray<UStaticDataPowerCore*> UStaticData::GetPowerCoresBySize(const EWarMachinePowerCoreSize& Size)
+{
+    TArray<UStaticDataPowerCore*> Cores = TArray<UStaticDataPowerCore*>();
+    for (UStaticDataPowerCore* Record : PowerCoreArray) if (Record->Size == Size) Cores.Push(Record);
+    return Cores;
+}
+
 UStaticDataBattleAbility* UStaticData::GetBattleAbility(const FGuid& ID)
 {
     for (UStaticDataBattleAbility* Record : BattleAbilityArray) if (Record->ID == ID) return Record;

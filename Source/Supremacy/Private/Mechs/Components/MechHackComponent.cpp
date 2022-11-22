@@ -73,7 +73,7 @@ void UMechHackComponent::Hack()
 	AddHackEffect();
 
 	// TODO: If player controlled, replace its controller with AI controller.
-	// TODO: Set timer to unhack
+	GetWorld()->GetTimerManager().SetTimer(HackTimerHandle, this, &UMechHackComponent::Unhack, HackDuration, false, 0);
 	// TODO: Change the script to AI begin call, and cancel queries.
 	// TODO: Send an event to the server.
 
@@ -90,6 +90,7 @@ void UMechHackComponent::Unhack()
 		// TODO: Need a way to check if it was previously player controlled. Release the weapon in that case.
 		if (OwnerPawn->IsPlayerControlled())
 		{
+			// Also, check if the player is holding the button... and release/trigger that way.
 			Weapon->Release();
 		}
 		else if (WeaponState.bIsTriggered)
