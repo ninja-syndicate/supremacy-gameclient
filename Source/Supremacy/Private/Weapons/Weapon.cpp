@@ -4,8 +4,9 @@
 #include "Weapons/Weapon.h"
 
 #include "Net/UnrealNetwork.h"
+#include "Engine/AssetManager.h"
 
-#include "Gameplay/BPFL_GameplayTagHelpers.h"
+#include "Core/Gameplay/GameplayTagFunctionLibrary.h"
 #include "BlueprintGameplayTagLibrary.h"
 
 DEFINE_LOG_CATEGORY(LogWeapon);
@@ -31,7 +32,8 @@ void AWeapon::BeginPlay()
 	}
 
 	// Append the init gameplay tags into the main gameplay tag container.
-	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(GameplayTagContainer, UBPFL_GameplayTagHelpers::GetAllTags(InitGameplayTagContainer));
+	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(
+		GameplayTagContainer, UGameplayTagFunctionLibrary::GetAllTags(InitGameplayTagContainer));
 
 	TArray<USceneComponent*> ChildrenComps;
 	RootComponent->GetChildrenComponents(true, ChildrenComps);
@@ -119,5 +121,6 @@ void AWeapon::SetFriendlyFire(bool Enable)
 
 void AWeapon::LoadAssetAsync_Implementation()
 {
-	// todo TArray<
+	// Anything that needs to be asynchronously loaded.
+	// FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
 }
