@@ -12,6 +12,7 @@
 #include "Weapons/Weapon.h"
 #include "Weapons/Components/WeaponAmmunitionComponent.h"
 #include "Core/Damage/Damageable.h"
+#include "Core/Gameplay/GameplayTags.h"
 
 // Sets default values for this component's properties
 UMeleeCapabilityComponent::UMeleeCapabilityComponent()
@@ -105,8 +106,14 @@ void UMeleeCapabilityComponent::OnMeleeBoxBeginOverlap(
 	// Ignore if already overlapped.
 	if (OverlappingActors.Contains(OtherActor)) return;
 
-	const bool bHitDamageable = OtherActor->FindComponentByClass<UDamageable>() != nullptr;
-	// const bool bHitShield = bHitDamageable
+	bool bHitDamageable = false;
+	bool bHitShield = false;
+	IGameplayTagAssetInterface* GameplayInterface = Cast<IGameplayTagAssetInterface>(OtherActor);
+	if (GameplayInterface)
+	{
+		bHitDamageable = GameplayInterface->HasMatchingGameplayTag(TAG_Damageable);
+		bHitShield = GameplayInterface->HasMatchingGameplayTag(TAG_Shield);
+	}
 	USoundBase* SoundToPlay = bHitDamageable ? DamageableHitSound : NormalHitSound;
 
 	OverlappingActors.Add(OtherActor);
@@ -119,7 +126,9 @@ void UMeleeCapabilityComponent::OnMeleeBoxBeginOverlap(
 		UKismetMathLibrary::Conv_VectorToRotator(SweepResult.ImpactNormal));
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SoundToPlay, SweepResult.ImpactPoint, 1.0f, 1.0f, 0.0f, SoundAttenuation);
 
-	// @todo - Damage the actor.
+	// check team and damage the actor
+	OtherActor;
+	Instigator;
 
 	// Report noise event for AI.
 	UAISense_Hearing::ReportNoiseEvent(GetWorld(), SweepResult.ImpactPoint, 1.0f, Instigator, MaxHitNoiseRange, AWeapon::GetTagName());
