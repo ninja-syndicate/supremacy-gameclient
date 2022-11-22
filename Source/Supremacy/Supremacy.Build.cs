@@ -7,11 +7,12 @@ public class Supremacy : ModuleRules
 	public Supremacy(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { 
-			"Core", "CoreUObject", "Engine", "InputCore", "Niagara", 
-			"PhysicsCore", "AnimGraphRuntime", "GameplayTasks", 
-			"GameplayTags", "AIModule", "NavigationSystem", "Landscape", 
+
+		PublicDependencyModuleNames.AddRange(new string[]
+		{
+			"Core", "CoreUObject", "Engine", "HTTP", "InputCore", "Niagara",
+			"PhysicsCore", "AnimGraphRuntime", "GameplayTasks",
+			"GameplayTags", "AIModule", "NavigationSystem", "Landscape",
 			"ApplicationCore", "EasyBallistics", "Json", "JsonUtilities"
 		});
 
@@ -19,7 +20,7 @@ public class Supremacy : ModuleRules
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
+
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 
