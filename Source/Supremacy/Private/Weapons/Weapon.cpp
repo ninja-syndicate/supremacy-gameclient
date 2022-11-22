@@ -123,6 +123,13 @@ void AWeapon::SetFriendlyFire(bool Enable)
 	bEnableFriendlyFire = Enable;
 }
 
+void AWeapon::GenerateHash()
+{
+	FGuid Guid = FGuid::NewGuid();
+
+	Struct.Hash = Guid.ToString();
+}
+
 void AWeapon::LoadAssetAsync_Implementation()
 {
 	// Use the default skin if the skin id is empty.

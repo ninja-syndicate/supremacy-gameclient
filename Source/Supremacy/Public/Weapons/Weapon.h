@@ -91,7 +91,8 @@ protected:
 	void Initialize();
 	virtual void Initialize_Implementation();
 
-	// todo: moving functions
+	UFUNCTION(BlueprintCallable)
+	void GenerateHash();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void LoadAssetAsync();
