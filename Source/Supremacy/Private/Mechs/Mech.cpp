@@ -41,3 +41,8 @@ void AMech::GetWeapons_Implementation(TArray<AWeapon*>& OutWeapons)
 {
 	OutWeapons = Weapons;
 }
+
+float AMech::GetWeaponBaseScale_Implementation() const
+{
+	return WeaponBaseScale;
+}

@@ -17,15 +17,16 @@ public:
 	// Sets default values for this actor's properties
 	AMech();
 
-public:
 	virtual void BeginPlay() override;
 
 public:
 	//~Begin IWeaponizedInterface
 	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
 	virtual void GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons) override;
+	virtual float GetWeaponBaseScale_Implementation() const override;
 	//~End IWeaponizedInterface
 
+public:
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, ReplicatedUsing=OnRep_SetWarMachineStruct, meta=(ExposeOnSpawn="true"))
 	FWarMachineStruct WarMachineStruct;
 
@@ -51,9 +52,18 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech")
 	FOnInitialized OnInitialized;
 
+	/** Dispatched when the mech equips a new weapon. Currently, this is not dispatched on weapon spawn. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponEquipped, class AWeapon*, Weapon);
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech")
+	FOnWeaponEquipped OnWeaponEquipped;
+
 protected:
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Weapon")
 	TArray<class AWeapon*> Weapons;
+	
+	/** The scale to use for the weapons equipped by the mech. Intended to be set from blueprints/subclasses. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
+	float WeaponBaseScale = 1.0f;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
