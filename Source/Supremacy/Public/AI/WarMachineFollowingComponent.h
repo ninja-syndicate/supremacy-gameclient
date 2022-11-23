@@ -24,7 +24,7 @@ public:
 	// Override this to modify pathfinding query setting.
 	virtual void OnPathfindingQuery(FPathFindingQuery& Query) override;
 
-	/** Override this to allow AI to get off - path for steeringand avoidance purposes. */
+	/** Override this to allow AI to get off-path for steering and avoidance purposes. */
 	virtual bool IsOnPath() const override;
 
 	/** Override to register the agent in case it got possessed after BeginPlay. */
