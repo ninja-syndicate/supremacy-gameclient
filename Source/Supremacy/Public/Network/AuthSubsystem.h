@@ -41,12 +41,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Auth Subsystem", meta=(ToolTip="Attempt auto login with saved token from previous login."))
 	void LoginToken(const FLoginRequestComplete OnComplete, const FLoginRequestError OnError);
 
+	UFUNCTION(BlueprintCallable, Category="Auth Subsystem", meta=(ToolTip="Sends logout request to server and clears token."))
+	void Logout() const;
+
 protected:
 	FHttpModule* Http;
 	void OnLoginRequestComplete(const FHttpRequestPtr Request, const FHttpResponsePtr Response, const bool Success) const;
 
 private:
 	void SaveToken(const FString& Token) const;
+	void ClearToken() const;
 	
 	bool HasInvalidAPIEndpoint() const;
 };

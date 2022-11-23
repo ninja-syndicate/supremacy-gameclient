@@ -62,7 +62,8 @@ void UAuthSubsystem::LoginToken(const FLoginRequestComplete OnComplete, const FL
 	{
 		Token = *LoadedGame->Token;
 	}
-	else
+
+	if (Token.IsEmpty())
 	{
 		bool _ = LoginRequestError.ExecuteIfBound("No Saved Token");
 		return;
@@ -82,6 +83,34 @@ void UAuthSubsystem::LoginToken(const FLoginRequestComplete OnComplete, const FL
 	Request->SetContentAsString(JsonString);
 	
 	Request->ProcessRequest();
+}
+
+void UAuthSubsystem::Logout() const
+{
+	// Get token
+	FString Token;
+	if (const USupremacySaveGame* LoadedGame = Cast<USupremacySaveGame>(
+		UGameplayStatics::LoadGameFromSlot("SaveGame", 0)))
+	{
+		Token = *LoadedGame->Token;
+	}
+	else
+	{
+		// No Saved Token
+		return;
+	}
+
+	// Send logout request to server (invalidates token)
+	const TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
+	Request->SetURL(APIEndpoint + "/auth/logout");
+	Request->SetVerb("POST");
+	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	Request->SetHeader(TEXT("Cookie"), "xsyn-token=" + Token);
+
+	Request->ProcessRequest();
+
+	// Clear token from save game
+	ClearToken();
 }
 
 void UAuthSubsystem::OnLoginRequestComplete(const FHttpRequestPtr Request, const FHttpResponsePtr Response,
@@ -129,6 +158,16 @@ void UAuthSubsystem::SaveToken(const FString& Token) const
 		SaveGameInstance->Token = Token;
 		if (!UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveGame", 0))
 			UE_LOG(LogAuth, Warning, TEXT("Failed to save token."));
+	}
+}
+
+void UAuthSubsystem::ClearToken() const
+{
+	if (USupremacySaveGame* SaveGameInstance = Cast<USupremacySaveGame>(UGameplayStatics::CreateSaveGameObject(USupremacySaveGame::StaticClass())))
+	{
+		SaveGameInstance->Token = "";
+		if (!UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveGame", 0))
+			UE_LOG(LogAuth, Warning, TEXT("Failed to clear token."));
 	}
 }
 
