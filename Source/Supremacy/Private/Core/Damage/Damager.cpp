@@ -8,8 +8,6 @@
 #include "Types/WeaponStruct.h"
 #include "Core/Game/SupremacyTypes.h"
 
-DEFINE_LOG_CATEGORY(LogDamager);
-
 // Sets default values for this component's properties
 UDamager::UDamager()
 {

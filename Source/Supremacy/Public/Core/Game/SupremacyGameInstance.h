@@ -17,6 +17,11 @@ class SUPREMACY_API USupremacyGameInstance : public UGameInstance
 public:
 	USupremacyGameInstance();
 
+public:
+	virtual void Init() override;
+
+public:
+	class UStaticData* GetStaticData() const;
 	const TArray<TSubclassOf<class UDamageType>>& GetDamageTypes() const;
 	const TArray<TEnumAsByte<EPhysicalSurface>>& GetNonflammableSurfaceTypes() const;
 
@@ -26,4 +31,9 @@ protected:
 
 	UPROPERTY(Category = "Supremacy Game Instance", EditAnywhere, BlueprintReadWrite)
 	TArray<TEnumAsByte<EPhysicalSurface>> NonflammableSurfaceTypes;
+
+protected:
+	/** This can be set from blueprint or from path. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StaticData")
+	TObjectPtr<class UStaticData> StaticData = nullptr;
 };
