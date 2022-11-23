@@ -23,7 +23,7 @@ public:
 	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 	virtual void PreUpdateAnimation(float DeltaSeconds) override;
 
-public:
+protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta = (BlueprintThreadSafe = true), Category = "Thread Safe Functions")
 	void UpdateLocomotion(float DeltaSeconds);
 	virtual void UpdateLocomotion_Implementation(float DeltaSeconds);
@@ -47,6 +47,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AnimInstance")
 	bool bIsInitialized = false;
 
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true), Category = "Animation")
+	float LocomotionAnimPlayRate = 1.0f;
+	
 private:
 	/** 
 	 * Accessed variables in the pre-event graph (game thread, before event-graph and NativeUpdateAnimation).
