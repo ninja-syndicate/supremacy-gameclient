@@ -8,8 +8,6 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogAuth, Log, All);
 
-
-
 /**
  * Authentication with Xsyn
  */
@@ -21,20 +19,9 @@ class SUPREMACY_API UAuthSubsystem final : public UWorldSubsystem
 	UPROPERTY(Config)
 	FString APIEndpoint;
 	
-	FUser CurrentUser;
-	FString CurrentToken;
-	
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
-
-	// Getters
-	
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Auth Subsystem")
-	void GetUser(bool& Valid, FUser& User) const;
-	
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Auth Subsystem")
-	void GetToken(bool& Valid, FString& Token) const;
 	
 	// Delegates
 	
@@ -48,13 +35,18 @@ public:
 
 	// Login functions
 	
-	UFUNCTION(BlueprintCallable, Category="Auth Subsystem")
+	UFUNCTION(BlueprintCallable, Category="Auth Subsystem", meta=(ToolTip="Login with email and password."))
 	void LoginEmail(const FString& Email, const FString& Password, const FLoginRequestComplete OnComplete, const FLoginRequestError OnError);
-	
-	UFUNCTION(BlueprintCallable, Category="Auth Subsystem")
-	void LoginToken(const FString& Token, const FLoginRequestComplete OnComplete, const FLoginRequestError OnError);
+
+	UFUNCTION(BlueprintCallable, Category="Auth Subsystem", meta=(ToolTip="Attempt auto login with saved token from previous login."))
+	void LoginToken(const FLoginRequestComplete OnComplete, const FLoginRequestError OnError);
 
 protected:
 	FHttpModule* Http;
 	void OnLoginRequestComplete(const FHttpRequestPtr Request, const FHttpResponsePtr Response, const bool Success) const;
+
+private:
+	void SaveToken(const FString& Token) const;
+	
+	bool HasInvalidAPIEndpoint() const;
 };
