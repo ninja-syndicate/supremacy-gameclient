@@ -3,6 +3,9 @@
 
 #include "Weapons/Components/WeaponScaleComponent.h"
 
+#include "GameplayTagAssetInterface.h"
+
+#include "Core/Gameplay/GameplayTags.h"
 #include "Logger/SupremacyLogTypes.h"
 #include "Weapons/WeaponizedInterface.h"
 
@@ -25,6 +28,13 @@ void UWeaponScaleComponent::BeginPlay()
 		return;
 	}
 
+	IGameplayTagAssetInterface* GameplayTagInterface = Cast<IGameplayTagAssetInterface>(GetOwner());
+	if (!GameplayTagInterface || !GameplayTagInterface->HasMatchingGameplayTag(TAG_Weapon))
+	{
+		UE_LOG(LogComponent, Error, TEXT("UWeaponScaleComponent: The instigator does not implement IGameplayTagAssetInterface or missing the tag."));
+		return;
+	}
+
 	APawn* Instigator = GetOwner()->GetInstigator();
 	if (!Instigator)
 	{
@@ -38,16 +48,29 @@ void UWeaponScaleComponent::BeginPlay()
 		return;
 	}
 
-	TArray<UStaticMeshComponent*> StaticComps;
-	GetOwner()->GetComponents<UStaticMeshComponent>(StaticComps, true);
-
-	const float WeaponBaseScale = IWeaponizedInterface::Execute_GetWeaponBaseScale(Instigator);
-	for (UStaticMeshComponent* StaticComp : StaticComps)
+	UStaticMeshComponent* StaticMeshComp = nullptr;
+	TArray<UActorComponent*> Comps = GetOwner()->GetComponentsByTag(UStaticMeshComponent::StaticClass(), MainStaticMeshName);
+	if (Comps.IsEmpty())
 	{
-		//@todo - need to strict scale to just static mesh comp, not Niagara vfx.
-		const FVector NewRelativeScale = StaticComp->GetRelativeScale3D() * WeaponBaseScale;
-		StaticComp->SetRelativeScale3D(NewRelativeScale);
+		// If no components with the tag "Main", then fallback to the first static mesh component.
+		// If there isn't one, nothing needs to be scaled.
+		StaticMeshComp = GetOwner()->FindComponentByClass<UStaticMeshComponent>();
+		if (!StaticMeshComp) return;
 	}
+	else
+	{
+		// There should be only one main static mesh component so cast the first one.
+		StaticMeshComp = Cast<UStaticMeshComponent>(Comps[0]);
+	}
+
+	// NOTE: To avoid weird looking niagara effects after scaling, the scale mode of the niagara effects needs
+	// to be Absolute Scale if it is attached to the static mesh component. And change the niagara effect
+	// appropriately.
+	const float WeaponBaseScale = IWeaponizedInterface::Execute_GetWeaponBaseScale(Instigator);
+	const FVector NewRelativeScale = StaticMeshComp->GetRelativeScale3D() * WeaponBaseScale;
+	StaticMeshComp->SetRelativeScale3D(NewRelativeScale);
+
+	//@todo - listen for the scale change and re-size it.
 }
 
 // Called every frame
