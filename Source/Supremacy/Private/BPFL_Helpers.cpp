@@ -347,14 +347,20 @@ bool UBPFL_Helpers::MultiConeTraceForObjects(
 	return !OutActors.IsEmpty();
 }
 
-UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString TextureName, const int Width, const int Height, const TArray<FColor>& Pixels) {
+UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FColor>& Pixels) {
 	FString PackagePath = TEXT("/Game/Blueprints/EditorUtilities/MaterialDefiner/LookupTables/");
 		
 	IAssetTools& AssetTools = FModuleManager::Get().LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
 
 	FString PackageName;
 	FString AssetName;
-	AssetTools.CreateUniqueAssetName(PackagePath, TextureName, PackageName, AssetName);
+	if (OverwriteExisting) {
+		PackageName = PackagePath + TextureName;
+		AssetName = TextureName;
+	}
+	else {
+		AssetTools.CreateUniqueAssetName(PackagePath, TextureName, PackageName, AssetName);
+	}
 
 	UPackage* Package = CreatePackage(*PackageName);
 	Package->FullyLoad();
@@ -435,6 +441,14 @@ TArray<FColor> UBPFL_Helpers::GetPixelsFromLinearTexture(UTexture2D* Texture) {
 	return Colors;
 }
 
-uint8 UBPFL_Helpers::SafeConvertFloatToColourByte(const float Value) {
-	return (uint8)(Value);
+uint8 UBPFL_Helpers::SafeConvertFloatToColourByte(FString Name, const float Value, const float Step) {
+	uint8 Out = (uint8)floorf(Value / Step);
+	// UE_LOG(LogTemp, Error, TEXT("Float to Byte [%s: %f -> %d]"), *Name, Value, Out);
+	return Out;
+}
+
+float UBPFL_Helpers::SafeConvertColourByteToFloat(FString Name, const uint8 Value, const float Step) {
+	float Out = (float)Value * Step;
+	// UE_LOG(LogTemp, Error, TEXT("Byte To Float [%s: %d -> %f]"), *Name, Value, Out);
+	return Out;
 }
