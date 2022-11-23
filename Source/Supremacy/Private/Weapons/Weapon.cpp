@@ -10,6 +10,7 @@
 #include "BlueprintGameplayTagLibrary.h"
 
 #include "Core/Game/SupremacyGameInstance.h"
+#include "Core/Gameplay/GameplayTags.h"
 #include "Core/Gameplay/GameplayTagFunctionLibrary.h"
 #include "StaticData/StaticData.h"
 
@@ -20,6 +21,8 @@ AWeapon::AWeapon() : Super()
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+
+	GameplayTagContainer.AddTag(TAG_Weapon);
 }
 
 // Called when the game starts or when spawned
@@ -32,23 +35,7 @@ void AWeapon::BeginPlay()
 		UE_LOG(LogWeapon, Error, TEXT("AWeapon: Instigator is invalid."));
 		return;
 	}
-
-	// Append the init gameplay tags into the main gameplay tag container.
-	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(
-		GameplayTagContainer, UGameplayTagFunctionLibrary::GetAllTags(InitGameplayTagContainer));
-
-	TArray<USceneComponent*> ChildrenComps;
-	RootComponent->GetChildrenComponents(true, ChildrenComps);
-
-	// Ignore this weapon's components when moving. (This may not be required?)
-	for (USceneComponent* Comp : ChildrenComps)
-	{
-		UPrimitiveComponent* PrimitiveComp = Cast<UPrimitiveComponent>(Comp);
-		if (!PrimitiveComp) return;
-
-		PrimitiveComp->IgnoreActorWhenMoving(this, true);
-		PrimitiveComp->IgnoreActorWhenMoving(GetInstigator(), true);
-	}
+	Initialize();
 }
 
 // Called every frame
@@ -67,10 +54,36 @@ void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 	DOREPLIFETIME_CONDITION(AWeapon, TargetLocation, COND_InitialOnly);
 }
 
-
 void AWeapon::Initialize_Implementation()
 {
-	// @todo implementation
+	// Append the init gameplay tags into the main gameplay tag container.
+	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(
+		GameplayTagContainer, UGameplayTagFunctionLibrary::GetAllTags(InitGameplayTagContainer));
+
+	// Get the children comps to ignore when moving (This may not be required?).
+	TArray<USceneComponent*> ChildrenComps;
+	RootComponent->GetChildrenComponents(true, ChildrenComps);
+
+	for (USceneComponent* Comp : ChildrenComps)
+	{
+		UPrimitiveComponent* PrimitiveComp = Cast<UPrimitiveComponent>(Comp);
+		if (!PrimitiveComp) return;
+
+		PrimitiveComp->IgnoreActorWhenMoving(this, true);
+		PrimitiveComp->IgnoreActorWhenMoving(GetInstigator(), true);
+	}
+
+	// If the weapon hash is not set, generate one for it.
+	if (Struct.Hash.IsEmpty())
+		GenerateHash();
+
+	// Load the weapon skin asynchronously.
+	LoadAssetAsync();
+
+	// TODO: This should ideally be moved to subclasses.
+	// TODO: Figure out a way to check all assets loaded and then dispatch.
+	bIsInitialized = true;
+	OnWeaponInitialized.Broadcast(this);
 }
 
 void AWeapon::Trigger_Implementation()
