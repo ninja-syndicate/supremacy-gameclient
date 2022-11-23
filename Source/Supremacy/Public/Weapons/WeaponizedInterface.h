@@ -29,6 +29,6 @@ public:
 	void GetWeapons(TArray<class AWeapon*>& OutWeapons);
 
 	UFUNCTION(Category = "Weaponized", BlueprintCallable, BlueprintNativeEvent)
-	float GetWeaponBaseScale();
-	virtual float GetWeaponBaseScale_Implementation();
+	float GetWeaponBaseScale() const;
+	virtual float GetWeaponBaseScale_Implementation() const;
 };
