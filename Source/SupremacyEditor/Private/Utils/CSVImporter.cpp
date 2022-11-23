@@ -4,7 +4,6 @@
 
 bool Utils::CSVImporter::SetFileName(FString Filename)
 {
-	if (Filename == CurrentFilename) return true;
 	dataLoaded = false;
 	CurrentFilename = Filename;
 	return true;

@@ -61,32 +61,33 @@ bool UStaticDataImporter::SetImportDirectory()
 		return false;
 	}
 
-	FString outFolder;
-	if (!DesktopPlatform->OpenDirectoryDialog(nullptr, "Select Static Directory", "..", outFolder))
+	FString OutFolder;
+	if (!DesktopPlatform->OpenDirectoryDialog(nullptr, "Select Static Directory", "..", OutFolder))
 	{
 		LogWarning("No Folder selected");
 		return false;
 	}
 
-	if (!IFileManager::Get().DirectoryExists(*outFolder))
+	if (!IFileManager::Get().DirectoryExists(*OutFolder))
 	{
-		LogWarning(FString::Printf(TEXT("No Directory found at %s"), *outFolder));
+		LogWarning(FString::Printf(TEXT("No Directory found at %s"), *OutFolder));
 		return false;
 	}
 
 	for (const auto Importer : Importers)
 	{
-		Importer->SetDirectory(outFolder);
+		Importer->SetDirectory(OutFolder);
 		if (!Importer->Valid())
 		{
-			LogWarning(FString::Printf(TEXT("Invalid Static Data found at %s"), *outFolder));
+			LogWarning(FString::Printf(TEXT("Invalid Static Data found at %s"), *OutFolder));
 			LogError(Importer->GetErrorReason());
 			return false;
 		}
 	}	
 	
 	Ready = true;
-	ImportPath = outFolder;
+	ImportPath = OutFolder;
+	SaveConfig();
 	return true;
 }
 
@@ -102,6 +103,11 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* Asset)
 		LogError("Import Directory not set");
 		return false;
 	}
+	if (!IFileManager::Get().DirectoryExists(*ImportPath))
+	{
+		LogError("Import Directory does not exist");
+		return false;
+	}
 
 	if (!IFileManager::Get().DirectoryExists(*ImportPath))
 	{
@@ -114,6 +120,14 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* Asset)
 
 	for (const auto DataImporter : Importers)
 	{
+		DataImporter->SetDirectory(ImportPath);
+		if (!DataImporter->Valid())
+		{
+			LogWarning(FString::Printf(TEXT("Invalid Static Data found at %s"), *ImportPath));
+			LogError(DataImporter->GetErrorReason());
+			return false;
+		}
+		
 		if(!DataImporter->ImportAndUpdate(Asset))
 		{
 			LogMessage(FString::Printf(TEXT("Importer %s failed because: %s"), *DataImporter->FileName, *DataImporter->GetErrorReason()));
@@ -124,6 +138,12 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* Asset)
 	UKismetSystemLibrary::EndTransaction();
 	
 	LogMessage("Import Succeeded!");
+
+	for (const auto DataImporter : Importers)
+	{
+		DataImporter->Reset();
+	}
+	
 	return true;
 }
 

@@ -82,11 +82,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "PoolManager",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/e25d628414564ed49499c5014ff62983"
-		},
-		{
 			"Name": "EasyBallistics",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/bbecde0f66914263b57fd2af5a0c7ffe"
