@@ -63,8 +63,6 @@ _( Note: You'll need to be signed in with the company's Epic Account to have acc
 - [BlueprintWebSocket](https://www.unrealengine.com/marketplace/en-US/product/blueprintwebsocket)
 - [JSONParser](https://www.unrealengine.com/marketplace/en-US/product/jsonparser)
 - [EasyBallistics Plugin](https://www.unrealengine.com/marketplace/en-US/product/easyballistics-plugin)
-- [Actor Pool Manager Plugin](https://www.unrealengine.com/marketplace/en-US/product/actor-pool-manager-plugin)
-- [Flying Navigation System](https://www.unrealengine.com/marketplace/en-US/product/flying-navigation-system)
 
 [UnrealJS](https://github.com/getnamo/UnrealJs) is also used but is included in the repo. It does however require the V8 library to be installed which can be
 done via `setup.bat`. If `setup.bat` doesn't work due to `sh` command not being recognised, navigate to `Plugins/UnrealJs` directory and run
