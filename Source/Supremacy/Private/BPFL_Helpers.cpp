@@ -348,19 +348,17 @@ bool UBPFL_Helpers::MultiConeTraceForObjects(
 	return !OutActors.IsEmpty();
 }
 
-UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FColor>& Pixels) {
-	FString PackagePath = TEXT("/Game/Blueprints/EditorUtilities/MaterialDefiner/LookupTables/");
-		
+UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString Path, const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FColor>& Pixels) {
 	IAssetTools& AssetTools = FModuleManager::Get().LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
 
 	FString PackageName;
 	FString AssetName;
 	if (OverwriteExisting) {
-		PackageName = PackagePath + TextureName;
+		PackageName = Path + TextureName;
 		AssetName = TextureName;
 	}
 	else {
-		AssetTools.CreateUniqueAssetName(PackagePath, TextureName, PackageName, AssetName);
+		AssetTools.CreateUniqueAssetName(Path, TextureName, PackageName, AssetName);
 	}
 
 	UPackage* Package = CreatePackage(*PackageName);

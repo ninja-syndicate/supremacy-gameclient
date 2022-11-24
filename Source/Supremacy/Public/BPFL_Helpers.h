@@ -132,7 +132,7 @@ public:
 		TArray<class AActor*>& OutActors);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
-	static UTexture2D *CreateLinearTextureFromPixels(const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FColor>& Pixels);
+	static UTexture2D *CreateLinearTextureFromPixels(const FString Path, const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FColor>& Pixels);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
 	static TArray<FColor> GetPixelsFromLinearTexture(UTexture2D* Texture);
