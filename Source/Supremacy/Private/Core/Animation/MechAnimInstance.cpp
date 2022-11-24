@@ -4,7 +4,9 @@
 #include "Core/Animation/MechAnimInstance.h"
 
 #include "KismetAnimationLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "Mechs/Mech.h"
 
@@ -38,6 +40,17 @@ void UMechAnimInstance::NativeBeginPlay()
 	{
 		MechOwner->OnInitialized.AddDynamic(this, &UMechAnimInstance::HandleMechInitialized);
 	}
+
+	UCharacterMovementComponent* MoveComp = MechOwner->FindComponentByClass<UCharacterMovementComponent>();
+	if (!MoveComp)
+	{
+		// @todo - log to warn on upper body turn rate of 0 when not supported.
+		// UE_LOG(LogAnimation, Error, TEXT("UMechAnimInstance: Owner is not a mech!"));
+	}
+	else
+	{
+		UpperBodyTurnRate = MoveComp->RotationRate.Yaw;
+	}
 	bIsInitialized = true;
 }
 
@@ -49,6 +62,8 @@ void UMechAnimInstance::PreUpdateAnimation(float DeltaSeconds)
 
 	PreVelocity = MechOwner->GetVelocity();
 	PreRotation = MechOwner->GetActorRotation();
+	// @todo - check GetViewRotation and GetBaseAimRotation
+	PreLookRotation = MechOwner->GetControlRotation();
 }
 
 void UMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -63,6 +78,7 @@ void UMechAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 	if (!bIsInitialized) return;
 
 	UpdateLocomotion(DeltaSeconds);
+	UpdateUpperBody(DeltaSeconds);
 }
 
 void UMechAnimInstance::UpdateLocomotion_Implementation(float DeltaSeconds)
@@ -70,6 +86,12 @@ void UMechAnimInstance::UpdateLocomotion_Implementation(float DeltaSeconds)
 	// Only perform thread-safe operations here.
 	Speed = PreVelocity.Size();
 	Direction = UKismetAnimationLibrary::CalculateDirection(PreVelocity, PreRotation);
+}
+
+void UMechAnimInstance::UpdateUpperBody_Implementation(float DeltaSeconds)
+{
+	const FRotator TargetUpperBodyRot = (PreLookRotation - PreRotation).GetNormalized();
+	UpperBodyRot = UKismetMathLibrary::RInterpTo_Constant(UpperBodyRot, TargetUpperBodyRot, DeltaSeconds, UpperBodyTurnRate);
 }
 
 void UMechAnimInstance::HandleMechInitialized_Implementation()
