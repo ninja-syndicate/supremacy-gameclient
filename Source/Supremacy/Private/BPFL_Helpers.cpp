@@ -459,8 +459,8 @@ void UBPFL_Helpers::FloatToShort(float Value, uint8& A, uint8& B) {
 		B = Data.B;
 	}
 	else {
-		A = Data.A;
-		B = Data.B;
+		A = Data.B;
+		B = Data.A;
 	}
 }
 
