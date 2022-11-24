@@ -13,7 +13,7 @@ public class Supremacy : ModuleRules
 			"Core", "CoreUObject", "Engine", "HTTP", "InputCore", "Niagara",
 			"PhysicsCore", "AnimGraphRuntime", "GameplayTasks",
 			"GameplayTags", "AIModule", "NavigationSystem", "Landscape",
-			"ApplicationCore", "EasyBallistics", "Json", "JsonUtilities"
+			"ApplicationCore", "EasyBallistics", "Json", "JsonUtilities", "WebBrowser"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

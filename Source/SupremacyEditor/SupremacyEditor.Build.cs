@@ -11,7 +11,7 @@ public class SupremacyEditor : ModuleRules
 		
 		PrivateDependencyModuleNames.AddRange(new []
 		{
-			"Core", "CoreUObject", "Engine", "Slate", "SlateCore", "UnrealEd", "Blutility", "UMG", "DesktopPlatform", "HTTP"
+			"Core", "CoreUObject", "Engine", "Slate", "SlateCore", "UnrealEd", "Blutility", "UMG", "DesktopPlatform", "HTTP", "WebBrowser"
 		});
 		
 		PrivateIncludePathModuleNames.AddRange(new string[]{});
