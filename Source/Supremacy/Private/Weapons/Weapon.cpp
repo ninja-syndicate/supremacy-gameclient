@@ -173,20 +173,20 @@ void AWeapon::LoadAssetAsync_Implementation()
 
 void AWeapon::LoadAssetDeferred()
 {
-	//if (!StreamableHandle.IsValid()) return;
-	//if (!StreamableHandle->HasLoadCompleted()) return;
-	//
-	//UMaterialInstance* Material = Cast<UMaterialInstance>(StreamableHandle->GetLoadedAsset());
-	//if (!Material) return;
-	//
-	//TArray<UStaticMeshComponent*> StaticComps;
-	//GetComponents<UStaticMeshComponent>(StaticComps, true);
-	//
-	//for (UActorComponent* Comp : StaticComps)
-	//{
-	//	UStaticMeshComponent* StaticComp = Cast<UStaticMeshComponent>(Comp);
-	//	if (!StaticComp) continue;
-	//
-	//	//StaticComp->SetMaterial(0, (UMaterialInterface*)Material);
-	//}
+	if (!StreamableHandle.IsValid()) return;
+	if (!StreamableHandle->HasLoadCompleted()) return;
+
+	UMaterialInstance* Material = Cast<UMaterialInstance>(StreamableHandle->GetLoadedAsset());
+	if (!Material) return;
+
+	TArray<UStaticMeshComponent*> StaticComps;
+	GetComponents<UStaticMeshComponent>(StaticComps, true);
+
+	for (UActorComponent* Comp : StaticComps)
+	{
+		UStaticMeshComponent* StaticComp = Cast<UStaticMeshComponent>(Comp);
+		if (!StaticComp) continue;
+
+		StaticComp->SetMaterial(0, Material);
+	}
 }

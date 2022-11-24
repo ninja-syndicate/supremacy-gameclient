@@ -441,31 +441,40 @@ TArray<FColor> UBPFL_Helpers::GetPixelsFromLinearTexture(UTexture2D* Texture) {
 }
 
 void UBPFL_Helpers::FloatToShort(float Value, uint8& A, uint8& B) {
-	auto f16 = FFloat16(Value);
+	uint16 Encoded;
+	FGenericPlatformMath::StoreHalf(&Encoded, Value);
+
+	union {
+		struct {
+			uint8 A;
+			uint8 B;
+		};
+		uint16 E;
+	} Data;
+
+	Data.E = Encoded;
+
 	if (FGenericPlatformProperties::IsLittleEndian()) {
-		memcpy(&A, &f16.Encoded, sizeof(uint8));
-		memcpy(&B, reinterpret_cast<uint8*>(&f16.Encoded) + 1, sizeof(uint8));
-	} else {
-		memcpy(&B, &f16.Encoded, sizeof(uint8));
-		memcpy(&A, reinterpret_cast<uint8*>(&f16.Encoded) + 1, sizeof(uint8));
+		A = Data.A;
+		B = Data.B;
+	}
+	else {
+		A = Data.B;
+		B = Data.A;
 	}
 }
 
 float UBPFL_Helpers::ShortToFloat(uint8 A, uint8 B) {
 	union {
 		struct {
-			uint8 a;
-			uint8 b;
+			uint8 A;
+			uint8 B;
 		};
-
-		uint16 Encoded;
+		uint16 E;
 	} Data;
 
-	Data.a = A;
-	Data.b = B;
+	Data.A = A;
+	Data.B = B;
 
-	FFloat16 f16;
-	f16.Encoded = Data.Encoded;
-
-	return f16.GetFloat();
+	return FGenericPlatformMath::LoadHalf(&Data.E);
 }
