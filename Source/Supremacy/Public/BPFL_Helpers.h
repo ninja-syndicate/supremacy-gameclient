@@ -138,8 +138,8 @@ public:
 	static TArray<FColor> GetPixelsFromLinearTexture(UTexture2D* Texture);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
-	static uint8 SafeConvertFloatToColourByte(FString Name, const float Value, const float Step);
+	static void FloatToShort(float Value, uint8& A, uint8& B);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
-	static float SafeConvertColourByteToFloat(FString Name, const uint8 Value, const float Step);
+	static float ShortToFloat(uint8 A, uint8 B);
 };

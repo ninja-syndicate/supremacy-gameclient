@@ -21,6 +21,7 @@
 #include "IContentBrowserSingleton.h"
 #include "PackageTools.h"
 #endif
+#include "GenericPlatform/GenericPlatformProperties.h"
 
 
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
@@ -441,14 +442,32 @@ TArray<FColor> UBPFL_Helpers::GetPixelsFromLinearTexture(UTexture2D* Texture) {
 	return Colors;
 }
 
-uint8 UBPFL_Helpers::SafeConvertFloatToColourByte(FString Name, const float Value, const float Step) {
-	uint8 Out = (uint8)floorf(Value / Step);
-	// UE_LOG(LogTemp, Error, TEXT("Float to Byte [%s: %f -> %d]"), *Name, Value, Out);
-	return Out;
+void UBPFL_Helpers::FloatToShort(float Value, uint8& A, uint8& B) {
+	auto f16 = FFloat16(Value);
+	if (FGenericPlatformProperties::IsLittleEndian()) {
+		memcpy(&A, &f16.Encoded, sizeof(uint8));
+		memcpy(&B, reinterpret_cast<uint8*>(&f16.Encoded) + 1, sizeof(uint8));
+	} else {
+		memcpy(&B, &f16.Encoded, sizeof(uint8));
+		memcpy(&A, reinterpret_cast<uint8*>(&f16.Encoded) + 1, sizeof(uint8));
+	}
 }
 
-float UBPFL_Helpers::SafeConvertColourByteToFloat(FString Name, const uint8 Value, const float Step) {
-	float Out = (float)Value * Step;
-	// UE_LOG(LogTemp, Error, TEXT("Byte To Float [%s: %d -> %f]"), *Name, Value, Out);
-	return Out;
+float UBPFL_Helpers::ShortToFloat(uint8 A, uint8 B) {
+	union {
+		struct {
+			uint8 a;
+			uint8 b;
+		};
+
+		uint16 Encoded;
+	} Data;
+
+	Data.a = A;
+	Data.b = B;
+
+	FFloat16 f16;
+	f16.Encoded = Data.Encoded;
+
+	return f16.GetFloat();
 }
