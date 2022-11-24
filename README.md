@@ -85,6 +85,15 @@ time-consuming to resolve merge conflicts.
 Before making changes to the existing files or work on a new feature, make a GitHub issue if it doesn't already exist and assign yourself. This will help others
 know which conflicts are expected and possibly work on something else meanwhile.
 
+## Building
+
+To build the client run `update_and_build.bat`
+
+### Environment Variables
+
+- `RunUAT` - Set this to the location of your RunUAT.bat file (eg: `UnrealEngine\UE_5.0\Engine\Build\BatchFiles\RunUAT.bat`)
+- `SUPREMACY_EOS_ARTIFACT` - Get this from 1Password. _This needs to be set for Online multiplayer to work_
+
 ## Keybinds
 
 - **SHIFT+ENTER :** Show Main Menu / Start test match if on specific map _(for testing without a server)_
