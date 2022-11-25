@@ -28,6 +28,10 @@ protected:
 	void UpdateLocomotion(float DeltaSeconds);
 	virtual void UpdateLocomotion_Implementation(float DeltaSeconds);
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta = (BlueprintThreadSafe = true), Category = "Thread Safe Functions")
+	void UpdateUpperBody(float DeltaSeconds);
+	virtual void UpdateUpperBody_Implementation(float DeltaSeconds);
+
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Mech")
 	void HandleMechInitialized();
@@ -39,6 +43,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion")
 	double Direction = 0.0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	FRotator UpperBodyRot = FRotator::ZeroRotator;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	float UpperBodyTurnRate = 0.0f;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimInstance")
@@ -58,4 +68,5 @@ private:
 	 */
 	FVector PreVelocity = FVector::ZeroVector;
 	FRotator PreRotation = FRotator::ZeroRotator;
+	FRotator PreLookRotation = FRotator::ZeroRotator;
 };
