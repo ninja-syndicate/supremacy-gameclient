@@ -26,5 +26,5 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Tag")
-	FName MainStaticMeshName = FName("Main");
+	FName MainStaticMeshTagName = FName("Main");
 };

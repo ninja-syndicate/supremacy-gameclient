@@ -49,7 +49,7 @@ void UWeaponScaleComponent::BeginPlay()
 	}
 
 	UStaticMeshComponent* StaticMeshComp = nullptr;
-	TArray<UActorComponent*> Comps = GetOwner()->GetComponentsByTag(UStaticMeshComponent::StaticClass(), MainStaticMeshName);
+	TArray<UActorComponent*> Comps = GetOwner()->GetComponentsByTag(UStaticMeshComponent::StaticClass(), MainStaticMeshTagName);
 	if (Comps.IsEmpty())
 	{
 		// If no components with the tag "Main", then fallback to the first static mesh component.
