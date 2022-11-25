@@ -69,22 +69,12 @@
 			"Enabled": true
 		},
 		{
-			"Name": "FlyingNavSystem",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/65b9b3247c5c458dbb6de81c79cdc8f0"
-		},
-		{
 			"Name": "MovieRenderPipeline",
 			"Enabled": true
 		},
 		{
 			"Name": "BlueprintFileUtils",
 			"Enabled": true
-		},
-		{
-			"Name": "PoolManager",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/e25d628414564ed49499c5014ff62983"
 		},
 		{
 			"Name": "EasyBallistics",
@@ -110,6 +100,10 @@
 		},
 		{
 			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "OnlineSubsystemEOS",
 			"Enabled": true
 		}
 	]

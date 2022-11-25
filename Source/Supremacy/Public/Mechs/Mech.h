@@ -8,6 +8,8 @@
 #include "Weapons/WeaponizedInterface.h"
 #include "Mech.generated.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogMech, Log, All);
+
 UCLASS()
 class SUPREMACY_API AMech final : public ACharacter, public IWeaponizedInterface
 {
@@ -16,6 +18,15 @@ class SUPREMACY_API AMech final : public ACharacter, public IWeaponizedInterface
 public:	
 	// Sets default values for this actor's properties
 	AMech();
+
+public:
+	virtual void BeginPlay() override;
+
+public:
+	//~Begin IWeaponizedInterface
+	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
+	virtual void GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons) override;
+	//~End IWeaponizedInterface
 
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, ReplicatedUsing=OnRep_SetWarMachineStruct, meta=(ExposeOnSpawn="true"))
 	FWarMachineStruct WarMachineStruct;
@@ -31,16 +42,24 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Animation")
 	void PlayAnimationOutro();
-	
+
 public:
-	//~Begin IWeaponizedInterface
-	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
-	virtual void GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons) override;
-	//~End IWeaponizedInterface
+	UFUNCTION(BlueprintPure)
+	bool IsInitialized() const;
+
+public:
+	/** Dispatched after the mech is fully initialized. This is currently dispatched in the blueprint after weapon spawning is done. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInitialized);
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech")
+	FOnInitialized OnInitialized;
 
 protected:
-	UPROPERTY(Category = "Weapon", Replicated, BlueprintReadWrite)
+	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Weapon")
 	TArray<class AWeapon*> Weapons;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsInitialized = false;
 
 protected:
 	UFUNCTION()

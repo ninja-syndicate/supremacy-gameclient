@@ -10,7 +10,7 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogWeapon, Log, All);
 
-UCLASS()
+UCLASS(Abstract)
 class SUPREMACY_API AWeapon : public AActor, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
@@ -18,6 +18,14 @@ class SUPREMACY_API AWeapon : public AActor, public IGameplayTagAssetInterface
 public:	
 	// Sets default values for this actor's properties
 	AWeapon();
+
+public:
+	static const FName GetTagName() { return "Weapon"; };
+
+public:
+	//~Begin IGameplayTagAssetInterface
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = GameplayTagContainer; }
+	//~End IGameplayTagAssetInterface
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated, meta=(ExposeOnSpawn="true"))
@@ -45,9 +53,18 @@ public:
 	void SetFriendlyFire(bool Enable);
 
 public:
+	UFUNCTION(BlueprintPure, Category = "Weapon")
+	bool IsInitialized() const;
+
+public:
+	/** Gets dispatched when the weapon is fully initialized. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponInitialized, AWeapon*, Weapon);
+	UPROPERTY(BlueprintAssignable, Category = "Weapon")
+	FOnWeaponInitialized OnWeaponInitialized;
+
 	/** Note that it will only dispatch the event when the `bIsTriggered` state changes rather than on every Trigger/Release. */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTriggerStateChanged, bool, bIsTriggered);
-	UPROPERTY(Category = "Weapon", BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, Category = "Weapon")
 	FOnTriggerStateChanged OnTriggerStateChanged;
 	
 protected:
@@ -70,15 +87,26 @@ protected:
     FGameplayTagContainer GameplayTagContainer;
 
 protected:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Initialize();
+	virtual void Initialize_Implementation();
+
+	UFUNCTION(BlueprintCallable)
+	void GenerateHash();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void LoadAssetAsync();
+	virtual void LoadAssetAsync_Implementation();
+
+	TSharedPtr<struct FStreamableHandle> StreamableHandle;
+
+	void LoadAssetDeferred();
+
 	/** Indicates whether this weapon is properly initialized so it can be used. */
-	UPROPERTY(Category = "Weapon", VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
 	bool bIsInitialized = false;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	//~Begin IGameplayTagAssetInterface
-	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = GameplayTagContainer; }
-	//~End IGameplayTagAssetInterface
 };

@@ -19,6 +19,7 @@ class SUPREMACY_API AFlamethrowerWeapon : public AWeapon, public INiagaraParticl
 public:
 	AFlamethrowerWeapon();
 
+public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
 
@@ -47,22 +48,22 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName BarrelSocketName = FName("Barrel");
 
-	UPROPERTY(Category = "Weapon|Flamethrower", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Weapon|Flamethrower", VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> StaticMeshComp = nullptr;
 
-	UPROPERTY(Category = "Weapon|Flamethrower", EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<class UBoxComponent> MeleeBoxComp = nullptr;
+	UPROPERTY(Category = "Weapon|Flamethrower", VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UShapeComponent> MeleeBoxComp = nullptr;
 
-	UPROPERTY(Category = "Weapon|Flamethrower", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Weapon|Flamethrower", VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UDamager> Damager = nullptr;
 
-	UPROPERTY(Category = "Weapon|Flamethrower", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Weapon|Flamethrower", VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UNiagaraComponent> FlameStreamNiagaraComp = nullptr;
 
-	UPROPERTY(Category = "Weapon|Flamethrower", EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "Weapon|Flamethrower", VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UNiagaraComponent> BurningNiagaraComp = nullptr;
 
-	UPROPERTY(Category = "Weapon|Flamethrower", EditAnywhere)
+	UPROPERTY(Category = "Weapon|Flamethrower", VisibleAnywhere)
 	TObjectPtr<UMaterialInterface> BurnDecalMat = nullptr;
 
 protected:
