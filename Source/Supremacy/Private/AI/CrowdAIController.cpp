@@ -96,6 +96,19 @@ void ACrowdAIController::OnUnPossess()
 	PossessedPawn = nullptr;
 }
 
+//~ Begin ICombatAgentInterface
+AActor* ACrowdAIController::GetCurrentTarget_Implementation() const
+{
+	return CurrentTarget;
+}
+
+bool ACrowdAIController::CanSeeTarget_Implementation() const
+{
+	// @stub: this is currently implemented in blueprints.
+	return true;
+}
+//~ End ICombatAgentInterface
+
 void ACrowdAIController::Initialize_Implementation()
 {
 	if (!IsValid(PossessedPawn))
