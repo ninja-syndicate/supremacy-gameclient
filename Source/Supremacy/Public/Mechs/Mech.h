@@ -63,7 +63,7 @@ public:
 	FOnWeaponEquipped OnWeaponEquipped;
 
 protected:
-	UPROPERTY(ReplicatedUsing = OnRep_Weapon, BlueprintReadWrite, Category = "Weapon")
+	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Weapon")
 	TArray<class AWeapon*> Weapons;
 	
 	/** The scale to use for the weapons equipped by the mech. Intended to be set from blueprints/subclasses. */
@@ -78,7 +78,4 @@ protected:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Mech|Replication")
 	virtual void OnRep_SetWarMachineStruct();
-
-	UFUNCTION(BlueprintCallable, Category = "Weapon|Replication")
-	virtual void OnRep_Weapon();
 };

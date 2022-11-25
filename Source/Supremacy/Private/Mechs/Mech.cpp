@@ -2,6 +2,7 @@
 
 #include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Engine/ActorChannel.h"
 
 #include "Weapons/Weapon.h"
 #include "Core/Gameplay/GameplayTags.h"
@@ -23,23 +24,12 @@ void AMech::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps); 
 
 	DOREPLIFETIME_CONDITION(AMech, WarMachineStruct, COND_InitialOnly);
-	DOREPLIFETIME_CONDITION(AMech, Weapons, COND_None);
+	DOREPLIFETIME(AMech, Weapons);
 }
 
 void AMech::OnRep_SetWarMachineStruct()
 {
 	Setup();
-}
-
-void AMech::OnRep_Weapon()
-{
-	// NOTE: Currently, the initialization done condition is on all weapons set up. You can change this if you want.
-	// Notify its initialization on replication.
-	if (Weapons.Num() >= WarMachineStruct.Weapons.Num())
-	{
-		bIsInitialized = true;
-		OnInitialized.Broadcast();
-	}
 }
 
 bool AMech::IsInitialized() const
@@ -72,9 +62,6 @@ void AMech::PostWeaponInit_Implementation(AWeapon* Weapon)
 	if (HasAuthority())
 	{
 		Weapons.AddUnique(Weapon);
-
-		// Manually call the OnRep_Weapon so standalone and listen server works.
-		OnRep_Weapon();
 	}
 	OnWeaponEquipped.Broadcast(Weapon);
 }
