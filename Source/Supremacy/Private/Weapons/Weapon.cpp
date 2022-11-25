@@ -17,11 +17,17 @@
 // Sets default values
 AWeapon::AWeapon() : Super()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Some weapons may need Tick() so enable actor tick.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Initialize replication settings.
+	bReplicates = true;
+	bAlwaysRelevant = true;
+
+	// Set up root component.
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 
+	// Add the weapon gameplay tag.
 	GameplayTagContainer.AddTag(TAG_Weapon);
 }
 
@@ -30,12 +36,9 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!GetInstigator())
-	{
-		UE_LOG(LogWeapon, Error, TEXT("AWeapon: Instigator is invalid."));
-		return;
-	}
 	Initialize();
+	// @todo - port some functions and static mesh set up in weapons.
+	// For barrel, just accept static mesh.
 }
 
 // Called every frame
@@ -60,6 +63,16 @@ void AWeapon::Initialize_Implementation()
 	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(
 		GameplayTagContainer, UGameplayTagFunctionLibrary::GetAllTags(InitGameplayTagContainer));
 
+	// If the weapon hash is not set, generate one for it.
+	if (Struct.Hash.IsEmpty())
+		GenerateHash();
+
+	// Load the weapon skin asynchronously.
+	LoadAssetAsync();
+
+	// Nothing to do from now if instigator is not set.
+	if (!GetInstigator()) return;
+
 	// Get the children comps to ignore when moving (This may not be required?).
 	TArray<USceneComponent*> ChildrenComps;
 	RootComponent->GetChildrenComponents(true, ChildrenComps);
@@ -73,17 +86,15 @@ void AWeapon::Initialize_Implementation()
 		PrimitiveComp->IgnoreActorWhenMoving(GetInstigator(), true);
 	}
 
-	// If the weapon hash is not set, generate one for it.
-	if (Struct.Hash.IsEmpty())
-		GenerateHash();
-
-	// Load the weapon skin asynchronously.
-	LoadAssetAsync();
-
 	// TODO: This should ideally be moved to subclasses.
 	// TODO: Figure out a way to check all assets loaded and then dispatch.
 	bIsInitialized = true;
 	OnWeaponInitialized.Broadcast(this);
+
+	if (GetInstigator()->Implements<UWeaponizedInterface>())
+	{
+		IWeaponizedInterface::Execute_PostWeaponInit(GetInstigator(), this);
+	}
 }
 
 void AWeapon::Trigger_Implementation()

@@ -20,11 +20,12 @@ public:
 	virtual void BeginPlay() override;
 
 public:
-	//~Begin IWeaponizedInterface
+	//~ Begin IWeaponizedInterface
 	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
 	virtual void GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons) override;
 	virtual float GetWeaponBaseScale_Implementation() const override;
-	//~End IWeaponizedInterface
+	virtual void PostWeaponInit_Implementation(class AWeapon* Weapon) override;
+	//~ End IWeaponizedInterface
 
 public:
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, ReplicatedUsing=OnRep_SetWarMachineStruct, meta=(ExposeOnSpawn="true"))
@@ -47,7 +48,11 @@ public:
 	bool IsInitialized() const;
 
 public:
-	/** Dispatched after the mech is fully initialized. This is currently dispatched in the blueprint after weapon spawning is done. */
+	/** 
+	 * Dispatched after the mech is fully initialized. 
+	 * Do not make this replicated as the initialization state will depend on individual PC.
+	 * This is currently dispatched in the blueprint after weapon spawning is done.
+	 */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInitialized);
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech")
 	FOnInitialized OnInitialized;
@@ -58,7 +63,7 @@ public:
 	FOnWeaponEquipped OnWeaponEquipped;
 
 protected:
-	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Weapon")
+	UPROPERTY(ReplicatedUsing = OnRep_Weapon, BlueprintReadWrite, Category = "Weapon")
 	TArray<class AWeapon*> Weapons;
 	
 	/** The scale to use for the weapons equipped by the mech. Intended to be set from blueprints/subclasses. */
@@ -66,10 +71,14 @@ protected:
 	float WeaponBaseScale = 1.0f;
 
 protected:
+	/** Whether the mech is fully initialized. Do not make this replicated as it will depend on individual PC. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsInitialized = false;
 
 protected:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Mech|Replication")
 	virtual void OnRep_SetWarMachineStruct();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon|Replication")
+	virtual void OnRep_Weapon();
 };
