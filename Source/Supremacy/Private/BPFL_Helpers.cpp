@@ -348,7 +348,7 @@ bool UBPFL_Helpers::MultiConeTraceForObjects(
 	return !OutActors.IsEmpty();
 }
 
-UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString Path, const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FColor>& Pixels) {
+UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString Path, const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FLinearColor>& Pixels) {
 	IAssetTools& AssetTools = FModuleManager::Get().LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
 
 	FString PackageName;
@@ -371,12 +371,14 @@ UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString Path, con
 	Texture->MipGenSettings = TextureMipGenSettings::TMGS_NoMipmaps;
 	Texture->CompressionSettings = TextureCompressionSettings::TC_Masks;
 	Texture->SRGB = 0;
-	
+	Texture->AddressX = TextureAddress::TA_Clamp;
+	Texture->AddressY = TextureAddress::TA_Clamp;
+
 	FTexturePlatformData *PlatformData = new FTexturePlatformData();
 	PlatformData->SizeX = Width;
 	PlatformData->SizeY = Height;
 	PlatformData->SetNumSlices(1);
-	PlatformData->PixelFormat = EPixelFormat::PF_B8G8R8A8;
+	PlatformData->PixelFormat = EPixelFormat::PF_A16B16G16R16;
 
 	FTexture2DMipMap* Mip = new FTexture2DMipMap;
 	Mip->SizeX = Width;
@@ -385,23 +387,23 @@ UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString Path, con
 
 	Texture->SetPlatformData(PlatformData);
 
-	uint8* PixelData = new uint8[Width * Height * 4];
+	FFloat16Color* PixelData = new FFloat16Color[Width * Height];
 	for (int y = 0; y < Height; y++) {
 		for (int x = 0; x < Width; x++) {
 			int32 Index = x + y * Width;
-			PixelData[Index * 4 + 0] = Pixels[Index].B;
-			PixelData[Index * 4 + 1] = Pixels[Index].G;
-			PixelData[Index * 4 + 2] = Pixels[Index].R;
-			PixelData[Index * 4 + 3] = Pixels[Index].A;
+			PixelData[Index].B = Pixels[Index].B;
+			PixelData[Index].G = Pixels[Index].G;
+			PixelData[Index].R = Pixels[Index].R;
+			PixelData[Index].A = Pixels[Index].A;
 		}
 	}
 
 	Mip->BulkData.Lock(LOCK_READ_WRITE);
-	uint8* TextureData = (uint8*)Mip->BulkData.Realloc(Width * Height * 4);
-	FMemory::Memcpy(TextureData, (void *)PixelData, sizeof(uint8) * Height * Width * 4);
+	uint8* TextureData = (uint8*)Mip->BulkData.Realloc(Width * Height * sizeof(FFloat16Color));
+	FMemory::Memcpy(TextureData, (void *)PixelData, Width * Height * sizeof(FFloat16Color));
 	Mip->BulkData.Unlock();
 
-	Texture->Source.Init(Width, Height, 1, 1, ETextureSourceFormat::TSF_BGRA8, PixelData);
+	Texture->Source.Init(Width, Height, 1, 1, ETextureSourceFormat::TSF_RGBA16F, (const uint8 *)PixelData);
 
 	Texture->UpdateResource();
 	Package->MarkPackageDirty();
@@ -410,27 +412,29 @@ UTexture2D* UBPFL_Helpers::CreateLinearTextureFromPixels(const FString Path, con
 	FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
 	UPackage::SavePackage(Package, Texture, EObjectFlags::RF_Public | EObjectFlags::RF_Standalone, *PackageFileName, GError, nullptr, true, true, SAVE_NoError);
 
+	UE_LOG(LogTemp, Error, TEXT("Created linear texture: %s"), *PackageName);
+
 	return Texture;
 }
 
-TArray<FColor> UBPFL_Helpers::GetPixelsFromLinearTexture(UTexture2D* Texture) {
-	TArray<FColor> Colors;
+TArray<FLinearColor> UBPFL_Helpers::GetPixelsFromLinearTexture(UTexture2D* Texture) {
+	TArray<FLinearColor> Colors;
 
 	if (!Texture) return Colors;
 
 	FTexturePlatformData* PlatformData = Texture->GetPlatformData();
-	const uint8 *Data = (const uint8 *) PlatformData->Mips[0].BulkData.LockReadOnly();
+	const FFloat16Color*Data = (const FFloat16Color*) PlatformData->Mips[0].BulkData.LockReadOnly();
 
 	int Width = PlatformData->Mips[0].SizeX;
 	int Height = PlatformData->Mips[0].SizeY;
 
 	for (int y = 0; y < Height; y++) {
 		for (int x = 0; x < Width; x++) {
-			FColor Color;
-			Color.B = Data[((x + y * Width) * 4) + 0];
-			Color.G = Data[((x + y * Width) * 4) + 1];
-			Color.R = Data[((x + y * Width) * 4) + 2];
-			Color.A = Data[((x + y * Width) * 4) + 3];
+			FLinearColor Color;
+			Color.B = Data[x + y * Width].B;
+			Color.G = Data[x + y * Width].G;
+			Color.R = Data[x + y * Width].R;
+			Color.A = Data[x + y * Width].A;
 			Colors.Emplace(Color);
 		}
 	}
@@ -454,14 +458,8 @@ void UBPFL_Helpers::FloatToShort(float Value, uint8& A, uint8& B) {
 
 	Data.E = Encoded;
 
-	if (FGenericPlatformProperties::IsLittleEndian()) {
-		A = Data.A;
-		B = Data.B;
-	}
-	else {
-		A = Data.B;
-		B = Data.A;
-	}
+	A = Data.A;
+	B = Data.B;
 }
 
 float UBPFL_Helpers::ShortToFloat(uint8 A, uint8 B) {
@@ -473,8 +471,14 @@ float UBPFL_Helpers::ShortToFloat(uint8 A, uint8 B) {
 		uint16 E;
 	} Data;
 
-	Data.A = A;
-	Data.B = B;
+	if (FGenericPlatformProperties::IsLittleEndian()) {
+		Data.A = A;
+		Data.B = B;
+	}
+	else {
+		Data.A = B;
+		Data.B = A;
+	}
 
 	return FGenericPlatformMath::LoadHalf(&Data.E);
 }

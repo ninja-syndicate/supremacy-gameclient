@@ -132,10 +132,10 @@ public:
 		TArray<class AActor*>& OutActors);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
-	static UTexture2D *CreateLinearTextureFromPixels(const FString Path, const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FColor>& Pixels);
+	static UTexture2D *CreateLinearTextureFromPixels(const FString Path, const FString TextureName, const int Width, const int Height, const bool OverwriteExisting, const TArray<FLinearColor>& Pixels);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
-	static TArray<FColor> GetPixelsFromLinearTexture(UTexture2D* Texture);
+	static TArray<FLinearColor> GetPixelsFromLinearTexture(UTexture2D* Texture);
 
 	UFUNCTION(BlueprintCallable, Category = "Helpers")
 	static void FloatToShort(float Value, uint8& A, uint8& B);

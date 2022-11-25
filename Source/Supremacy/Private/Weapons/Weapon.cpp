@@ -176,7 +176,7 @@ void AWeapon::LoadAssetDeferred()
 	if (!StreamableHandle.IsValid()) return;
 	if (!StreamableHandle->HasLoadCompleted()) return;
 
-	UMaterialInstance* Material = Cast<UMaterialInstance>(StreamableHandle->GetLoadedAsset());
+	UMaterialInterface* Material = Cast<UMaterialInterface>(StreamableHandle->GetLoadedAsset());
 	if (!Material) return;
 
 	TArray<UStaticMeshComponent*> StaticComps;
