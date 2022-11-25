@@ -32,6 +32,37 @@ public:
 private:
 	void HandleAmmoChanged(int CurrentAmmo);
 
+	void OnMeleeBoxBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent, 
+		AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp, 
+		int32 OtherBodyIndex, 
+		bool bFromSweep, 
+		const FHitResult& SweepResult);
+
+	void OnMeleeBoxEndOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, 
+		int32 OtherBodyIndex);
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Melee|Sound")
+	TObjectPtr<USoundBase> NormalHitSound = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Melee|Sound")
+	TObjectPtr<USoundBase> DamageableHitSound = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Melee|Sound")
+	TObjectPtr<USoundAttenuation> SoundAttenuation = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Melee|Sound")
+	float MaxHitNoiseRange = 8000.0f;
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Melee|Effect")
+	TObjectPtr<class UNiagaraSystem> HitEffect = nullptr;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Melee Capability Component")
 	TObjectPtr<class UBoxComponent> MeleeBoxComp = nullptr;
@@ -44,4 +75,11 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true), Category = "Melee Capability Component")
 	bool bSwitchToMeleePose = false;
+
+private:
+	UPROPERTY(VisibleAnywhere, Category = "Melee Capability Component")
+	TSet<AActor*> OverlappingActors;
+
+	UPROPERTY(VisibleAnywhere, Category = "Melee Capability Component")
+	TSet<AActor*> OverlappingRemovalQueue;
 };
