@@ -87,4 +87,7 @@ class SUPREMACY_API UStaticDataGameAbility : public UStaticDataBaseRecord
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="References", meta=(AllowPrivateAccess=true))
 	UStaticDataBattleAbility *BattleAbility;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	UTexture2D *Image;
 };

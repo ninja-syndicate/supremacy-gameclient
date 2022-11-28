@@ -1,4 +1,6 @@
 ﻿#include "GameAbility.h"
+#include "AssetRegistry/AssetRegistryModule.h"
+#include "Utils/TextureDownload.h"
 
 StaticDataImporter::GameAbility::GameAbility(): Base()
 {
@@ -30,6 +32,8 @@ StaticDataImporter::GameAbility::GameAbility(): Base()
 
 bool StaticDataImporter::GameAbility::HandleRow(UStaticData* DataAsset, TArray<FString> RowCells)
 {
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	
 	FGuid ID;
 	if (!ParseGuid(RowCells[0], TEXT("id"), ID)) return false;
 
@@ -47,7 +51,27 @@ bool StaticDataImporter::GameAbility::HandleRow(UStaticData* DataAsset, TArray<F
 	
 	Record->Label = RowCells[4];
 	if(!ParseColor(RowCells[5], "colour", Record->Colour)) return false;
+
+	// Get Image
 	Record->ImageURL = RowCells[6];
+
+	EImageFormat ImageFormat;
+	FString AvatarPackageURL = GetPackageNameForURL(Record->ImageURL, "UI/Images/Abilities/", ImageFormat);
+	
+	TArray<FAssetData> ImageAsset;
+	AssetRegistryModule.Get().GetAssetsByPackageName(FName(AvatarPackageURL), ImageAsset);
+	if (ImageAsset.Num() == 0)
+	{
+		// Download and create asset
+		if (UTexture2D* ImageTexture = GetTexture2DFromURL(Record->ImageURL, "UI/Images/Abilities/"); ImageTexture != nullptr)
+			Record->Image = ImageTexture;
+	}
+	else
+	{
+		// Use existing asset
+		Record->Image = Cast<UTexture2D>(ImageAsset[0].GetAsset());
+	}
+	
 	//if(!ParseInt(RowCells[7], "sups cost", Record->SupsCost)) return false;
 	Record->Description = RowCells[7];
 	if(!ParseColor(RowCells[8], "text colour", Record->TextColour)) return false;
