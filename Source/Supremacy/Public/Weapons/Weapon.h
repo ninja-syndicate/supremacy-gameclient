@@ -8,8 +8,6 @@
 #include "Types/WeaponStruct.h"
 #include "Weapon.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogWeapon, Log, All);
-
 UCLASS(Abstract)
 class SUPREMACY_API AWeapon : public AActor, public IGameplayTagAssetInterface
 {

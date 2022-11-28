@@ -76,6 +76,8 @@ void UMeleeCapabilityComponent::BeginPlay()
 		bSwitchToMeleePose = !AmmoComp->HasAmmo();
 		AmmoComp->OnAmmoChanged.AddDynamic(this, &UMeleeCapabilityComponent::HandleAmmoChanged);
 	}
+
+	// @todo - fix up melee box scale.
 }
 
 void UMeleeCapabilityComponent::HandleAmmoChanged(int CurrentAmmo)

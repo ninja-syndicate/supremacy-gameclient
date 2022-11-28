@@ -8,8 +8,6 @@
 #include "Weapons/WeaponizedInterface.h"
 #include "Mech.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogMech, Log, All);
-
 UCLASS()
 class SUPREMACY_API AMech final : public ACharacter, public IWeaponizedInterface
 {
@@ -19,15 +17,17 @@ public:
 	// Sets default values for this actor's properties
 	AMech();
 
-public:
 	virtual void BeginPlay() override;
 
 public:
-	//~Begin IWeaponizedInterface
+	//~ Begin IWeaponizedInterface
 	virtual class AWeapon* GetWeaponBySlot_Implementation(int SlotIndex) override;
 	virtual void GetWeapons_Implementation(TArray<class AWeapon*>& OutWeapons) override;
-	//~End IWeaponizedInterface
+	virtual float GetWeaponBaseScale_Implementation() const override;
+	virtual void PostWeaponInit_Implementation(class AWeapon* Weapon) override;
+	//~ End IWeaponizedInterface
 
+public:
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere, ReplicatedUsing=OnRep_SetWarMachineStruct, meta=(ExposeOnSpawn="true"))
 	FWarMachineStruct WarMachineStruct;
 
@@ -48,20 +48,36 @@ public:
 	bool IsInitialized() const;
 
 public:
-	/** Dispatched after the mech is fully initialized. This is currently dispatched in the blueprint after weapon spawning is done. */
+	/** 
+	 * Dispatched after the mech is fully initialized. 
+	 * Do not make this replicated as the initialization state will depend on individual PC.
+	 * This is currently dispatched in the blueprint after weapon spawning is done.
+	 */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInitialized);
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech")
 	FOnInitialized OnInitialized;
 
-protected:
-	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Weapon")
-	TArray<class AWeapon*> Weapons;
+	/** Dispatched when the mech equips a new weapon. Currently, this is not dispatched on weapon spawn. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponEquipped, class AWeapon*, Weapon);
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech")
+	FOnWeaponEquipped OnWeaponEquipped;
 
 protected:
+	void HandleWeaponEquipped(class AWeapon* Weapon);
+
+	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Weapon")
+	TArray<class AWeapon*> Weapons;
+	
+	/** The scale to use for the weapons equipped by the mech. Intended to be set from blueprints/subclasses. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
+	float WeaponBaseScale = 1.0f;
+
+protected:
+	/** Whether the mech is fully initialized. Do not make this replicated as it will depend on individual PC. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsInitialized = false;
 
 protected:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Mech|Replication")
 	virtual void OnRep_SetWarMachineStruct();
 };
