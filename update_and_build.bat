@@ -10,6 +10,11 @@ for /f %%i in ('git describe --tags') do set Version=%%i
 for /f %%i in ('git rev-parse --abbrev-ref HEAD') do set Branch=%%i
 for /f %%i in ('git rev-parse --verify HEAD') do set Hash=%%i
 
+if defined SUPREMACY_EOS_ARTIFACT (
+     echo [101;93m Warning: SUPREMACY_EOS_ARTIFACT env variable is unset [0m
+     echo.
+)
+
 if exist "%RunUAT%" (
      REM Pull latest
      git pull --tags | find /i "Already up to date."
@@ -32,12 +37,18 @@ if exist "%RunUAT%" (
      Config\inifile %DefaultEngineFile% [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=0
      Config\inifile %DefaultEngineFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
 
+     REM Set Secrets for EOS
+     Config\inifile %DefaultEngineFile% [/Script/OnlineSubsystemEOS.EOSSettings] +Artifacts=%SUPREMACY_EOS_ARTIFACT%
+
      REM BUILD
      "%RunUAT%" BuildCookRun -project="%project%" -targetplatform=Win64 -clientconfig=Development -cook -iterate -build -stage -pak -archive -archivedirectory="%build_dir%"
 
      REM Revert default config back to DX12
      Config\inifile %DefaultEngineFile% [/Script/Engine.RendererSettings] r.Nanite.RequireDX12=
      Config\inifile %DefaultEngineFile% [/Script/WindowsTargetPlatform.WindowsTargetSettings] DefaultGraphicsRHI=DefaultGraphicsRHI_DX12
+
+     REM Remove Secrets for EOS
+     Config\inifile %DefaultEngineFile% [/Script/OnlineSubsystemEOS.EOSSettings] +Artifacts=
 
      REM Create Config Folder, Engine.ini, and Game.ini if they don't exist
      if not exist %ConfigFolder% mkdir %ConfigFolder%
@@ -67,10 +78,10 @@ if exist "%RunUAT%" (
 pause
 
 ) else (
-     echo Failed to find RunUAT.bat
+     echo [101;93m Failed to find RunUAT.bat [0m
      echo.
      echo Please set the RunUAT environment variable to:
-     echo UnrealEngine\UE_5.0EA\Engine\Build\BatchFiles\RunUAT.bat
+     echo UnrealEngine\UE_5.0\Engine\Build\BatchFiles\RunUAT.bat
      echo.
      pause
 )
