@@ -63,8 +63,6 @@ _( Note: You'll need to be signed in with the company's Epic Account to have acc
 - [BlueprintWebSocket](https://www.unrealengine.com/marketplace/en-US/product/blueprintwebsocket)
 - [JSONParser](https://www.unrealengine.com/marketplace/en-US/product/jsonparser)
 - [EasyBallistics Plugin](https://www.unrealengine.com/marketplace/en-US/product/easyballistics-plugin)
-- [Actor Pool Manager Plugin](https://www.unrealengine.com/marketplace/en-US/product/actor-pool-manager-plugin)
-- [Flying Navigation System](https://www.unrealengine.com/marketplace/en-US/product/flying-navigation-system)
 
 [UnrealJS](https://github.com/getnamo/UnrealJs) is also used but is included in the repo. It does however require the V8 library to be installed which can be
 done via `setup.bat`. If `setup.bat` doesn't work due to `sh` command not being recognised, navigate to `Plugins/UnrealJs` directory and run
@@ -86,6 +84,15 @@ time-consuming to resolve merge conflicts.
 
 Before making changes to the existing files or work on a new feature, make a GitHub issue if it doesn't already exist and assign yourself. This will help others
 know which conflicts are expected and possibly work on something else meanwhile.
+
+## Building
+
+To build the client run `update_and_build.bat`
+
+### Environment Variables
+
+- `RunUAT` - Set this to the location of your RunUAT.bat file (eg: `UnrealEngine\UE_5.0\Engine\Build\BatchFiles\RunUAT.bat`)
+- `SUPREMACY_EOS_ARTIFACT` - Get this from 1Password. _This needs to be set for Online multiplayer to work_
 
 ## Keybinds
 

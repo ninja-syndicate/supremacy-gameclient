@@ -60,8 +60,12 @@ private:
 	TObjectPtr<USkeletalMeshComponent> OwnerMeshComp = nullptr;
 
 	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	class UNiagaraComponent* HackNiagaraComponent = nullptr;
+	TObjectPtr<class UNiagaraComponent> HackNiagaraComponent = nullptr;
 
+	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	FTimerHandle HackTimerHandle;
+
+private:
 	UPROPERTY(Category = "Mech Hack Component", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsInitialized = false;
 
@@ -69,7 +73,7 @@ private:
 	bool bIsHacked = false;
 
 	UPROPERTY(Category = "Mech Hack Component", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
-	class UNiagaraSystem* HackNiagaraSystem = nullptr;
+	TObjectPtr<class UNiagaraSystem> HackNiagaraSystem = nullptr;
 
 	UPROPERTY(Category = "Mech Hack Component", EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	float HackDuration = 0.0f;

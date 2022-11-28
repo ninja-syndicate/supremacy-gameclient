@@ -15,7 +15,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAddLogMessage, FString, Message);
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Config=Editor)
 class SUPREMACYEDITOR_API UStaticDataImporter : public UObject
 {
 	GENERATED_BODY()
@@ -37,6 +37,7 @@ public:
 	FString GetImportPath() { return ImportPath; }
 	
 private:
+	UPROPERTY(Config)
 	FString ImportPath;
 
 	TArray<StaticDataImporter::Base*> Importers;
