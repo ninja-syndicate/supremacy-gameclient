@@ -9,5 +9,11 @@ class SUPREMACY_API UPowerCoreBase : public UActorComponent
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	float TotalCurrentPower();
+		float GetWeaponSystemCurrentPower();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		float GetShieldSystemCurrentPower();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		float GetMovementSystemCurrentPower();
 };

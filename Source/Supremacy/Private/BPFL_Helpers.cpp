@@ -105,15 +105,17 @@ void UBPFL_Helpers::PackWarMachinePowerCoreUpdate(UObject* WarMachine, const flo
 	UPowerCoreBase* PowerCore = Cast<UPowerCoreBase>(Component);
 	if (!PowerCore) return;
 
-	float Total = PowerCore->TotalCurrentPower();
+	float Total = PowerCore->GetWeaponSystemCurrentPower() +
+		PowerCore->GetShieldSystemCurrentPower() + 
+		PowerCore->GetMovementSystemCurrentPower();
 
 	if (fabs(PreviousTotalPower - Total) < DBL_EPSILON) {
-		Bytes.Emplace(0);
 		return;
 	}
 	
-	Bytes.Emplace(1);
-	Bytes.Append(ConvertFloatToBytes(Total));
+	Bytes.Append(ConvertFloatToBytes(PowerCore->GetWeaponSystemCurrentPower()));
+	Bytes.Append(ConvertFloatToBytes(PowerCore->GetShieldSystemCurrentPower()));
+	Bytes.Append(ConvertFloatToBytes(PowerCore->GetMovementSystemCurrentPower()));
 }
 
 void UBPFL_Helpers::ConvertStringToBytes(const FString String, TArray<uint8> &Bytes)
