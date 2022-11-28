@@ -39,7 +39,9 @@ bool StaticDataImporter::GameAbility::HandleRow(UStaticData* DataAsset, TArray<F
 
 	UStaticDataGameAbility* Record = DataAsset->GetOrCreateGameAbility(ID);
 
-	if(!ParseInt(RowCells[1], "game client ability id", Record->GameClientAbilityID)) return false;
+	int32 GameAbilityID;
+	if(!ParseInt(RowCells[1], "game client ability id", GameAbilityID)) return false;
+	Record->GameClientAbilityID = static_cast<EAbilityID>(GameAbilityID);
 
 	FGuid FactionID;
 	if(!ParseGuid(RowCells[2], "faction id", FactionID)) return false;

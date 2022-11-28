@@ -135,8 +135,7 @@ UStaticDataGameAbility* UStaticData::GetGameAbility(const FGuid& ID)
 
 UStaticDataGameAbility* UStaticData::GetGameAbilityByGameClientAbilityID(const EAbilityID& ID, const FGuid& FactionID)
 {
-    const int32 GameClientID = static_cast<int32>(ID);
-    for (UStaticDataGameAbility* Record : GameAbilityArray) if (Record->GameClientAbilityID == GameClientID && Record->Faction->ID == FactionID) return Record;
+    for (UStaticDataGameAbility* Record : GameAbilityArray) if (Record->GameClientAbilityID == ID && Record->Faction->ID == FactionID) return Record;
     UE_LOG(LogTemp, Error, TEXT("Failed to find game ability by game client id: %d"), ID);
     return nullptr;
 }

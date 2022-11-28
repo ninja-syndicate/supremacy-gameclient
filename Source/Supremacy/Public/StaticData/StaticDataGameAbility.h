@@ -7,6 +7,7 @@
 #include "UObject/Object.h"
 #include "StaticDataFaction.h"
 #include "StaticDataBattleAbility.h"
+#include "Types/AbilityID.h"
 #include "StaticDataGameAbility.generated.h"
 
 namespace StaticDataImporter
@@ -24,7 +25,7 @@ class SUPREMACY_API UStaticDataGameAbility : public UStaticDataBaseRecord
 public:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
-	int32 GameClientAbilityID;
+	EAbilityID GameClientAbilityID;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	FColor Colour;

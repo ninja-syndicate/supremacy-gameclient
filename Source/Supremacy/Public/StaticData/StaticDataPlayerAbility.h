@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "StaticDataBaseRecord.h"
+#include "Types/AbilityID.h"
 #include "UObject/Object.h"
 #include "StaticDataPlayerAbility.generated.h"
 
@@ -20,7 +21,7 @@ class SUPREMACY_API UStaticDataPlayerAbility : public UStaticDataBaseRecord
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
-	int32 GameClientAbilityID;
+	EAbilityID GameClientAbilityID;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
 	FColor Colour;
