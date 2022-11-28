@@ -38,14 +38,21 @@ void UMechAnimInstance::NativeBeginPlay()
 	}
 	else
 	{
-		MechOwner->OnInitialized.AddDynamic(this, &UMechAnimInstance::HandleMechInitialized);
+		MechOwner->OnWeaponEquipped.AddDynamic(this, &UMechAnimInstance::HandleWeaponEquipped);
+		//MechOwner->OnInitialized.AddDynamic(this, &UMechAnimInstance::HandleMechInitialized);
+	}
+
+	if (bCustomUpperBodyTurnRate)
+	{
+		bIsInitialized = true;
+		return;
 	}
 
 	UCharacterMovementComponent* MoveComp = MechOwner->FindComponentByClass<UCharacterMovementComponent>();
 	if (!MoveComp)
 	{
-		// @todo - log to warn on upper body turn rate of 0 when not supported.
-		// UE_LOG(LogAnimation, Error, TEXT("UMechAnimInstance: Owner is not a mech!"));
+		UE_LOG(LogAnimation, Error, TEXT("UMechAnimInstance: The pawn owner is missing character movement component!"));
+		return;
 	}
 	else
 	{
@@ -62,7 +69,6 @@ void UMechAnimInstance::PreUpdateAnimation(float DeltaSeconds)
 
 	PreVelocity = MechOwner->GetVelocity();
 	PreRotation = MechOwner->GetActorRotation();
-	// @todo - check GetViewRotation and GetBaseAimRotation
 	PreLookRotation = MechOwner->GetControlRotation();
 }
 
@@ -95,6 +101,11 @@ void UMechAnimInstance::UpdateUpperBody_Implementation(float DeltaSeconds)
 }
 
 void UMechAnimInstance::HandleMechInitialized_Implementation()
+{
+	// Currently, this is implemented in animation blueprints.
+}
+
+void UMechAnimInstance::HandleWeaponEquipped_Implementation(AWeapon* Weapon)
 {
 	// Currently, this is implemented in animation blueprints.
 }

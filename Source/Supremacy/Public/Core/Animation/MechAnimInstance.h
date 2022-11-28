@@ -37,6 +37,10 @@ protected:
 	void HandleMechInitialized();
 	virtual void HandleMechInitialized_Implementation();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Mech")
+	void HandleWeaponEquipped(class AWeapon* Weapon);
+	virtual void HandleWeaponEquipped_Implementation(class AWeapon* Weapon);
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion")
 	double Speed = 0.0;
@@ -49,6 +53,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
 	float UpperBodyTurnRate = 0.0f;
+
+	/** Whether to use a custom upper body turn rate. If turned off, it will use character movement component's yaw turn rate. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	bool bCustomUpperBodyTurnRate = false;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimInstance")
