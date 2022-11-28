@@ -37,7 +37,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint8 Damage_Type;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Melee_Damage;
+	int Melee_Damage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ToolTip="Projectiles are randomly offset inside a cone. Spread is the half-angle of the cone, in degrees."))
 	float Spread;

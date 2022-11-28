@@ -108,7 +108,7 @@ public:
 	float Sprint_Spread_Modifier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Melee_Force;
+	int Melee_Force;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FPowerCoreStruct Power_Core;
@@ -172,7 +172,7 @@ public:
 	float SprintSpreadModifier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MeleeForce;
+	int MeleeForce;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EShieldType ShieldType;
