@@ -3,9 +3,8 @@
 #include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "Logger/SupremacyLogTypes.h"
 #include "Core/Game/SupremacyGameInstance.h"
-
-DEFINE_LOG_CATEGORY(LogSupremacy);
 
 TSubclassOf<UDamageType> USupremacyFunctionLibrary::ConvertToDamageType(const UObject* WorldContextObject, uint8 DamageType)
 {
