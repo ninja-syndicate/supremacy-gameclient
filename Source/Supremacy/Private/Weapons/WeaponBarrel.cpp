@@ -93,18 +93,21 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 				{
 					BurstCooldown -= Step;
 					if (BurstCooldown <= 0)
-						BurstCount = 0;
+					{
+						BurstCount = ProjectileAmount;
+						BurstCooldown = 60.0f / FireRate;
+					}
 				}
 
 				// Fire Gap
-				if (BurstCooldown <= 0)
+				if (BurstFireRate == 0 || BurstCount > 0)
 					Cooldown -= Step;
 			
 				RemainingDelta -= Step;
 
 				// Shoot while in burst
 				if (!ShouldShoot)
-					ShouldShoot = BurstFireRate > 0 && BurstCooldown <= 0 && BurstCount > 0 && BurstCount < ProjectileAmount;
+					ShouldShoot = BurstFireRate > 0 && BurstCount > 0;
 
 				// Shoot
 				if (ShouldShoot && (!ShootingBlocked) && Cooldown <= 0)
@@ -122,11 +125,7 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 
 						// Burst fire?
 						if (BurstFireRate > 0)
-						{
-							BurstCount++;
-							if (BurstCount >= ProjectileAmount)
-								BurstCooldown = 60.0f / FireRate;
-						}
+							BurstCount--;
 					}
 				}
 			}
