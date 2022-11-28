@@ -57,12 +57,13 @@ float AMech::GetWeaponBaseScale_Implementation() const
 void AMech::PostWeaponInit_Implementation(AWeapon* Weapon)
 {
 	// NOTE: This method assumes it is called after Weapon's BeginPlay().
-
-	// Since the weapons variable is replicated, wait for the OnRep_Weapon to be called in the clients.
-	if (HasAuthority())
-	{
-		Weapons.AddUnique(Weapon);
-	}
 	OnWeaponEquipped.Broadcast(Weapon);
+	HandleWeaponEquipped(Weapon);
 }
 //~ End IWeaponizedInterface
+
+void AMech::HandleWeaponEquipped(AWeapon* Weapon)
+{
+	// @todo - check whether weapon loading is complete.
+	// Currently, nothing uses On Initialized event.
+}

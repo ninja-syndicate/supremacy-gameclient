@@ -63,6 +63,8 @@ public:
 	FOnWeaponEquipped OnWeaponEquipped;
 
 protected:
+	void HandleWeaponEquipped(class AWeapon* Weapon);
+
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Weapon")
 	TArray<class AWeapon*> Weapons;
 	
