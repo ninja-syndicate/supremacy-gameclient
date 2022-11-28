@@ -108,6 +108,9 @@ public:
 	float Sprint_Spread_Modifier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Melee_Force;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FPowerCoreStruct Power_Core;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachinePowerStats Power_Stats;
@@ -115,7 +118,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineStats Stats;
 
-	FWarMachineServerStruct(): Height(0), Health(3000), Health_Max(3000), Shield_Max(0), Shield_Recharge_Rate(0), Speed(0), Walk_Speed_Modifier(2), Sprint_Spread_Modifier(1.25)
+	FWarMachineServerStruct(): Height(0), Health(3000), Health_Max(3000), Shield_Max(0), Shield_Recharge_Rate(0), Speed(0), Walk_Speed_Modifier(2), Sprint_Spread_Modifier(1.25), Melee_Force(20)
 	{}
 };
 
@@ -169,6 +172,9 @@ public:
 	float SprintSpreadModifier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MeleeForce;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EShieldType ShieldType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FPowerCoreStruct PowerCore;
@@ -204,6 +210,8 @@ public:
 		WalkSpeedModifier(WarMachine.Walk_Speed_Modifier),
 		SprintSpreadModifier(WarMachine.Sprint_Spread_Modifier),
 
+		MeleeForce(WarMachine.Melee_Force),
+
 		ShieldType(EShieldType::ShieldType_Orb),
 		PowerCore(WarMachine.Power_Core),
 		PowerStats(WarMachine.Power_Stats),
@@ -218,7 +226,6 @@ public:
 	}
 
 	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Height(0), Health(3000), HealthMax(3000), ShieldMax(0),
-	                     ShieldRechargeRate(0), Speed(0), WalkSpeedModifier(2), SprintSpreadModifier(1.25), ShieldType(EShieldType::ShieldType_Orb)
-	{
-	}
+	                     ShieldRechargeRate(0), Speed(0), WalkSpeedModifier(2), SprintSpreadModifier(1.25), MeleeForce(20), ShieldType(EShieldType::ShieldType_Orb)
+	{}
 };
