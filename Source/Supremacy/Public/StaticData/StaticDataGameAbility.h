@@ -20,6 +20,8 @@ class SUPREMACY_API UStaticDataGameAbility : public UStaticDataBaseRecord
 	friend class StaticDataImporter::GameAbility;
 	
 	GENERATED_BODY()
+
+public:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	int32 GameClientAbilityID;
