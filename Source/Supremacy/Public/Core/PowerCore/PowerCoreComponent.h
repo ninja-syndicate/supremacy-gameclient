@@ -7,7 +7,7 @@
 #include "PowerCoreComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SUPREMACY_API UPowerCoreComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -24,5 +24,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		float GetWeaponSystemCurrentPower();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		float GetShieldSystemCurrentPower();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		float GetMovementSystemCurrentPower();
 };
