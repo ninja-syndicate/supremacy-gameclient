@@ -99,7 +99,8 @@ public:
 	int Shield_Max;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Shield_Recharge_Rate;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Shield_Recharge_Delay;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Speed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -163,6 +164,8 @@ public:
 	int ShieldMax;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ShieldRechargeRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ShieldRechargeDelay;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Speed;
@@ -205,6 +208,7 @@ public:
 		HealthMax(WarMachine.Health_Max),
 		ShieldMax(WarMachine.Shield_Max),
 		ShieldRechargeRate(WarMachine.Shield_Recharge_Rate),
+		ShieldRechargeDelay(WarMachine.Shield_Recharge_Delay),
 
 		Speed(WarMachine.Speed),
 		WalkSpeedModifier(WarMachine.Walk_Speed_Modifier),
