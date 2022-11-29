@@ -106,8 +106,8 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
       "TheHive",
       "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/TheHive.webp",
       2160, 2160,
-      40,  40,
-      -20000, -59700,
+      83,  83,
+      -77300, -102300,
       {}
     },
   },
