@@ -34,7 +34,7 @@ public:
 	static void PackWarMachineWeaponUpdates(UObject* WarMachine, const int PreviousTotalAmmo, TArray<uint8>& Bytes, int& TotalAmmo);
 	
 	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine PowerCore Updates", meta = (Keywords = "Net Message Bytes Byte Array Binary", ToolTip = "Packs power core level, skipped if previous total power = current total power"))
-	static void PackWarMachinePowerCoreUpdate(UObject* WarMachine, const float PreviousTotalPower, TArray<uint8>& Bytes, float& TotalPower);
+	static void PackWarMachinePowerCoreUpdate(AActor* WarMachine, const float PreviousTotalPower, TArray<uint8>& Bytes, float& TotalPower);
 
 	/** Converts a String to an Array of bytes */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert String To Bytes")

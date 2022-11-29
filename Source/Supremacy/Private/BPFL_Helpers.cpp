@@ -9,7 +9,7 @@
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponizedInterface.h"
 #include "Weapons/Components/WeaponAmmunitionComponent.h"
-#include "Mechs/PowerCoreBase.h"
+#include "Core/PowerCore/PowerCoreComponent.h"
 
 void UBPFL_Helpers::ParseNetMessage(const TArray<uint8> Bytes, uint8& Type, FString& Message)
 {
@@ -95,23 +95,18 @@ void UBPFL_Helpers::PackWarMachineWeaponUpdates(UObject* WarMachine, const int P
 		Bytes = OutBytes;
 }
 
-void UBPFL_Helpers::PackWarMachinePowerCoreUpdate(UObject* WarMachine, const float PreviousTotalPower, TArray<uint8>& Bytes, float& TotalPower) {
-	AActor *Actor = Cast<AActor>(WarMachine);
-	if (!Actor) return;
-
-	UActorComponent *Component = Actor->GetComponentByClass(UPowerCoreBase::StaticClass());
+void UBPFL_Helpers::PackWarMachinePowerCoreUpdate(AActor* WarMachine, const float PreviousTotalPower, TArray<uint8>& Bytes, float& TotalPower) {
+	UActorComponent *Component = WarMachine->GetComponentByClass(UPowerCoreComponent::StaticClass());
 	if (!Component) return;
 
-	UPowerCoreBase* PowerCore = Cast<UPowerCoreBase>(Component);
+	UPowerCoreComponent* PowerCore = Cast<UPowerCoreComponent>(Component);
 	if (!PowerCore) return;
 
 	float Total = PowerCore->GetWeaponSystemCurrentPower() +
 		PowerCore->GetShieldSystemCurrentPower() + 
 		PowerCore->GetMovementSystemCurrentPower();
 
-	if (fabs(PreviousTotalPower - Total) < DBL_EPSILON) {
-		return;
-	}
+	if (fabs(PreviousTotalPower - Total) < DBL_EPSILON) return;
 	
 	Bytes.Append(ConvertFloatToBytes(PowerCore->GetWeaponSystemCurrentPower()));
 	Bytes.Append(ConvertFloatToBytes(PowerCore->GetShieldSystemCurrentPower()));
