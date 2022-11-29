@@ -22,9 +22,17 @@ class SUPREMACY_API IWeaponizedInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(Category = "Weaponized", BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Weaponized")
 	class AWeapon* GetWeaponBySlot(int SlotIndex);
 
-	UFUNCTION(Category = "Weaponized", BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Weaponized")
 	void GetWeapons(TArray<class AWeapon*>& OutWeapons);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Weaponized")
+	float GetWeaponBaseScale() const;
+	virtual float GetWeaponBaseScale_Implementation() const;
+
+	/** Called the first time the weapon finishes initialization. This should be called after BeginPlay(). */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Weaponized|Replication")
+	void PostWeaponInit(class AWeapon* Weapon);
 };

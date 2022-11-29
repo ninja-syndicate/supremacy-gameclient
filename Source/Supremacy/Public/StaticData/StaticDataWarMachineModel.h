@@ -112,6 +112,8 @@ public:
 		Struct.HealthMax = MaxHitpoints;
 		Struct.ShieldMax = MaxShield;
 		Struct.ShieldRechargeRate = ShieldRechargeRate;
+		Struct.ShieldRechargeDelay = ShieldRechargeDelay;
+
 		Struct.Speed = Speed;
 		Struct.WalkSpeedModifier = WalkSpeedModifier;
 		Struct.Height = Height;

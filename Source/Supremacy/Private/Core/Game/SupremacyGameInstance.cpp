@@ -4,6 +4,7 @@
 #include "Core/Game/SupremacyGameInstance.h"
 
 #include "StaticData/StaticData.h"
+#include "Logger/SupremacyLogTypes.h"
 #include "Core/Game/SupremacyTypes.h"
 #include "Core/Damage/DamageTypes.h"
 
