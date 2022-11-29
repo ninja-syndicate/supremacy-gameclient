@@ -71,6 +71,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Owner_Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Owner_ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FFactionServer Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Model_Name;
@@ -135,6 +137,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString OwnerName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString OwnerID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FFaction Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ModelName;
@@ -189,6 +193,7 @@ public:
 		Hash(WarMachine.Hash),
 		Name(WarMachine.Name),
 		OwnerName(WarMachine.Owner_Name),
+		OwnerID(WarMachine.Owner_ID),
 		Faction(WarMachine.Faction),
 		ModelName(WarMachine.Model_Name),
 		ModelID(WarMachine.Model_ID),
