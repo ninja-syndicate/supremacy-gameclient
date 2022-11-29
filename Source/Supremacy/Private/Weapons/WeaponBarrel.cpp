@@ -93,18 +93,22 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 				{
 					BurstCooldown -= Step;
 					if (BurstCooldown <= 0)
-						BurstCount = 0;
+					{
+						BurstCount = ProjectileAmount;
+						if (Shooting)
+							BurstCooldown += 60.0f / FireRate;
+					}
 				}
 
 				// Fire Gap
-				if (BurstCooldown <= 0)
+				if (BurstFireRate == 0 || BurstCount > 0)
 					Cooldown -= Step;
 			
 				RemainingDelta -= Step;
-
+				
 				// Shoot while in burst
-				if (!ShouldShoot)
-					ShouldShoot = BurstFireRate > 0 && BurstCooldown <= 0 && BurstCount > 0 && BurstCount < ProjectileAmount;
+				if (BurstFireRate > 0)
+					ShouldShoot = Shooting ? BurstCount > 0 : BurstCount > 0 && BurstCount < ProjectileAmount;
 
 				// Shoot
 				if (ShouldShoot && (!ShootingBlocked) && Cooldown <= 0)
@@ -123,9 +127,9 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 						// Burst fire?
 						if (BurstFireRate > 0)
 						{
-							BurstCount++;
-							if (BurstCount >= ProjectileAmount)
-								BurstCooldown = 60.0f / FireRate;
+							BurstCount--;
+							if (BurstCooldown <= 0)
+								BurstCooldown = 60.0f / FireRate; // Start initial burst cooldown (on first shot)
 						}
 					}
 				}
@@ -133,6 +137,19 @@ void UWeaponBarrel::TickComponent(const float DeltaTime, const ELevelTick TickTy
 			while (RemainingDelta > 0 && Cooldown > 0);
 		}
 	}
+}
+
+void UWeaponBarrel::SetStatsFromWeaponStruct(const FWeaponStruct WeaponStruct)
+{
+	Spread = WeaponStruct.Is_Arced ? WeaponStruct.Spread : FMath::DegreesToRadians(WeaponStruct.Spread);
+	FireRate = WeaponStruct.Rate_Of_Fire;
+	BurstFireRate = WeaponStruct.Burst_Rate_Of_Fire;
+	if (WeaponStruct.Projectile_Speed > 0)
+		MuzzleVelocityMultiplier = WeaponStruct.Projectile_Speed;
+	ProjectileAmount = WeaponStruct.Projectile_Amount;
+	BurstCount = ProjectileAmount;
+	ChargeTime = WeaponStruct.Charge_Time;
+	IsArced = WeaponStruct.Is_Arced;
 }
 
 void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirection)
@@ -195,11 +212,11 @@ void UWeaponBarrel::SpawnBullet(const FVector InLocation, const FVector InDirect
 	// Cooldown (if burst fire, BurstFireRate is used otherwise FireRate)
 	if (BurstFireRate > 0)
 	{
-		Cooldown = 60.0f / BurstFireRate;
+		Cooldown += 60.0f / BurstFireRate;
 	}
 	else
 	{
-		Cooldown = 60.0f / FireRate;
+		Cooldown += 60.0f / FireRate;
 	}
 
 	if (ChargeEachShot) CurrentCharge = 0;

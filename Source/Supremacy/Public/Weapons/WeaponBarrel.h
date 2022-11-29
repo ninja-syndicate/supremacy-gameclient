@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/PrimitiveComponent.h"
+#include "Types/WeaponStruct.h"
 #include "WeaponBarrel.generated.h"
 
 UCLASS(Blueprintable, ClassGroup = (Custom), hidecategories = (Object, LOD, Physics, Lighting, TextureStreaming, Collision, HLOD, Mobile, VirtualTexture, ComponentReplication), editinlinenew, meta = (BlueprintSpawnableComponent))
@@ -17,6 +18,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(const float DeltaTime, const ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable)
+	void SetStatsFromWeaponStruct(const FWeaponStruct WeaponStruct);
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Debug") float DebugArrowSize = 100.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Velocity", meta = (ToolTip = "Multiplier applied to bullet muzzle velocity")) float MuzzleVelocityMultiplier = 1.0f;
