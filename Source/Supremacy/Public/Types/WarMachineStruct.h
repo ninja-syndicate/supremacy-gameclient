@@ -102,7 +102,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Shield_Recharge_Rate;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float Shield_Recharge_Delay;
+	float Shield_Recharge_Delay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Shield_Type_ID;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Speed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -121,7 +124,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FWarMachineStats Stats;
 
-	FWarMachineServerStruct(): Height(0), Health(3000), Health_Max(3000), Shield_Max(0), Shield_Recharge_Rate(0), Speed(0), Walk_Speed_Modifier(2), Sprint_Spread_Modifier(1.25), Melee_Force(20)
+	FWarMachineServerStruct(): Height(0), Health(3000), Health_Max(3000), Shield_Max(0), Shield_Recharge_Rate(0),
+	                           Shield_Recharge_Delay(0), Speed(0), Walk_Speed_Modifier(2), Sprint_Spread_Modifier(1.25),
+	                           Melee_Force(20)
 	{}
 };
 
@@ -170,6 +175,8 @@ public:
 	float ShieldRechargeRate;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ShieldRechargeDelay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ShieldTypeID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Speed;
@@ -214,6 +221,7 @@ public:
 		ShieldMax(WarMachine.Shield_Max),
 		ShieldRechargeRate(WarMachine.Shield_Recharge_Rate),
 		ShieldRechargeDelay(WarMachine.Shield_Recharge_Delay),
+		ShieldTypeID(WarMachine.Shield_Type_ID),
 
 		Speed(WarMachine.Speed),
 		WalkSpeedModifier(WarMachine.Walk_Speed_Modifier),
@@ -227,14 +235,20 @@ public:
 
 		Stats(WarMachine.Stats)
 	{
+		// Sort weapons by socket index
 		const auto SortWeaponBySlotPredicate = [](const FWeaponStruct& ThisWeapon, const FWeaponStruct& OtherWeapon)
 		{
 			return ThisWeapon.Socket_Index < OtherWeapon.Socket_Index;
 		};
 		Weapons.Sort(SortWeaponBySlotPredicate);
+
+		// Get Shield Type
+		if (FGuid ShieldTypeGuid; FGuid::Parse(WarMachine.Shield_Type_ID, ShieldTypeGuid))
+			ShieldType = GuidToEShieldType[ShieldTypeGuid];
 	}
 
 	FWarMachineStruct(): Rarity(ERarity::Rarity_Default), Height(0), Health(3000), HealthMax(3000), ShieldMax(0),
-	                     ShieldRechargeRate(0), Speed(0), WalkSpeedModifier(2), SprintSpreadModifier(1.25), MeleeForce(20), ShieldType(EShieldType::ShieldType_Orb)
+	                     ShieldRechargeRate(0), ShieldRechargeDelay(0), Speed(0), WalkSpeedModifier(2),
+	                     SprintSpreadModifier(1.25), MeleeForce(20), ShieldType(EShieldType::ShieldType_Orb)
 	{}
 };
