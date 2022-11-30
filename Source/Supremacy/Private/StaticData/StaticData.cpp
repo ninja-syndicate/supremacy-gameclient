@@ -126,6 +126,13 @@ UStaticDataPlayerAbility* UStaticData::GetPlayerAbility(const FGuid& ID)
     return nullptr;
 }
 
+UStaticDataPlayerAbility* UStaticData::GetPlayerAbilityByGameClientAbilityID(const EAbilityID& ID)
+{
+    for (UStaticDataPlayerAbility* Record : PlayerAbilityArray) if (Record->GameClientAbilityID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find game ability by game client id: %d"), ID);
+    return nullptr;
+}
+
 UStaticDataGameAbility* UStaticData::GetGameAbility(const FGuid& ID)
 {
     for (UStaticDataGameAbility* Record : GameAbilityArray) if (Record->ID == ID) return Record;
@@ -347,6 +354,12 @@ TArray<UStaticDataSkin*> UStaticData::GetMechSkins(const FGuid& MechModelID)
         if (Record->WarMachineModel->ID == MechModelID) SkinList.Push(Record->Skin);
     }
     return SkinList;
+}
+
+float UStaticData::GetAbilityCooldown(const EAbilityID Ability)
+{
+    // TODO: Get ability cool down from game abilities once it gets added
+    return Ability == EAbilityID::AbilityID_Heal ? -1 : 30;
 }
 
 void UStaticData::Clear()

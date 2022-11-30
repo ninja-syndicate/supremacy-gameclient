@@ -20,6 +20,8 @@ class SUPREMACY_API UStaticDataPlayerAbility : public UStaticDataBaseRecord
 	
 	GENERATED_BODY()
 
+public:
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Fields", meta = (AllowPrivateAccess = true))
 	EAbilityID GameClientAbilityID;
 

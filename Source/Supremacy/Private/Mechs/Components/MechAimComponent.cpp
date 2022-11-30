@@ -8,7 +8,7 @@
 
 #include "Mechs/Mech.h"
 #include "Weapons/Weapon.h"
-#include "Core/Game/SupremacyTypes.h"
+#include "Core/Game/SupremacyFunctionLibrary.h"
 #include "Core/Gameplay/GameplayTags.h"
 #include "AI/CombatAgentInterface.h"
 
