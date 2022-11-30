@@ -19,6 +19,8 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, Replicated)
 	FFaction Faction;
+
+	ASupremacyPlayerState();
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
