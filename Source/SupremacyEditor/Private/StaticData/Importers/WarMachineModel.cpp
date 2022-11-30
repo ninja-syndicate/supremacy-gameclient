@@ -82,15 +82,16 @@ bool StaticDataImporter::WarMachineModel::HandleRow(UStaticData* DataAsset, TArr
 	
 	Record->Type = StringToEWarMachineModelType[RowCells[5].ToUpper()];
 
-	if(!StringToEWarMachineBoostStat.Contains(RowCells[6].ToUpper()))
-	{
-		ErrorReason = FString::Format(TEXT("{0} - unable to find mech boost stat {1} on line {2}"), {
-			FileName, RowCells[6], Importer.GetCurrentIndex() + 1
-		});
-		return false;
-	}
-
-	Record->BoostStat = StringToEWarMachineBoostStat[RowCells[6].ToUpper()];
+	// Game client doesn't need boost stat (at least atm)
+	// if(!StringToEWarMachineBoostStat.Contains(RowCells[6].ToUpper()))
+	// {
+	// 	ErrorReason = FString::Format(TEXT("{0} - unable to find mech boost stat {1} on line {2}"), {
+	// 		FileName, RowCells[6], Importer.GetCurrentIndex() + 1
+	// 	});
+	// 	return false;
+	// }
+	//
+	// Record->BoostStat = StringToEWarMachineBoostStat[RowCells[6].ToUpper()];
 
 	if(!StringToEWarMachinePowerCoreSize.Contains(RowCells[11].ToUpper()))
 	{
