@@ -1,0 +1,30 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.6",
+	"FriendlyName": "BlueprintWebSocket",
+	"Description": "Blueprint interface for the unreal engine's WebSocket module.",
+	"Category": "Networking",
+	"CreatedBy": "Pandores",
+	"CreatedByURL": "https://www.unrealengine.com/marketplace/en-US/profile/Pandores",
+	"DocsURL": "https://github.com/Pandoa/BlueprintWebSocket/blob/master/README.md",
+	"MarketplaceURL": "",
+	"SupportURL": "mailto:pandores.marketplace@gmail.com",
+	"EngineVersion": "5.1.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "BlueprintWebSocket",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen",
+			"PlatformAllowList": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
+		}
+	]
+}

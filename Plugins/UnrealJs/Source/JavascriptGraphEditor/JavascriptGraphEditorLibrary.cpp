@@ -23,13 +23,6 @@ FJavascriptConnectionParams::operator FConnectionParams () const
 #undef OP
 		return Out;
 }
-
-FJavascriptPerformSecondPassLayoutContainer::FJavascriptPerformSecondPassLayoutContainer(): PrevNode(nullptr),
-	NextNode(nullptr),
-	NodeIndex(0), MaxNodes(0)
-{
-}
-
 #undef DO_OP
 
 FJavascriptNodeCreator UJavascriptGraphEditorLibrary::NodeCreator(UJavascriptGraphEdGraph* Graph, bool bSelectNewNode/* = true*/)
@@ -50,12 +43,13 @@ FJavascriptNodeCreator UJavascriptGraphEditorLibrary::CustomNodeCreator(UJavascr
 	return Out;
 }
 
-FJavascriptGraphMenuBuilder::FJavascriptGraphMenuBuilder(): Graph(nullptr), GraphNode(nullptr), bIsDebugging(false)
+FJavascriptNodeCreator UJavascriptGraphEditorLibrary::CommentNodeCreator(UJavascriptGraphEdGraph* Graph, bool bSelectNewNode/* = true*/)
 {
-}
-
-FJavascriptNodeCreator::FJavascriptNodeCreator(): Node(nullptr)
-{
+	FJavascriptNodeCreator Out;
+	auto Creator = new FCommentJavascriptGraphNodeCreator(Graph);
+	Out.Instance = MakeShareable(static_cast<IJavascriptGraphNodeCreator*>(Creator));
+	Out.Node = Creator->CreateNode(bSelectNewNode);
+	return Out;
 }
 
 void UJavascriptGraphEditorLibrary::Finalize(FJavascriptNodeCreator& Creator)
@@ -76,12 +70,13 @@ void UJavascriptGraphEditorLibrary::MakeLinkTo(FJavascriptEdGraphPin A, FJavascr
 	}
 }
 
-void UJavascriptGraphEditorLibrary::TryConnection(UEdGraphSchema* Schema, FJavascriptEdGraphPin A, FJavascriptEdGraphPin B)
+bool UJavascriptGraphEditorLibrary::TryConnection(UEdGraphSchema* Schema, FJavascriptEdGraphPin A, FJavascriptEdGraphPin B)
 {
 	if (A.IsValid() && B.IsValid())
 	{
-		Schema->TryCreateConnection(A, B);
+		return Schema->TryCreateConnection(A, B);
 	}
+	return false;
 }
 
 void UJavascriptGraphEditorLibrary::BreakLinkTo(FJavascriptEdGraphPin A, FJavascriptEdGraphPin B)
@@ -244,6 +239,15 @@ TArray<FJavascriptEdGraphPin> UJavascriptGraphEditorLibrary::GetPins(UEdGraphNod
 {
 	return TransformPins(Node->Pins);
 }
+
+void UJavascriptGraphEditorLibrary::SetPinAdvancedView(FJavascriptEdGraphPin A, bool bAdvancedView)
+{
+	if (A.IsValid())
+	{
+		A->bAdvancedView = bAdvancedView;
+	}
+}
+
 // @unused
 FJavascriptArrangedWidget UJavascriptGraphEditorLibrary::FindPinGeometries(FJavascriptDetermineLinkGeometryContainer Container, FJavascriptPinWidget PinWidget)
 {
@@ -384,7 +388,7 @@ FJavascriptSlateWidget UJavascriptGraphEditorLibrary::GetOwnerPanel(UJavascriptG
 {
 	FJavascriptSlateWidget Out;
 
-	TSharedPtr<SJavascriptGraphEdNode> SlateNode = Node->GetNodeSlateWidget();
+	TSharedPtr<SGraphNode> SlateNode = Node->GetNodeSlateWidget();
 	if (SlateNode.IsValid())
 	{
 		Out.Widget = SlateNode->GetOwnerPanel();
@@ -401,6 +405,34 @@ TArray<FJavascriptEdGraphPin> UJavascriptGraphEditorLibrary::TransformPins(const
 		Out.Add(FJavascriptEdGraphPin{ x });
 	}
 	return Out;
+}
+
+void UJavascriptGraphEditorLibrary::SetPinRefObject(FJavascriptEdGraphPin InPin, UObject* InObject)
+{
+	UEdGraphPin* GraphPin = InPin.Get();
+	if (GraphPin)
+	{
+		UJavascriptGraphEdNode* EdNode = Cast<UJavascriptGraphEdNode>(GraphPin->GetOwningNode());
+		if (EdNode)
+		{
+			EdNode->PinRefMap.Add(GraphPin->PinName, InObject);
+		}
+	}
+}
+
+UObject* UJavascriptGraphEditorLibrary::GetPinRefObject(FJavascriptEdGraphPin InPin)
+{
+	UEdGraphPin* GraphPin = InPin.Get();
+	if (GraphPin)
+	{
+		UJavascriptGraphEdNode* EdNode = Cast<UJavascriptGraphEdNode>(GraphPin->GetOwningNode());
+		if (EdNode)
+		{
+			return EdNode->PinRefMap.FindChecked(GraphPin->PinName);
+		}
+	}
+
+	return nullptr;
 }
 
 #undef LOCTEXT_NAMESPACE
