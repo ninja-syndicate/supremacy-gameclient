@@ -5,8 +5,6 @@
 #include "Chaos/ChaosEngineInterface.h"
 #include "SupremacyTypes.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogSupremacy, Log, All);
-
 // @note - Not all custom channels/types are listed.
 /** Supremacy Trace Channels */
 #define TraceChannel_Damageable ECollisionChannel::ECC_GameTraceChannel3

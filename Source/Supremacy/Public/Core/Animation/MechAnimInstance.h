@@ -23,7 +23,7 @@ public:
 	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 	virtual void PreUpdateAnimation(float DeltaSeconds) override;
 
-public:
+protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta = (BlueprintThreadSafe = true), Category = "Thread Safe Functions")
 	void UpdateLocomotion(float DeltaSeconds);
 	virtual void UpdateLocomotion_Implementation(float DeltaSeconds);
@@ -36,6 +36,10 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Mech")
 	void HandleMechInitialized();
 	virtual void HandleMechInitialized_Implementation();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Mech")
+	void HandleWeaponEquipped(class AWeapon* Weapon);
+	virtual void HandleWeaponEquipped_Implementation(class AWeapon* Weapon);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion")
@@ -50,6 +54,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
 	float UpperBodyTurnRate = 0.0f;
 
+	/** Whether to use a custom upper body turn rate. If turned off, it will use character movement component's yaw turn rate. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	bool bCustomUpperBodyTurnRate = false;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimInstance")
 	TObjectPtr<class AMech> MechOwner = nullptr;
@@ -57,6 +65,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AnimInstance")
 	bool bIsInitialized = false;
 
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true), Category = "Animation")
+	float LocomotionAnimPlayRate = 1.0f;
+	
 private:
 	/** 
 	 * Accessed variables in the pre-event graph (game thread, before event-graph and NativeUpdateAnimation).
