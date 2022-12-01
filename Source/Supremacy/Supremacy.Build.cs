@@ -11,7 +11,7 @@ public class Supremacy : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core", "CoreUObject", "Engine", "HTTP", "InputCore", "Niagara",
-			"PhysicsCore", "AnimGraphRuntime", "GameplayTasks",
+			"PhysicsCore", "AnimGraphRuntime", "AnimationCore", "GameplayTasks",
 			"GameplayTags", "AIModule", "NavigationSystem", "Landscape",
 			"ApplicationCore", "EasyBallistics", "Json", "JsonUtilities"
 		});

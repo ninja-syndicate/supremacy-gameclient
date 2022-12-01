@@ -44,10 +44,6 @@ protected:
 	virtual void ApplyBurning_Implementation(const FHitResult& HitResult);
 
 protected:
-	// @todo - Some clean-up later
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName BarrelSocketName = FName("Barrel");
-
 	UPROPERTY(Category = "Weapon|Flamethrower", VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> StaticMeshComp = nullptr;
 

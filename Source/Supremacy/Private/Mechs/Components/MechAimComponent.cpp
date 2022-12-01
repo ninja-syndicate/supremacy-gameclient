@@ -17,7 +17,7 @@ UMechAimComponent::UMechAimComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 // Called when the game starts
@@ -54,34 +54,39 @@ void UMechAimComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// Return if not initialized yet.
+	if (!bIsInitialized) return;
+
 	// @todo - support arced weapons.
 	// @todo - Use vector spring interp to get natural spring transition to the aim location.
+	/*
 	FVector TargetLocation = GetTargetLocation();
 
 	if (bEnableSpringAimInterpolation)
 	{
 		CurrentAimLocation = UKismetMathLibrary::VectorSpringInterp(
-			CurrentAimLocation, TargetLocation, VectorSpringState, SpringStiffness, SpringCriticalDampeningFactor, DeltaTime);
+			CurrentAimLocation, 
+			TargetLocation, 
+			VectorSpringState, 
+			SpringStiffness, 
+			SpringCriticalDampeningFactor, 
+			DeltaTime, 
+			1.0f, 
+			1.0f);
 	}
-
-
-	// FVector AimLocation = UKismetMathLibrary::VInterpTo_Constant(CurrentAimLocation, TargetLocation, DeltaTime, );
-	// CurrentAimLocation = AimLocation;
-
-
+	else 
+	{
+		// For now, directly snap to the target point for testing.
+		CurrentAimLocation = TargetLocation;
+	}
+	*/
 }
 
-FVector UMechAimComponent::GetAimLocation()
+FVector UMechAimComponent::GetAimLocation() const
 {
-	return CurrentAimLocation;
+	return CurrentAimTransform.GetTranslation();
+	// return CurrentAimLocation;
 }
-
-/*
-void UMechAimComponent::GetSpringCameraViewpoint()
-{
-	// TODO: implementation
-}
-*/
 
 void UMechAimComponent::GetCameraViewpoint(FVector& OutCameraLocation, FRotator& OutCameraRotation)
 {
@@ -94,16 +99,17 @@ void UMechAimComponent::GetCameraViewpoint(FVector& OutCameraLocation, FRotator&
 
 FVector UMechAimComponent::GetTargetLocation()
 {
-	// Return zero vector if not initialized.
-	if (!bIsInitialized) return FVector::ZeroVector;
-
 	// If the mech is not controlled, just fallback to the base aim rotation.
 	if (!OwnerMech->IsPawnControlled()) 
 		return GetBaseAimLocation();
 
 	// For player controlled mechs.
 	if (OwnerMech->IsPlayerControlled())
-		return GetPlayerAimLocation();
+	{
+		const FTransform AimTargetTransform = GetPlayerAimTargetTransform();
+		DrawDebugLine(GetWorld(), AimTargetTransform.GetTranslation(), AimTargetTransform.GetTranslation() + AimTargetTransform.GetUnitAxis(EAxis::X) * 4096, FColor(0, 0, 255), true, -1, 0, 12.33f);
+		return AimTargetTransform.GetTranslation() + AimTargetTransform.GetUnitAxis(EAxis::X) * FocalDistance;
+	}
 
 	// For AI-controlled mechs.
 	if (OwnerMech->IsBotControlled())
@@ -123,17 +129,58 @@ FVector UMechAimComponent::GetTargetLocation()
 FVector UMechAimComponent::GetBaseAimLocation()
 {
 	const FRotator AimRotation = OwnerMech->GetBaseAimRotation();
-	const FVector AimLocation = OwnerMech->GetActorLocation() + AimRotation.Vector() * TraceDistance;
+	const FVector AimLocation = OwnerMech->GetActorLocation() + AimRotation.Vector().GetSafeNormal() * FocalDistance;
 	return AimLocation;
 }
 
-FVector UMechAimComponent::GetPlayerAimLocation()
+FTransform UMechAimComponent::GetPlayerAimTargetTransform()
 {
+	const AController* Controller = OwnerMech->GetController();
+	const FVector PawnLocation = OwnerMech->GetActorLocation();
+	const FQuat PawnQuat = OwnerMech->GetActorQuat();
+
+	// Get the player camera location and rotation from the controller.
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (PlayerController)
+	{
+		PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
+	}
+	// @todo - pathing for AI.
+
+	// const float FocalDistance = FVector::Dist(CameraLocation, PawnLocation);
+
+	// Get the aim direction from the camera and focal location.
+	FVector AimDirection = CameraRotation.Vector().GetSafeNormal();
+	FVector FocalLocation = CameraLocation + AimDirection * FocalDistance;
+	DrawDebugLine(GetWorld(), CameraLocation, FocalLocation, FColor(0, 255, 0), true, -1, 0, 12.33f);
+
+	if (PlayerController)
+	{
+		// @todo test focal distance, and linetrace testing, and optimal range.
+		// @todo actually get weapon location.
+		const FVector WeaponLocation = PawnLocation;
+
+		CameraLocation = FocalLocation + ((WeaponLocation - FocalLocation) | AimDirection) * AimDirection;
+		FocalLocation = CameraLocation + (AimDirection * FocalDistance);
+		DrawDebugLine(GetWorld(), CameraLocation, FocalLocation, FColor(255, 0, 0), true, -1, 0, 12.33f);
+	}
+	// @todo handle for AI
+	FVector SourceLocation = PawnLocation;
+	const FTransform AimTargetTransform((FocalLocation - SourceLocation).Rotation(), SourceLocation);
+
+	return AimTargetTransform;
+
+
 	// @todo - optimize this.
+	/*
 	TArray<AWeapon*> MechWeapons;
 	IWeaponizedInterface::Execute_GetWeapons(OwnerMech, MechWeapons);
 
-	APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	GetCameraViewpoint(CameraLocation, CameraRotation);
 
 	FHitResult HitResult;
 	FCollisionQueryParams QueryParams;
@@ -143,25 +190,35 @@ FVector UMechAimComponent::GetPlayerAimLocation()
 		QueryParams.AddIgnoredActor(Weapon);
 	}
 
-	FVector TraceStartLocation = CameraManager->GetCameraLocation();
-	FVector TraceEndLocation = TraceStartLocation + CameraManager->GetActorForwardVector() * TraceDistance;
+	FVector TraceStartLocation = CameraLocation;
+	FVector TraceEndLocation = TraceStartLocation + UKismetMathLibrary::GetForwardVector(CameraRotation) * TraceDistance;
 	const bool bIsHit = GetWorld()->LineTraceSingleByChannel(
 		HitResult, TraceStartLocation, TraceEndLocation, ECollisionChannel::ECC_Visibility, QueryParams);
 
 	return bIsHit ? HitResult.ImpactPoint : HitResult.TraceEnd;
+	*/
 }
 
 void UMechAimComponent::HandleMechInitialized()
 {
-	// todo
+	// @todo - probably make independent of mech initialization state.
 	/*
+	FGameplayTagContainer FireableWeapon;
+	FireableWeapon.AddTag(TAG_Weapon);
+	FireableWeapon.AddTag(TAG_Weapon_Fireable);
+
 	TArray<AWeapon*> Weapons;
 	IWeaponizedInterface::Execute_GetWeapons(OwnerMech, Weapons);
 
-	// TODO: Retrieve information required.
-	for (const AWeapon* Weapon : Weapons)
+	for (AWeapon* Weapon : Weapons)
 	{
+		IGameplayTagAssetInterface* GameplayTagInterface = Cast<IGameplayTagAssetInterface>(Weapon);
+		if (!GameplayTagInterface) continue;
 
+		const bool bIsFireableWeapon = GameplayTagInterface->HasAllMatchingGameplayTags(FireableWeapon);
+		if (!bIsFireableWeapon) continue;
+
+		// TODO:
 	}
 	*/
 }

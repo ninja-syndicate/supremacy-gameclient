@@ -8,6 +8,7 @@
 #include "Core/Gameplay/GameplayTags.h"
 #include "Logger/SupremacyLogTypes.h"
 #include "Weapons/WeaponizedInterface.h"
+#include "Weapons/Constants.h"
 
 // Sets default values for this component's properties
 UWeaponScaleComponent::UWeaponScaleComponent()
@@ -49,7 +50,7 @@ void UWeaponScaleComponent::BeginPlay()
 	}
 
 	UStaticMeshComponent* StaticMeshComp = nullptr;
-	TArray<UActorComponent*> Comps = GetOwner()->GetComponentsByTag(UStaticMeshComponent::StaticClass(), MainStaticMeshTagName);
+	TArray<UActorComponent*> Comps = GetOwner()->GetComponentsByTag(UStaticMeshComponent::StaticClass(), WeaponConstants::MainStaticMeshTagName);
 	if (Comps.IsEmpty())
 	{
 		// If no components with the tag "Main", then fallback to the first static mesh component.

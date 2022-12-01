@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "Weapons/Weapon.h"
+#include "Mechs/Components/MechAimComponent.h"
 #include "Core/Gameplay/GameplayTags.h"
 #include "GameFramework/GameModeBase.h"
 #include "StaticData/StaticData.h"
@@ -16,6 +17,9 @@ AMech::AMech()
 {
 	bReplicates = true;
 	bAlwaysRelevant = true;
+
+	AimComponent = CreateDefaultSubobject<UMechAimComponent>(TEXT("AimComponent"));
+	GameplayTagContainer.AddTag(TAG_Mech);
 }
 
 void AMech::BeginPlay()
@@ -37,6 +41,7 @@ void AMech::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 
 	DOREPLIFETIME_CONDITION(AMech, WarMachineStruct, COND_InitialOnly);
 	DOREPLIFETIME(AMech, Weapons);
+	DOREPLIFETIME(AMech, GameplayTagContainer);
 }
 
 void AMech::OnRep_SetWarMachineStruct()

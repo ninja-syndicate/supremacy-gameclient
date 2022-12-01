@@ -8,7 +8,7 @@
 #include "MechAimComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), editinlinenew, meta=(BlueprintSpawnableComponent) )
 class SUPREMACY_API UMechAimComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -18,8 +18,8 @@ public:
 	UMechAimComponent();
 
 public:
-	UFUNCTION(BlueprintCallable)
-	FVector GetAimLocation();
+	UFUNCTION(BlueprintPure, meta = (BlueprintThreadSafe))
+	FVector GetAimLocation() const;
 
 protected:
 	// Called when the game starts
@@ -33,7 +33,7 @@ protected:
 	FVector GetBaseAimLocation();
 
 	UFUNCTION(BlueprintCallable)
-	FVector GetPlayerAimLocation();
+	FTransform GetPlayerAimTargetTransform();
 
 	UFUNCTION(BlueprintCallable)
 	void GetCameraViewpoint(FVector& OutCameraLocation, FRotator& OutCameraRotation);
@@ -43,6 +43,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+	UFUNCTION()
 	void HandleMechInitialized();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
@@ -53,7 +54,7 @@ private:
 	TObjectPtr<class AMech> OwnerMech = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	FVector CurrentAimLocation = FVector::ZeroVector;
+	FTransform CurrentAimTransform;
 
 private:
 	/** Enables spring oscillation-based aiming. So it oscillates after reaching the target aim location. */
@@ -66,15 +67,21 @@ private:
 	bool bEnableTrace = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true, EditCondition = "bEnableTrace"))
-	float TraceDistance = 10000000.0f;
+	float FocalDistance = 1024.0f;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	FVectorSpringState VectorSpringState;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true, EditCondition = "bEnableSpringAimInterpolation"))
-	float SpringStiffness = 0.5f;
+	float SpringStiffness = 0.1f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true, EditCondition = "bEnableSpringAimInterpolation"))
-	float SpringCriticalDampeningFactor = 0.2f;
+	float SpringCriticalDampeningFactor = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true, EditCondition = "bEnableSpringAimInterpolation"))
+	float SpringMass = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true, EditCondition = "bEnableSpringAimInterpolation"))
+	float SpringTargetVelocityAmount = 1.0f;
 };

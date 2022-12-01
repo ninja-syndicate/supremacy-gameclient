@@ -12,7 +12,9 @@
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Components/BoxComponent.h"
 
-#include "Core/Game/SupremacyFunctionLibrary.h"
+#include "Weapons/Constants.h"
+
+#include "Core/Game/SupremacyTypes.h"
 #include "Core/Game/SupremacyGameInstance.h"
 #include "Core/Damage/Damager.h"
 
@@ -39,7 +41,7 @@ AFlamethrowerWeapon::AFlamethrowerWeapon() : Super()
 
 	// Setup component hierarchy.
 	StaticMeshComp->SetupAttachment(RootComponent);
-	FlameStreamNiagaraComp->SetupAttachment(StaticMeshComp, BarrelSocketName);
+	FlameStreamNiagaraComp->SetupAttachment(StaticMeshComp, WeaponConstants::BarrelStaticMeshTagName);
 	MeleeBoxComp->SetupAttachment(StaticMeshComp);
 }
 
@@ -157,7 +159,7 @@ void AFlamethrowerWeapon::HitScan()
 {
 	const float Spread = Struct.Spread;
 	const float TraceDist = Struct.Damage_Falloff;
-	const FTransform& SocketTransform = StaticMeshComp->GetSocketTransform(BarrelSocketName);
+	const FTransform& SocketTransform = StaticMeshComp->GetSocketTransform(WeaponConstants::BarrelSocketName);
 
 	const FVector TraceStart = SocketTransform.GetLocation();
 	const FVector TraceEnd = TraceStart + UKismetMathLibrary::RandomPointInBoundingBox(

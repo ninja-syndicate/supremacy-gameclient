@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Types/AbilityID.h"
+#include "GameplayTagAssetInterface.h"
 #include "Types/WarMachineStruct.h"
 #include "UserAction/UserActionManager.h"
 #include "Weapons/WeaponizedInterface.h"
 #include "Mech.generated.h"
 
 UCLASS()
-class SUPREMACY_API AMech : public ACharacter, public IWeaponizedInterface
+class SUPREMACY_API AMech final : public ACharacter, public IGameplayTagAssetInterface, public IWeaponizedInterface
 {
 	GENERATED_BODY()
 	
@@ -20,6 +21,11 @@ public:
 	AMech();
 
 	virtual void BeginPlay() override;
+
+public:
+	//~ Begin IGameplayTagAssetInterface
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = GameplayTagContainer; }
+	//~ End IGameplayTagAssetInterface
 
 public:
 	//~ Begin IWeaponizedInterface
@@ -86,9 +92,17 @@ protected:
 	float WeaponBaseScale = 1.0f;
 	
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<class UMechAimComponent> AimComponent;
+
+protected:
 	/** Whether the mech is fully initialized. Do not make this replicated as it will depend on individual PC. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsInitialized = false;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags", Replicated)
+	FGameplayTagContainer GameplayTagContainer;
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Mech|Replication")
