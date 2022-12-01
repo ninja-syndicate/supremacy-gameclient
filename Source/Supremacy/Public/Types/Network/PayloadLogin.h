@@ -14,7 +14,7 @@ struct FLoginEmailRequest
 	UPROPERTY()
 	FString Password;
 	UPROPERTY()
-	bool Is_External;
+	bool Is_External = false;
 };
 
 USTRUCT(BlueprintType)

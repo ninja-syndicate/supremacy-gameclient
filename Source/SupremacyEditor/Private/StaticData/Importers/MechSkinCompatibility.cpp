@@ -138,7 +138,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 		}
 		UObject* Object = ObjectClass->GetDefaultObject();
 		if (Object) {
-			USkeletalMesh* Mesh = Cast<AMech>(Object)->GetMesh()->SkeletalMesh;
+			USkeletalMesh* Mesh = Cast<AMech>(Object)->GetMesh()->GetSkeletalMeshAsset();
 			//UE_LOG(LogTemp, Warning, TEXT("loading mesh succeeded"));
 			TArray<FSkeletalMaterial> Materials = Mesh->GetMaterials();
 			for (int32 i = 0; i < Materials.Num(); i++)
@@ -146,7 +146,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 				FSkeletalMaterial Material = Materials[i];
 				const FAssetData* MaterialAsset = GetMaterialForSlot(AssetData, Material.MaterialSlotName.ToString());
 				if (MaterialAsset) {
-					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->ObjectPath.ToString() + FString("'"))));
+					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->GetObjectPathString() + FString("'"))));
 				}
 			}
 		}

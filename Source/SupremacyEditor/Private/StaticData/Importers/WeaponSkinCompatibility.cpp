@@ -150,7 +150,7 @@ bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAss
 				// Red Mountain cannon material is still in it's mech folder; specify the material
 				for (int32 i = 0; i < AssetData.Num(); i++) if (AssetData[i].AssetName.ToString().Contains("Right_Gun")) AssetIndex = i;
 			}
-			Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].ObjectPath.ToString() + FString("'"))));
+			Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].GetObjectPathString() + FString("'"))));
 		}
 	}
 	
