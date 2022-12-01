@@ -1,6 +1,12 @@
 #include "Core/Game/SupremacyPlayerState.h"
 #include "Net/UnrealNetwork.h"
 
+ASupremacyPlayerState::ASupremacyPlayerState()
+{
+	// Set default UserID for testing
+	UserID = "unauthorised-" + FGuid::NewGuid().ToString();
+}
+
 void ASupremacyPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

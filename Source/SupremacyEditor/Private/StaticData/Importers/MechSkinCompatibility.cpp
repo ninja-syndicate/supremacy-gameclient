@@ -103,8 +103,9 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 
 	// Get Avatar
 	Record->AvatarURL = RowCells[6];
-	
-	FString AvatarPackageURL = GetPackageNameForURL(Record->AvatarURL, "UI/Images/MechAvatars/");
+
+	EImageFormat ImageFormat;
+	FString AvatarPackageURL = GetPackageNameForURL(Record->AvatarURL, "UI/Images/MechAvatars/", ImageFormat);
 	
 	TArray<FAssetData> AvatarAsset;
 	AssetRegistryModule.Get().GetAssetsByPackageName(FName(AvatarPackageURL), AvatarAsset);
