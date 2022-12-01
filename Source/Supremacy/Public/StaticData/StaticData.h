@@ -16,6 +16,7 @@
 #include "StaticDataPlayerAbility.h"
 #include "StaticDataGameAbility.h"
 #include "StaticDataShieldType.h"
+#include "Types/AbilityID.h"
 #include "StaticData.generated.h"
 
 namespace StaticDataImporter
@@ -100,7 +101,13 @@ public:
     UStaticDataPlayerAbility* GetPlayerAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
+    UStaticDataPlayerAbility* GetPlayerAbilityByGameClientAbilityID(const EAbilityID& ID);
+
+    UFUNCTION(BlueprintCallable)
     UStaticDataGameAbility* GetGameAbility(const FGuid& ID);
+
+    UFUNCTION(BlueprintCallable)
+    UStaticDataGameAbility* GetGameAbilityByGameClientAbilityID(const EAbilityID& ID, const FGuid& FactionID);
 
     UFUNCTION(BlueprintCallable)
     UStaticDataShieldType* GetShieldType(const FGuid& ID);
@@ -116,7 +123,10 @@ public:
 
     UFUNCTION(BlueprintCallable, meta=(ToolTip="Get an array of all possible skins for a mech model."))
     TArray<UStaticDataSkin*> GetMechSkins(const FGuid& MechModelID);
-        
+
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Mech Abilities")
+    float GetAbilityCooldown(const EAbilityID Ability);
+    
     UFUNCTION(BlueprintCallable)
     void Clear();
     

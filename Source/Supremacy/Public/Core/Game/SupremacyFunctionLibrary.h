@@ -1,9 +1,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StaticData/StaticData.h"
 #include "Engine/EngineTypes.h"
 #include "Chaos/ChaosEngineInterface.h"
-#include "SupremacyTypes.generated.h"
+#include "SupremacyFunctionLibrary.generated.h"
 
 // @note - Not all custom channels/types are listed.
 /** Supremacy Trace Channels */
@@ -16,10 +17,13 @@
 #define SurfaceType_Energy EPhysicalSurface::SurfaceType5
 
 UCLASS()
-class SUPREMACY_API USupremacyFunctionLibrary : public UBlueprintFunctionLibrary
+class SUPREMACY_API USupremacyFunctionLibrary final : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
 	UFUNCTION(Category = "Supremacy Function Library", BlueprintPure, meta = (WorldContext = "WorldContextObject"))
-	static TSubclassOf<class UDamageType> ConvertToDamageType(const UObject* WorldContextObject, uint8 DamageType);
+	static TSubclassOf<class UDamageType> ConvertToDamageType(const UObject* WorldContextObject, const uint8 DamageType);
+
+	UFUNCTION(Category = "Supremacy Function Library", BlueprintPure, meta = ( WorldContext = "WorldContextObject"))
+	static UStaticData* GetStaticData(const UObject* WorldContextObject);
 };
