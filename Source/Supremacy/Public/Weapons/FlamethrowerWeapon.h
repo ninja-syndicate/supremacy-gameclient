@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "NiagaraDataInterfaceExport.h"
 #include "Weapons/Weapon.h"
-#include "Core/Game/SupremacyTypes.h"
+#include "Core/Game/SupremacyFunctionLibrary.h"
 #include "FlamethrowerWeapon.generated.h"
 
 /**

@@ -12,7 +12,7 @@
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Components/BoxComponent.h"
 
-#include "Core/Game/SupremacyTypes.h"
+#include "Core/Game/SupremacyFunctionLibrary.h"
 #include "Core/Game/SupremacyGameInstance.h"
 #include "Core/Damage/Damager.h"
 
