@@ -120,6 +120,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
       122, 122,
       -129700, -129800,
       {}
+    },
   },
   {
     "CityBlockArena",
