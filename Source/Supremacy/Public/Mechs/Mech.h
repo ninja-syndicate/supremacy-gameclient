@@ -4,12 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Types/AbilityID.h"
 #include "Types/WarMachineStruct.h"
+#include "UserAction/UserActionManager.h"
 #include "Weapons/WeaponizedInterface.h"
 #include "Mech.generated.h"
 
 UCLASS()
-class SUPREMACY_API AMech final : public ACharacter, public IWeaponizedInterface
+class SUPREMACY_API AMech : public ACharacter, public IWeaponizedInterface
 {
 	GENERATED_BODY()
 	
@@ -62,6 +64,17 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech")
 	FOnWeaponEquipped OnWeaponEquipped;
 
+	//~ Begin Mech Abilities
+	UFUNCTION(BlueprintCallable, Server, Reliable, Category="Mech Abilities")
+	void UseMechAbility(const EAbilityID Ability);
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMechAbilityUsed, EAbilityID, Ability);
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Mech Abilities")
+	FOnMechAbilityUsed OnMechAbilityUsed;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Mech Abilities")
+	TMap<EAbilityID, float> AbilityUseTimes;
+
 protected:
 	void HandleWeaponEquipped(class AWeapon* Weapon);
 
@@ -71,7 +84,7 @@ protected:
 	/** The scale to use for the weapons equipped by the mech. Intended to be set from blueprints/subclasses. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	float WeaponBaseScale = 1.0f;
-
+	
 protected:
 	/** Whether the mech is fully initialized. Do not make this replicated as it will depend on individual PC. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -80,4 +93,8 @@ protected:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Mech|Replication")
 	virtual void OnRep_SetWarMachineStruct();
+	
+	UPROPERTY()
+	UUserActionManager* UserActionManager;
+	
 };

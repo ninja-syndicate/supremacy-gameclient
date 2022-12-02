@@ -18,24 +18,31 @@ namespace StaticDataImporter
 		return (X != 0) && ((X & (X - 1)) == 0);
 	}
 	
-	static FString GetPackageNameForURL(const FString URL, const FString PackageDirectory, FString& AssetFileName)
+	static FString GetPackageNameForURL(const FString URL, const FString PackageDirectory, FString& AssetFileName, EImageFormat& ImageFormat)
 	{
 		FString PackageName = TEXT("/Game/" + PackageDirectory);
 		int32 LastSlashIndex, LastPeriodIndex = 0;
 		URL.FindLastChar('/', LastSlashIndex);
 		URL.FindLastChar('.', LastPeriodIndex);
-		FString AvatarFileName = URL.Mid(LastSlashIndex + 1);
-		AvatarFileName.RemoveFromEnd(".png");
-		PackageName += AvatarFileName;
+		FString TextureFileName = URL.Mid(LastSlashIndex + 1);
 
-		AssetFileName = AvatarFileName;
+		const FString Extension = FPaths::GetExtension(TextureFileName, true);
+		if (Extension == "jpg")
+			ImageFormat = EImageFormat::JPEG;
+		else
+			ImageFormat = EImageFormat::PNG;
+		
+		TextureFileName.RemoveFromEnd(Extension);
+		PackageName += TextureFileName;
+
+		AssetFileName = TextureFileName;
 		return PackageName;
 	}
 
-	static FString GetPackageNameForURL(const FString URL, const FString PackageDirectory)
+	static FString GetPackageNameForURL(const FString URL, const FString PackageDirectory, EImageFormat& ImageFormat)
 	{
-		FString AvatarFileName;
-		return GetPackageNameForURL(URL, PackageDirectory, AvatarFileName);
+		FString TextureFileName;
+		return GetPackageNameForURL(URL, PackageDirectory, TextureFileName, ImageFormat);
 	}
 
 	/**
@@ -76,21 +83,22 @@ namespace StaticDataImporter
 		}
 
 		// get name
-		FString AvatarFileName;
-		const FString PackageName = GetPackageNameForURL(URL, PackageDirectory, AvatarFileName);
+		FString TextureFileName;
+		EImageFormat ImageFormat;
+		const FString PackageName = GetPackageNameForURL(URL, PackageDirectory, TextureFileName, ImageFormat);
 
 		// create package
 		UPackage* Package = CreatePackage(*PackageName);
 		Package->FullyLoad();
 
 		// create texture
-		const FName AvatarTextureName = MakeUniqueObjectName(Package, UTexture2D::StaticClass(), FName(*AvatarFileName));
-		UTexture2D* AvatarTexture = NewObject<UTexture2D>(Package, AvatarTextureName,RF_Public | RF_Standalone | RF_MarkAsRootSet);
-		AvatarTexture->AddToRoot(); // prevent garbage collection
+		const FName TextureTextureName = MakeUniqueObjectName(Package, UTexture2D::StaticClass(), FName(*TextureFileName));
+		UTexture2D* TextureTexture = NewObject<UTexture2D>(Package, TextureTextureName,RF_Public | RF_Standalone | RF_MarkAsRootSet);
+		TextureTexture->AddToRoot(); // prevent garbage collection
 
 		// get image data
 		IImageWrapperModule& ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
-		const IImageWrapperPtr ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::PNG);
+		const IImageWrapperPtr ImageWrapper = ImageWrapperModule.CreateImageWrapper(ImageFormat);
 
 		const TArray<uint8> ImageDataArray = Response->GetContent();
 		if (!ImageWrapper.IsValid())
@@ -116,21 +124,21 @@ namespace StaticDataImporter
 		const int32 TextureHeight = ImageWrapper->GetHeight();
 		if (TextureWidth != TextureHeight || !(IsPowerOfTwo(TextureWidth)))
 		{
-			AvatarTexture->MipGenSettings = TMGS_LeaveExistingMips;
-			AvatarTexture->CompressionSettings = TC_EditorIcon;
+			TextureTexture->MipGenSettings = TMGS_LeaveExistingMips;
+			TextureTexture->CompressionSettings = TC_EditorIcon;
 			//UE_LOG(LogSupremacyEditor, Error, TEXT("Failed to create texture due to non-power of 2 texture size: %s (%dx%d)"), *URL, TextureWidth, TextureHeight);
 		}
 
-		FTexturePlatformData* AvatarTexturePlatformData = new FTexturePlatformData();
-		AvatarTexturePlatformData->SizeX = TextureWidth;
-		AvatarTexturePlatformData->SizeY = TextureHeight;
-		AvatarTexturePlatformData->SetNumSlices(1);
-		AvatarTexturePlatformData->PixelFormat = PF_B8G8R8A8;
-		AvatarTexture->SetPlatformData(AvatarTexturePlatformData);
+		FTexturePlatformData* TextureTexturePlatformData = new FTexturePlatformData();
+		TextureTexturePlatformData->SizeX = TextureWidth;
+		TextureTexturePlatformData->SizeY = TextureHeight;
+		TextureTexturePlatformData->SetNumSlices(1);
+		TextureTexturePlatformData->PixelFormat = PF_B8G8R8A8;
+		TextureTexture->SetPlatformData(TextureTexturePlatformData);
 
 		// allocate first mipmap
 		FTexture2DMipMap* Mip = new FTexture2DMipMap();
-		AvatarTexturePlatformData->Mips.Add(Mip);
+		TextureTexturePlatformData->Mips.Add(Mip);
 		Mip->SizeX = TextureWidth;
 		Mip->SizeY = TextureHeight;
 
@@ -142,11 +150,11 @@ namespace StaticDataImporter
 		Mip->BulkData.Unlock();
 
 		// save texture
-		AvatarTexture->Source.Init(TextureWidth, TextureHeight, 1, 1, TSF_BGRA8, Pixels);
+		TextureTexture->Source.Init(TextureWidth, TextureHeight, 1, 1, TSF_BGRA8, Pixels);
 		
-		AvatarTexture->UpdateResource();
+		TextureTexture->UpdateResource();
 		bool bMarkedDirty = Package->MarkPackageDirty();
-		FAssetRegistryModule::AssetCreated(AvatarTexture);
+		FAssetRegistryModule::AssetCreated(TextureTexture);
 
 		const FString PackageFileName = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
 		FSavePackageArgs SaveArgs = FSavePackageArgs();
@@ -154,10 +162,9 @@ namespace StaticDataImporter
 		SaveArgs.bForceByteSwapping = true;
 		SaveArgs.bWarnOfLongFilename = true;
 		SaveArgs.SaveFlags = SAVE_NoError;
-		const bool bSaved = UPackage::SavePackage(Package, AvatarTexture, *PackageFileName, SaveArgs);
-		if (bSaved)
+		if (UPackage::SavePackage(Package, TextureTexture, *PackageFileName, SaveArgs))
 			UE_LOG(LogSupremacyEditor, Log, TEXT("Saved: %s"), *URL);
 
-		return AvatarTexture;
+		return TextureTexture;
 	}
 }
