@@ -3,13 +3,20 @@
 
 #include "DecalRingBuffer.h"
 
+// the variable 'DecalBuffers', according to visual studio, is getting optimised out in the 
+// middle of this function, after the for loop line, leading to uninitialised values, but 
+// after adding these #pragmas, the problem goes away. not sure what is going on here.
+#pragma optimize( "", off )
 void UDecalRingBuffer::BeginPlay() {
+	Super::BeginPlay();
+
 	TArray<FString> Keys;
 	DecalBuffers.GetKeys(Keys);
 
 	UWorld* World = GetWorld();
 
-	for (auto &Key : Keys) {
+	for(int keyIndex = 0; keyIndex < Keys.Num(); keyIndex++) {
+		FString Key = Keys[keyIndex];
 		FPooledDecalType *DecalType = DecalBuffers.Find(Key);
 		DecalType->Buffer.Reserve(DecalType->Capacity);
 
@@ -20,6 +27,7 @@ void UDecalRingBuffer::BeginPlay() {
 		}
 	}
 }
+#pragma optimize( "", on )
 
 ADecalActor* UDecalRingBuffer::AllocateDecal(FString DecalType, float LifeTime, UMaterialInstanceDynamic *Material) {
 	FPooledDecalType* DecalBuffer = DecalBuffers.Find(DecalType);
@@ -29,6 +37,7 @@ ADecalActor* UDecalRingBuffer::AllocateDecal(FString DecalType, float LifeTime, 
 
 	APooledDecalActor* Actor = DecalBuffer->Buffer[DecalBuffer->CurrentIndex];
 	DecalBuffer->CurrentIndex += 1;
+	if (DecalBuffer->CurrentIndex >= DecalBuffer->Buffer.Num()) DecalBuffer->CurrentIndex = 0;
 
 	Actor->SetMaterial(Material, LifeTime, World->GetTimeSeconds());
 

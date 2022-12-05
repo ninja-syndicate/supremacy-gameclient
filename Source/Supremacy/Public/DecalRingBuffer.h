@@ -13,8 +13,16 @@ struct FPooledDecalType {
 	GENERATED_BODY()
 
 	int CurrentIndex = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Capacity = 0;
+
 	TArray<APooledDecalActor*> Buffer;
+
+	FPooledDecalType() {
+		CurrentIndex = 0;
+		Capacity = 0;
+	}
 };
 
 /**
@@ -26,7 +34,7 @@ class SUPREMACY_API UDecalRingBuffer : public UActorComponent
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<FString, FPooledDecalType> DecalBuffers;
 
 	void BeginPlay() override;
