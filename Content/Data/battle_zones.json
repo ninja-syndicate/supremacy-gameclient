@@ -12,14 +12,14 @@
             {
               "Location": { "X": -19490, "Y": -18290, "Z": 260 },
               "Radius": 80000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": -19490, "Y": -9690, "Z": -1350 },
               "Radius": 40000,
-              "Time": 240,
-              "Shrink_Time": 20
+              "Time": 300,
+              "Shrink_Time": 45
             },
             {
               "Location": { "X": -19490, "Y": -9690, "Z": -1350 },
@@ -38,14 +38,14 @@
             {
               "Location": { "X": 28390, "Y": -52070, "Z": 260 },
               "Radius": 80000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 64930, "Y": -90230, "Z": 1145 },
               "Radius": 40000,
-              "Time": 240,
-              "Shrink_Time": 20
+              "Time": 300,
+              "Shrink_Time": 45
             },
             {
               "Location": { "X": 64930, "Y": -90230, "Z": 1145 },
@@ -64,14 +64,14 @@
             {
               "Location": { "X": 20610, "Y": 23320, "Z": -540 },
               "Radius": 80000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 36920, "Y": 28990, "Z": -1300 },
               "Radius": 40000,
-              "Time": 240,
-              "Shrink_Time": 20
+              "Time": 300,
+              "Shrink_Time": 45
             },
             {
               "Location": { "X": 36920, "Y": 28990, "Z": -1300 },
@@ -90,14 +90,14 @@
             {
               "Location": { "X": -52240, "Y": 46950, "Z": 1360 },
               "Radius": 80000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": -75340, "Y": 55590, "Z": -1754 },
               "Radius": 50000,
-              "Time": 240,
-              "Shrink_Time": 20
+              "Time": 300,
+              "Shrink_Time": 45
             },
             {
               "Location": { "X": -57552, "Y": 32382, "Z": -1754 },
@@ -116,19 +116,18 @@
             {
               "Location": { "X": -49880, "Y": -60250, "Z": 1360 },
               "Radius": 80000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": -55280, "Y": -78560, "Z": -640 },
               "Radius": 40000,
-              "Time": 240,
-              "Shrink_Time": 20
+              "Time": 300,
+              "Shrink_Time": 45
             },
             {
               "Location": { "X": -32902, "Y": -68620, "Z": -640 },
               "Radius": 40000,
-              "Time": 240,
               "Shrink_Time": 60
             }
           ]
@@ -305,14 +304,14 @@
             {
               "Location": { "X": 30, "Y": 0, "Z": 46850 },
               "Radius": 55000,
-              "Time": 150,
-              "Shrink_Time": 20
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 30, "Y": 0, "Z": 46850 },
               "Radius": 22000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 30, "Y": 0, "Z": 46850 },
@@ -331,14 +330,14 @@
             {
               "Location": { "X": 66200, "Y": 0, "Z": 46850 },
               "Radius": 55000,
-              "Time": 150,
-              "Shrink_Time": 20
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 70990, "Y": 0, "Z": 46850 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 70990, "Y": 0, "Z": 46850 },
@@ -357,14 +356,14 @@
             {
               "Location": { "X": -66200, "Y": 0, "Z": 46850 },
               "Radius": 55000,
-              "Time": 150,
-              "Shrink_Time": 20
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": -70990, "Y": 0, "Z": 46850 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": -70990, "Y": 0, "Z": 46850 },
@@ -383,14 +382,14 @@
             {
               "Location": { "X": 0, "Y": 66200, "Z": 46850 },
               "Radius": 55000,
-              "Time": 150,
-              "Shrink_Time": 20
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 0, "Y": 70990, "Z": 46850 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 0, "Y": 70990, "Z": 46850 },
@@ -409,14 +408,14 @@
             {
               "Location": { "X": 0, "Y": -66200, "Z": 46850 },
               "Radius": 55000,
-              "Time": 150,
-              "Shrink_Time": 20
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 0, "Y": -70990, "Z": 46850 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 0, "Y": -70990, "Z": 46850 },
@@ -576,14 +575,14 @@
             {
               "Location": { "X": 17570, "Y": 47560, "Z": -48200 },
               "Radius": 45000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 23760, "Y": 45550, "Z": -53770 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 23760, "Y": 45550, "Z": -53770 },
@@ -602,14 +601,14 @@
             {
               "Location": { "X": -17800, "Y": 32680, "Z": -48200 },
               "Radius": 45000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": -28870, "Y": 25990, "Z": -48020 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": -47044, "Y": 13020, "Z": -48020 },
@@ -628,14 +627,14 @@
             {
               "Location": { "X": 25650, "Y": 78860, "Z": -48200 },
               "Radius": 48000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 8900, "Y": 84200, "Z": -52255 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 1008, "Y": 86215, "Z": -52255 },
@@ -654,14 +653,14 @@
             {
               "Location": { "X": 38930, "Y": 34470, "Z": -48200 },
               "Radius": 45000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 33450, "Y": 43080, "Z": -53712 },
               "Radius": 30000,
-              "Time": 240,
-              "Shrink_Time": 15
+              "Time": 300,
+              "Shrink_Time": 60
             },
             {
               "Location": { "X": 37202, "Y": 43080, "Z": -53712 },
