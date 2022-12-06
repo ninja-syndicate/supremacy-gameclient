@@ -115,7 +115,8 @@ void AMech::UseMechAbility_Implementation(const EAbilityID Ability)
 		FVector2D(GetActorLocation()), FVector2D(),
 		"",
 		WarMachineStruct.OwnerID, WarMachineStruct.OwnerName,
-		WarMachineStruct.Hash, WarMachineStruct.Faction.ID
+		WarMachineStruct.Hash, WarMachineStruct.Faction.ID,
+		""
 		);
 
 	// Set Cooldown
