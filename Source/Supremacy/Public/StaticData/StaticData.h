@@ -13,6 +13,7 @@
 #include "StaticDataPowerCore.h"
 #include "StaticDataWeaponSkinCompatibility.h"
 #include "StaticDataBattleAbility.h"
+#include "StaticDataFactionPalette.h"
 #include "StaticDataPlayerAbility.h"
 #include "StaticDataGameAbility.h"
 #include "StaticDataShieldType.h"
@@ -23,6 +24,7 @@ namespace StaticDataImporter
 {
 	class Base;
 	class Faction;
+    class FactionPalette;
 	class Brand;
 	class WarMachineModel;
 	class Skin;
@@ -48,6 +50,7 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 	GENERATED_BODY()
 
     friend StaticDataImporter::Faction;
+    friend StaticDataImporter::FactionPalette;
     friend StaticDataImporter::Brand;
     friend StaticDataImporter::WarMachineModel;
     friend StaticDataImporter::Skin;
@@ -64,6 +67,9 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 public:
     UFUNCTION(BlueprintCallable)
     UStaticDataFaction* GetFaction(const FGuid& ID);
+
+    UFUNCTION(BlueprintCallable)
+    UStaticDataFactionPalette* GetFactionPalette(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
     UStaticDataBrand* GetBrand(const FGuid& ID);
@@ -132,6 +138,7 @@ public:
     
 private:
     UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
+    UStaticDataFactionPalette* GetOrCreateFactionPalette(const FGuid& ID);
     UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);
     UStaticDataWarMachineModel* GetOrCreateWarMachineModel(const FGuid& ID);
     UStaticDataSkin* GetOrCreateSkin(const FGuid& ID);
@@ -147,6 +154,9 @@ private:
 
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
         TArray<UStaticDataFaction*> FactionArray;
+
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataFactionPalette*> FactionPaletteArray;
 
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
         TArray<UStaticDataBrand*> BrandArray;

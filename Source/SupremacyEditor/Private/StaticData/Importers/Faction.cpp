@@ -14,9 +14,6 @@ StaticDataImporter::Faction::Faction(): Base()
 		"deleted_at",
 		"updated_at",
 		"created_at",
-		"primary_color",
-		"secondary_color",
-		"background_color",
 		"logo_url",
 		"background_url",
 		"description",
@@ -30,17 +27,18 @@ bool StaticDataImporter::Faction::HandleRow(UStaticData* DataAsset, TArray<FStri
 	
 	UStaticDataFaction* Record = DataAsset->GetOrCreateFaction(ID);
 	Record->Label = RowCells[3];
-	Record->Description = RowCells[13];
+	Record->Description = RowCells[10];
 
-	Record->LogoURL = RowCells[11];
-	Record->BackgroundURL = RowCells[12];
+	Record->LogoURL = RowCells[8];
+	Record->BackgroundURL = RowCells[9];
 
-	FColor tempColor;
-	if (ParseColor(RowCells[8], "primary color", tempColor)) Record->PrimaryColor = tempColor;
-
-	if (ParseColor(RowCells[9], "secondary color", tempColor)) Record->SecondaryColor = tempColor; 
-
-	if (ParseColor(RowCells[10], "background color", tempColor)) Record->BackgroundColor = tempColor;
+	Record->Palette = DataAsset->GetFactionPalette(ID);
+	if (Record->Palette)
+	{
+		// Update Palette asset name (since there is no label in it's csv)
+		Record->Palette->Label = Record->Label;
+		SetAssetName(DataAsset, Record->Palette, TEXT("FactionPalette"));
+	}
 	
 	SetAssetName(DataAsset, Record, TEXT("Faction"));
 	return true;
