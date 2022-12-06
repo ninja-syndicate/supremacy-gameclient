@@ -28,5 +28,5 @@ enum class EAbilityID : uint8
 	AbilityID_Turret UMETA(DisplayName = "Turret"),
 	AbilityID_K9PatrolPack UMETA(DisplayName = "K9 Patrol Pack", ToolTip="Spawns a pack of robot dogs that guards the given location."),
 	AbilityID_TargetCommand UMETA(DisplayName = "Target Command", ToolTip="Set mech's target."),
-	AbilityID_CleartargetCommand UMETA(DisplayName = "Clear Target Command", ToolTip="Clear mech's current target.")
+	AbilityID_ClearTargetCommand UMETA(DisplayName = "Clear Target Command", ToolTip="Clear mech's current target.")
 };
