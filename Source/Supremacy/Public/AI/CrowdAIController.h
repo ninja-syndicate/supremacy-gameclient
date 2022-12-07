@@ -54,7 +54,8 @@ public:
 		float DeltaTime,
 		FAIPerceptionInfo PerceptionInfo,
 		TArray<FAIScriptLog> Errors,
-		TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus);
+		TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus,
+		FAIWarMachineInfo CommandTargetWarMachineInfo);
 
 	// NOTE: These cooldown functions will be removed later.
 	UFUNCTION(BlueprintCallable)

@@ -353,7 +353,8 @@ FAIBrainInput ACrowdAIController::GetBrainInput(
 	float DeltaTime,
 	FAIPerceptionInfo PerceptionInfo,
 	TArray<FAIScriptLog> Errors,
-	TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus)
+	TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus,
+	FAIWarMachineInfo CommandTargetWarMachineInfo)
 {
 	FAIBrainInput BrainInput;
 	BrainInput.Self = WarMachineInfo;
@@ -361,6 +362,7 @@ FAIBrainInput ACrowdAIController::GetBrainInput(
 	BrainInput.Perception = PerceptionInfo;
 	BrainInput.Errors = Errors;
 	BrainInput.EnvQueryStatus = EnvQueryStatus;
+	BrainInput.CommandTarget = CommandTargetWarMachineInfo;
 
 	return BrainInput;
 }

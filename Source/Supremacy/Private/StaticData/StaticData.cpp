@@ -35,6 +35,13 @@ UStaticDataFaction* UStaticData::GetFaction(const FGuid& ID)
     return nullptr;
 }
 
+UStaticDataFactionPalette* UStaticData::GetFactionPalette(const FGuid& ID)
+{
+    for (UStaticDataFactionPalette* Record : FactionPaletteArray) if (Record->ID == ID) return Record;
+    UE_LOG(LogTemp, Error, TEXT("Failed to find faction palette %s"), *ID.ToString());
+    return nullptr;
+}
+
 UStaticDataBrand* UStaticData::GetBrand(const FGuid& ID)
 {
     for (UStaticDataBrand* Record : BrandArray) if (Record->ID == ID) return Record;
@@ -162,6 +169,18 @@ UStaticDataFaction* UStaticData::GetOrCreateFaction(const FGuid& ID)
     Record = NewObject<UStaticDataFaction>(this);
     Record->ID = ID;
     FactionArray.Push(Record);
+
+    return Record;
+}
+
+UStaticDataFactionPalette* UStaticData::GetOrCreateFactionPalette(const FGuid& ID)
+{
+    UStaticDataFactionPalette* Record = GetFactionPalette(ID);
+    if (Record) return Record;
+
+    Record = NewObject<UStaticDataFactionPalette>(this);
+    Record->ID = ID;
+    FactionPaletteArray.Push(Record);
 
     return Record;
 }

@@ -5,63 +5,130 @@
         {
           "Zones": [
             {
-              "Location": { "X": -2730, "Y": -6660, "Z": 260 },
-              "Radius": 60000,
+              "Location": { "X": -19490, "Y": -18290, "Z": 260 },
+              "Radius": 155000,
               "Time": 210
             },
             {
-              "Location": { "X": -2730, "Y": -6660, "Z": 260 },
-              "Radius": 26000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Location": { "X": -19490, "Y": -18290, "Z": 260 },
+              "Radius": 80000,
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": -2730, "Y": -6660, "Z": 260 },
-              "Radius": 12000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": -19490, "Y": -9690, "Z": -1350 },
+              "Radius": 40000,
+              "Time": 300,
+              "Shrink_Time": 45
+            },
+            {
+              "Location": { "X": -19490, "Y": -9690, "Z": -1350 },
+              "Radius": 4000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": -2730, "Y": -6660, "Z": 260 },
-              "Radius": 60000,
+              "Location": { "X": -19490, "Y": -18290, "Z": 260 },
+              "Radius": 155000,
               "Time": 210
             },
             {
-              "Location": { "X": -24880, "Y": 14820, "Z": 1360 },
-              "Radius": 26000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Location": { "X": 28390, "Y": -52070, "Z": 260 },
+              "Radius": 80000,
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": -24880, "Y": 13630, "Z": 1360 },
-              "Radius": 12000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": 64930, "Y": -90230, "Z": 1145 },
+              "Radius": 40000,
+              "Time": 300,
+              "Shrink_Time": 45
+            },
+            {
+              "Location": { "X": 64930, "Y": -90230, "Z": 1145 },
+              "Radius": 4000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": -2730, "Y": -6660, "Z": 260 },
-              "Radius": 60000,
+              "Location": { "X": -19490, "Y": -18290, "Z": 260 },
+              "Radius": 155000,
               "Time": 210
             },
             {
-              "Location": { "X": -15220, "Y": -25710, "Z": 1360 },
-              "Radius": 26000,
-              "Time": 70,
-              "Shrink_Time": 30
+              "Location": { "X": 20610, "Y": 23320, "Z": -540 },
+              "Radius": 80000,
+              "Time": 160,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": -18060, "Y": -25710, "Z": 1360 },
-              "Radius": 12000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": 36920, "Y": 28990, "Z": -1300 },
+              "Radius": 40000,
+              "Time": 300,
+              "Shrink_Time": 45
+            },
+            {
+              "Location": { "X": 36920, "Y": 28990, "Z": -1300 },
+              "Radius": 4000,
+              "Shrink_Time": 60
+            }
+          ]
+        },
+        {
+          "Zones": [
+            {
+              "Location": { "X": -19490, "Y": -18290, "Z": 260 },
+              "Radius": 155000,
+              "Time": 210
+            },
+            {
+              "Location": { "X": -52240, "Y": 46950, "Z": 1360 },
+              "Radius": 80000,
+              "Time": 160,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": -75340, "Y": 55590, "Z": -1754 },
+              "Radius": 50000,
+              "Time": 300,
+              "Shrink_Time": 45
+            },
+            {
+              "Location": { "X": -57552, "Y": 32382, "Z": -1754 },
+              "Radius": 4000,
+              "Shrink_Time": 60
+            }
+          ]
+        },
+        {
+          "Zones": [
+            {
+              "Location": { "X": -19490, "Y": -18290, "Z": 260 },
+              "Radius": 155000,
+              "Time": 210
+            },
+            {
+              "Location": { "X": -49880, "Y": -60250, "Z": 1360 },
+              "Radius": 80000,
+              "Time": 160,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": -55280, "Y": -78560, "Z": -640 },
+              "Radius": 40000,
+              "Time": 300,
+              "Shrink_Time": 45
+            },
+            {
+              "Location": { "X": -32902, "Y": -68620, "Z": -640 },
+              "Radius": 40000,
+              "Shrink_Time": 60
             }
           ]
         }
@@ -230,100 +297,130 @@
         {
           "Zones": [
             {
-              "Location": { "X": 30, "Y": -370, "Z": 46780 },
-              "Radius": 65000,
+              "Location": { "X": 0, "Y": 0, "Z": 46850 },
+              "Radius": 130000,
               "Time": 240
             },
             {
-              "Location": { "X": 30, "Y": -370, "Z": 46780 },
-              "Radius": 20000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": 30, "Y": 0, "Z": 46850 },
+              "Radius": 55000,
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": 30, "Y": -370, "Z": 46780 },
-              "Radius": 10000,
-              "Shrink_Time": 20
+              "Location": { "X": 30, "Y": 0, "Z": 46850 },
+              "Radius": 22000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": 30, "Y": 0, "Z": 46850 },
+              "Radius": 6000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": 30, "Y": -370, "Z": 46780 },
-              "Radius": 65000,
+              "Location": { "X": 0, "Y": 0, "Z": 46850 },
+              "Radius": 130000,
               "Time": 240
             },
             {
-              "Location": { "X": -20970, "Y": -370, "Z": 46780 },
-              "Radius": 22000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": 66200, "Y": 0, "Z": 46850 },
+              "Radius": 55000,
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": -28260, "Y": -370, "Z": 46780 },
-              "Radius": 10000,
-              "Shrink_Time": 20
+              "Location": { "X": 70990, "Y": 0, "Z": 46850 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": 70990, "Y": 0, "Z": 46850 },
+              "Radius": 6000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": 30, "Y": -370, "Z": 46780 },
-              "Radius": 65000,
+              "Location": { "X": 0, "Y": 0, "Z": 46850 },
+              "Radius": 130000,
               "Time": 240
             },
             {
-              "Location": { "X": 28260, "Y": -370, "Z": 46780 },
-              "Radius": 22000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": -66200, "Y": 0, "Z": 46850 },
+              "Radius": 55000,
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": 28260, "Y": -370, "Z": 46780 },
-              "Radius": 10000,
-              "Shrink_Time": 20
+              "Location": { "X": -70990, "Y": 0, "Z": 46850 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": -70990, "Y": 0, "Z": 46850 },
+              "Radius": 6000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": 30, "Y": -370, "Z": 46780 },
-              "Radius": 65000,
+              "Location": { "X": 0, "Y": 0, "Z": 46850 },
+              "Radius": 130000,
               "Time": 240
             },
             {
-              "Location": { "X": 30, "Y": 28600, "Z": 46780 },
-              "Radius": 22000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": 0, "Y": 66200, "Z": 46850 },
+              "Radius": 55000,
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": 30, "Y": 28600, "Z": 46780 },
-              "Radius": 10000,
-              "Shrink_Time": 20
+              "Location": { "X": 0, "Y": 70990, "Z": 46850 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": 0, "Y": 70990, "Z": 46850 },
+              "Radius": 6000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": 30, "Y": -370, "Z": 46780 },
-              "Radius": 65000,
+              "Location": { "X": 0, "Y": 0, "Z": 46850 },
+              "Radius": 130000,
               "Time": 240
             },
             {
-              "Location": { "X": 30, "Y": -28600, "Z": 46780 },
-              "Radius": 22000,
-              "Time": 120,
-              "Shrink_Time": 20
+              "Location": { "X": 0, "Y": -66200, "Z": 46850 },
+              "Radius": 55000,
+              "Time": 200,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": 30, "Y": -28600, "Z": 46780 },
-              "Radius": 10000,
-              "Shrink_Time": 20
+              "Location": { "X": 0, "Y": -70990, "Z": 46850 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": 0, "Y": -70990, "Z": 46850 },
+              "Radius": 6000,
+              "Shrink_Time": 60
             }
           ]
         }
@@ -471,84 +568,104 @@
         {
           "Zones": [
             {
-              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
-              "Radius": 100000,
+              "Location": { "X": 10800, "Y": 41950, "Z": -48200 },
+              "Radius": 90000,
               "Time": 210
             },
             {
-              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
-              "Radius": 40000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Location": { "X": 17570, "Y": 47560, "Z": -48200 },
+              "Radius": 45000,
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
-              "Radius": 23500,
-              "Time": 120,
-              "Shrink_Time": 15
+              "Location": { "X": 23760, "Y": 45550, "Z": -53770 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": 23760, "Y": 45550, "Z": -53770 },
+              "Radius": 4000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
-              "Radius": 100000,
+              "Location": { "X": 10800, "Y": 41950, "Z": -48200 },
+              "Radius": 90000,
               "Time": 210
             },
             {
-              "Location": { "X": -17490, "Y": 41960, "Z": -10830 },
+              "Location": { "X": -17800, "Y": 32680, "Z": -48200 },
               "Radius": 45000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": -28550, "Y": 43235, "Z": -10830 },
-              "Radius": 23500,
-              "Time": 120,
-              "Shrink_Time": 15
+              "Location": { "X": -28870, "Y": 25990, "Z": -48020 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": -47044, "Y": 13020, "Z": -48020 },
+              "Radius": 4000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
-              "Radius": 100000,
+              "Location": { "X": 10800, "Y": 41950, "Z": -48200 },
+              "Radius": 90000,
               "Time": 210
             },
             {
-              "Location": { "X": 48787, "Y": 43274, "Z": -10830 },
-              "Radius": 45000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Location": { "X": 25650, "Y": 78860, "Z": -48200 },
+              "Radius": 48000,
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": 53775, "Y": 37790, "Z": -10830 },
-              "Radius": 23500,
-              "Time": 120,
-              "Shrink_Time": 15
+              "Location": { "X": 8900, "Y": 84200, "Z": -52255 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": 1008, "Y": 86215, "Z": -52255 },
+              "Radius": 4000,
+              "Shrink_Time": 60
             }
           ]
         },
         {
           "Zones": [
             {
-              "Location": { "X": 14750, "Y": 66270, "Z": -11000 },
-              "Radius": 100000,
+              "Location": { "X": 10800, "Y": 41950, "Z": -48200 },
+              "Radius": 90000,
               "Time": 210
             },
             {
-              "Location": { "X": 17869, "Y": 110682, "Z": -10830 },
+              "Location": { "X": 38930, "Y": 34470, "Z": -48200 },
               "Radius": 45000,
-              "Time": 60,
-              "Shrink_Time": 30
+              "Time": 180,
+              "Shrink_Time": 60
             },
             {
-              "Location": { "X": 17898, "Y": 111737, "Z": -10830 },
-              "Radius": 23500,
-              "Time": 120,
-              "Shrink_Time": 15
+              "Location": { "X": 33450, "Y": 43080, "Z": -53712 },
+              "Radius": 30000,
+              "Time": 300,
+              "Shrink_Time": 60
+            },
+            {
+              "Location": { "X": 37202, "Y": 43080, "Z": -53712 },
+              "Radius": 4000,
+              "Shrink_Time": 60
             }
           ]
         }
