@@ -93,7 +93,7 @@ static const TMap<FString, FMapDetails> SupremacyMapDetails = {
     "CloudKu",
     {
       "CloudKu 9",
-      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/CloudKu.webp",
+      "https://ninjasoftware-static-media.s3.ap-southeast-2.amazonaws.com/supremacy/maps/WebP/CloudKu_2160.webp",
       2160, 2160,
       128,  128,
       -128000, -128000,
