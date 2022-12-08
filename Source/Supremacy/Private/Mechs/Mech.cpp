@@ -12,7 +12,7 @@
 #include "UserAction/UserActionManager.h"
 
 // Sets default values
-AMech::AMech() 
+AMech::AMech()
 {
 	bReplicates = true;
 	bAlwaysRelevant = true;
@@ -21,19 +21,11 @@ AMech::AMech()
 void AMech::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// Get User Action Manager (for mech abilities)
-	if (const auto GameMode = UGameplayStatics::GetGameMode(GetWorld()); GameMode)
-	{
-		UActorComponent *Component = GameMode->GetComponentByClass(UUserActionManager::StaticClass());
-		if (Component)
-			UserActionManager =  Cast<UUserActionManager>(Component);
-	}
 }
 
 void AMech::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps); 
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(AMech, WarMachineStruct, COND_InitialOnly);
 	DOREPLIFETIME(AMech, Weapons);
@@ -72,6 +64,7 @@ void AMech::PostWeaponInit_Implementation(AWeapon* Weapon)
 	OnWeaponEquipped.Broadcast(Weapon);
 	HandleWeaponEquipped(Weapon);
 }
+
 //~ End IWeaponizedInterface
 
 void AMech::HandleWeaponEquipped(AWeapon* Weapon)
@@ -102,11 +95,20 @@ void AMech::UseMechAbility_Implementation(const EAbilityID Ability)
 		}
 	}
 
-	// Check UserActionManager
+	// Get User Action Manager
 	if (!UserActionManager)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AMech: UserActionManager is null."));
-		return;
+		if (const auto GameMode = UGameplayStatics::GetGameMode(GetWorld()); GameMode)
+		{
+			UActorComponent* Component = GameMode->GetComponentByClass(UUserActionManager::StaticClass());
+			if (Component)
+				UserActionManager = Cast<UUserActionManager>(Component);
+		}
+		if (!UserActionManager)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("AMech: UserActionManager is null."));
+			return;
+		}
 	}
 
 	// Spawn Ability

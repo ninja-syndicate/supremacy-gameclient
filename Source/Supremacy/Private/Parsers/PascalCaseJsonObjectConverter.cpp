@@ -133,7 +133,7 @@ namespace
 						FString KeyString;
 						if (!KeyElement->TryGetString(KeyString))
 						{
-							MapProperty->KeyProp->ExportTextItem(KeyString, Helper.GetKeyPtr(i), nullptr, nullptr, 0);
+							MapProperty->KeyProp->ExportText_Direct(KeyString, Helper.GetKeyPtr(i), nullptr, nullptr, 0);
 							if (KeyString.IsEmpty())
 							{
 								UE_LOG(LogJson, Error, TEXT("Unable to convert key to string for property %s."), *MapProperty->GetAuthoredName())
@@ -192,7 +192,7 @@ namespace
 			else
 			{
 				FString StringValue;
-				Property->ExportTextItem(StringValue, Value, nullptr, nullptr, PPF_None);
+				Property->ExportText_Direct(StringValue, Value, nullptr, nullptr, PPF_None);
 				return MakeShared<FJsonValueString>(StringValue);
 			}
 		}
@@ -200,7 +200,7 @@ namespace
 		{
 			// Default to export as string for everything else
 			FString StringValue;
-			Property->ExportTextItem(StringValue, Value, NULL, NULL, PPF_None);
+			Property->ExportText_Direct(StringValue, Value, NULL, NULL, PPF_None);
 			return MakeShared<FJsonValueString>(StringValue);
 		}
 
@@ -674,7 +674,7 @@ namespace
 				if (!TheCppStructOps->ImportTextItem(ImportTextPtr, OutValue, PPF_None, nullptr, (FOutputDevice*)GWarn))
 				{
 					// Fall back to trying the tagged property approach if custom ImportTextItem couldn't get it done
-					if (Property->ImportText(ImportTextPtr, OutValue, PPF_None, nullptr) == nullptr)
+					if (Property->ImportText_Direct(ImportTextPtr, OutValue,  nullptr, PPF_None) == nullptr)
 					{
 						UE_LOG(LogJson, Error, TEXT("JsonValueToUProperty - FPascalCaseJsonObjectConverter::JsonObjectToUStruct failed for property %s"), *Property->GetNameCPP());
 						return false;
@@ -685,7 +685,7 @@ namespace
 			{
 				FString ImportTextString = JsonValue->AsString();
 				const TCHAR* ImportTextPtr = *ImportTextString;
-				if (Property->ImportText(ImportTextPtr, OutValue, PPF_None, nullptr) == nullptr)
+				if (Property->ImportText_Direct(ImportTextPtr, OutValue,nullptr, PPF_None) == nullptr)
 				{
 					UE_LOG(LogJson, Error, TEXT("JsonValueToUProperty - FPascalCaseJsonObjectConverter::JsonObjectToUStruct failed for property %s"), *Property->GetNameCPP());
 					return false;
@@ -737,7 +737,7 @@ namespace
 			else if (JsonValue->Type == EJson::String)
 			{
 				// Default to expect a string for everything else
-				if (Property->ImportText(*JsonValue->AsString(), OutValue, 0, nullptr) == nullptr)
+				if (Property->ImportText_Direct(*JsonValue->AsString(), OutValue,  nullptr, PPF_None) == nullptr)
 				{
 					UE_LOG(LogJson, Error, TEXT("JsonValueToUProperty - Unable import property type %s from string value for property %s"), *Property->GetClass()->GetName(), *Property->GetNameCPP());
 					return false;
@@ -747,7 +747,7 @@ namespace
 		else
 		{
 			// Default to expect a string for everything else
-			if (Property->ImportText(*JsonValue->AsString(), OutValue, 0, nullptr) == nullptr)
+			if (Property->ImportText_Direct(*JsonValue->AsString(), OutValue,  nullptr, PPF_None) == nullptr)
 			{
 				UE_LOG(LogJson, Error, TEXT("JsonValueToUProperty - Unable import property type %s from string value for property %s"), *Property->GetClass()->GetName(), *Property->GetNameCPP());
 				return false;
