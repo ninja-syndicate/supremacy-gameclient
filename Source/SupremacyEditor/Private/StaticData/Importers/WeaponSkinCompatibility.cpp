@@ -135,24 +135,26 @@ bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAss
 	Record->Label = Record->Weapon->Label + " -> " + Record->WeaponSkin->Label;
 
 	const FString MaterialsPath = MaterialsPathForWeapon(Record->Weapon, Record->WeaponSkin);
-	if (MaterialsPath != "")
+	if (MaterialsPath == "")
+		return true;
+	
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	TArray<FAssetData> AssetData;
+	AssetRegistryModule.Get().GetAssetsByPath(FName(*MaterialsPath), AssetData, false, false);
+	if (AssetData.Num() <= 0)
 	{
-		const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-		TArray<FAssetData> AssetData;
-		AssetRegistryModule.Get().GetAssetsByPath(FName(*MaterialsPath), AssetData, false, false);
-		if (AssetData.Num() <= 0) {
-			UE_LOG(LogTemp, Warning, TEXT("%s: found no material files"), *MaterialsPath);
-		}
-		else {
-			int32 AssetIndex = 0;
-			if (AssetData.Num() > 1 && Record->Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04"))
-			{
-				// Red Mountain cannon material is still in it's mech folder; specify the material
-				for (int32 i = 0; i < AssetData.Num(); i++) if (AssetData[i].AssetName.ToString().Contains("Right_Gun")) AssetIndex = i;
-			}
-			Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].GetObjectPathString() + FString("'"))));
-		}
+		UE_LOG(LogTemp, Warning, TEXT("%s: found no material files"), *MaterialsPath);
+		return false;
 	}
+	
+	int32 AssetIndex = 0;
+	if (AssetData.Num() > 1 && Record->Weapon->Brand->ID == FGuid("953ad4fc-3aa9-471f-a852-f39e9f36cd04"))
+	{
+		// Red Mountain cannon material is still in it's mech folder; specify the material
+		for (int32 i = 0; i < AssetData.Num(); i++) if (AssetData[i].AssetName.ToString().Contains("Right_Gun")) AssetIndex = i;
+	}
+	
+	Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].GetObjectPathString() + FString("'"))));
 	
 	SetAssetName(DataAsset, Record, TEXT("Weapon Skin Compatibility"));
 	return true;
