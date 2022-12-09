@@ -8,6 +8,7 @@
 
 #include "Importers/Faction.h"
 #include "Importers/Brand.h"
+#include "Importers/FactionPalette.h"
 #include "Importers/MechSkinCompatibility.h"
 #include "Importers/PowerCore.h"
 #include "Importers/WeaponSkinCompatibility.h"
@@ -21,6 +22,7 @@
 
 UStaticDataImporter::UStaticDataImporter()
 {
+	Importers.Add(new StaticDataImporter::FactionPalette());
 	Importers.Add(new StaticDataImporter::Faction());
 	Importers.Add(new StaticDataImporter::Brand());
 	Importers.Add(new StaticDataImporter::Skin());

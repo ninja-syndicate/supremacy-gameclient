@@ -16,3 +16,4 @@ Build
 .idea
 Plugins/Developer/
 node_modules/
+.vsconfig

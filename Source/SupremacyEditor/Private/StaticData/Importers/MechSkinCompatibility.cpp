@@ -63,7 +63,7 @@ bool IsGenesis(const FString ID)
 	return false;
 }
 
-FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, FString Slot) 
+FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, const FString Slot) 
 {
 	for (int32 i = 0; i < Materials.Num(); i++) {
 		if (Materials[i].AssetName.ToString().ToLower().Contains(Slot.ToLower())) return &Materials[i];
@@ -103,8 +103,9 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 
 	// Get Avatar
 	Record->AvatarURL = RowCells[6];
-	
-	FString AvatarPackageURL = GetPackageNameForURL(Record->AvatarURL, "UI/Images/MechAvatars/");
+
+	EImageFormat ImageFormat;
+	FString AvatarPackageURL = GetPackageNameForURL(Record->AvatarURL, "UI/Images/MechAvatars/", ImageFormat);
 	
 	TArray<FAssetData> AvatarAsset;
 	AssetRegistryModule.Get().GetAssetsByPackageName(FName(AvatarPackageURL), AvatarAsset);
@@ -137,7 +138,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 		}
 		UObject* Object = ObjectClass->GetDefaultObject();
 		if (Object) {
-			USkeletalMesh* Mesh = Cast<AMech>(Object)->GetMesh()->SkeletalMesh;
+			USkeletalMesh* Mesh = Cast<AMech>(Object)->GetMesh()->GetSkeletalMeshAsset();
 			//UE_LOG(LogTemp, Warning, TEXT("loading mesh succeeded"));
 			TArray<FSkeletalMaterial> Materials = Mesh->GetMaterials();
 			for (int32 i = 0; i < Materials.Num(); i++)
@@ -145,7 +146,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 				FSkeletalMaterial Material = Materials[i];
 				const FAssetData* MaterialAsset = GetMaterialForSlot(AssetData, Material.MaterialSlotName.ToString());
 				if (MaterialAsset) {
-					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->ObjectPath.ToString() + FString("'"))));
+					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->GetObjectPathString() + FString("'"))));
 				}
 			}
 		}

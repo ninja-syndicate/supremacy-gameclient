@@ -6,7 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "Types/WeaponStruct.h"
-#include "Core/Game/SupremacyTypes.h"
+#include "Core/Game/SupremacyFunctionLibrary.h"
 
 // Sets default values for this component's properties
 UDamager::UDamager()

@@ -23,7 +23,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void SpawnAbility(const EAbilityID Ability, const FVector2D Location, const FVector2D LocationEnd, const FString& EventID, const FString& TriggeredByUserID, const FString& TriggeredByUsername, const FString& WarMachineHash, const FString& FactionID);
+	void SpawnAbility(const EAbilityID Ability, const FVector2D Location, const FVector2D LocationEnd, const FString& EventID, const FString& TriggeredByUserID, const FString& TriggeredByUsername, const FString& WarMachineHash, const FString& FactionID, const FString& TargetWarMachineHash);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FUserActionDispatched, AActor*, Actor, const FString&, Tag, const FString&, EventID, const FString&, InstigatorFactionID);
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")

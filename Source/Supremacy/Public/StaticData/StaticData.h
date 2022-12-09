@@ -13,15 +13,18 @@
 #include "StaticDataPowerCore.h"
 #include "StaticDataWeaponSkinCompatibility.h"
 #include "StaticDataBattleAbility.h"
+#include "StaticDataFactionPalette.h"
 #include "StaticDataPlayerAbility.h"
 #include "StaticDataGameAbility.h"
 #include "StaticDataShieldType.h"
+#include "Types/AbilityID.h"
 #include "StaticData.generated.h"
 
 namespace StaticDataImporter
 {
 	class Base;
 	class Faction;
+    class FactionPalette;
 	class Brand;
 	class WarMachineModel;
 	class Skin;
@@ -47,6 +50,7 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 	GENERATED_BODY()
 
     friend StaticDataImporter::Faction;
+    friend StaticDataImporter::FactionPalette;
     friend StaticDataImporter::Brand;
     friend StaticDataImporter::WarMachineModel;
     friend StaticDataImporter::Skin;
@@ -63,6 +67,9 @@ class SUPREMACY_API UStaticData : public UPrimaryDataAsset
 public:
     UFUNCTION(BlueprintCallable)
     UStaticDataFaction* GetFaction(const FGuid& ID);
+
+    UFUNCTION(BlueprintCallable)
+    UStaticDataFactionPalette* GetFactionPalette(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
     UStaticDataBrand* GetBrand(const FGuid& ID);
@@ -100,7 +107,13 @@ public:
     UStaticDataPlayerAbility* GetPlayerAbility(const FGuid& ID);
 
     UFUNCTION(BlueprintCallable)
+    UStaticDataPlayerAbility* GetPlayerAbilityByGameClientAbilityID(const EAbilityID& ID);
+
+    UFUNCTION(BlueprintCallable)
     UStaticDataGameAbility* GetGameAbility(const FGuid& ID);
+
+    UFUNCTION(BlueprintCallable)
+    UStaticDataGameAbility* GetGameAbilityByGameClientAbilityID(const EAbilityID& ID, const FGuid& FactionID);
 
     UFUNCTION(BlueprintCallable)
     UStaticDataShieldType* GetShieldType(const FGuid& ID);
@@ -116,12 +129,34 @@ public:
 
     UFUNCTION(BlueprintCallable, meta=(ToolTip="Get an array of all possible skins for a mech model."))
     TArray<UStaticDataSkin*> GetMechSkins(const FGuid& MechModelID);
-        
+
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Mech Abilities")
+    float GetAbilityCooldown(const EAbilityID Ability);
+    
     UFUNCTION(BlueprintCallable)
     void Clear();
     
+private:
+    UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
+    UStaticDataFactionPalette* GetOrCreateFactionPalette(const FGuid& ID);
+    UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);
+    UStaticDataWarMachineModel* GetOrCreateWarMachineModel(const FGuid& ID);
+    UStaticDataSkin* GetOrCreateSkin(const FGuid& ID);
+    UStaticDataWeaponSkin* GetOrCreateWeaponSkin(const FGuid& ID);
+    UStaticDataWeapon* GetOrCreateWeapon(const FGuid& ID);
+    UStaticDataMechSkinCompatibility* GetOrCreateMechSkinCompatibility(const FGuid& ID);
+    UStaticDataWeaponSkinCompatibility* GetOrCreateWeaponSkinCompatibility(const FGuid& ID);
+    UStaticDataPowerCore* GetOrCreatePowerCore(const FGuid& ID);
+    UStaticDataBattleAbility* GetOrCreateBattleAbility(const FGuid& ID);
+    UStaticDataPlayerAbility* GetOrCreatePlayerAbility(const FGuid& ID);
+    UStaticDataGameAbility* GetOrCreateGameAbility(const FGuid& ID);
+    UStaticDataShieldType* GetOrCreateShieldType(const FGuid& ID);
+
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
         TArray<UStaticDataFaction*> FactionArray;
+
+    UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
+        TArray<UStaticDataFactionPalette*> FactionPaletteArray;
 
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
         TArray<UStaticDataBrand*> BrandArray;
@@ -158,18 +193,5 @@ public:
 
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
         TArray<UStaticDataShieldType*> ShieldTypeArray;
-private:
-    UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
-    UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);
-    UStaticDataWarMachineModel* GetOrCreateWarMachineModel(const FGuid& ID);
-    UStaticDataSkin* GetOrCreateSkin(const FGuid& ID);
-    UStaticDataWeaponSkin* GetOrCreateWeaponSkin(const FGuid& ID);
-    UStaticDataWeapon* GetOrCreateWeapon(const FGuid& ID);
-    UStaticDataMechSkinCompatibility* GetOrCreateMechSkinCompatibility(const FGuid& ID);
-    UStaticDataWeaponSkinCompatibility* GetOrCreateWeaponSkinCompatibility(const FGuid& ID);
-    UStaticDataPowerCore* GetOrCreatePowerCore(const FGuid& ID);
-    UStaticDataBattleAbility* GetOrCreateBattleAbility(const FGuid& ID);
-    UStaticDataPlayerAbility* GetOrCreatePlayerAbility(const FGuid& ID);
-    UStaticDataGameAbility* GetOrCreateGameAbility(const FGuid& ID);
-    UStaticDataShieldType* GetOrCreateShieldType(const FGuid& ID);
+
 };
