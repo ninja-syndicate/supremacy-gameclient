@@ -135,22 +135,6 @@ public:
     
     UFUNCTION(BlueprintCallable)
     void Clear();
-    
-private:
-    UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
-    UStaticDataFactionPalette* GetOrCreateFactionPalette(const FGuid& ID);
-    UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);
-    UStaticDataWarMachineModel* GetOrCreateWarMachineModel(const FGuid& ID);
-    UStaticDataSkin* GetOrCreateSkin(const FGuid& ID);
-    UStaticDataWeaponSkin* GetOrCreateWeaponSkin(const FGuid& ID);
-    UStaticDataWeapon* GetOrCreateWeapon(const FGuid& ID);
-    UStaticDataMechSkinCompatibility* GetOrCreateMechSkinCompatibility(const FGuid& ID);
-    UStaticDataWeaponSkinCompatibility* GetOrCreateWeaponSkinCompatibility(const FGuid& ID);
-    UStaticDataPowerCore* GetOrCreatePowerCore(const FGuid& ID);
-    UStaticDataBattleAbility* GetOrCreateBattleAbility(const FGuid& ID);
-    UStaticDataPlayerAbility* GetOrCreatePlayerAbility(const FGuid& ID);
-    UStaticDataGameAbility* GetOrCreateGameAbility(const FGuid& ID);
-    UStaticDataShieldType* GetOrCreateShieldType(const FGuid& ID);
 
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
         TArray<UStaticDataFaction*> FactionArray;
@@ -194,4 +178,19 @@ private:
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess))
         TArray<UStaticDataShieldType*> ShieldTypeArray;
 
+private:
+    UStaticDataFaction* GetOrCreateFaction(const FGuid& ID);
+    UStaticDataFactionPalette* GetOrCreateFactionPalette(const FGuid& ID);
+    UStaticDataBrand* GetOrCreateBrand(const FGuid& ID);
+    UStaticDataWarMachineModel* GetOrCreateWarMachineModel(const FGuid& ID);
+    UStaticDataSkin* GetOrCreateSkin(const FGuid& ID);
+    UStaticDataWeaponSkin* GetOrCreateWeaponSkin(const FGuid& ID);
+    UStaticDataWeapon* GetOrCreateWeapon(const FGuid& ID);
+    UStaticDataMechSkinCompatibility* GetOrCreateMechSkinCompatibility(const FGuid& ID);
+    UStaticDataWeaponSkinCompatibility* GetOrCreateWeaponSkinCompatibility(const FGuid& ID);
+    UStaticDataPowerCore* GetOrCreatePowerCore(const FGuid& ID);
+    UStaticDataBattleAbility* GetOrCreateBattleAbility(const FGuid& ID);
+    UStaticDataPlayerAbility* GetOrCreatePlayerAbility(const FGuid& ID);
+    UStaticDataGameAbility* GetOrCreateGameAbility(const FGuid& ID);
+    UStaticDataShieldType* GetOrCreateShieldType(const FGuid& ID);
 };
