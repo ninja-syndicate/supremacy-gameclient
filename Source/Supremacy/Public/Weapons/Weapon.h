@@ -96,7 +96,7 @@ protected:
 	void LoadAssetAsync();
 	virtual void LoadAssetAsync_Implementation();
 
-	TSharedPtr<struct FStreamableHandle> StreamableHandle;
+	TMap<FString, TSharedPtr<struct FStreamableHandle>> StreamableHandle;
 
 	void LoadAssetDeferred();
 
