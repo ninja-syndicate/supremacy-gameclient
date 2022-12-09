@@ -117,6 +117,14 @@ FString MaterialsPathForWeapon(const UStaticDataWeapon* Weapon, const UStaticDat
 	return Path;
 }
 
+FAssetData* GetWeaponMaterialForSlot(TArray<FAssetData>& Materials, const FString Slot) 
+{
+	for (int32 i = 0; i < Materials.Num(); i++) {
+		if (Materials[i].AssetName.ToString().ToLower().Contains(Slot.ToLower())) return &Materials[i];
+	}
+	return nullptr;
+}
+
 bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAsset, TArray<FString> RowCells)
 {
 	FGuid SkinId, WeaponId;
@@ -153,8 +161,20 @@ bool StaticDataImporter::WeaponSkinCompatibility::HandleRow(UStaticData* DataAss
 		// Red Mountain cannon material is still in it's mech folder; specify the material
 		for (int32 i = 0; i < AssetData.Num(); i++) if (AssetData[i].AssetName.ToString().Contains("Right_Gun")) AssetIndex = i;
 	}
-	
-	Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].GetObjectPathString() + FString("'"))));
+	if (AssetData.Num() >= 2 && WeaponId == FGuid("536831f0-799b-4fd1-ba70-023a98d53668"))
+	{
+		// BFG has 2 materials
+		const FAssetData* BfgMaterial = GetWeaponMaterialForSlot(AssetData, "AM_BFG_Base");
+		if (BfgMaterial)
+			Record->Materials.Add("AM_BFG", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + BfgMaterial->GetObjectPathString() + FString("'"))));
+		const FAssetData* BfgTubesMaterial = GetWeaponMaterialForSlot(AssetData, "AM_BFG_Tubes");
+		if (BfgTubesMaterial)
+			Record->Materials.Add("AM_BFG_Tubes", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + BfgTubesMaterial->GetObjectPathString() + FString("'"))));
+	}
+	else
+	{
+		Record->Materials.Add("mat", TSoftObjectPtr<UMaterial>(FString(FString("Material'") + AssetData[AssetIndex].GetObjectPathString() + FString("'"))));
+	}
 	
 	SetAssetName(DataAsset, Record, TEXT("Weapon Skin Compatibility"));
 	return true;
