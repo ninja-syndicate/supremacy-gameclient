@@ -186,29 +186,35 @@ void AWeapon::LoadAssetAsync_Implementation()
 	{
 		if (Pair.Value.IsNull()) continue;
 	
-		StreamableHandle = Streamable.RequestAsyncLoad(
+		StreamableHandle.Add(Pair.Key, Streamable.RequestAsyncLoad(
 			Pair.Value.ToSoftObjectPath(),
 			FStreamableDelegate::CreateUObject(this, &AWeapon::LoadAssetDeferred)
-		);
+		));
 	}
 }
 
 void AWeapon::LoadAssetDeferred()
 {
-	if (!StreamableHandle.IsValid()) return;
-	if (!StreamableHandle->HasLoadCompleted()) return;
-
-	UMaterialInstance* Material = Cast<UMaterialInstance>(StreamableHandle->GetLoadedAsset());
-	if (!Material) return;
-
-	TArray<UStaticMeshComponent*> StaticComps;
-	GetComponents<UStaticMeshComponent>(StaticComps, true);
-
-	for (UActorComponent* Comp : StaticComps)
+	for (const auto& WeaponStream : StreamableHandle)
 	{
-		UStaticMeshComponent* StaticComp = Cast<UStaticMeshComponent>(Comp);
-		if (!StaticComp) continue;
+		if (!WeaponStream.Value.IsValid()) return;
+		if (!WeaponStream.Value->HasLoadCompleted()) return;
 
-		StaticComp->SetMaterial(0, Material);
+		UMaterialInstance* Material = Cast<UMaterialInstance>(WeaponStream.Value->GetLoadedAsset());
+		if (!Material) return;
+
+		TArray<UStaticMeshComponent*> StaticComps;
+		GetComponents<UStaticMeshComponent>(StaticComps, true);
+
+		for (UActorComponent* Comp : StaticComps)
+		{
+			UStaticMeshComponent* StaticComp = Cast<UStaticMeshComponent>(Comp);
+			if (!StaticComp) continue;
+
+			if (StreamableHandle.Num() == 1)
+				StaticComp->SetMaterial(0, Material);
+			else
+				StaticComp->SetMaterialByName(FName(WeaponStream.Key), Material);
+		}
 	}
 }

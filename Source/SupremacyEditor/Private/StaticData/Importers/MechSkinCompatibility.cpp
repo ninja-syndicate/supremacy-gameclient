@@ -63,7 +63,7 @@ bool IsGenesis(const FString ID)
 	return false;
 }
 
-FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, FString Slot) 
+FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, const FString Slot) 
 {
 	for (int32 i = 0; i < Materials.Num(); i++) {
 		if (Materials[i].AssetName.ToString().ToLower().Contains(Slot.ToLower())) return &Materials[i];
