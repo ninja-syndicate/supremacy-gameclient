@@ -30,8 +30,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	EWarMachineModelType Type;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
-	EWarMachineBoostStat BoostStat;
+	// Game client doesn't need boost stat
+	// UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
+	// EWarMachineBoostStat BoostStat;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Fields", meta=(AllowPrivateAccess=true))
 	int32 WeaponHardpointCount;
@@ -112,6 +113,8 @@ public:
 		Struct.HealthMax = MaxHitpoints;
 		Struct.ShieldMax = MaxShield;
 		Struct.ShieldRechargeRate = ShieldRechargeRate;
+		Struct.ShieldRechargeDelay = ShieldRechargeDelay;
+
 		Struct.Speed = Speed;
 		Struct.WalkSpeedModifier = WalkSpeedModifier;
 		Struct.Height = Height;

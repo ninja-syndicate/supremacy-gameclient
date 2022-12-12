@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "GameplayTagContainer.h"
+#include "AI/CombatAgentInterface.h"
 #include "Types/AI/AIBrainInput.h"
 #include "Types/AI/AIWarMachineInfo.h"
 #include "Types/AI/AIEnvironmentQueryResult.h"
@@ -25,14 +26,21 @@ enum EAvoidanceType
  * 
  */
 UCLASS()
-class SUPREMACY_API ACrowdAIController : public AAIController
+class SUPREMACY_API ACrowdAIController : public AAIController, public ICombatAgentInterface
 {
 	GENERATED_BODY()
 
 public:
 	ACrowdAIController(const FObjectInitializer& ObjectInitializer);
 	
-	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false);
+public:
+	//~ Begin ICombatAgentInterface
+	virtual AActor* GetCurrentTarget_Implementation() const override;
+	virtual bool CanSeeTarget_Implementation() const override;
+	//~ End ICombatAgentInterface
+
+public:
+	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
@@ -46,7 +54,8 @@ public:
 		float DeltaTime,
 		FAIPerceptionInfo PerceptionInfo,
 		TArray<FAIScriptLog> Errors,
-		TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus);
+		TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus,
+		FAIWarMachineInfo CommandTargetWarMachineInfo);
 
 	// NOTE: These cooldown functions will be removed later.
 	UFUNCTION(BlueprintCallable)

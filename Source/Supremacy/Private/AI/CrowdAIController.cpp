@@ -96,6 +96,19 @@ void ACrowdAIController::OnUnPossess()
 	PossessedPawn = nullptr;
 }
 
+//~ Begin ICombatAgentInterface
+AActor* ACrowdAIController::GetCurrentTarget_Implementation() const
+{
+	return CurrentTarget;
+}
+
+bool ACrowdAIController::CanSeeTarget_Implementation() const
+{
+	// @stub: this is currently implemented in blueprints.
+	return true;
+}
+//~ End ICombatAgentInterface
+
 void ACrowdAIController::Initialize_Implementation()
 {
 	if (!IsValid(PossessedPawn))
@@ -340,7 +353,8 @@ FAIBrainInput ACrowdAIController::GetBrainInput(
 	float DeltaTime,
 	FAIPerceptionInfo PerceptionInfo,
 	TArray<FAIScriptLog> Errors,
-	TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus)
+	TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus,
+	FAIWarMachineInfo CommandTargetWarMachineInfo)
 {
 	FAIBrainInput BrainInput;
 	BrainInput.Self = WarMachineInfo;
@@ -348,6 +362,7 @@ FAIBrainInput ACrowdAIController::GetBrainInput(
 	BrainInput.Perception = PerceptionInfo;
 	BrainInput.Errors = Errors;
 	BrainInput.EnvQueryStatus = EnvQueryStatus;
+	BrainInput.CommandTarget = CommandTargetWarMachineInfo;
 
 	return BrainInput;
 }

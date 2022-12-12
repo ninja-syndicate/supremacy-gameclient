@@ -8,6 +8,7 @@
 
 #include "Importers/Faction.h"
 #include "Importers/Brand.h"
+#include "Importers/FactionPalette.h"
 #include "Importers/MechSkinCompatibility.h"
 #include "Importers/PowerCore.h"
 #include "Importers/WeaponSkinCompatibility.h"
@@ -21,6 +22,7 @@
 
 UStaticDataImporter::UStaticDataImporter()
 {
+	Importers.Add(new StaticDataImporter::FactionPalette());
 	Importers.Add(new StaticDataImporter::Faction());
 	Importers.Add(new StaticDataImporter::Brand());
 	Importers.Add(new StaticDataImporter::Skin());
@@ -70,8 +72,8 @@ bool UStaticDataImporter::SetImportDirectory()
 
 	if (!IFileManager::Get().DirectoryExists(*OutFolder))
 	{
-		LogWarning(FString::Printf(TEXT("No Directory found at %s"), *OutFolder));
-		return false;
+LogWarning(FString::Printf(TEXT("No Directory found at %s"), *OutFolder));
+return false;
 	}
 
 	for (const auto Importer : Importers)
@@ -83,8 +85,8 @@ bool UStaticDataImporter::SetImportDirectory()
 			LogError(Importer->GetErrorReason());
 			return false;
 		}
-	}	
-	
+	}
+
 	Ready = true;
 	ImportPath = OutFolder;
 	SaveConfig();
@@ -127,8 +129,8 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* Asset)
 			LogError(DataImporter->GetErrorReason());
 			return false;
 		}
-		
-		if(!DataImporter->ImportAndUpdate(Asset))
+
+		if (!DataImporter->ImportAndUpdate(Asset))
 		{
 			LogMessage(FString::Printf(TEXT("Importer %s failed because: %s"), *DataImporter->FileName, *DataImporter->GetErrorReason()));
 		}
@@ -136,14 +138,16 @@ bool UStaticDataImporter::UpdateAsset(UStaticData* Asset)
 
 	Asset->Modify(true);
 	UKismetSystemLibrary::EndTransaction();
-	
+
 	LogMessage("Import Succeeded!");
 
 	for (const auto DataImporter : Importers)
 	{
 		DataImporter->Reset();
 	}
-	
+
+	ValidateStaticData(Asset);
+
 	return true;
 }
 
@@ -163,4 +167,36 @@ void UStaticDataImporter::LogMessage(const FString Text) const
 {
 	OnLogMessage.Broadcast(FString::Printf(TEXT("%ls\n"), *Text));
 	UE_LOG(LogSupremacyEditor, Log, TEXT("%s"), *Text);
+}
+
+
+void UStaticDataImporter::ValidateStaticData(UStaticData* Asset) {
+	for (auto& Weapon : Asset->WeaponArray) {
+		if (Weapon->Blueprint.IsNull()) {
+			LogMessage(FString::Printf(TEXT("Weapon %s: null blueprint reference"), *Weapon->Label));
+		}
+	}
+
+	// validate weapon materials
+	for (auto& WeaponSkinCompatibility : Asset->WeaponSkinCompatibilityArray) {
+		if(WeaponSkinCompatibility->Materials.IsEmpty()) {
+			// skip rocket pods because their materials are built into the mech materials
+			if (WeaponSkinCompatibility->Weapon->Type == EWeaponType::EWeaponType_RocketPods) continue;
+			LogMessage(FString::Printf(TEXT("Weapon Skin Compatibility %s: empty materials array"), *WeaponSkinCompatibility->Label));
+		}
+	}
+
+	// validate mech blueprints
+	for (auto& Mech : Asset->WarMachineModelArray) {
+		if (Mech->UnrealWarMachine.IsNull()) {
+			LogMessage(FString::Printf(TEXT("WarMachine %s: null blueprint reference"), *Mech->Label));
+		}
+	}
+
+	// validate mech materials
+	for (auto& MechSkinCompatibility : Asset->MechSkinCompatibilityArray) {
+		if (MechSkinCompatibility->Materials.IsEmpty()) {
+			LogMessage(FString::Printf(TEXT("Mech Skin Compatibility %s: empty materials array"), *MechSkinCompatibility->Label));
+		}
+	}
 }

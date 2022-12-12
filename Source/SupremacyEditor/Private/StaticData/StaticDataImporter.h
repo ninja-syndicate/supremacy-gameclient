@@ -33,6 +33,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Update Asset", meta=(Keywords = "Update specified asset"))
 	bool UpdateAsset(UStaticData *Asset);
 	
+	// validates static data for null references
+	UFUNCTION(BlueprintCallable, Category = "Static Data", DisplayName = "Validate Static Data", meta = (Keywords = "Validate static data"))
+	void ValidateStaticData(UStaticData* Asset);
+
 	UFUNCTION(BlueprintCallable)
 	FString GetImportPath() { return ImportPath; }
 	

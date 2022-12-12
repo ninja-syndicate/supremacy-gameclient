@@ -25,31 +25,21 @@ StaticDataImporter::MechSkinCompatibility::MechSkinCompatibility(): Base()
 FString MaterialsPathFromMech(const FString ID, const FString SkinName)
 {
 	FString BasePath;
-	bool HasDeprecatedMaterialFolderName = false; // Red Mountain and Zai mech skins have folder names like "Gold_Materials" instead of "Gold"
 
 	if (ID == FString("5d3a973b-c62b-4438-b746-d3de2699d42a").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/BostonCybernetics_MechAssets/Materials";
-	if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT("")))
-	{
-		BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
-		HasDeprecatedMaterialFolderName = true;
-	}
-	if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT("")))
-	{
-		BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
-		HasDeprecatedMaterialFolderName = true;
-	}
-	if (ID == FString("02ba91b7-55dc-450a-9fbd-e7337ae97a2b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/WarEnforcer_Humanoid_MechAssets/Materials";
-	if (ID == FString("7068ab3e-89dc-4ac1-bcbb-1089096a5eda").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/Annihilator_Platform_MechAssets/Materials";
-	if (ID == FString("3dc5888b-f5ff-4d08-a520-26fd3681707f").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Kenji_HumanoidMechAssets/Materials";
-	if (ID == FString("0639ebde-fbba-498b-88ac-f7122ead9c90").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Shirokuma_PlatformMechAssets/Materials";
-	if (ID == FString("fc9546d0-9682-468e-af1f-24eb1735315b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Aries_HumanoidMechAssets/Materials";
-	if (ID == FString("df1ac803-0a90-4631-b9e0-b62a44bdadff").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Viking_Platform_MechAssets/Materials";
+	else if (ID == FString("ac27f3b9-753d-4ace-84a9-21c041195344").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/RedMountain_MechAssets/Materials";
+	else if (ID == FString("625cd381-7c66-4e2f-9f69-f81589105730").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Genesis_Mechs/Zaibastsu_MechAssets/Materials";
+	else if (ID == FString("02ba91b7-55dc-450a-9fbd-e7337ae97a2b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/WarEnforcer_Humanoid_MechAssets/Materials";
+	else if (ID == FString("7068ab3e-89dc-4ac1-bcbb-1089096a5eda").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/DaisonAvionics_MechAssets/Annihilator_Platform_MechAssets/Materials";
+	else if (ID == FString("3dc5888b-f5ff-4d08-a520-26fd3681707f").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Kenji_HumanoidMechAssets/Materials";
+	else if (ID == FString("0639ebde-fbba-498b-88ac-f7122ead9c90").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/X3WarTech_MechAssets/Shirokuma_PlatformMechAssets/Materials";
+	else if (ID == FString("fc9546d0-9682-468e-af1f-24eb1735315b").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Aries_HumanoidMechAssets/Materials";
+	else if (ID == FString("df1ac803-0a90-4631-b9e0-b62a44bdadff").ToUpper().Replace(TEXT("-"), TEXT(""))) BasePath = "/Game/Mechs/Nexus_Mechs/UnifiedMartianCorp_MechAssets/Viking_Platform_MechAssets/Materials";
 
 	FString Out;
 	Out.Append(BasePath);
 	Out.Append("/");
 	Out.Append(SkinName.Replace(TEXT(" "), TEXT("")));
-	if (HasDeprecatedMaterialFolderName) Out.Append("_Materials");
 	Out.Append("/");
 
 	return Out;
@@ -63,7 +53,7 @@ bool IsGenesis(const FString ID)
 	return false;
 }
 
-FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, FString Slot) 
+FAssetData* GetMaterialForSlot(TArray<FAssetData>& Materials, const FString Slot) 
 {
 	for (int32 i = 0; i < Materials.Num(); i++) {
 		if (Materials[i].AssetName.ToString().ToLower().Contains(Slot.ToLower())) return &Materials[i];
@@ -103,8 +93,9 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 
 	// Get Avatar
 	Record->AvatarURL = RowCells[6];
-	
-	FString AvatarPackageURL = GetPackageNameForURL(Record->AvatarURL, "UI/Images/MechAvatars/");
+
+	EImageFormat ImageFormat;
+	FString AvatarPackageURL = GetPackageNameForURL(Record->AvatarURL, "UI/Images/MechAvatars/", ImageFormat);
 	
 	TArray<FAssetData> AvatarAsset;
 	AssetRegistryModule.Get().GetAssetsByPackageName(FName(AvatarPackageURL), AvatarAsset);
@@ -137,7 +128,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 		}
 		UObject* Object = ObjectClass->GetDefaultObject();
 		if (Object) {
-			USkeletalMesh* Mesh = Cast<AMech>(Object)->GetMesh()->SkeletalMesh;
+			USkeletalMesh* Mesh = Cast<AMech>(Object)->GetMesh()->GetSkeletalMeshAsset();
 			//UE_LOG(LogTemp, Warning, TEXT("loading mesh succeeded"));
 			TArray<FSkeletalMaterial> Materials = Mesh->GetMaterials();
 			for (int32 i = 0; i < Materials.Num(); i++)
@@ -145,7 +136,7 @@ bool StaticDataImporter::MechSkinCompatibility::HandleRow(UStaticData* DataAsset
 				FSkeletalMaterial Material = Materials[i];
 				const FAssetData* MaterialAsset = GetMaterialForSlot(AssetData, Material.MaterialSlotName.ToString());
 				if (MaterialAsset) {
-					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->ObjectPath.ToString() + FString("'"))));
+					Record->Materials.Add(Material.MaterialSlotName.ToString(), TSoftObjectPtr<UMaterial>(FString(FString("Material'") + MaterialAsset->GetObjectPathString() + FString("'"))));
 				}
 			}
 		}

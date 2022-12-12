@@ -6,16 +6,14 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "Types/WeaponStruct.h"
-#include "Core/Game/SupremacyTypes.h"
+#include "Core/Game/SupremacyFunctionLibrary.h"
 
 // Sets default values for this component's properties
 UDamager::UDamager()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
@@ -43,8 +41,6 @@ void UDamager::Initialize_Implementation()
 void UDamager::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 void UDamager::SetDamageByWeaponStruct_Implementation(const FWeaponStruct& WeaponStruct)

@@ -21,6 +21,7 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Parse Net Message", meta=(Keywords = "Parse Net Message Bytes Byte Array"))
 	static void ParseNetMessage(const TArray<uint8> Bytes, uint8 &Type, FString &Message);
 
+	static TArray<uint8> ConvertFloatToBytes(const float& Value);
 	static TArray<uint8> ConvertIntToBytes(const int Input);
 	static TArray<uint8> ConvertUInt16ToBytes(const uint16 Input);
 	
@@ -32,6 +33,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine Weapon Updates", meta = (Keywords = "Net Message Bytes Byte Array Binary", ToolTip="Packs weapon ammo counts, skipped if previous total ammo = current total ammo"))
 	static void PackWarMachineWeaponUpdates(UObject* WarMachine, const int PreviousTotalAmmo, TArray<uint8>& Bytes, int& TotalAmmo);
 	
+	UFUNCTION(BlueprintPure, Category = "Network", DisplayName = "Pack WarMachine PowerCore Updates", meta = (Keywords = "Net Message Bytes Byte Array Binary", ToolTip = "Packs power core level, skipped if previous total power = current total power"))
+	static void PackWarMachinePowerCoreUpdate(AActor* WarMachine, const float PreviousTotalPower, TArray<uint8>& Bytes, float& TotalPower);
+
 	/** Converts a String to an Array of bytes */
 	UFUNCTION(BlueprintPure, Category = "Helpers", DisplayName = "Convert String To Bytes")
 	static void ConvertStringToBytes(const FString String, TArray<uint8> &Bytes);

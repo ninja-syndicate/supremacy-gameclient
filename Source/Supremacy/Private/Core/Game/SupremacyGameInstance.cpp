@@ -4,7 +4,8 @@
 #include "Core/Game/SupremacyGameInstance.h"
 
 #include "StaticData/StaticData.h"
-#include "Core/Game/SupremacyTypes.h"
+#include "Logger/SupremacyLogTypes.h"
+#include "Core/Game/SupremacyFunctionLibrary.h"
 #include "Core/Damage/DamageTypes.h"
 
 USupremacyGameInstance::USupremacyGameInstance() : Super()

@@ -10,18 +10,25 @@
 #include "BlueprintGameplayTagLibrary.h"
 
 #include "Core/Game/SupremacyGameInstance.h"
+#include "Core/Gameplay/GameplayTags.h"
 #include "Core/Gameplay/GameplayTagFunctionLibrary.h"
 #include "StaticData/StaticData.h"
-
-DEFINE_LOG_CATEGORY(LogWeapon);
 
 // Sets default values
 AWeapon::AWeapon() : Super()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Some weapons may need Tick() so enable actor tick.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Initialize replication settings.
+	bReplicates = true;
+	bAlwaysRelevant = true;
+
+	// Set up root component.
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+
+	// Add the weapon gameplay tag.
+	GameplayTagContainer.AddTag(TAG_Weapon);
 }
 
 // Called when the game starts or when spawned
@@ -29,28 +36,9 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!GetInstigator())
-	{
-		UE_LOG(LogWeapon, Error, TEXT("AWeapon: Instigator is invalid."));
-		return;
-	}
-
-	// Append the init gameplay tags into the main gameplay tag container.
-	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(
-		GameplayTagContainer, UGameplayTagFunctionLibrary::GetAllTags(InitGameplayTagContainer));
-
-	TArray<USceneComponent*> ChildrenComps;
-	RootComponent->GetChildrenComponents(true, ChildrenComps);
-
-	// Ignore this weapon's components when moving. (This may not be required?)
-	for (USceneComponent* Comp : ChildrenComps)
-	{
-		UPrimitiveComponent* PrimitiveComp = Cast<UPrimitiveComponent>(Comp);
-		if (!PrimitiveComp) return;
-
-		PrimitiveComp->IgnoreActorWhenMoving(this, true);
-		PrimitiveComp->IgnoreActorWhenMoving(GetInstigator(), true);
-	}
+	Initialize();
+	// @todo - port some functions and static mesh set up in weapons.
+	// For barrel, just accept static mesh.
 }
 
 // Called every frame
@@ -69,10 +57,44 @@ void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 	DOREPLIFETIME_CONDITION(AWeapon, TargetLocation, COND_InitialOnly);
 }
 
-
 void AWeapon::Initialize_Implementation()
 {
-	// @todo implementation
+	// Append the init gameplay tags into the main gameplay tag container.
+	UBlueprintGameplayTagLibrary::AppendGameplayTagContainers(
+		GameplayTagContainer, UGameplayTagFunctionLibrary::GetAllTags(InitGameplayTagContainer));
+
+	// If the weapon hash is not set, generate one for it.
+	if (Struct.Hash.IsEmpty())
+		GenerateHash();
+
+	// Load the weapon skin asynchronously.
+	LoadAssetAsync();
+
+	// Nothing to do from now if instigator is not set.
+	if (!GetInstigator()) return;
+
+	// Get the children comps to ignore when moving (This may not be required?).
+	TArray<USceneComponent*> ChildrenComps;
+	RootComponent->GetChildrenComponents(true, ChildrenComps);
+
+	for (USceneComponent* Comp : ChildrenComps)
+	{
+		UPrimitiveComponent* PrimitiveComp = Cast<UPrimitiveComponent>(Comp);
+		if (!PrimitiveComp) return;
+
+		PrimitiveComp->IgnoreActorWhenMoving(this, true);
+		PrimitiveComp->IgnoreActorWhenMoving(GetInstigator(), true);
+	}
+
+	// TODO: This should ideally be moved to subclasses.
+	// TODO: Figure out a way to check all assets loaded and then dispatch.
+	bIsInitialized = true;
+	OnWeaponInitialized.Broadcast(this);
+
+	if (GetInstigator()->Implements<UWeaponizedInterface>())
+	{
+		IWeaponizedInterface::Execute_PostWeaponInit(GetInstigator(), this);
+	}
 }
 
 void AWeapon::Trigger_Implementation()
@@ -164,29 +186,35 @@ void AWeapon::LoadAssetAsync_Implementation()
 	{
 		if (Pair.Value.IsNull()) continue;
 	
-		StreamableHandle = Streamable.RequestAsyncLoad(
+		StreamableHandle.Add(Pair.Key, Streamable.RequestAsyncLoad(
 			Pair.Value.ToSoftObjectPath(),
 			FStreamableDelegate::CreateUObject(this, &AWeapon::LoadAssetDeferred)
-		);
+		));
 	}
 }
 
 void AWeapon::LoadAssetDeferred()
 {
-	if (!StreamableHandle.IsValid()) return;
-	if (!StreamableHandle->HasLoadCompleted()) return;
-
-	UMaterialInterface* Material = Cast<UMaterialInterface>(StreamableHandle->GetLoadedAsset());
-	if (!Material) return;
-
-	TArray<UStaticMeshComponent*> StaticComps;
-	GetComponents<UStaticMeshComponent>(StaticComps, true);
-
-	for (UActorComponent* Comp : StaticComps)
+	for (const auto& WeaponStream : StreamableHandle)
 	{
-		UStaticMeshComponent* StaticComp = Cast<UStaticMeshComponent>(Comp);
-		if (!StaticComp) continue;
+		if (!WeaponStream.Value.IsValid()) return;
+		if (!WeaponStream.Value->HasLoadCompleted()) return;
 
-		StaticComp->SetMaterial(0, Material);
+		UMaterialInstance* Material = Cast<UMaterialInstance>(WeaponStream.Value->GetLoadedAsset());
+		if (!Material) return;
+
+		TArray<UStaticMeshComponent*> StaticComps;
+		GetComponents<UStaticMeshComponent>(StaticComps, true);
+
+		for (UActorComponent* Comp : StaticComps)
+		{
+			UStaticMeshComponent* StaticComp = Cast<UStaticMeshComponent>(Comp);
+			if (!StaticComp) continue;
+
+			if (StreamableHandle.Num() == 1)
+				StaticComp->SetMaterial(0, Material);
+			else
+				StaticComp->SetMaterialByName(FName(WeaponStream.Key), Material);
+		}
 	}
 }

@@ -8,8 +8,6 @@
 #include "Types/WeaponStruct.h"
 #include "Weapon.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogWeapon, Log, All);
-
 UCLASS(Abstract)
 class SUPREMACY_API AWeapon : public AActor, public IGameplayTagAssetInterface
 {
@@ -98,7 +96,7 @@ protected:
 	void LoadAssetAsync();
 	virtual void LoadAssetAsync_Implementation();
 
-	TSharedPtr<struct FStreamableHandle> StreamableHandle;
+	TMap<FString, TSharedPtr<struct FStreamableHandle>> StreamableHandle;
 
 	void LoadAssetDeferred();
 

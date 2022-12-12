@@ -36,5 +36,9 @@ public:
 	UPROPERTY(Category = "AI Brain Input", EditAnywhere, BlueprintReadWrite)
 	TMap<FString, FAIEnvironmentQueryResult> EnvQueryStatus;
 
+	/** Information about commanded target. */
+	UPROPERTY(Category = "AI Brain Input", EditAnywhere, BlueprintReadWrite)
+	FAIWarMachineInfo CommandTarget;
+	
 	FAIBrainInput() {}
 };
