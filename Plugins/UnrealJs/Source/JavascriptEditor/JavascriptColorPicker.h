@@ -16,15 +16,15 @@ public:
 public:
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
+
 	// End of UWidget interface
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Widget Event", meta = (DisplayName = "OnColorChangedEvent"))
 	FOnColorChangedEvent OnColorChanged;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FLinearColor SelectedColor;
-
 private:
-	TSharedPtr<SColorBlock> MyColorBlock;
+	//TWeakPtr<SColorBlock> MyColorBlock;
 };

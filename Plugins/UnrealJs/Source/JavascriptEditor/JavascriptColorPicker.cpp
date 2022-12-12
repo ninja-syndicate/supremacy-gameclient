@@ -12,8 +12,8 @@ UJavascriptColorPicker::UJavascriptColorPicker(const FObjectInitializer& ObjectI
 
 TSharedRef<SWidget> UJavascriptColorPicker::RebuildWidget()
 {
-	MyColorBlock = SNew(SColorBlock)
-		.Color(TAttribute<FLinearColor>::Create([this]() {return SelectedColor; }))
+	TSharedPtr<SWidget> Ptr = SNew(SColorBlock)
+		.Color(TAttribute<FLinearColor>::Create([this]() { return SelectedColor; }))
 		.ShowBackgroundForAlpha(true)
 		.OnMouseButtonDown(FPointerEventHandler::CreateLambda([this](const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) {
 			if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
@@ -23,7 +23,7 @@ TSharedRef<SWidget> UJavascriptColorPicker::RebuildWidget()
 
 				FColorPickerArgs PickerArgs;
 				PickerArgs.bIsModal = true;
-				PickerArgs.ParentWidget = MyColorBlock;
+				//PickerArgs.ParentWidget = Ptr;
 				PickerArgs.DisplayGamma = TAttribute<float>::Create(TAttribute<float>::FGetter::CreateUObject(GEngine, &UEngine::GetDisplayGamma));
 				PickerArgs.LinearColorArray = &LinearColorArray;
 				PickerArgs.OnColorCommitted = FOnLinearColorValueChanged::CreateLambda([this](FLinearColor color) {
@@ -42,7 +42,7 @@ TSharedRef<SWidget> UJavascriptColorPicker::RebuildWidget()
 			}
 	}));
 
-	return MyColorBlock.ToSharedRef();
+	return Ptr.ToSharedRef();
 }
 
 PRAGMA_ENABLE_SHADOW_VARIABLE_WARNINGS
