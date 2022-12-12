@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetGuidLibrary.h"
 #include "BlueprintGameplayTagLibrary.h"
+#include "Materials/MaterialInterface.h"
 
 #include "Core/Game/SupremacyGameInstance.h"
 #include "Core/Gameplay/GameplayTags.h"
@@ -200,7 +201,7 @@ void AWeapon::LoadAssetDeferred()
 		if (!WeaponStream.Value.IsValid()) return;
 		if (!WeaponStream.Value->HasLoadCompleted()) return;
 
-		UMaterialInstance* Material = Cast<UMaterialInstance>(WeaponStream.Value->GetLoadedAsset());
+		UMaterialInterface* Material = Cast<UMaterialInterface>(WeaponStream.Value->GetLoadedAsset());
 		if (!Material) return;
 
 		TArray<UStaticMeshComponent*> StaticComps;
